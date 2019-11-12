@@ -1,0 +1,29 @@
+<div>
+    <div class="logo">
+        <h3 style="padding-left: 20px">Quize Logo</h3>
+    </div>
+    <div class="registration">
+        <button (click)="registrationModal()" class="registration_bitton">Registration</button>
+    </div>
+</div>
+
+<div *ngIf="regisModal" class="registration_module">
+    <div class="registration_box">
+        <div>
+            <h4 class="registration_title">Registration</h4>
+            <fa-icon (click)="registrationModal()" class="modal_close" [icon]="faTimes"></fa-icon>
+        </div>
+        <div class="form_container">
+            <p class="regist_label">Email</p>
+            <input class="regist_input">
+            <p class="regist_label">Password</p>
+            <input class="regist_input">
+            <p class="regist_label">Repeat password</p>
+            <input class="regist_input">
+        </div>
+        <div class="form_container button_pos">
+            <button class="regist_button_box button_cancel" (click)="registrationModal()">Cancel</button>
+            <button class="regist_button_box button_regist" >Regist</button>
+        </div>
+    </div>
+</div>

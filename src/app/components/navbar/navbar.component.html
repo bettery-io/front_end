@@ -3,8 +3,10 @@
         <h3 style="padding-left: 20px">Quize Logo</h3>
     </div>
     <div class="registration">
+        <button (click)="authenticationModal()" class="auth_bitton">Log In</button>
         <button (click)="registrationModal()" class="registration_bitton">Registration</button>
     </div>
 </div>
 
-<registration *ngIf="regisModal" (regisModalEvent)="receiveState($event)"></registration>
+<registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>
+<authentication *ngIf="authModal" (authModalEvent)="receiveAuthState($event)"></authentication>

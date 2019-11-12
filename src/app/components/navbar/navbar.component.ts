@@ -8,14 +8,23 @@ import { Component} from '@angular/core';
 })
 export class NavbarComponent{
 
-  regisModal = false
+  regisModal: boolean = false
+  authModal: boolean = false
 
   registrationModal() {
     this.regisModal = !this.regisModal;
   }
 
-  receiveState($event) {
+  authenticationModal(){
+     this.authModal = !this.authModal;
+  }
+
+  receiveRegistState($event) {
     this.regisModal = $event;
+  }
+
+  receiveAuthState($event) {
+    this.authModal = $event;
   }
 
 

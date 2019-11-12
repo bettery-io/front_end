@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MustMatch } from '../../../helpers/must-much.validator';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Web3 from 'web3';
 
 
 @Component({
@@ -45,8 +46,15 @@ export class RegistrationComponent implements OnInit {
       return;
     }
 
+    
+
     // continue
 
+    // var web3 = new Web3('ws://localhost:7545');
+    // console.log(web3);
+    // web3.eth.getAccounts().then((x)=>{
+    //   console.log(x)
+    // })
   }
 
 

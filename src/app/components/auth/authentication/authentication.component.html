@@ -22,11 +22,13 @@
                         <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
                     </div>
                 </div>
-
+            </div>
+            <div *ngIf="authError !== undefined" class="auth_error">
+                <p>{{authError}}</p>
             </div>
             <div class="form_container button_pos">
                 <button class="auth_button_box button_cancel" type="reset" (click)="onReset()">Cancel</button>
-                <button class="auth_button_box button_regist">Regist</button>
+                <button class="auth_button_box button_regist">Log In</button>
             </div>
         </form>
     </div>

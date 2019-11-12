@@ -32,6 +32,9 @@
                 </div>
 
             </div>
+            <div *ngIf="registerError !== undefinded" class="register_error">
+                <p>{{registerError}}</p>
+            </div>
             <div class="form_container button_pos">
                 <button class="regist_button_box button_cancel" type="reset" (click)="onReset()">Cancel</button>
                 <button class="regist_button_box button_regist">Regist</button>

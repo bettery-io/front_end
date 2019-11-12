@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { User } from '../../../models/User.model';
 import { AppState } from '../../../app.state';
 import * as UserActions from '../../../actions/user.actions';
+import { PostService } from '../../../services/post.service';
 
 import Web3 from 'web3';
 
@@ -18,17 +19,20 @@ import Web3 from 'web3';
 export class RegistrationComponent implements OnInit {
 
   registerForm: FormGroup;
-  submitted = false;
+  submitted: boolean = false;
   faTimes = faTimes;
+  registerError: string = undefined;
 
   @Output() regisModalEvent = new EventEmitter<boolean>();
 
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<AppState>) { }
+    private store: Store<AppState>,
+    private http: PostService
+  ) { }
 
-  registrationModal(){
+  registrationModal() {
     this.regisModalEvent.emit(false);
   }
 
@@ -48,27 +52,35 @@ export class RegistrationComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
     }
 
-    console.log(this.registerForm.value.password)
+    let data: User = {
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+      wallet: "test"
+    }
 
-    this.addUser(this.registerForm.value.email, this.registerForm.value.password, "test");
-    this.onReset();
+    this.http.post("user/regist", data)
+      .subscribe(
+        () => {
+          this.addUser(this.registerForm.value.email, this.registerForm.value.password, "test");
+        },
+        (err) => {
+          this.registerError = err.error;
+        })
+  }
 
-    // continue
+  addUser(email: string, password: string, wallet: string) {
 
     // var web3 = new Web3('ws://localhost:7545');
     // console.log(web3);
     // web3.eth.getAccounts().then((x)=>{
     //   console.log(x)
     // })
-  }
-
-  addUser(email: string, password: string, wallet: string){
-    this.store.dispatch( new UserActions.AddUser({email: email, password: password, wallet: wallet}))
+    this.store.dispatch(new UserActions.AddUser({ email: email, password: password, wallet: wallet }))
+    this.onReset();
   }
 
 

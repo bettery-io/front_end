@@ -1,5 +1,10 @@
-import { Component, OnInit, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PostService } from '../../../services/post.service';
+import { Store } from '@ngrx/store';
+import { User } from '../../../models/User.model';
+import { AppState } from '../../../app.state';
+import * as UserActions from '../../../actions/user.actions';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,13 +17,18 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 export class AuthenticationComponent implements OnInit {
 
   authForm: FormGroup;
-  submitted = false;
+  submitted: boolean = false;
   faTimes = faTimes;
+  authError: string = undefined; 
 
   @Output() authModalEvent = new EventEmitter<boolean>();
 
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<AppState>,
+    private http: PostService
+  ) { }
 
   ngOnInit() {
     this.authForm = this.formBuilder.group({
@@ -37,6 +47,24 @@ export class AuthenticationComponent implements OnInit {
       return;
     }
 
+    let data = {
+      email: this.authForm.value.email,
+      password: this.authForm.value.password,
+    }
+
+    this.http.post("user/auth", data)
+      .subscribe(
+        (x: User) => {
+         this.addUser(x.email, x.password, x.wallet);
+        },
+        (err) => {
+          this.authError = err.error;
+        })
+  }
+
+  addUser(email: string, password: string, wallet: string) {
+    this.store.dispatch(new UserActions.AddUser({ email: email, password: password, wallet: wallet }))
+    this.onReset();
   }
 
 
@@ -46,7 +74,7 @@ export class AuthenticationComponent implements OnInit {
     this.authModal();
   }
 
-  authModal(){
+  authModal() {
     this.authModalEvent.emit(false);
   }
 

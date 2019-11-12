@@ -18,7 +18,6 @@ export class NavbarComponent {
 
   constructor(private store: Store<AppState>) {
     store.select("user").subscribe((x) => {
-      console.log(x);
       if (x.length !== 0) {
         this.email = x[0].email;
       }

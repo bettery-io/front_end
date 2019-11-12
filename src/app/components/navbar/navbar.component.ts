@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Component} from '@angular/core';
 
 
 @Component({
@@ -7,13 +6,17 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.sass']
 })
-export class NavbarComponent {
-  faTimes = faTimes;
+export class NavbarComponent{
+
   regisModal = false
 
-
-  registrationModal(){
+  registrationModal() {
     this.regisModal = !this.regisModal;
   }
+
+  receiveState($event) {
+    this.regisModal = $event;
+  }
+
 
 }

@@ -1,0 +1,12 @@
+import { Action } from '@ngrx/store';
+import { User } from './../models/User.model';
+import * as UserActions from './../actions/user.actions';
+
+export function userReducer(state: User[] = [], action: UserActions.Actions) {
+    switch (action.type) {
+        case UserActions.ADD_USER:
+            return [...state, action.payload];
+        default:
+            return state;
+    }
+}

@@ -2,6 +2,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MustMatch } from '../../../helpers/must-much.validator';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
+import { User } from '../../../models/User.model';
+import { AppState } from '../../../app.state';
+import * as UserActions from '../../../actions/user.actions';
+
 import Web3 from 'web3';
 
 
@@ -19,7 +24,9 @@ export class RegistrationComponent implements OnInit {
   @Output() regisModalEvent = new EventEmitter<boolean>();
 
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<AppState>) { }
 
   registrationModal(){
     this.regisModalEvent.emit(false);
@@ -46,7 +53,10 @@ export class RegistrationComponent implements OnInit {
       return;
     }
 
-    
+    console.log(this.registerForm.value.password)
+
+    this.addUser(this.registerForm.value.email, this.registerForm.value.password, "test");
+    this.onReset();
 
     // continue
 
@@ -55,6 +65,10 @@ export class RegistrationComponent implements OnInit {
     // web3.eth.getAccounts().then((x)=>{
     //   console.log(x)
     // })
+  }
+
+  addUser(email: string, password: string, wallet: string){
+    this.store.dispatch( new UserActions.AddUser({email: email, password: password, wallet: wallet}))
   }
 
 

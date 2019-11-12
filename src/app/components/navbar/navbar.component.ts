@@ -1,4 +1,8 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { User } from '../../models/User.model';
+import { AppState } from '../../app.state';
 
 
 @Component({
@@ -6,17 +10,27 @@ import { Component} from '@angular/core';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.sass']
 })
-export class NavbarComponent{
+export class NavbarComponent {
 
+  email: string = undefined;
   regisModal: boolean = false
   authModal: boolean = false
+
+  constructor(private store: Store<AppState>) {
+    store.select("user").subscribe((x) => {
+      console.log(x);
+      if (x.length !== 0) {
+        this.email = x[0].email;
+      }
+    });
+  }
 
   registrationModal() {
     this.regisModal = !this.regisModal;
   }
 
-  authenticationModal(){
-     this.authModal = !this.authModal;
+  authenticationModal() {
+    this.authModal = !this.authModal;
   }
 
   receiveRegistState($event) {

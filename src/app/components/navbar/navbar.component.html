@@ -7,7 +7,10 @@
         <button (click)="registrationModal()" class="registration_bitton">Registration</button>
     </div>
     <div *ngIf="email !== undefined" class="registration">
-        <a class="add_new_quize" routerLink="/create-quize" routerLinkActive="active">Add new Quize</a>
+        <a class="nav_tabs" routerLink="/create-quize">Add new Quize</a>
+        <a class="nav_tabs" routerLink="/answer" >Answer</a>
+        <a class="nav_tabs" routerLink="/validate" >Validate</a>
+        <a class="nav_tabs" routerLink="/my-activites" >My activites</a>
         <p class="user_email">{{email}}</p>
     </div>
 </div>

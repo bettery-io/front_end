@@ -16,6 +16,10 @@ import { AuthenticationComponent } from './components/auth/authentication/authen
 import {PostService} from './services/post.service';
 import { CreateQuizeComponent } from './components/create-quize/create-quize.component';
 import { QuizeBoardComponent } from './components/quize-board/quize-board.component';
+import { HomeComponent } from './components/home/home.component';
+import { AnswerComponent } from './components/answer/answer.component';
+import { ValidateComponent } from './components/validate/validate.component';
+import { MyActivitesComponent } from './components/my-activites/my-activites.component';
 
 
 @NgModule({
@@ -25,7 +29,11 @@ import { QuizeBoardComponent } from './components/quize-board/quize-board.compon
     RegistrationComponent,
     AuthenticationComponent,
     CreateQuizeComponent,
-    QuizeBoardComponent
+    QuizeBoardComponent,
+    HomeComponent,
+    AnswerComponent,
+    ValidateComponent,
+    MyActivitesComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { User } from '../../models/User.model';
 import { AppState } from '../../app.state';
 
 
@@ -17,7 +15,7 @@ export class NavbarComponent {
   authModal: boolean = false
 
   constructor(private store: Store<AppState>) {
-    store.select("user").subscribe((x) => {
+    this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
         this.email = x[0].email;
       }

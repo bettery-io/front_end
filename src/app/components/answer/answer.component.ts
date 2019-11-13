@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.state';
+import { Router } from "@angular/router"
 
 @Component({
   selector: 'answer',
@@ -7,7 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AnswerComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private store: Store<AppState>,
+    private router: Router
+  ) {
+    this.store.select("user").subscribe((x) => {
+      if (x.length === 0) {
+        this.router.navigate(['/home'])
+      }
+    });
+  }
 
   ngOnInit() {
   }

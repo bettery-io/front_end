@@ -7,8 +7,8 @@
         <button (click)="registrationModal()" class="registration_bitton">Registration</button>
     </div>
     <div *ngIf="email !== undefined" class="registration">
-        <p>{{email}}</p>
-        <button>Add new Quize</button>
+        <a class="add_new_quize" routerLink="/create-quize" routerLinkActive="active">Add new Quize</a>
+        <p class="user_email">{{email}}</p>
     </div>
 </div>
 

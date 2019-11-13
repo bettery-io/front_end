@@ -14,6 +14,8 @@ import { RegistrationComponent } from './components/auth/registration/registrati
 import { AuthenticationComponent } from './components/auth/authentication/authentication.component';
 
 import {PostService} from './services/post.service';
+import { CreateQuizeComponent } from './components/create-quize/create-quize.component';
+import { QuizeBoardComponent } from './components/quize-board/quize-board.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import {PostService} from './services/post.service';
     AppComponent,
     NavbarComponent,
     RegistrationComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    CreateQuizeComponent,
+    QuizeBoardComponent
   ],
   imports: [
     BrowserModule,

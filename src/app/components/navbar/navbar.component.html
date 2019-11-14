@@ -1,17 +1,16 @@
 <div>
     <div class="logo">
-        <h3 style="padding-left: 20px">Quize Logo</h3>
+        <h3 style="padding-left: 20px; padding-top: 10px">Quize Logo</h3>
     </div>
-    <div class="registration" *ngIf="email === undefined">
-        <button type="button" class="btn btn-primary auth_bitton" (click)="authenticationModal()" >Log In</button>
+    <div class="registration" *ngIf="nickName === undefined">
         <button type="button" class="btn btn-success" (click)="registrationModal()" >Registration</button>
     </div>
-    <div *ngIf="email !== undefined" class="registration">
+    <div *ngIf="nickName !== undefined" class="registration">
         <a class="nav_tabs" routerLink="/create-quize">Add new Quize</a>
         <a class="nav_tabs" routerLink="/answer" >Answer</a>
         <a class="nav_tabs" routerLink="/validate" >Validate</a>
         <a class="nav_tabs" routerLink="/my-activites" >My activites</a>
-        <p class="user_email">{{email}}</p>
+        <p class="user_email">{{nickName}}</p>
     </div>
 </div>
 

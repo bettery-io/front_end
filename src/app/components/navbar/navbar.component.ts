@@ -10,14 +10,13 @@ import { AppState } from '../../app.state';
 })
 export class NavbarComponent {
 
-  email: string = undefined;
+  nickName: string = undefined;
   regisModal: boolean = false
-  authModal: boolean = false
 
   constructor(private store: Store<AppState>) {
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
-        this.email = x[0].email;
+        this.nickName = x[0].nickName;
       }
     });
   }
@@ -26,16 +25,8 @@ export class NavbarComponent {
     this.regisModal = !this.regisModal;
   }
 
-  authenticationModal() {
-    this.authModal = !this.authModal;
-  }
-
   receiveRegistState($event) {
     this.regisModal = $event;
-  }
-
-  receiveAuthState($event) {
-    this.authModal = $event;
   }
 
 

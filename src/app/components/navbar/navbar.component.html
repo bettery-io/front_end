@@ -3,8 +3,8 @@
         <h3 style="padding-left: 20px">Quize Logo</h3>
     </div>
     <div class="registration" *ngIf="email === undefined">
-        <button (click)="authenticationModal()" class="auth_bitton">Log In</button>
-        <button (click)="registrationModal()" class="registration_bitton">Registration</button>
+        <button type="button" class="btn btn-primary auth_bitton" (click)="authenticationModal()" >Log In</button>
+        <button type="button" class="btn btn-success" (click)="registrationModal()" >Registration</button>
     </div>
     <div *ngIf="email !== undefined" class="registration">
         <a class="nav_tabs" routerLink="/create-quize">Add new Quize</a>

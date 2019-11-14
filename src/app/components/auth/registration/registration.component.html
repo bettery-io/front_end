@@ -1,4 +1,4 @@
-<div class="registration_module">
+<div id="close" class="registration_module" (click)=closeOutSide($event)>
     <div class="registration_box">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div>

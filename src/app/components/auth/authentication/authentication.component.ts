@@ -37,6 +37,12 @@ export class AuthenticationComponent implements OnInit {
     });
   }
 
+  closeOutSide(event){
+    if(event.target.id === "close"){
+      this.authModal();
+    };
+  }
+
   get f() { return this.authForm.controls; }
 
   onSubmit() {

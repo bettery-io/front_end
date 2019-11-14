@@ -19,6 +19,8 @@ import { HomeComponent } from './components/home/home.component';
 import { AnswerComponent } from './components/answer/answer.component';
 import { ValidateComponent } from './components/validate/validate.component';
 import { MyActivitesComponent } from './components/my-activites/my-activites.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @NgModule({
@@ -41,7 +43,8 @@ import { MyActivitesComponent } from './components/my-activites/my-activites.com
     ReactiveFormsModule,
     StoreModule.forRoot({
       user: userReducer
-    })
+    }),
+    NgbModule
   ],
   providers: [PostService],
   bootstrap: [AppComponent]

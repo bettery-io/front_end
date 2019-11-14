@@ -36,6 +36,12 @@ export class RegistrationComponent implements OnInit {
     this.regisModalEvent.emit(false);
   }
 
+  closeOutSide(event){
+    if(event.target.id === "close"){
+      this.registrationModal();
+    };
+  }
+
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],

@@ -1,17 +1,29 @@
-<div>
+<nav class="navbar navbar-light bg-light">
     <div class="logo">
         <h3 style="padding-left: 20px; padding-top: 10px">Quize Logo</h3>
     </div>
     <div class="registration" *ngIf="nickName === undefined">
-        <button type="button" class="btn btn-success" (click)="registrationModal()" >Login / Registration</button>
+        <button type="button" class="btn btn-success" (click)="registrationModal()">Login / Registration</button>
     </div>
-    <div *ngIf="nickName !== undefined" class="registration">
-        <a class="nav_tabs" routerLink="/create-quize">Add new Quize</a>
-        <a class="nav_tabs" routerLink="/answer" >Answer</a>
-        <a class="nav_tabs" routerLink="/validate" >Validate</a>
-        <a class="nav_tabs" routerLink="/my-activites" >My activites</a>
-        <p class="user_email">{{nickName}}</p>
-    </div>
-</div>
+    <div *ngIf="nickName !== undefined" >
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
+                <li class="nav-item">
+                    <a class="nav_tabs nav-link" routerLink="/create-quize">Add new Quize</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav_tabs nav-link" routerLink="/answer">Answer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav_tabs nav-link" routerLink="/validate">Validate</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav_tabs nav-link" routerLink="/my-activites">My activites</a>
+                </li>
+                <li class="nav-item">
+                    <p class="user_email">Hello {{nickName}}</p>
+                </li>
+            </ul>
+        </div>
+</nav>
 
 <registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>

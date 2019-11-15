@@ -2,10 +2,10 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
-import { User } from '../../../models/User.model';
-import { AppState } from '../../../app.state';
-import * as UserActions from '../../../actions/user.actions';
-import { PostService } from '../../../services/post.service';
+import { User } from '../../models/User.model';
+import { AppState } from '../../app.state';
+import * as UserActions from '../../actions/user.actions';
+import { PostService } from '../../services/post.service';
 import Web3 from 'web3';
 
 
@@ -34,10 +34,10 @@ export class RegistrationComponent implements OnInit {
     private store: Store<AppState>,
     private http: PostService
   ) {
-    this.checkMetamaskInBrowser();
+    this.getUseWalletInMetamask();
   }
 
-  async checkMetamaskInBrowser() {
+  async getUseWalletInMetamask() {
     // Check if MetaMask is installed
     if (!(window as any).ethereum) {
       this.metamaskError = "For registration you must have Metamask installed.";
@@ -61,10 +61,30 @@ export class RegistrationComponent implements OnInit {
         window.alert('Please activate MetaMask first.');
         return;
       } else {
-        this.userWallet = coinbase;
-        this.userWalletIsUndefinded = false
+        this.detectWalletInDB(coinbase)
+
       }
     }
+  }
+
+  detectWalletInDB(wallet: string) {
+    let data = {
+      wallet: wallet
+    }
+    this.http.post("user/validate", data)
+      .subscribe(
+        (x: User) => {
+          if (x.wallet === undefined) {
+            this.userWallet = wallet;
+            this.userWalletIsUndefinded = false
+          } else {
+            this.addUser(x.email, x.nickName, x.wallet);
+          }
+        },
+        (err) => {
+          console.log("validate user error")
+          console.log(err);
+        })
   }
 
   registrationModal() {
@@ -104,7 +124,7 @@ export class RegistrationComponent implements OnInit {
     this.http.post("user/regist", data)
       .subscribe(
         () => {
-          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, "test");
+          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet);
         },
         (err) => {
           this.registerError = err.error;

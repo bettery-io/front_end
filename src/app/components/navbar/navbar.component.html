@@ -3,7 +3,7 @@
         <h3 style="padding-left: 20px; padding-top: 10px">Quize Logo</h3>
     </div>
     <div class="registration" *ngIf="nickName === undefined">
-        <button type="button" class="btn btn-success" (click)="registrationModal()" >Registration</button>
+        <button type="button" class="btn btn-success" (click)="registrationModal()" >Login / Registration</button>
     </div>
     <div *ngIf="nickName !== undefined" class="registration">
         <a class="nav_tabs" routerLink="/create-quize">Add new Quize</a>
@@ -15,4 +15,3 @@
 </div>
 
 <registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>
-<authentication *ngIf="authModal" (authModalEvent)="receiveAuthState($event)"></authentication>

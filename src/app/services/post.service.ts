@@ -9,7 +9,7 @@ export class PostService {
 
   url = 'http://localhost:80';
 
-  post(path, data) {
+  post(path: string, data: Object) {
     return this.http.post(`${this.url}/${path}`, data);
   }
   

@@ -10,8 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
-import { RegistrationComponent } from './components/auth/registration/registration.component';
-import { AuthenticationComponent } from './components/auth/authentication/authentication.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 import {PostService} from './services/post.service';
 import { CreateQuizeComponent } from './components/create-quize/create-quize.component';
@@ -28,7 +27,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     AppComponent,
     NavbarComponent,
     RegistrationComponent,
-    AuthenticationComponent,
     CreateQuizeComponent,
     HomeComponent,
     AnswerComponent,

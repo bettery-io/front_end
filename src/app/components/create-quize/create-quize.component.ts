@@ -4,7 +4,7 @@ import { AppState } from '../../app.state';
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Question } from '../../models/Question.model';
-import { faTimesCircle, faPlus, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle, faPlus, faCalendarAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { GetService } from '../../services/get.service';
 import { User } from '../../models/User.model';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
@@ -33,6 +33,7 @@ export class CreateQuizeComponent implements OnInit {
   questionForm: FormGroup;
   faTimesCircle = faTimesCircle;
   faPlus = faPlus;
+  faTimes = faTimes;
   faCalendarAlt = faCalendarAlt;
   answesQuality: number = 2;
   users: User[] = [];
@@ -41,6 +42,8 @@ export class CreateQuizeComponent implements OnInit {
   endTimeValue: string = "Chose end time";
   exactEndTime = false;
   times = times;
+  inviteValidators: User[] = [];
+  inviteParcipiant: User[] = [];
 
 
   constructor(
@@ -62,7 +65,6 @@ export class CreateQuizeComponent implements OnInit {
     this.getSevice.get("user/all")
       .subscribe(
         (data: User[]) => {
-          console.log(data);
           this.users = data;
         },
         (err) => {
@@ -86,13 +88,11 @@ export class CreateQuizeComponent implements OnInit {
       answers: new FormArray([]),
       multyChoise: 'one',
       startDate: ['', Validators.required],
-      startTime: [{ hour: 13, minute: 30 }, Validators.required],
+      startTime: ['', Validators.required],
       endDate: ['', Validators.required],
-      endTime: [{ hour: 13, minute: 30 }, Validators.required],
+      endTime: ['', Validators.required],
       privateOrPublic: "private",
-      inviteParticipants: [''],
-      inviteValidators: [''],
-      amount: ['', Validators.required]
+      amount: [0, [Validators.min(0.01), Validators.required]]
     });
     for (let i = this.t.length; i < this.answesQuality; i++) {
       this.t.push(this.formBuilder.group({
@@ -124,9 +124,34 @@ export class CreateQuizeComponent implements OnInit {
      this[from] = value;
   }
 
+  selectedValidators(item){
+    this.inviteValidators.push(item.item)
+    let input = <HTMLInputElement>document.getElementById("invite_validators")
+    setTimeout(()=>{
+      input.value = null;
+    },100)
+  }
+
+  selectedParcipiant(item){
+    this.inviteParcipiant.push(item.item)
+    let input = <HTMLInputElement>document.getElementById("invite_participants")
+    setTimeout(()=>{
+      input.value = null;
+    },100)
+  }
+
+  deleteValidatorOrParcipiant(nickName, path){
+    this[path] = this[path].filter(obj => obj.nickName !== nickName);
+  }
+
 
   onSubmit() {
     this.submitted = true;
+
+    if (this.questionForm.invalid) {
+      return;
+    }
+    
 
     console.log(this.questionForm.value)
   }

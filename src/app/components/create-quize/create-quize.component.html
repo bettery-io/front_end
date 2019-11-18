@@ -5,9 +5,10 @@
 
         <div class="form-group">
             <label for="Question">Question <b style="font-size: 12px">*required</b></label>
-            <input type="text" formControlName="question" class="form-control" id="Question" placeholder="Enter your question">
+            <input type="text" formControlName="question" class="form-control" id="Question" placeholder="Enter your question"
+                [ngClass]="{ 'is_invalid': submitted && f.question.errors }">
             <div *ngIf="submitted && f.question.errors">
-                <small *ngIf="f.question.errors.required" class="form-text error-feedback ">Question is
+                <small *ngIf="f.question.errors.required" class="form-text quize_validation_error">Question is
                     required</small>
             </div>
         </div>
@@ -25,19 +26,24 @@
             <div>
                 <label class="answer_label">Answers <b style="font-size: 12px">*required</b></label>
                 <div style="float: right; padding-bottom: 10px">
-                    <button (click)="oneMoreAnswer()" class="btn btn-success btn-sm">
+                    <button type="button" (click)="oneMoreAnswer()" class="btn btn-success btn-sm">
                         <fa-icon [icon]="faPlus"></fa-icon>
                     </button>
                 </div>
             </div>
             <div *ngFor="let answer of t.controls; let i = index">
                 <div [formGroup]="answer" class="input-group mb-3">
-                    <input type="text" formControlName="name" class="form-control" id="Question {{i}}" placeholder="{{answer.name}}">
+                    <input [ngClass]="{ 'is_invalid': submitted && answer.controls.name.errors }" type="text"
+                        formControlName="name" class="form-control" id="Question {{i}}" placeholder="{{answer.name}}">
                     <div *ngIf='answesQuality >= 3' class="input-group-prepend">
                         <button (click)="deleteAnswer(i)" class="btn btn-danger" type="button">
                             <fa-icon [icon]="faTimesCircle"></fa-icon>
                         </button>
                     </div>
+                </div>
+                <div *ngIf="submitted && answer.controls.name.errors">
+                    <small style="padding-bottom: 10px" *ngIf="answer.controls.name.errors.required" class="form-text quize_validation_error">Answers
+                        is required</small>
                 </div>
             </div>
         </div>
@@ -55,10 +61,11 @@
         <div class="form-group time_all">
             <div class="time_box">
                 <label class="start_label">Start time <b style="font-size: 12px">*required</b></label>
-                <button (click)="switchTimeMethods('exactStartTime')" type="button" class="btn btn-primary btn-sm button_swith_time_pos" >Swith end time methods</button>
+                <button (click)="switchTimeMethods('exactStartTime')" type="button" class="btn btn-secondary btn-sm button_swith_time_pos">Swith
+                    end time methods</button>
                 <div *ngIf="!exactStartTime">
                     <div ngbDropdown class="d-inline-block">
-                        <button type="button" class="btn btn-outline-primary" id="startTime" ngbDropdownToggle>{{startTimeValue}}</button>
+                        <button [ngClass]="{ 'is_invalid': submitted && f.startDate.errors }"  type="button" class="btn btn-outline-primary" id="startTime" ngbDropdownToggle>{{startTimeValue}}</button>
                         <div ngbDropdownMenu aria-labelledby="startTime">
                             <div *ngFor="let time of times">
                                 <button (click)="choseTime(time.name, 'startTimeValue')" type="button" ngbDropdownItem>{{time.name}}</button>
@@ -80,15 +87,20 @@
                         <ngb-timepicker formControlName="startTime"></ngb-timepicker>
                     </div>
                 </div>
+                <div *ngIf="submitted && f.startDate.errors">
+                    <small *ngIf="f.startDate.errors.required" class="form-text quize_validation_error">Start date is
+                        required</small>
+                </div>
             </div>
             <div class="time_box">
                 <div>
                     <label class="start_label">End time <b style="font-size: 12px">*required</b></label>
-                    <button (click)="switchTimeMethods('exactEndTime')" type="button" class="btn btn-primary btn-sm button_swith_time_pos" >Swith start time methods</button>
+                    <button (click)="switchTimeMethods('exactEndTime')" type="button" class="btn btn-secondary btn-sm button_swith_time_pos">Swith
+                        start time methods</button>
                 </div>
                 <div *ngIf="!exactEndTime">
                     <div ngbDropdown class="d-inline-block">
-                        <button type="button" class="btn btn-outline-primary" id="endTime" ngbDropdownToggle>{{endTimeValue}}</button>
+                        <button [ngClass]="{ 'is_invalid': submitted && f.endDate.errors }"  type="button" class="btn btn-outline-primary" id="endTime" ngbDropdownToggle>{{endTimeValue}}</button>
                         <div ngbDropdownMenu aria-labelledby="endTime">
                             <div *ngFor="let time of times">
                                 <button (click)="choseTime(time.name, 'endTimeValue')" type="button" ngbDropdownItem>{{time.name}}</button>
@@ -110,6 +122,10 @@
                         <ngb-timepicker formControlName="endTime"></ngb-timepicker>
                     </div>
                 </div>
+                <div *ngIf="submitted && f.startDate.errors">
+                    <small *ngIf="f.startDate.errors.required" class="form-text quize_validation_error">End date is
+                        required</small>
+                </div>
             </div>
         </div>
 
@@ -123,28 +139,47 @@
 
         <!-- Invite friends -->
         <div class="form-group">
-            <label for="invite_participants">Invite participants</label>
-            <input id="invite_participants" type="text" class="form-control" formControlName="inviteParticipants"
+            <label for="invite_participants">Invite participants <b style="font-size: 12px">*optional</b></label>
+            <input id="invite_participants" (selectItem)="selectedParcipiant($event)" type="text" class="form-control"
                 [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false' />
+            <div style="padding-top:10px">
+                <div class="display_validators" *ngFor="let participant of inviteParcipiant; let i = index">
+                    <button (click)="deleteValidatorOrParcipiant(participant.nickName, 'inviteParcipiant')" type="button"
+                        class="btn btn-info btn-sm">{{participant.nickName}} <fa-icon [icon]="faTimes"></fa-icon></button>
+                </div>
+            </div>
         </div>
 
         <!-- Invite validators -->
 
         <div class="form-group">
-            <label for="invite_validators">Invite validators</label>
-            <input id="invite_validators" type="text" class="form-control" formControlName="inviteValidators"
+            <label for="invite_validators">Invite validators <b style="font-size: 12px">*optional</b></label>
+            <input id="invite_validators" type="text" class="form-control" (selectItem)="selectedValidators($event)"
                 [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false' />
+            <div style="padding-top:10px">
+                <div class="display_validators" *ngFor="let validator of inviteValidators; let i = index">
+                    <button (click)="deleteValidatorOrParcipiant(validator.nickName, 'inviteValidators')" type="button"
+                        class="btn btn-info btn-sm">{{validator.nickName}} <fa-icon [icon]="faTimes"></fa-icon></button>
+                </div>
+            </div>
+
         </div>
 
         <!-- Invite validators -->
 
         <div>
             <label>Bet amount</label>
-            <input class="form-control" type="number" formControlName="amount" placeholder="Enter your amount">
+            <input [ngClass]="{ 'is_invalid': submitted && f.amount.errors }" class="form-control" type="number" formControlName="amount" placeholder="Enter your amount">
+            <div *ngIf="submitted && f.amount.errors">
+                <small *ngIf="f.amount.errors.min" class="form-text quize_validation_error">Minimum amount is
+                    0.01 Etherium</small>
+                <small *ngIf="f.amount.errors.required" class="form-text quize_validation_error">Minimum amount is
+                    0.01 Etherium</small>
+            </div>
         </div>
 
         <div class="form_container button_pos">
-            <button type="submit" class="btn btn-success regist_button_box">Create</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block">Create</button>
         </div>
     </form>
 </div>

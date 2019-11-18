@@ -12,13 +12,15 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { RegistrationComponent } from './components/registration/registration.component';
 
-import {PostService} from './services/post.service';
+import { PostService } from './services/post.service';
+import { GetService } from './services/get.service';
 import { CreateQuizeComponent } from './components/create-quize/create-quize.component';
 import { HomeComponent } from './components/home/home.component';
 import { AnswerComponent } from './components/answer/answer.component';
 import { ValidateComponent } from './components/validate/validate.component';
 import { MyActivitesComponent } from './components/my-activites/my-activites.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -42,9 +44,15 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     StoreModule.forRoot({
       user: userReducer
     }),
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
-  providers: [PostService],
-  bootstrap: [AppComponent]
+  providers: [
+    PostService,
+    GetService
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

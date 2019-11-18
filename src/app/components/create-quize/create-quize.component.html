@@ -1,1 +1,150 @@
-<p>create-quize works!</p>
+<div class="container">
+    <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+
+        <!-- <p>Question</p> -->
+
+        <div class="form-group">
+            <label for="Question">Question <b style="font-size: 12px">*required</b></label>
+            <input type="text" formControlName="question" class="form-control" id="Question" placeholder="Enter your question">
+            <div *ngIf="submitted && f.question.errors">
+                <small *ngIf="f.question.errors.required" class="form-text error-feedback ">Question is
+                    required</small>
+            </div>
+        </div>
+
+        <!-- <p>Hashtags</p> -->
+
+        <div class="form-group">
+            <label for="Question">Hashtags <b style="font-size: 12px">*optional</b></label>
+            <input type="text" formControlName="hashtags" class="form-control" id="hashtags" placeholder="Enter your hashtags">
+        </div>
+
+        <!-- <p>Answers</p> -->
+
+        <div class="form-group">
+            <div>
+                <label class="answer_label">Answers <b style="font-size: 12px">*required</b></label>
+                <div style="float: right; padding-bottom: 10px">
+                    <button (click)="oneMoreAnswer()" class="btn btn-success btn-sm">
+                        <fa-icon [icon]="faPlus"></fa-icon>
+                    </button>
+                </div>
+            </div>
+            <div *ngFor="let answer of t.controls; let i = index">
+                <div [formGroup]="answer" class="input-group mb-3">
+                    <input type="text" formControlName="name" class="form-control" id="Question {{i}}" placeholder="{{answer.name}}">
+                    <div *ngIf='answesQuality >= 3' class="input-group-prepend">
+                        <button (click)="deleteAnswer(i)" class="btn btn-danger" type="button">
+                            <fa-icon [icon]="faTimesCircle"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <p>Allow multy choise</p> -->
+
+        <div class="form-group">
+            <label>Allow multy choise</label><br>
+            <input formControlName="multyChoise" value="multy" name="multyChoise" type="radio" class="multy_choise">Enable<br>
+            <input formControlName="multyChoise" value="one" name="multyChoise" type="radio" class="multy_choise">Disable<br>
+        </div>
+
+        <!-- <p>Time</p> -->
+
+        <div class="form-group time_all">
+            <div class="time_box">
+                <label class="start_label">Start time <b style="font-size: 12px">*required</b></label>
+                <button (click)="switchTimeMethods('exactStartTime')" type="button" class="btn btn-primary btn-sm button_swith_time_pos" >Swith end time methods</button>
+                <div *ngIf="!exactStartTime">
+                    <div ngbDropdown class="d-inline-block">
+                        <button type="button" class="btn btn-outline-primary" id="startTime" ngbDropdownToggle>{{startTimeValue}}</button>
+                        <div ngbDropdownMenu aria-labelledby="startTime">
+                            <div *ngFor="let time of times">
+                                <button (click)="choseTime(time.name, 'startTimeValue')" type="button" ngbDropdownItem>{{time.name}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex" *ngIf="exactStartTime">
+                    <div class="calendar_box">
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="startDate"
+                            ngbDatepicker #z="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="z.toggle()" type="button">
+                                <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <ngb-timepicker formControlName="startTime"></ngb-timepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="time_box">
+                <div>
+                    <label class="start_label">End time <b style="font-size: 12px">*required</b></label>
+                    <button (click)="switchTimeMethods('exactEndTime')" type="button" class="btn btn-primary btn-sm button_swith_time_pos" >Swith start time methods</button>
+                </div>
+                <div *ngIf="!exactEndTime">
+                    <div ngbDropdown class="d-inline-block">
+                        <button type="button" class="btn btn-outline-primary" id="endTime" ngbDropdownToggle>{{endTimeValue}}</button>
+                        <div ngbDropdownMenu aria-labelledby="endTime">
+                            <div *ngFor="let time of times">
+                                <button (click)="choseTime(time.name, 'endTimeValue')" type="button" ngbDropdownItem>{{time.name}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex" *ngIf="exactEndTime">
+                    <div class="calendar_box">
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="endDate"
+                            ngbDatepicker #d="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                                <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <ngb-timepicker formControlName="endTime"></ngb-timepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <p>Private or pablic</p> -->
+
+        <div class="form-group">
+            <label>Security guard</label><br>
+            <input formControlName="privateOrPublic" name="privateOrPublic" value="private" type="radio" class="multy_choise">Private<br>
+            <input formControlName="privateOrPublic" name="privateOrPublic" value="public" type="radio" class="multy_choise">Public<br>
+        </div>
+
+        <!-- Invite friends -->
+        <div class="form-group">
+            <label for="invite_participants">Invite participants</label>
+            <input id="invite_participants" type="text" class="form-control" formControlName="inviteParticipants"
+                [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false' />
+        </div>
+
+        <!-- Invite validators -->
+
+        <div class="form-group">
+            <label for="invite_validators">Invite validators</label>
+            <input id="invite_validators" type="text" class="form-control" formControlName="inviteValidators"
+                [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false' />
+        </div>
+
+        <!-- Invite validators -->
+
+        <div>
+            <label>Bet amount</label>
+            <input class="form-control" type="number" formControlName="amount" placeholder="Enter your amount">
+        </div>
+
+        <div class="form_container button_pos">
+            <button type="submit" class="btn btn-success regist_button_box">Create</button>
+        </div>
+    </form>
+</div>

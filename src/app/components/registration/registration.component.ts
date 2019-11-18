@@ -37,6 +37,13 @@ export class RegistrationComponent implements OnInit {
     this.getUseWalletInMetamask();
   }
 
+  ngOnInit() {
+    this.registerForm = this.formBuilder.group({
+      nickName: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', Validators.email]
+    });
+  }
+
   async getUseWalletInMetamask() {
     // Check if MetaMask is installed
     if (!(window as any).ethereum) {
@@ -95,13 +102,6 @@ export class RegistrationComponent implements OnInit {
     if (event.target.id === "close") {
       this.registrationModal();
     };
-  }
-
-  ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      nickName: ['', [Validators.required, Validators.minLength(6)]],
-      email: ['', Validators.email]
-    });
   }
 
   get f() { return this.registerForm.controls; }

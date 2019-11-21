@@ -113,7 +113,7 @@ export class CreateQuizeComponent implements OnInit {
     }
 
   }
-
+ 
   get f() { return this.questionForm.controls; }
   get t() { return this.f.answers as FormArray; }
 

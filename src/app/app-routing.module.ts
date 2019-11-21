@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: "home", component: HomeComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "create-quize", component: CreateQuizeComponent },
-  { path: "answer", component: AnswerComponent },
+  { path: "questions", component: AnswerComponent },
   { path: "validate", component: ValidateComponent },
   { path: "my-activites", component: MyActivitesComponent },
   { path: 'question/:id', component: QuestionComponent }

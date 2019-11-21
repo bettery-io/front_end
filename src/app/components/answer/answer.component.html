@@ -1,1 +1,40 @@
-<p>answer works!</p>
+<div class="container">
+    <div *ngIf="spinner">
+        <div class="lds-ripple">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div *ngIf="!spinner">
+        <div *ngFor="let question of questionas; let index = index">
+            <div class="card card_box">
+                <div class="card-body">
+                    <div class="detalis">
+                        <a [routerLink]="['/question', question.id]">View detalis</a>
+                    </div>
+                    <div>
+                        <p>{{question.question}}</p>
+                        <div *ngIf='question.multiChose'>
+                            <div *ngFor="let answer of question.answers; let i = index">
+                                <label for="{{answer}}{{i}}">
+                                    <input id="{{answer}}{{i}}" value="i" type="checkbox">
+                                    {{answer}}</label>
+                            </div>
+                        </div>
+                        <div *ngIf='!question.multiChose'>
+                            <div *ngFor="let answer of question.answers; let i = index">
+                                <label for="{{answer}}{{i}}">
+                                    <input id="{{answer}}{{i}}" value="i" type="radio" name="answer{{index}}">
+                                    {{answer}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button_box">
+                        <button class="btn btn-success btn-lg btn-block make_answer">Make answer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

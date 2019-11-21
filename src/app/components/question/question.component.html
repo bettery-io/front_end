@@ -1,0 +1,48 @@
+<div class="container">
+    <div *ngIf="spinner" >
+        <div class="lds-ripple">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+    <div *ngIf="!spinner">
+        <div *ngIf="empty">
+            <p style="text-align: center">Sorry but we can't find your question</p>
+        </div>
+        <div *ngIf="!empty">
+
+            <div class="info_box">
+                <p>Start date: {{startTime}}</p>
+                <p>End date: {{endTime}}</p>
+                <p>Access: {{access}}</p>
+            </div>
+
+            <div class="question_box">
+                <p>{{question?.question}}</p>
+                <div *ngIf='question?.multiChose'>
+                    <div *ngFor="let answer of question?.answers; let i = index">
+                        <label for="{{answer}}{{i}}">
+                            <input id="{{answer}}{{i}}" value="i" type="checkbox">
+                            {{answer}}</label>
+                    </div>
+                </div>
+                <div *ngIf='!question?.multiChose'>
+                    <div *ngFor="let answer of question?.answers; let i = index">
+                        <label for="{{answer}}{{i}}">
+                            <input id="{{answer}}{{i}}" value="i" type="radio" name="answer">
+                            {{answer}}</label>
+                    </div>
+                </div>
+                <div class="button_box">
+                    <button class="btn btn-success btn-lg btn-block" (click)="sendAnswer()">Make answer</button>
+                    <div *ngIf='registError'>
+                        <p class="registError">First you must login or register to make answer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

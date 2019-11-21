@@ -21,6 +21,7 @@ import { ValidateComponent } from './components/validate/validate.component';
 import { MyActivitesComponent } from './components/my-activites/my-activites.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { QuestionComponent } from './components/question/question.component';
 
 
 
@@ -33,7 +34,8 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     AnswerComponent,
     ValidateComponent,
-    MyActivitesComponent
+    MyActivitesComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,

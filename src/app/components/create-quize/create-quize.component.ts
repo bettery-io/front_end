@@ -108,7 +108,7 @@ export class CreateQuizeComponent implements OnInit {
     });
     for (let i = this.t.length; i < this.answesQuality; i++) {
       this.t.push(this.formBuilder.group({
-        name: [i === 0 ? 'yes' : "no", Validators.required],
+        name: [i === 0 ? 'Yes' : "No", Validators.required],
       }));
     }
 
@@ -164,7 +164,7 @@ export class CreateQuizeComponent implements OnInit {
   }
 
   generateID() {
-    return Math.floor((Math.random() * 100000000000000000000) + 1)
+    return Math.floor((Math.random() * 1000000000000000) + 1)
   }
 
 
@@ -250,7 +250,7 @@ export class CreateQuizeComponent implements OnInit {
 
     console.log(data);
 
-    this.PostService.post("questions", data)
+    this.PostService.post("question/set", data)
       .subscribe(
         () => {
           this.generatedLink = id;

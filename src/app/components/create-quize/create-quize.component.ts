@@ -218,8 +218,11 @@ export class CreateQuizeComponent implements OnInit {
 
     let id = this.generateID()
 
+    // think about status
+
     let data: Question = {
       id: id,
+      status: "deployed",
       hostWallet: this.host[0].wallet,
       question: this.questionForm.value.question,
       hashtags: this.questionForm.value.hashtags.split(",").map((x: string) => {
@@ -239,7 +242,10 @@ export class CreateQuizeComponent implements OnInit {
         return x.wallet
       }),
       validatorsAmount: this.questionForm.value.amountOfValidators,
-      money: this.questionForm.value.amount * 1000000000000000000
+      money: this.questionForm.value.amount * 1000000000000000000,
+      validatorsAnaswers: [],
+      parcipiantAnaswers: [],
+      finalAnswers: null
     }
 
     console.log(data);

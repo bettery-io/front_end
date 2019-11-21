@@ -1,5 +1,6 @@
 export interface Question {
     id: number;
+    status: string;
     hostWallet: string;
     question: string;
     hashtags: Object[];
@@ -9,7 +10,16 @@ export interface Question {
     endTime: number;
     private: boolean;
     parcipiant: Object[];
+    parcipiantAnaswers: Answers[];
     validators: Object[];
+    validatorsAnaswers: Answers[];
     validatorsAmount: number;
-    money: number
+    money: number;
+    finalAnswers: number;
+}
+
+interface Answers {
+    time: number;
+    wallet: string;
+    answer: number
 }

@@ -1,7 +1,7 @@
 <div class="container">
     <form [formGroup]="questionForm" (ngSubmit)="onSubmit()" *ngIf="generatedLink === undefined">
 
-        <!-- <p>Question</p> -->
+        <!-- Question -->
 
         <div class="form-group">
             <label for="Question">Question <b style="font-size: 12px">*required</b></label>
@@ -13,14 +13,14 @@
             </div>
         </div>
 
-        <!-- <p>Hashtags</p> -->
+        <!-- Hashtags -->
 
         <div class="form-group">
             <label for="Question">Hashtags <b style="font-size: 12px">*optional</b></label>
             <input type="text" formControlName="hashtags" class="form-control" id="hashtags" placeholder="Enter your hashtags separate by comma">
         </div>
 
-        <!-- <p>Answers</p> -->
+        <!-- Answers -->
 
         <div class="form-group">
             <div>
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <!-- <p>Allow multy choise</p> -->
+        <!-- Allow multy choise -->
 
         <div class="form-group">
             <label>Allow multy choise <b style="font-size: 12px">*optional</b></label><br>
@@ -56,7 +56,7 @@
             <input formControlName="multyChoise" value="one" name="multyChoise" type="radio" class="multy_choise">Disable<br>
         </div>
 
-        <!-- <p>Time</p> -->
+        <!-- Time -->
 
         <div class="form-group time_all">
             <div class="time_box">
@@ -81,8 +81,8 @@
                 <div *ngIf="exactStartTime">
                     <div style="display: flex">
                         <div class="calendar_box">
-                            <input [minDate]="startCaledarMeasure" class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="calendarStartDate"
-                                ngbDatepicker #z="ngbDatepicker">
+                            <input [minDate]="startCaledarMeasure" class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                                formControlName="calendarStartDate" ngbDatepicker #z="ngbDatepicker">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary calendar" (click)="z.toggle()" type="button">
                                     <fa-icon [icon]="faCalendarAlt"></fa-icon>
@@ -128,8 +128,8 @@
                 <div *ngIf="exactEndTime">
                     <div style="display: flex">
                         <div class="calendar_box">
-                            <input [minDate]="f.calendarStartDate.value" class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="calendarEndDate"
-                                ngbDatepicker #d="ngbDatepicker">
+                            <input [minDate]="f.calendarStartDate.value" class="form-control" placeholder="yyyy-mm-dd"
+                                name="dp" formControlName="calendarEndDate" ngbDatepicker #d="ngbDatepicker">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
                                     <fa-icon [icon]="faCalendarAlt"></fa-icon>
@@ -152,7 +152,7 @@
             </div>
         </div>
 
-        <!-- <p>Private or pablic</p> -->
+        <!-- Private or pablic -->
 
         <div class="form-group">
             <label>Security guard <b style="font-size: 12px">*optional</b></label><br>
@@ -188,9 +188,23 @@
 
         </div>
 
-        <!-- Invite validators -->
+        <!-- Amount Validators -->
 
-        <div>
+        <div class="form-group">
+            <label>Amount of Validators <b style="font-size: 12px">*required</b></label>
+            <input [ngClass]="{ 'is_invalid': submitted && f.amountOfValidators.errors }" class="form-control" type="number"
+                formControlName="amountOfValidators" placeholder="Enter amount of validators">
+            <div *ngIf="submitted && f.amountOfValidators.errors">
+                <small *ngIf="f.amountOfValidators.errors.min" class="form-text quize_validation_error">Minimum amount is
+                    1 Validator</small>
+                <small *ngIf="f.amountOfValidators.errors.required" class="form-text quize_validation_error">Minimum amount is
+                    1 Validator</small>
+            </div>
+        </div>
+
+        <!-- Amount Etherium -->
+
+        <div class="form-group">
             <label>Bet amount <b style="font-size: 12px">*required</b></label>
             <input [ngClass]="{ 'is_invalid': submitted && f.amount.errors }" class="form-control" type="number"
                 formControlName="amount" placeholder="Enter your amount">

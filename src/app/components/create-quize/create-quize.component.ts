@@ -48,7 +48,7 @@ export class CreateQuizeComponent implements OnInit {
   inviteValidators: User[] = [];
   inviteParcipiant: User[] = [];
   host: User[] = [];
-  generatedLink: string = undefined;
+  generatedLink: number = undefined;
   startCaledarMeasure = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
 
 
@@ -103,6 +103,7 @@ export class CreateQuizeComponent implements OnInit {
       calendarEndDate: ['', Validators.required],
       endTime: [{ hour: 0, minute: 0, second: 0 }, Validators.required],
       privateOrPublic: "private",
+      amountOfValidators: [0, [Validators.min(1), Validators.required]],
       amount: [0, [Validators.min(0.01), Validators.required]]
     });
     for (let i = this.t.length; i < this.answesQuality; i++) {
@@ -163,10 +164,7 @@ export class CreateQuizeComponent implements OnInit {
   }
 
   generateID() {
-    return 'xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+    return Math.floor((Math.random() * 100000000000000000000) + 1)
   }
 
 
@@ -178,27 +176,26 @@ export class CreateQuizeComponent implements OnInit {
     if (this.exactStartTime === false) {
       return this.questionForm.value.startDate
     } else {
-      let day = this.questionForm.value.calendarStartDate.day <= 9 ? "0" + this.questionForm.value.calendarStartDate.day : this.questionForm.value.calendarStartDate.day;
-      let month = this.questionForm.value.calendarStartDate.month <= 9 ? "0" + this.questionForm.value.calendarStartDate.month : this.questionForm.value.calendarStartDate.month;
-      let year = this.questionForm.value.calendarStartDate.year <= 9 ? "0" + this.questionForm.value.calendarStartDate.year : this.questionForm.value.calendarStartDate.year;
-      let hour = this.questionForm.value.startTime.hour <= 9 ? "0" + this.questionForm.value.startTime.hour : this.questionForm.value.startTime.hour;
-      let minute = this.questionForm.value.startTime.minute <= 9 ? "0" + this.questionForm.value.startTime.minute : this.questionForm.value.startTime.minute;
-      let second = this.questionForm.value.startTime.second <= 9 ? "0" + this.questionForm.value.startTime.second : this.questionForm.value.startTime.second;
+      let day = this.questionForm.value.calendarStartDate.day;
+      let month = this.questionForm.value.calendarStartDate.month;
+      let year = this.questionForm.value.calendarStartDate.year;
+      let hour = this.questionForm.value.startTime.hour;
+      let minute = this.questionForm.value.startTime.minute;
+      let second = this.questionForm.value.startTime.second;
       return this.getTimeStamp(`${month}/${day}/${year} ${hour}:${minute}:${second}`)
     }
   }
 
   getEndTime() {
     if (this.exactEndTime === false) {
-      console.log(this.questionForm.value.endDate)
       return new Date(this.getStartTime()).setHours(new Date(this.getStartTime()).getHours() + this.questionForm.value.endDate)
     } else {
-      let day = this.questionForm.value.calendarEndDate.day <= 9 ? "0" + this.questionForm.value.calendarEndDate.day : this.questionForm.value.calendarEndDate.day;
-      let month = this.questionForm.value.calendarEndDate.month <= 9 ? "0" + this.questionForm.value.calendarEndDate.month : this.questionForm.value.calendarEndDate.month;
-      let year = this.questionForm.value.calendarEndDate.year <= 9 ? "0" + this.questionForm.value.calendarEndDate.year : this.questionForm.value.calendarEndDate.year;
-      let hour = this.questionForm.value.endTime.hour <= 9 ? "0" + this.questionForm.value.endTime.hour : this.questionForm.value.endTime.hour;
-      let minute = this.questionForm.value.endTime.minute <= 9 ? "0" + this.questionForm.value.endTime.minute : this.questionForm.value.endTime.minute;
-      let second = this.questionForm.value.endTime.second <= 9 ? "0" + this.questionForm.value.endTime.second : this.questionForm.value.endTime.second;
+      let day = this.questionForm.value.calendarEndDate.day;
+      let month = this.questionForm.value.calendarEndDate.month;
+      let year = this.questionForm.value.calendarEndDate.year;
+      let hour = this.questionForm.value.endTime.hour;
+      let minute = this.questionForm.value.endTime.minute;
+      let second = this.questionForm.value.endTime.second;
       return this.getTimeStamp(`${month}/${day}/${year} ${hour}:${minute}:${second}`)
     }
   }
@@ -241,6 +238,7 @@ export class CreateQuizeComponent implements OnInit {
       validators: this.inviteValidators.map((x) => {
         return x.wallet
       }),
+      validatorsAmount: this.questionForm.value.amountOfValidators,
       money: this.questionForm.value.amount * 1000000000000000000
     }
 

@@ -20,7 +20,7 @@ export class AnswerComponent {
   ) {
     this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
-        this.router.navigate(['/home'])
+        this.router.navigate(['~ki339203/home'])
       }else{
         this.getData();
       }

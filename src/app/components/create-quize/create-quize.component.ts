@@ -62,7 +62,7 @@ export class CreateQuizeComponent implements OnInit {
   ) {
     this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
-        this.router.navigate(['/home'])
+        this.router.navigate(['~ki339203/home'])
       } else {
         this.host = x;
         this.getAllUsers()

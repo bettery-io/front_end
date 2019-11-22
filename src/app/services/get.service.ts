@@ -7,7 +7,7 @@ export class GetService {
 
   constructor(private http: HttpClient) { }
 
-  url = 'http://localhost:80';
+  url = 'http://13.229.200.135';
 
   get(path: string) {
     return this.http.get(`${this.url}/${path}`);

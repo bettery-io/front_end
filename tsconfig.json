@@ -1,6 +1,15 @@
 {
   "compileOnSave": false,
+  "typeRoots": [
+    "node_modules/@types"
+  ],
   "compilerOptions": {
+    "resolveJsonModule": true,
+  //  "esModuleInterop": true,
+    "types": [
+      "node"
+    ],
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

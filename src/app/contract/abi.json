@@ -1,0 +1,249 @@
+[
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_question_id",
+				"type": "int256"
+			}
+		],
+		"name": "getTimer",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_question_id",
+				"type": "int256"
+			}
+		],
+		"name": "getQuestion",
+		"outputs": [
+			{
+				"name": "endTime",
+				"type": "uint256"
+			},
+			{
+				"name": "questionQuantity",
+				"type": "int8"
+			},
+			{
+				"name": "startTime",
+				"type": "uint256"
+			},
+			{
+				"name": "percentHost",
+				"type": "int8"
+			},
+			{
+				"name": "percentValidator",
+				"type": "int8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "host_wallet",
+				"type": "address"
+			},
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getHostQestionsId",
+		"outputs": [
+			{
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_question_id",
+				"type": "int256"
+			},
+			{
+				"name": "_answer",
+				"type": "address"
+			},
+			{
+				"name": "_whichAnswer",
+				"type": "uint8"
+			}
+		],
+		"name": "setValidator",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_question_id",
+				"type": "int256"
+			}
+		],
+		"name": "payQestion",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "host_wallet",
+				"type": "address"
+			}
+		],
+		"name": "getHostQestionsIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_question_id",
+				"type": "int256"
+			},
+			{
+				"name": "_answer",
+				"type": "address"
+			},
+			{
+				"name": "_whichAnswer",
+				"type": "uint8"
+			},
+			{
+				"name": "money",
+				"type": "uint256"
+			}
+		],
+		"name": "setAnswer",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_question_id",
+				"type": "int256"
+			}
+		],
+		"name": "getTime",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "host_wallet",
+				"type": "address"
+			},
+			{
+				"name": "_question_id",
+				"type": "int256"
+			},
+			{
+				"name": "_startTime",
+				"type": "uint256"
+			},
+			{
+				"name": "_endTime",
+				"type": "uint256"
+			},
+			{
+				"name": "_percentHost",
+				"type": "int8"
+			},
+			{
+				"name": "_percentValidator",
+				"type": "int8"
+			},
+			{
+				"name": "_questionQuantity",
+				"type": "int8"
+			}
+		],
+		"name": "startQestion",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "endTime",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "questionQuantity",
+				"type": "int8"
+			},
+			{
+				"indexed": false,
+				"name": "startTime",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "percentHost",
+				"type": "int8"
+			},
+			{
+				"indexed": false,
+				"name": "percentValidator",
+				"type": "int8"
+			}
+		],
+		"name": "NewQuestionAdded",
+		"type": "event"
+	}
+]

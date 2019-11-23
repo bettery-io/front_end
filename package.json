@@ -8,7 +8,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "get:loom": "if [ ! -d loom ]; then mkdir loom && cd loom && curl https://raw.githubusercontent.com/loomnetwork/loom-sdk-documentation/master/scripts/get_loom.sh | sh && chmod +x ./loom && cd ..; fi",
+    "gen:extdev-key": "npm run get:loom && ./loom/loom genkey -k extdev_private_key -a extdev_public_key"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +27,9 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@ng-bootstrap/ng-bootstrap": "^5.1.4",
     "@ngrx/store": "^8.5.0",
+    "ethers": "^4.0.39",
+    "loom-js": "1.70.0",
+    "loom-truffle-provider": "^0.13.0",
     "moment": "^2.24.0",
     "rxjs": "^6.4.0",
     "tslib": "^1.10.0",

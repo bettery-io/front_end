@@ -10,6 +10,7 @@ import { PostService } from '../../services/post.service'
 import { User } from '../../models/User.model';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import * as contract from '../../contract/contract';
 
 type Time = { name: string, date: any, value: number };
 
@@ -57,9 +58,11 @@ export class CreateQuizeComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private getSevice: GetService,
-    private PostService: PostService
+    private PostService: PostService,
 
   ) {
+    // check if user registerd
+    // if no -> regirect to home page
     this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
@@ -69,6 +72,8 @@ export class CreateQuizeComponent implements OnInit {
       }
     });
   }
+
+  // get all users form server
 
   getAllUsers() {
     this.getSevice.get("user/all")
@@ -81,8 +86,10 @@ export class CreateQuizeComponent implements OnInit {
         })
   }
 
+  // formatter for Validator and Parcipiant search box
   formatter = (state: User) => state.nickName;
 
+  // search in Validator and Parcipiant data Object
   search = (text$: Observable<string>) => text$.pipe(
     debounceTime(200),
     distinctUntilChanged(),
@@ -90,7 +97,8 @@ export class CreateQuizeComponent implements OnInit {
     map(term => this.users.filter(state => new RegExp(term, 'mi').test(state.nickName)).slice(0, 10))
   )
 
-  ngOnInit() {
+  async ngOnInit() {
+    // init validators
     this.questionForm = this.formBuilder.group({
       question: ['', Validators.required],
       hashtags: '',
@@ -106,6 +114,9 @@ export class CreateQuizeComponent implements OnInit {
       amountOfValidators: [0, [Validators.min(1), Validators.required]],
       amount: [0, [Validators.min(0.01), Validators.required]]
     });
+
+    // init validations for answers
+
     for (let i = this.t.length; i < this.answesQuality; i++) {
       this.t.push(this.formBuilder.group({
         name: [i === 0 ? 'Yes' : "No", Validators.required],
@@ -113,10 +124,12 @@ export class CreateQuizeComponent implements OnInit {
     }
 
   }
- 
+
+  // validators for form
   get f() { return this.questionForm.controls; }
   get t() { return this.f.answers as FormArray; }
 
+  // add one more answer to the form
   oneMoreAnswer() {
     this.t.push(this.formBuilder.group({
       name: ["", Validators.required],
@@ -124,6 +137,7 @@ export class CreateQuizeComponent implements OnInit {
     this.answesQuality = this.answesQuality + 1;
   }
 
+  // delete one answer from the form
   deleteAnswer(index) {
     this.t.removeAt(index);
     this.answesQuality = this.answesQuality - 1;
@@ -218,6 +232,26 @@ export class CreateQuizeComponent implements OnInit {
 
     let id = this.generateID()
 
+    this.sendToContract(id);
+
+  }
+
+  async sendToContract(id){
+    let hostWallet = this.host[0].wallet;
+    let startTime = this.getStartTime();
+    let endTime = this.getEndTime();
+    let percentHost = parseInt("-1");
+    let percentValidator = parseInt("-1");
+    let questionQuantity = this.answesQuality
+
+    let sendToContract = await contract.contract.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
+    if (sendToContract) {
+      this.setToDb(id);
+    }
+  }
+
+
+  setToDb(id) {
     // think about status
 
     let data: Question = {
@@ -248,12 +282,11 @@ export class CreateQuizeComponent implements OnInit {
       finalAnswers: null
     }
 
-    console.log(data);
-
     this.PostService.post("question/set", data)
       .subscribe(
         () => {
           this.generatedLink = id;
+          console.log("set to db DONE")
         },
         (err) => {
           console.log("set qestion error");

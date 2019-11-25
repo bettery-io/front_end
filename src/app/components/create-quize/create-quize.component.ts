@@ -51,6 +51,8 @@ export class CreateQuizeComponent implements OnInit {
   host: User[] = [];
   generatedLink: number = undefined;
   startCaledarMeasure = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
+  listHashtags = [];
+  myHashtags = [];
 
 
   constructor(
@@ -84,6 +86,13 @@ export class CreateQuizeComponent implements OnInit {
         (err) => {
           console.log("get Users error: " + err)
         })
+    this.getSevice.get('hashtags/get_all').subscribe(
+      (data) => {
+        this.listHashtags = data[0].hashtags;
+      },
+      (err) => {
+        console.log("get Hashtags error: " + err)
+      })
   }
 
   // formatter for Validator and Parcipiant search box
@@ -97,11 +106,17 @@ export class CreateQuizeComponent implements OnInit {
     map(term => this.users.filter(state => new RegExp(term, 'mi').test(state.nickName)).slice(0, 10))
   )
 
+  searchHashtags = (text$: Observable<string>) => text$.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),
+    filter(term => term.length >= 2),
+    map(term => this.listHashtags.filter(state => new RegExp(term, 'mi').test(state)).slice(0, 10))
+  )
+
   async ngOnInit() {
     // init validators
     this.questionForm = this.formBuilder.group({
       question: ['', Validators.required],
-      hashtags: '',
       answers: new FormArray([]),
       multyChoise: 'one',
       startDate: [new Date().setHours(new Date().getHours() + 0), Validators.required],
@@ -165,6 +180,14 @@ export class CreateQuizeComponent implements OnInit {
     }, 100)
   }
 
+  selectedHasgtags(value) {
+    this.myHashtags.push(value.item);
+    let input = <HTMLInputElement>document.getElementById("hashtags")
+    setTimeout(() => {
+      input.value = null;
+    }, 100)
+  }
+
   selectedParcipiant(item) {
     this.inviteParcipiant.push(item.item)
     let input = <HTMLInputElement>document.getElementById("invite_participants")
@@ -175,6 +198,18 @@ export class CreateQuizeComponent implements OnInit {
 
   deleteValidatorOrParcipiant(nickName, path) {
     this[path] = this[path].filter(obj => obj.nickName !== nickName);
+  }
+
+  deleteHash(hash) {
+    this.myHashtags = this.myHashtags.filter(name => name !== hash);
+  }
+
+  addNewHash() {
+    let input = <HTMLInputElement>document.getElementById("hashtags")
+    this.myHashtags.push(input.value)
+    setTimeout(() => {
+      input.value = null;
+    }, 100)
   }
 
   generateID() {
@@ -217,6 +252,7 @@ export class CreateQuizeComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    console.log(this.myHashtags)
 
     if (this.exactEndTime === false) {
       this.questionForm.controls.calendarEndDate.setValue('test');
@@ -236,7 +272,7 @@ export class CreateQuizeComponent implements OnInit {
 
   }
 
-  async sendToContract(id){
+  async sendToContract(id) {
     let hostWallet = this.host[0].wallet;
     let startTime = this.getStartTime();
     let endTime = this.getEndTime();
@@ -244,14 +280,15 @@ export class CreateQuizeComponent implements OnInit {
     let percentValidator = parseInt("-1");
     let questionQuantity = this.answesQuality
 
-    let sendToContract = await contract.contract.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
-    if (sendToContract) {
-      this.setToDb(id);
-    }
+  //  let sendToContract = await contract.contract.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
+  //  console.log(sendToContract.transactionHash)
+  //  if (sendToContract) {
+        this.setToDb(id, "transactionHash");
+  //  }
   }
 
 
-  setToDb(id) {
+  setToDb(id, transactionHash) {
     // think about status
 
     let data: Question = {
@@ -259,9 +296,7 @@ export class CreateQuizeComponent implements OnInit {
       status: "deployed",
       hostWallet: this.host[0].wallet,
       question: this.questionForm.value.question,
-      hashtags: this.questionForm.value.hashtags.split(",").map((x: string) => {
-        return x.trim();
-      }),
+      hashtags: this.myHashtags,
       answers: this.questionForm.value.answers.map((x) => {
         return x.name
       }),
@@ -279,7 +314,8 @@ export class CreateQuizeComponent implements OnInit {
       money: this.questionForm.value.amount * 1000000000000000000,
       validatorsAnaswers: [],
       parcipiantAnaswers: [],
-      finalAnswers: null
+      finalAnswers: null,
+      transactionHash: transactionHash
     }
 
     this.PostService.post("question/set", data)

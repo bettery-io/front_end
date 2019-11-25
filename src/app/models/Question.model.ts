@@ -16,6 +16,7 @@ export interface Question {
     validatorsAmount: number;
     money: number;
     finalAnswers: number;
+    transactionHash: number;
 }
 
 interface Answers {

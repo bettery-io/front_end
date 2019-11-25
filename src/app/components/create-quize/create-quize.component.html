@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="questionForm" (ngSubmit)="onSubmit()" *ngIf="generatedLink === undefined">
+    <form [formGroup]="questionForm" *ngIf="generatedLink === undefined">
 
         <!-- Question -->
 
@@ -17,7 +17,14 @@
 
         <div class="form-group">
             <label for="Question">Hashtags <b style="font-size: 12px">*optional</b></label>
-            <input type="text" formControlName="hashtags" class="form-control" id="hashtags" placeholder="Enter your hashtags separate by comma">
+            <input id="hashtags" type="text" class="form-control" (keyup.enter)="addNewHash($event)" (selectItem)="selectedHasgtags($event)" placeholder="Choose hashtag or press enter to add hashtag"
+                [ngbTypeahead]="searchHashtags" [editable]='false' />
+            <div style="padding-top:10px">
+                <div class="display_validators" *ngFor="let myHashtag of myHashtags; let i = index">
+                    <button (click)="deleteHash(myHashtag)" type="button" class="btn btn-info btn-sm">{{myHashtag}}
+                        <fa-icon [icon]="faTimes"></fa-icon></button>
+                </div>
+            </div>
         </div>
 
         <!-- Answers -->
@@ -195,9 +202,11 @@
             <input [ngClass]="{ 'is_invalid': submitted && f.amountOfValidators.errors }" class="form-control" type="number"
                 formControlName="amountOfValidators" placeholder="Enter amount of validators">
             <div *ngIf="submitted && f.amountOfValidators.errors">
-                <small *ngIf="f.amountOfValidators.errors.min" class="form-text quize_validation_error">Minimum amount is
+                <small *ngIf="f.amountOfValidators.errors.min" class="form-text quize_validation_error">Minimum amount
+                    is
                     1 Validator</small>
-                <small *ngIf="f.amountOfValidators.errors.required" class="form-text quize_validation_error">Minimum amount is
+                <small *ngIf="f.amountOfValidators.errors.required" class="form-text quize_validation_error">Minimum
+                    amount is
                     1 Validator</small>
             </div>
         </div>
@@ -217,7 +226,7 @@
         </div>
 
         <div class="form_container button_pos">
-            <button type="submit" class="btn btn-success btn-lg btn-block">Create</button>
+            <button type="button" (click)="onSubmit()" class="btn btn-success btn-lg btn-block">Create</button>
         </div>
     </form>
 
@@ -225,8 +234,5 @@
         <p>Your question link is -></p>
         <a [routerLink]="['/~ki339203/question', generatedLink]" style="font-style: oblique">http://localhost:4200/question/{{generatedLink}}</a>
     </div>
-
-    <button (click)="testGetId()">TEST</button>
-    <button (click)="testGetTime()">TEST</button>
 
 </div>

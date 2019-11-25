@@ -82,3 +82,29 @@
 18:12:37.780640 version@stat F·[0 1] S·1KiB[0B 1KiB] Sc·[0.00 0.00]
 18:12:37.781648 db@janitor F·3 G·0
 18:12:37.781672 db@open done T·4.55686ms
+=============== Nov 25, 2019 (+07) ===============
+14:58:54.208185 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:58:54.208886 version@stat F·[0 1] S·1KiB[0B 1KiB] Sc·[0.00 0.00]
+14:58:54.208914 db@open opening
+14:58:54.208987 journal@recovery F·1
+14:58:54.209673 journal@recovery recovering @21
+14:58:54.210497 version@stat F·[0 1] S·1KiB[0B 1KiB] Sc·[0.00 0.00]
+14:58:54.211695 db@janitor F·3 G·0
+14:58:54.211725 db@open done T·2.800902ms
+14:59:50.821117 transaction@flush created L0@25 N·7 S·873B " \x13_..\xf9l\xf4,v48":"\x96-N..\x8b=\x00,v49"
+14:59:50.821273 version@stat F·[1 1] S·2KiB[873B 1KiB] Sc·[0.25 0.00]
+14:59:50.822638 transaction@flush created L0@26 N·1 S·182B "txr..\xa6\au,v55":"txr..\xa6\au,v55"
+14:59:50.822660 version@stat F·[2 1] S·2KiB[1KiB 1KiB] Sc·[0.50 0.00]
+15:00:45.309198 transaction@flush created L0@27 N·7 S·878B "bf\x00..\x00\"\xc0,v62":"\x96-N..\x8b=\x00,v56"
+15:00:45.309338 version@stat F·[3 1] S·3KiB[1KiB 1KiB] Sc·[0.75 0.00]
+15:00:45.310733 transaction@flush created L0@28 N·1 S·182B "txr..\xf9\x93\xe0,v63":"txr..\xf9\x93\xe0,v63"
+15:00:45.310756 version@stat F·[4 1] S·3KiB[2KiB 1KiB] Sc·[1.00 0.00]
+15:00:45.310891 table@compaction L0·4 -> L1·1 S·3KiB Q·63
+15:00:45.311571 table@build created L1@29 N·35 S·2KiB "\x18\xfa\xda..T\v\xef,v16":"\xaf\xbe^..\xd9\xe8Q,v40"
+15:00:45.311607 version@stat F·[0 1] S·2KiB[0B 2KiB] Sc·[0.00 0.00]
+15:00:45.311724 table@compaction committed F-4 S-1KiB Ke·0 D·8 T·805.444µs
+15:00:45.311835 table@remove removed @28
+15:00:45.311929 table@remove removed @27
+15:00:45.312118 table@remove removed @26
+15:00:45.312411 table@remove removed @25
+15:00:45.313219 table@remove removed @18

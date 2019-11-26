@@ -1,1 +1,86 @@
-<p>my-activites works!</p>
+<div class="container">
+    <div *ngIf="spinner">
+        <div class="lds-ripple">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+    <div *ngIf="!spinner">
+        <div class="filterCheckBox">
+            <div class="filter_box">
+                <label for="hostFilter">
+                    <input id="hostFilter" [(ngModel)]="hostFilet" (click)="filter()" type="checkbox">
+                    Hosted ({{this.getActiveQuantity("Host")}})</label>
+            </div>
+            <div class="filter_box">
+                <label for="participatedFilter">
+                    <input id="participatedFilter" [(ngModel)]="parcipiantFilter" (click)="filter()" type="checkbox">
+                    Participated ({{this.getActiveQuantity("Participant")}})</label>
+            </div>
+            <div>
+                <label for="validatedFilter">
+                    <input id="validatedFilter" [(ngModel)]="validateFilter" (click)="filter()" type="checkbox">
+                    Validated ({{this.getActiveQuantity("Validator")}})</label>
+            </div>
+        </div>
+
+        <div *ngFor="let active of myActivites; let index = index">
+            <div class="card card_box">
+                <div class="card-body">
+                    <div class="title">
+                        <p class="question">{{active.question}}</p>
+                        <p class="from">You are: {{active.from}}</p>
+                        <a [routerLink]="['/~ki339203/question', active.id]">Open Link</a>
+                    </div>
+                    <div class="hashtags_box">
+                        <p class="hashtags" *ngFor="let hashtag of active.hashtags">#{{hashtag}}</p>
+                    </div>
+                    <div class="info">
+                        <p>Status: {{active.private === true ? "Private" : "Public"}}</p>
+                        <p>Bet amount: {{active.money / 1000000000000000000}} ETH</p>
+                        <p>Wins: 2%, 5%, 90%</p>
+                    </div>
+                    <div class="answers_box">
+                        <div class="validators_box">
+                            <p>Validators</p>
+                        </div>
+                        <div class="participants_box">
+                            <p>Participants</p>
+                        </div>
+                        <div class="answers">
+                            <p>Answers</p>
+                            <div *ngIf="active.multiChose === true">
+                                <div *ngFor="let answer of active.answers; let i = index">
+                                    <label for="{{answer}}{{i}}">
+                                        <input id="{{answer}}{{i}}" value="i" type="checkbox">
+                                        {{answer}}</label>
+                                </div>
+                            </div>
+                            <div *ngIf="active.multiChose === false">
+                                <div *ngFor="let answer of active.answers; let i = index">
+                                    <label for="{{answer}}{{i}}">
+                                        <input id="{{answer}}{{i}}" value="i" type="radio" name="answer">
+                                        {{answer}}</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="time">
+                            <p style="height: 25px"> </p>
+                            <p>Participation since: {{this.getParticipationTime(active)}}</p>
+                            <p>Validation: {{this.getValidationTime(active)}}</p>
+                            <p>Validation over: {{this.getEndValidation(active)}}</p>
+                        </div>
+                    </div>
+
+                    <div class="button_box">
+                     <button type="button" class="btn btn-danger delete_button" *ngIf="active.from === 'Host'">Delete Event</button>
+                     <button type="button" class="btn btn-primary">Make bet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

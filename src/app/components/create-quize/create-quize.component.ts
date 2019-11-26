@@ -41,6 +41,7 @@ export class CreateQuizeComponent implements OnInit {
   faCalendarAlt = faCalendarAlt;
   answesQuality: number = 2;
   users: User[] = [];
+  allUsers: User[] = [];
   startTimeValue: string = "Now";
   exactStartTime = false;
   endTimeValue: string = "Chose end time";
@@ -81,6 +82,7 @@ export class CreateQuizeComponent implements OnInit {
     this.getSevice.get("user/all")
       .subscribe(
         (data: User[]) => {
+          this.allUsers = data;
           this.users = data;
         },
         (err) => {
@@ -172,14 +174,6 @@ export class CreateQuizeComponent implements OnInit {
     this.questionForm.controls.endDate.setValue(value.value);
   }
 
-  selectedValidators(item) {
-    this.inviteValidators.push(item.item)
-    let input = <HTMLInputElement>document.getElementById("invite_validators")
-    setTimeout(() => {
-      input.value = null;
-    }, 100)
-  }
-
   selectedHasgtags(value) {
     this.myHashtags.push(value.item);
     let input = <HTMLInputElement>document.getElementById("hashtags")
@@ -188,8 +182,18 @@ export class CreateQuizeComponent implements OnInit {
     }, 100)
   }
 
+  selectedValidators(item) {
+    this.inviteValidators.push(item.item)
+    this.users = this.users.filter((x)=> x.nickName !== item.item.nickName);
+    let input = <HTMLInputElement>document.getElementById("invite_validators")
+    setTimeout(() => {
+      input.value = null;
+    }, 100)
+  }
+
   selectedParcipiant(item) {
     this.inviteParcipiant.push(item.item)
+    this.users = this.users.filter((x)=> x.nickName !== item.item.nickName);
     let input = <HTMLInputElement>document.getElementById("invite_participants")
     setTimeout(() => {
       input.value = null;
@@ -198,6 +202,8 @@ export class CreateQuizeComponent implements OnInit {
 
   deleteValidatorOrParcipiant(nickName, path) {
     this[path] = this[path].filter(obj => obj.nickName !== nickName);
+    let user = this.allUsers.find((x) => x.nickName === nickName)
+    this.users.push(user);
   }
 
   deleteHash(hash) {

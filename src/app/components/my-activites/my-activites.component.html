@@ -47,7 +47,10 @@
                             <p>Validators</p>
                         </div>
                         <div class="participants_box">
-                            <p>Participants</p>
+                            <p>Participants ({{active.answerQuantity}})</p>
+                            <div class="participants_Percentage_box" *ngFor="let answer of active.answers; let i = index">
+                                <p class="participants_Percentage">{{this.getParticipantsPercentage(i, index)}}</p>
+                            </div>
                         </div>
                         <div class="answers">
                             <p>Answers</p>

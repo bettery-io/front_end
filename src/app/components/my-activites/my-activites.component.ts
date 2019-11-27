@@ -42,32 +42,37 @@ export class MyActivitesComponent implements OnInit {
 
   ngOnInit() {
     if (this.userWallet != undefined) {
-      let data = {
-        wallet: this.userWallet
-      }
-      this.postService.post("my_activites", data)
-        .subscribe((x) => {
-          this.myActivites = x;
-          this.allData = x;
-          this.allData.forEach((data, i) => {
-            console.log(data)
-
-            let z = {
-              event_id: data.id,
-              answer: this.findAnswer(data),
-              from: data.from,
-              multy: data.multiChose,
-              answered: this.findAnswered(data),
-              multyAnswer: this.findMultyAnswer(data)
-            }
-
-            this.myAnswers.push(z);
-          });
-          this.spinner = false;
-        }, (err) => {
-          console.log(err);
-        })
+      this.getDataFromDb();
     }
+
+  }
+
+  getDataFromDb() {
+    let data = {
+      wallet: this.userWallet
+    }
+    this.postService.post("my_activites", data)
+      .subscribe((x) => {
+        this.myActivites = x;
+        this.allData = x;
+        this.allData.forEach((data, i) => {
+          console.log(data)
+
+          let z = {
+            event_id: data.id,
+            answer: this.findAnswer(data),
+            from: data.from,
+            multy: data.multiChose,
+            answered: this.findAnswered(data),
+            multyAnswer: this.findMultyAnswer(data)
+          }
+
+          this.myAnswers.push(z);
+        });
+        this.spinner = false;
+      }, (err) => {
+        console.log(err);
+      })
   }
 
   findMultyAnswer(data) {
@@ -136,6 +141,12 @@ export class MyActivitesComponent implements OnInit {
     this.idError = undefined;
   }
 
+  getParticipantsPercentage(answerIndex, questionIndex) {
+    let quantity = this.allData[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
+    return quantity.length;
+
+  }
+
   makeMultyAnswer(data, i, event) {
     this.idError = undefined;
     if (event.path[0].checked) {
@@ -183,11 +194,15 @@ export class MyActivitesComponent implements OnInit {
       transactionHash: "test",
       wallet: this.userWallet,
       from: "participant",
+      answerQuantity: dataAnswer.answerQuantity + 1
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(() => {
       let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
       this.myAnswers[index].answered = true;
+
+      this.getDataFromDb();
+
     },
       (err) => {
         console.log(err)

@@ -15,10 +15,5 @@ export interface Question {
     money: number;
     finalAnswers: number;
     transactionHash: number;
-}
-
-interface Answers {
-    time: number;
-    wallet: string;
-    answer: number
+    answerQuantity: number;
 }

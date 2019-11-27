@@ -319,6 +319,7 @@ export class CreateQuizeComponent implements OnInit {
       validators: this.inviteValidators.map((x) => {
         return x.wallet
       }),
+      answerQuantity: 0,
       validatorsAmount: this.questionForm.value.amountOfValidators,
       money: this.questionForm.value.amount * 1000000000000000000,
       finalAnswers: null,

@@ -184,7 +184,7 @@ export class CreateQuizeComponent implements OnInit {
 
   selectedValidators(item) {
     this.inviteValidators.push(item.item)
-    this.users = this.users.filter((x)=> x.nickName !== item.item.nickName);
+    this.users = this.users.filter((x) => x.nickName !== item.item.nickName);
     let input = <HTMLInputElement>document.getElementById("invite_validators")
     setTimeout(() => {
       input.value = null;
@@ -193,7 +193,7 @@ export class CreateQuizeComponent implements OnInit {
 
   selectedParcipiant(item) {
     this.inviteParcipiant.push(item.item)
-    this.users = this.users.filter((x)=> x.nickName !== item.item.nickName);
+    this.users = this.users.filter((x) => x.nickName !== item.item.nickName);
     let input = <HTMLInputElement>document.getElementById("invite_participants")
     setTimeout(() => {
       input.value = null;
@@ -212,10 +212,13 @@ export class CreateQuizeComponent implements OnInit {
 
   addNewHash() {
     let input = <HTMLInputElement>document.getElementById("hashtags")
-    this.myHashtags.push(input.value)
-    setTimeout(() => {
-      input.value = null;
-    }, 100)
+    let search = this.myHashtags.find(e => e === input.value);
+    if (search === undefined) {
+      this.myHashtags.push(input.value)
+      setTimeout(() => {
+        input.value = null;
+      }, 100)
+    }
   }
 
   generateID() {
@@ -286,11 +289,11 @@ export class CreateQuizeComponent implements OnInit {
     let percentValidator = parseInt("-1");
     let questionQuantity = this.answesQuality
 
-  //  let sendToContract = await contract.contract.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
-  //  console.log(sendToContract.transactionHash)
-  //  if (sendToContract) {
-        this.setToDb(id, "transactionHash");
-  //  }
+    //  let sendToContract = await contract.contract.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
+    //  console.log(sendToContract.transactionHash)
+    //  if (sendToContract) {
+    this.setToDb(id, "transactionHash");
+    //  }
   }
 
 
@@ -318,8 +321,6 @@ export class CreateQuizeComponent implements OnInit {
       }),
       validatorsAmount: this.questionForm.value.amountOfValidators,
       money: this.questionForm.value.amount * 1000000000000000000,
-      validatorsAnaswers: [],
-      parcipiantAnaswers: [],
       finalAnswers: null,
       transactionHash: transactionHash
     }

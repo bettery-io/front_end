@@ -10,9 +10,7 @@ export interface Question {
     endTime: number;
     private: boolean;
     parcipiant: Object[];
-    parcipiantAnaswers: Answers[];
     validators: Object[];
-    validatorsAnaswers: Answers[];
     validatorsAmount: number;
     money: number;
     finalAnswers: number;

@@ -52,17 +52,35 @@
                         <div class="answers">
                             <p>Answers</p>
                             <div *ngIf="active.multiChose === true">
-                                <div *ngFor="let answer of active.answers; let i = index">
-                                    <label for="{{answer}}{{i}}">
-                                        <input id="{{answer}}{{i}}" value="i" type="checkbox">
-                                        {{answer}}</label>
+                                <div *ngIf="myAnswers[index].answered === false">
+                                    <div class="each_answer" *ngFor="let answer of active.answers; let i = index">
+                                        <input (click)="this.makeMultyAnswer(active, i, $event)" class="checkbox_answer"
+                                            id="{{active.id}}{{active.from}}" value="i" type="checkbox">
+                                        <label class="label">{{answer}}</label>
+                                    </div>
                                 </div>
+                                <div *ngIf="myAnswers[index].answered === true">
+                                    <div class="answered_Box" *ngFor="let answer of active.answers; let i = index">
+                                        <fa-icon class="iconCheck" *ngIf="this.getMultyIcon(myAnswers[index].multyAnswer, i)" [icon]="faCheck"></fa-icon>
+                                        <p class="answered">{{answer}}</p>
+                                    </div>
+                                </div>
+
                             </div>
                             <div *ngIf="active.multiChose === false">
-                                <div *ngFor="let answer of active.answers; let i = index">
-                                    <label for="{{answer}}{{i}}">
-                                        <input id="{{answer}}{{i}}" value="i" type="radio" name="answer">
-                                        {{answer}}</label>
+                                <div *ngIf="myAnswers[index].answered === false">
+                                    <div class="each_answer" *ngFor="let answer of active.answers; let i = index">
+                                        <input class="checkbox_answer" id="{{active.id}}{{active.from}}" (click)="this.makeAnswer(active, i)"
+                                            value="i" type="radio" name="{{active.id}}{{active.from}}">
+                                        <label class="label">{{answer}}</label>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="myAnswers[index].answered === true">
+                                    <div class="answered_Box" *ngFor="let answer of active.answers; let i = index">
+                                        <fa-icon class="iconCheck" *ngIf="myAnswers[index].answer === i" [icon]="faCheck"></fa-icon>
+                                        <p class="answered">{{answer}}</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -76,8 +94,13 @@
                     </div>
 
                     <div class="button_box">
-                     <button type="button" class="btn btn-danger delete_button" *ngIf="active.from === 'Host'">Delete Event</button>
-                     <button type="button" class="btn btn-primary">Make bet</button>
+                        <button type="button" class="btn btn-danger delete_button" *ngIf="active.from === 'Host'">Delete
+                            Event</button>
+                        <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
+                            (click)="this.setAnswer(active)">Make bet</button>
+                        <div *ngIf="idError === active.id">
+                            <p class="error_answer">Chose at leas one answer</p>
+                        </div>
                     </div>
                 </div>
             </div>

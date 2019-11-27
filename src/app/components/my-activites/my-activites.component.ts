@@ -56,8 +56,6 @@ export class MyActivitesComponent implements OnInit {
         this.myActivites = x;
         this.allData = x;
         this.allData.forEach((data, i) => {
-          console.log(data)
-
           let z = {
             event_id: data.id,
             answer: this.findAnswer(data),
@@ -142,8 +140,13 @@ export class MyActivitesComponent implements OnInit {
   }
 
   getParticipantsPercentage(answerIndex, questionIndex) {
-    let quantity = this.allData[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-    return quantity.length;
+    if (this.allData[questionIndex].parcipiantAnswers !== undefined) {
+      let quantity = this.allData[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
+      return quantity.length;
+    } else {
+      return 0
+    }
+
 
   }
 

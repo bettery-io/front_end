@@ -44,7 +44,7 @@
                     </div>
                     <div class="answers_box">
                         <div class="validators_box">
-                            <p>Validators</p>
+                            <p>Validators (x of {{active.validatorsAmount}})</p>
                         </div>
                         <div class="participants_box">
                             <p>Participants ({{active.answerQuantity}})</p>
@@ -100,7 +100,7 @@
                         <button type="button" class="btn btn-danger delete_button" *ngIf="active.from === 'Host'">Delete
                             Event</button>
                         <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
-                            (click)="this.setAnswer(active)">Make bet</button>
+                            (click)="this.setAnswer(active)">Participate now!</button>
                         <div *ngIf="idError === active.id">
                             <p class="error_answer">Chose at leas one answer</p>
                         </div>

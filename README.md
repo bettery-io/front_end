@@ -1,27 +1,44 @@
-# Quiz
+mkdir ProjectName
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.18.
+cd ProjectName
 
-## Development server
+truffle init - init new project
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+mkdir loom
 
-## Code scaffolding
+cd loom
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+curl https://raw.githubusercontent.com/loomnetwork/loom-sdk-documentation/master/scripts/get_loom.sh | sh - download last loom package
 
-## Build
+cd ..
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+./loom/loom genkey -a loom_public_key -k loom_private_key - generate new keys
 
-## Running unit tests
+create smart contract
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+create migration file
 
-## Running end-to-end tests
+create package.json
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+npm i
 
-## Further help
+npm i loom-truffle-provider
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+config truffle-config.js
+
+cd loom
+
+./loom init
+
+./loom run - for running local loom test net
+
+cd ..
+
+truffle migrate --network loom_dapp_chain - migration files and deploynig
+truffle deploy --reset --network loom_dapp_chain - reset contract
+
+create test file for testing smart contract
+
+truffle test -—network development - test contract
+
+truffle migrate --network extdev - deploy to the loom test network

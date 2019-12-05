@@ -23,9 +23,14 @@ const web3 = new Web3(new LoomProvider(client, privateKey))
 
 const ABI = abi;
 
-const contractAddress = '0x65C38AAF5961708217d742b05A838D39B4871D85'
+const contractAddress = '0x21861Fa48F739E75609D461CaBcC93e0fcc793FC'
 
 console.log("test work");
 
 // Instantiate the contract and let it ready to be used
-export const contract = new web3.eth.Contract(ABI, contractAddress, { from })
+const contract = new web3.eth.Contract(ABI, contractAddress, { from })
+
+export {
+    contract,
+    web3
+}

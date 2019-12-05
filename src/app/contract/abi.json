@@ -7,30 +7,11 @@
 				"type": "int256"
 			}
 		],
-		"name": "getTimer",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_question_id",
-				"type": "int256"
-			}
-		],
 		"name": "getQuestion",
 		"outputs": [
 			{
 				"name": "endTime",
-				"type": "uint256"
+				"type": "int256"
 			},
 			{
 				"name": "questionQuantity",
@@ -38,7 +19,7 @@
 			},
 			{
 				"name": "startTime",
-				"type": "uint256"
+				"type": "int256"
 			},
 			{
 				"name": "percentHost",
@@ -84,15 +65,19 @@
 				"type": "int256"
 			},
 			{
-				"name": "_answer",
-				"type": "address"
-			},
-			{
 				"name": "_whichAnswer",
 				"type": "uint8"
+			},
+			{
+				"name": "_money",
+				"type": "uint256"
+			},
+			{
+				"name": "_timeNow",
+				"type": "int256"
 			}
 		],
-		"name": "setValidator",
+		"name": "setAnswer",
 		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
@@ -107,6 +92,44 @@
 			}
 		],
 		"name": "payQestion",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "host_wallet",
+				"type": "address"
+			},
+			{
+				"name": "_question_id",
+				"type": "int256"
+			},
+			{
+				"name": "_startTime",
+				"type": "int256"
+			},
+			{
+				"name": "_endTime",
+				"type": "int256"
+			},
+			{
+				"name": "_percentHost",
+				"type": "int8"
+			},
+			{
+				"name": "_percentValidator",
+				"type": "int8"
+			},
+			{
+				"name": "_questionQuantity",
+				"type": "int8"
+			}
+		],
+		"name": "startQestion",
 		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
@@ -147,68 +170,11 @@
 				"type": "uint8"
 			},
 			{
-				"name": "money",
-				"type": "uint256"
-			}
-		],
-		"name": "setAnswer",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_question_id",
+				"name": "_timeNow",
 				"type": "int256"
 			}
 		],
-		"name": "getTime",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "host_wallet",
-				"type": "address"
-			},
-			{
-				"name": "_question_id",
-				"type": "int256"
-			},
-			{
-				"name": "_startTime",
-				"type": "uint256"
-			},
-			{
-				"name": "_endTime",
-				"type": "uint256"
-			},
-			{
-				"name": "_percentHost",
-				"type": "int8"
-			},
-			{
-				"name": "_percentValidator",
-				"type": "int8"
-			},
-			{
-				"name": "_questionQuantity",
-				"type": "int8"
-			}
-		],
-		"name": "startQestion",
+		"name": "setValidator",
 		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
@@ -220,7 +186,7 @@
 			{
 				"indexed": false,
 				"name": "endTime",
-				"type": "uint256"
+				"type": "int256"
 			},
 			{
 				"indexed": false,
@@ -230,7 +196,7 @@
 			{
 				"indexed": false,
 				"name": "startTime",
-				"type": "uint256"
+				"type": "int256"
 			},
 			{
 				"indexed": false,

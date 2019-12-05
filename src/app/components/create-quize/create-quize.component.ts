@@ -289,11 +289,11 @@ export class CreateQuizeComponent implements OnInit {
     let percentValidator = parseInt("-1");
     let questionQuantity = this.answesQuality
 
-    //  let sendToContract = await contract.contract.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
-    //  console.log(sendToContract.transactionHash)
-    //  if (sendToContract) {
-    this.setToDb(id, "transactionHash");
-    //  }
+    let sendToContract = await contract.contract.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
+    if (sendToContract) {
+      console.log(sendToContract.transactionHash)
+      this.setToDb(id, sendToContract.transactionHash);
+    }
   }
 
 

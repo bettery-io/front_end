@@ -4,9 +4,9 @@ contract Quize {
      int8 private percentQuiz = 3;
 
      event NewQuestionAdded(
-           uint256 endTime,
+           int256 endTime,
            int8 questionQuantity,
-           uint256 startTime,
+           int256 startTime,
            int8 percentHost,
            int8 percentValidator);
 
@@ -20,8 +20,8 @@ contract Quize {
 
      struct Qestion {
          int question_id;
-         uint256 startTime;
-         uint256 endTime;
+         int256 startTime;
+         int256 endTime;
          int8 questionQuantity;
          uint256 money;
          int8 percentHost;
@@ -42,8 +42,8 @@ contract Quize {
     function startQestion(
            address host_wallet,
            int _question_id,
-           uint256 _startTime,
-           uint256 _endTime,
+           int256 _startTime,
+           int256 _endTime,
            int8 _percentHost,
            int8 _percentValidator,
            int8 _questionQuantity
@@ -76,22 +76,27 @@ contract Quize {
         );
     }
 
-   function setAnswer(int _question_id, address payable _answer, uint8 _whichAnswer, uint256 money) public payable{
-       if((qestions[_question_id].endTime - block.timestamp) > 0){
-           qestions[_question_id].participant[_whichAnswer].participants.push(_answer);
-           qestions[_question_id].money += money;
-       }
+   function setAnswer(int _question_id, uint8 _whichAnswer, uint256 _money, int256 _timeNow) public payable{
+      int256 startTime = qestions[_question_id].startTime - _timeNow;
+      int256 endTime = qestions[_question_id].endTime - _timeNow;
+      if(startTime <= 0){
+          if(endTime >= 0 ){
+              qestions[_question_id].participant[_whichAnswer].participants.push(msg.sender);
+              qestions[_question_id].money += _money;
+          }else{
+            revert("The event finished");
+          }
+      }else{
+          revert("The event has not yet begun.");
+      }
     }
 
-    function setValidator(int _question_id, address payable _answer, uint8 _whichAnswer) public payable{
-       if((qestions[_question_id].endTime - block.timestamp) > 0){
+    function setValidator(int _question_id, address payable _answer, uint8 _whichAnswer, int256 _timeNow) public payable{
+       if((qestions[_question_id].endTime - _timeNow) > 0){
            qestions[_question_id].validator[_whichAnswer].validators.push(_answer);
        }
     }
 
-    function getTimer(int _question_id) public view returns(uint256) {
-        return qestions[_question_id].endTime - block.timestamp;
-    }
 
     function getHostQestionsIndex(address host_wallet) public view returns(uint256){
         return host_id_wallet[host_wallet].qestions_id.length;
@@ -155,9 +160,9 @@ contract Quize {
     }
 
     function getQuestion(int _question_id) public view returns(
-           uint256 endTime,
+           int256 endTime,
            int8 questionQuantity,
-           uint256 startTime,
+           int256 startTime,
            int8 percentHost,
            int8 percentValidator
            ){
@@ -166,10 +171,6 @@ contract Quize {
               qestions[_question_id].startTime,
               qestions[_question_id].percentHost,
               qestions[_question_id].percentValidator);
-    }
-
-    function getTime(int _question_id) public view returns(uint256){
-        return qestions[_question_id].endTime;
     }
 
 }

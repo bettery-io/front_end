@@ -57,3 +57,72 @@
 14:58:54.258636 version@stat F·[1 1] S·748KiB[298KiB 449KiB] Sc·[0.25 0.00]
 14:58:54.261521 db@janitor F·4 G·0
 14:58:54.261560 db@open done T·15.741781ms
+=============== Dec 4, 2019 (+07) ===============
+15:51:11.168888 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:51:11.169673 version@stat F·[1 1] S·748KiB[298KiB 449KiB] Sc·[0.25 0.00]
+15:51:11.169695 db@open opening
+15:51:11.169843 journal@recovery F·1
+15:51:11.171860 journal@recovery recovering @15
+15:51:11.203386 memdb@flush created L0@17 N·11919 S·806KiB "abc..000,v40026":"val..999,v40015"
+15:51:11.205558 version@stat F·[2 1] S·1MiB[1MiB 449KiB] Sc·[0.50 0.00]
+15:51:11.208477 db@janitor F·5 G·0
+15:51:11.208506 db@open done T·38.79858ms
+=============== Dec 4, 2019 (+07) ===============
+15:52:18.857748 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:52:18.857984 version@stat F·[2 1] S·1MiB[1MiB 449KiB] Sc·[0.50 0.00]
+15:52:18.858003 db@open opening
+15:52:18.858085 journal@recovery F·1
+15:52:18.858818 journal@recovery recovering @18
+15:52:18.859660 memdb@flush created L0@20 N·211 S·14KiB "abc..766,v47094":"val..819,v47299"
+15:52:18.860376 version@stat F·[3 1] S·1MiB[1MiB 449KiB] Sc·[0.75 0.00]
+15:52:18.861507 db@janitor F·6 G·0
+15:52:18.861543 db@open done T·3.519702ms
+=============== Dec 4, 2019 (+07) ===============
+16:04:13.378020 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:04:13.378264 version@stat F·[3 1] S·1MiB[1MiB 449KiB] Sc·[0.75 0.00]
+16:04:13.378288 db@open opening
+16:04:13.378359 journal@recovery F·1
+16:04:13.380132 journal@recovery recovering @21
+16:04:13.387067 memdb@flush created L0@23 N·2759 S·186KiB "abc..818,v47306":"val..508,v50059"
+16:04:13.388911 version@stat F·[4 1] S·1MiB[1MiB 449KiB] Sc·[1.00 0.00]
+16:04:13.391329 db@janitor F·7 G·0
+16:04:13.391355 db@open done T·13.0584ms
+16:04:13.391487 table@compaction L0·4 -> L1·1 S·1MiB Q·50062
+16:04:13.442709 table@build created L1@26 N·37523 S·729KiB "abc..y:1,v14":"val..999,v40015"
+16:04:13.442769 version@stat F·[0 1] S·729KiB[0B 729KiB] Sc·[0.00 0.01]
+16:04:13.443036 table@compaction committed F-4 S-1MiB Ke·0 D·4833 T·51.510302ms
+16:04:13.443173 table@remove removed @23
+16:04:13.444007 table@remove removed @20
+16:04:13.444180 table@remove removed @17
+16:04:13.444941 table@remove removed @14
+16:04:13.445944 table@remove removed @13
+17:13:21.364450 memdb@flush N·16426 S·3MiB
+17:13:21.380396 memdb@flush created L0@28 N·16426 S·1MiB "abc..507,v50066":"val..614,v66487"
+17:13:21.380450 version@stat F·[1 1] S·1MiB[1MiB 729KiB] Sc·[0.25 0.01]
+17:13:21.380836 memdb@flush committed F·1 T·16.191364ms
+17:13:21.382927 journal@remove removed @24
+18:24:05.323460 memdb@flush N·16400 S·3MiB
+18:24:05.340294 memdb@flush created L0@30 N·16400 S·1MiB "abc..613,v66490":"val..714,v82887"
+18:24:05.340339 version@stat F·[2 1] S·2MiB[2MiB 729KiB] Sc·[0.50 0.01]
+18:24:05.341347 memdb@flush committed F·1 T·17.630633ms
+18:24:05.342131 journal@remove removed @27
+22:03:16.856503 memdb@flush N·16402 S·3MiB
+22:03:16.872344 memdb@flush created L0@32 N·16402 S·1MiB "abc..713,v82890":"val..814,v99287"
+22:03:16.872393 version@stat F·[3 1] S·3MiB[3MiB 729KiB] Sc·[0.75 0.01]
+22:03:16.873799 memdb@flush committed F·1 T·17.086564ms
+22:03:16.875651 journal@remove removed @29
+=============== Dec 5, 2019 (+07) ===============
+07:37:54.521677 memdb@flush N·16403 S·3MiB
+07:37:54.537822 memdb@flush created L0@34 N·16403 S·1MiB "abc..814,v99294":"val..915,v115691"
+07:37:54.537879 version@stat F·[4 1] S·5MiB[4MiB 729KiB] Sc·[1.00 0.01]
+07:37:54.538448 memdb@flush committed F·1 T·16.533857ms
+07:37:54.539569 journal@remove removed @31
+07:37:54.539640 table@compaction L0·4 -> L1·1 S·5MiB Q·115697
+07:37:54.624580 table@build created L1@35 N·86744 S·1MiB "abc..y:1,v14":"val..999,v40015"
+07:37:54.624643 version@stat F·[0 1] S·1MiB[0B 1MiB] Sc·[0.00 0.02]
+07:37:54.624831 table@compaction committed F-4 S-3MiB Ke·0 D·16410 T·85.214434ms
+07:37:54.625034 table@remove removed @34
+07:37:54.625267 table@remove removed @32
+07:37:54.625707 table@remove removed @30
+07:37:54.626552 table@remove removed @28
+07:37:54.627282 table@remove removed @26

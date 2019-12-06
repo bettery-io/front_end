@@ -176,4 +176,8 @@ export default class LoomEthCoin extends UniversalSigning {
         const gatewayAddress = Address.fromString(this.loomGatewayContract.address.toString())
         await this.ethCoin.approveAsync(gatewayAddress, new BN(this._gas()))
     }
+
+    getWeb3() {
+        return this._getWeb3();
+    }
 }

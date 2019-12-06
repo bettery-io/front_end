@@ -10,7 +10,7 @@ import { PostService } from '../../services/post.service'
 import { User } from '../../models/User.model';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-//import * as contract from '../../contract/contract';
+import Contract from '../../services/contract';
 
 type Time = { name: string, date: any, value: number };
 
@@ -282,18 +282,19 @@ export class CreateQuizeComponent implements OnInit {
   }
 
   async sendToContract(id) {
-    // let hostWallet = this.host[0].wallet;
-    // let startTime = this.getStartTime();
-    // let endTime = this.getEndTime();
-    // let percentHost = parseInt("-1");
-    // let percentValidator = parseInt("-1");
-    // let questionQuantity = this.answesQuality
+    let contract = new Contract()
+    let hostWallet = this.host[0].wallet;
+    let startTime = this.getStartTime();
+    let endTime = this.getEndTime();
+    let percentHost = parseInt("-1");
+    let percentValidator = parseInt("-1");
+    let questionQuantity = this.answesQuality
 
-    // let sendToContract = await contract.contract.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
-    // if (sendToContract) {
-    //   console.log(sendToContract.transactionHash)
-      this.setToDb(id, "test");
-  //  }
+    let sendToContract = await contract.initContract().methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
+
+    if (sendToContract) {
+      this.setToDb(id, sendToContract.transactionHash);
+    }
   }
 
 

@@ -22,6 +22,8 @@ export class NavbarComponent {
   coinInfo = null;
   depositAmount: number = 0;
   depositError: string = undefined;
+  amountSpinner: boolean = true;
+  depositSpinner: boolean = false;
 
 
   constructor(private store: Store<AppState>, private modalService: NgbModal) {
@@ -38,12 +40,13 @@ export class NavbarComponent {
     this.loomEthCoinData = new LoomEthCoin()
     this.loomEthCoinData.load(this.web3)
     setTimeout(() => {
-      this.updateBalance()
+     this.updateBalance()
     }, 2500)
   }
 
   async updateBalance() {
     this.coinInfo = await this.loomEthCoinData._updateBalances()
+    this.amountSpinner = false;
     console.log(this.coinInfo);
   }
 
@@ -58,6 +61,7 @@ export class NavbarComponent {
 
   open(content) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.updateBalance()
   }
 
 
@@ -67,14 +71,16 @@ export class NavbarComponent {
 
   async deposit(){
     if(this.depositAmount > 0){
+      this.depositSpinner = true;
       var value = this.depositAmount * 1000000000000000000;
       let response = await this.loomEthCoinData.depositEth(value);
       if(response === undefined){
        this.modalService.dismissAll()
+       this.depositSpinner = false;
       }else{
+        this.depositSpinner = false;
         this.depositError = response.message
       }
-      console.log(response);
     }else{
      this.depositError = "Must be more than zero"
     }

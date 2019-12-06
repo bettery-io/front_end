@@ -5,25 +5,52 @@
     <div class="registration" *ngIf="nickName === undefined">
         <button type="button" class="btn btn-success" (click)="registrationModal()">Login / Registration</button>
     </div>
-    <div *ngIf="nickName !== undefined" >
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
-                <li class="nav-item">
-                    <a class="nav_tabs nav-link" routerLink="~ki339203/create-quize">Add new Quize</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav_tabs nav-link" routerLink="~ki339203/questions">Answer</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav_tabs nav-link" routerLink="~ki339203/validate">Validate</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav_tabs nav-link" routerLink="~ki339203/my-activites">My activites</a>
-                </li>
-                <li class="nav-item">
-                    <p class="user_email">Hello {{nickName}}</p>
-                </li>
-            </ul>
-        </div>
+    <div *ngIf="nickName !== undefined">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
+            <li class="nav-item">
+                <a class="nav_tabs nav-link" routerLink="~ki339203/create-quize">Add new Quize</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav_tabs nav-link" routerLink="~ki339203/questions">Answer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav_tabs nav-link" routerLink="~ki339203/validate">Validate</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav_tabs nav-link" routerLink="~ki339203/my-activites">My activites</a>
+            </li>
+            <li class="nav-item">
+                <p class="user_email">Hello {{nickName}}</p>
+            </li>
+            <li *ngIf="coinInfo !== null" class="nav-item">
+                <p class="loom_balance">Loom balance: {{coinInfo.loomBalance}}</p>
+            </li>
+            <li *ngIf="coinInfo !== null" class="nav-item">
+                <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="open(content)">Deposit</button>
+            </li>
+        </ul>
+    </div>
 </nav>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Deposit to the Loom Network</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>ETH balance: {{coinInfo.mainNetBalance}}</p>
+        <p>Loom balance: {{coinInfo.loomBalance}}</p>
+        <div>
+            <label class="amount_deposit_label">Amount deposit:</label>
+            <input min="0" class="form-control deposit_input" [(ngModel)]="depositAmount" (ngModelChange)="changeInput($event)" placeholder="Amount of ETH" type="number">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <p *ngIf="depositError !== undefined" class="deposit_error">{{depositError}}</p>
+        <button type="button" class="btn btn-outline-dark" (click)="deposit()">Deposit</button>
+    </div>
+</ng-template>
 
 <registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>

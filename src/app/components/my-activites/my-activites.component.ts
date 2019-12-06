@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { Answer } from '../../models/Answer.model';
 import _ from 'lodash';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import * as contract from '../../contract/contract';
+//import * as contract from '../../contract/contract';
 import Web3 from 'web3';
 
 declare global {
@@ -199,20 +199,20 @@ export class MyActivitesComponent implements OnInit {
 
   async setToLoomNetwork(answer, dataAnswer) {
 
-    const account = await contract.web3.eth.getAccounts();
-    console.log(account);
-    let ether = dataAnswer.money /1000000000000000000
-    console.log(ether)
-    var _question_id = dataAnswer.id;
-    var _whichAnswer = answer.answer;
-    var _money = contract.web3.utils.toWei(String(ether), 'ether')
-    var _timeNow = Math.floor(Date.now() / 1000);
-    console.log(_question_id, _whichAnswer, _money, _timeNow)
-    let sendToContract = await contract.contract.methods.setAnswer(_question_id, _whichAnswer, _money, _timeNow).send({
-      from: account[0],
-      value: contract.web3.utils.toWei(String(ether), 'ether')
-    });
-    console.log(sendToContract);
+    // const account = await contract.web3.eth.getAccounts();
+    // console.log(account);
+    // let ether = dataAnswer.money /1000000000000000000
+    // console.log(ether)
+    // var _question_id = dataAnswer.id;
+    // var _whichAnswer = answer.answer;
+    // var _money = contract.web3.utils.toWei(String(ether), 'ether')
+    // var _timeNow = Math.floor(Date.now() / 1000);
+    // console.log(_question_id, _whichAnswer, _money, _timeNow)
+    // let sendToContract = await contract.contract.methods.setAnswer(_question_id, _whichAnswer, _money, _timeNow).send({
+    //   from: account[0],
+    //   value: contract.web3.utils.toWei(String(ether), 'ether')
+    // });
+    // console.log(sendToContract);
 
   }
 

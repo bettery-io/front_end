@@ -20,7 +20,7 @@ export class RegistrationComponent implements OnInit {
   submitted: boolean = false;
   faTimes = faTimes;
   registerError: string = undefined;
-  web3: Web3 | undefined = undefined;
+  web3: Web3 | undefined = null;
   metamaskError: string = undefined;
   userWallet: string = undefined;
   userWalletIsUndefinded: boolean = true
@@ -54,7 +54,9 @@ export class RegistrationComponent implements OnInit {
       if (!this.web3) {
         try {
           await (window as any).ethereum.enable();
-          this.web3 = new Web3((window as any).ethereum);
+          window.web3 = new Web3(window.web3.currentProvider);
+          this.web3 = new Web3(window.web3.currentProvider);
+          console.log(this.web3);
         } catch (error) {
           this.registrationModal()
           window.alert('You need to allow MetaMask.');

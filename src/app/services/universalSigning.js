@@ -15,8 +15,6 @@ import networkConfigs from '../../network-configs.json'
 import { AddressMapper } from 'loom-js/dist/contracts'
 
 let universalSigningInstance = null
-let web3LoomData = null;
-let fromData = null
 
 export class UniversalSigning {
   constructor() {
@@ -55,7 +53,6 @@ export class UniversalSigning {
     console.log('mapping.ethereum: ' + accountMapping.ethereum.toString())
     console.log('mapping.plasma: ' + accountMapping.plasma.toString())
     this.web3Loom = web3Loom
-    web3LoomData = web3Loom
     this.accountMapping = accountMapping
     this.client = client
     return { web3Loom, accountMapping, client }
@@ -70,7 +67,6 @@ export class UniversalSigning {
     const dummyKey = CryptoUtils.generatePrivateKey()
     const publicKey = CryptoUtils.publicKeyFromPrivateKey(dummyKey)
     const dummyAccount = LocalAddress.fromPublicKey(publicKey).toString()
-    fromData = dummyAccount
     const loomProvider = new LoomProvider(
       client,
       dummyKey,
@@ -146,12 +142,5 @@ export class UniversalSigning {
     const readUrl = this.extdevNetworkConfig['readUrl']
     const client = new Client(chainId, writeUrl, readUrl)
     return client
-  }
-
-  _getWeb3() {
-    return {
-      loomWeb3: web3LoomData,
-      from: fromData
-    };
   }
 }

@@ -2,6 +2,8 @@ const { readFileSync } = require('fs')
 const path = require('path')
 const { join } = require('path')
 const LoomTruffleProvider = require('loom-truffle-provider')
+const HDWalletProvider = require('truffle-hdwallet-provider')
+
 module.exports = {
   networks: {
     extdev: {
@@ -26,11 +28,9 @@ module.exports = {
     },
     rinkeby: {
       provider: function () {
-        const mnemonic = readFileSync(path.join(__dirname, '../rinkeby_mnemonic'), 'utf-8')
-        if (!process.env.INFURA_API_KEY) {
-          throw new Error("INFURA_API_KEY env var not set")
-        }
-        return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`, 0, 10)
+        const mnemonic = readFileSync(path.join(__dirname, 'rinkeby_mnemonic'), 'utf-8')
+
+        return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/2b5ec85db4a74c8d8ed304ff2398690d`, 0, 10)
       },
       network_id: 4,
       gasPrice: 15000000001,

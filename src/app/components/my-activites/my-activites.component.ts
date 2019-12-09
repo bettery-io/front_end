@@ -7,8 +7,10 @@ import * as moment from 'moment';
 import { Answer } from '../../models/Answer.model';
 import _ from 'lodash';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-//import * as contract from '../../contract/contract';
+import Contract from '../../services/contract';
 import Web3 from 'web3';
+import LoomEthCoin from '../../services/LoomEthCoin';
+
 
 declare global {
   interface Window { web3: any; }
@@ -191,28 +193,33 @@ export class MyActivitesComponent implements OnInit {
         this.idError = dataAnswer.id
       } else {
 
-      //  this.setToDB(answer, dataAnswer)
+        //  this.setToDB(answer, dataAnswer)
         this.setToLoomNetwork(answer, dataAnswer);
       }
     }
   }
 
   async setToLoomNetwork(answer, dataAnswer) {
+    let web3 = new Web3();
+    let contract = new Contract();
+    let userAccount = contract.getUserAccount().ethereum.local.toString()
+    console.log(userAccount)
 
-    // const account = await contract.web3.eth.getAccounts();
-    // console.log(account);
-    // let ether = dataAnswer.money /1000000000000000000
-    // console.log(ether)
-    // var _question_id = dataAnswer.id;
-    // var _whichAnswer = answer.answer;
-    // var _money = contract.web3.utils.toWei(String(ether), 'ether')
-    // var _timeNow = Math.floor(Date.now() / 1000);
-    // console.log(_question_id, _whichAnswer, _money, _timeNow)
-    // let sendToContract = await contract.contract.methods.setAnswer(_question_id, _whichAnswer, _money, _timeNow).send({
-    //   from: account[0],
-    //   value: contract.web3.utils.toWei(String(ether), 'ether')
-    // });
-    // console.log(sendToContract);
+    let ether = dataAnswer.money /1000000000000000000
+    console.log(ether)
+    var _question_id = dataAnswer.id;
+    var _whichAnswer = answer.answer;
+    var _money = web3.utils.toWei(String(ether), 'ether')
+    var _timeNow = Math.floor(Date.now() / 1000);
+    let contr = await contract.initContract()
+    console.log(contr)
+    let sendToContract = contr.methods.setAnswer(_question_id).send({
+ 
+      value: 1000000000000000
+    });
+  // console.log(sendToContract);
+  //let balanceOf = await contr.methods.owne
+  //console.log(balanceOf);
 
   }
 

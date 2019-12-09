@@ -10,7 +10,10 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "get:loom": "if [ ! -d loom ]; then mkdir loom && cd loom && curl https://raw.githubusercontent.com/loomnetwork/loom-sdk-documentation/master/scripts/get_loom.sh | sh && chmod +x ./loom && cd ..; fi",
-    "gen:extdev-key": "npm run get:loom && ./loom/loom genkey -k extdev_private_key -a extdev_public_key"
+    "gen:extdev-key": "npm run get:loom && ./loom/loom genkey -k extdev_private_key -a extdev_public_key",
+    "migrate:loom:reset": "truffle migrate --network extdev --reset -all",
+    "migrate:rinkeby": "truffle migrate --network rinkeby --reset -all",
+    "migrate:loom": "truffle migrate --network extdev"
   },
   "private": true,
   "dependencies": {
@@ -29,14 +32,15 @@
     "@ngrx/store": "^8.5.0",
     "@types/mocha": "^5.2.7",
     "bn": "^1.0.5",
-    "ethers": "^4.0.39",
+    "ethers": "^4.0.37",
     "lodash": "^4.17.15",
-    "loom-js": "1.70.0",
+    "loom-js": "^1.71.0",
     "loom-truffle-provider": "^0.13.0",
     "mocha": "^6.2.2",
     "moment": "^2.24.0",
     "openzeppelin-solidity": "^2.4.0",
     "rxjs": "^6.4.0",
+    "truffle-hdwallet-provider": "^1.0.10",
     "tslib": "^1.10.0",
     "web3": "^1.2.2",
     "zone.js": "~0.9.1"

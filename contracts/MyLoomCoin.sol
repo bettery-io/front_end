@@ -19,4 +19,5 @@ contract MyLoomCoin is ERC20 {
         require(msg.sender == gateway, "only the gateway is allowed to mint");
         _mint(gateway, _amount);
     }
+
 }

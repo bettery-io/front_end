@@ -283,6 +283,8 @@ export class CreateQuizeComponent implements OnInit {
 
   async sendToContract(id) {
     let contract = new Contract()
+    let contr = await contract.initContract()
+    let userAccount = contract.getUserAccount().ethereum.local.toString()
     let hostWallet = this.host[0].wallet;
     let startTime = this.getStartTime();
     let endTime = this.getEndTime();
@@ -290,9 +292,8 @@ export class CreateQuizeComponent implements OnInit {
     let percentValidator = parseInt("-1");
     let questionQuantity = this.answesQuality
 
-    let sendToContract = await contract.initContract().methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send();
-
-    if (sendToContract) {
+    let sendToContract = await contr.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send()
+    if (sendToContract.transactionHash !== undefined) {
       this.setToDb(id, sendToContract.transactionHash);
     }
   }

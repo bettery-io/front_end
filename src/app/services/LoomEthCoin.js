@@ -11,6 +11,9 @@ import { UniversalSigning } from './universalSigning'
 
 const BN = require('bn.js')
 const EthCoin = Contracts.EthCoin
+var web3LoomData = null
+var userAccount = null
+var ethCoin = null
 
 export default class LoomEthCoin extends UniversalSigning {
     _gas() {
@@ -25,8 +28,10 @@ export default class LoomEthCoin extends UniversalSigning {
         this.extdevNetworkConfig = networkConfigs.networks['extdev']
         const { web3Loom, accountMapping, client } = await super._load(web3Ethereum)
         this.accountMapping = accountMapping
+        userAccount = accountMapping;
         this.web3Ethereum = web3Ethereum
         this.web3Loom = web3Loom
+        web3LoomData = web3Loom;
         this.client = client
         await this._getContracts(client, accountMapping)
       //  await this._updateBalances()
@@ -41,6 +46,8 @@ export default class LoomEthCoin extends UniversalSigning {
             client,
             accountMapping.ethereum
         )
+        ethCoin = this.ethCoin
+
         this.loomGatewayContract = await Contracts.TransferGateway.createAsync(
             client,
             accountMapping.ethereum
@@ -177,7 +184,11 @@ export default class LoomEthCoin extends UniversalSigning {
         await this.ethCoin.approveAsync(gatewayAddress, new BN(this._gas()))
     }
 
-    getWeb3() {
-        return this._getWeb3();
+    getWeb3Loom() {
+        return {
+            web3LoomData: web3LoomData,
+            userAccount: userAccount,
+            ethCoin: ethCoin
+        }
     }
 }

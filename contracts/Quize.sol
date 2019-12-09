@@ -76,19 +76,10 @@ contract Quize {
         );
     }
 
-   function setAnswer(int _question_id, uint8 _whichAnswer, uint256 _money, int256 _timeNow) public payable{
-      int256 startTime = qestions[_question_id].startTime - _timeNow;
-      int256 endTime = qestions[_question_id].endTime - _timeNow;
-      if(startTime <= 0){
-          if(endTime >= 0 ){
-              qestions[_question_id].participant[_whichAnswer].participants.push(msg.sender);
-              qestions[_question_id].money += _money;
-          }else{
-            revert("The event finished");
-          }
-      }else{
-          revert("The event has not yet begun.");
-      }
+   function setAnswer(int _question_id) public payable{
+
+              qestions[_question_id].money += msg.value;
+
     }
 
     function setValidator(int _question_id, address payable _answer, uint8 _whichAnswer, int256 _timeNow) public payable{

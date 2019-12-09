@@ -32,7 +32,8 @@
                 <p *ngIf="!amountSpinner" class="loom_balance">Loom balance: {{coinInfo.loomBalance}}</p>
             </li>
             <li *ngIf="coinInfo !== null" class="nav-item">
-                <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="open(content)">Deposit</button>
+                <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="open(content)">Deposit /
+                    Withdrawal</button>
             </li>
         </ul>
     </div>
@@ -40,31 +41,61 @@
 
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Deposit to the Loom Network</h4>
+        <h4 class="modal-title" id="modal-basic-title">Deposit and Withdrawal</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="modal-body">
-        <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
-        <p>ETH balance: {{coinInfo.mainNetBalance}}</p>
-        <p>Loom balance: {{coinInfo.loomBalance}}</p>
-        <div>
-            <label class="amount_deposit_label">Amount deposit:</label>
-            <input min="0" class="form-control deposit_input" [(ngModel)]="depositAmount" (ngModelChange)="changeInput($event)"
-                placeholder="Amount of ETH" type="number">
-        </div>
-    </div>
-    <div class="modal-footer">
-        <p *ngIf="depositError !== undefined" class="deposit_error">{{depositError}}</p>
-        <button *ngIf="!depositSpinner" type="button" class="btn btn-outline-dark" (click)="deposit()">Deposit</button>
-        <div *ngIf="depositSpinner">
-            <div class="lds-ripple">
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-    </div>
+    <ngb-tabset>
+        <ngb-tab title="Deposit">
+            <ng-template ngbTabContent>
+                <div class="modal-body">
+                    <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
+                    <p>ETH balance: {{coinInfo.mainNetBalance}}</p>
+                    <p>Loom balance: {{coinInfo.loomBalance}}</p>
+                    <div>
+                        <label class="amount_deposit_label">Amount deposit:</label>
+                        <input min="0" class="form-control deposit_input" [(ngModel)]="depositAmount" (ngModelChange)="changeInput()"
+                            placeholder="Amount of ETH" type="number">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <p *ngIf="depositError !== undefined" class="deposit_error">{{depositError}}</p>
+                    <button *ngIf="!depositSpinner" type="button" class="btn btn-outline-dark" (click)="deposit()">Deposit</button>
+                    <div *ngIf="depositSpinner">
+                        <div class="lds-ripple">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Withdrawal">
+            <ng-template ngbTabContent>
+                <div class="modal-body">
+                    <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
+                    <p>ETH balance: {{coinInfo.mainNetBalance}}</p>
+                    <p>Loom balance: {{coinInfo.loomBalance}}</p>
+                    <div>
+                        <label class="amount_deposit_label">Withdrawal amount: </label>
+                        <input min="0" class="form-control deposit_input" [(ngModel)]="withdrawalAmount"
+                            (ngModelChange)="changeWithdrawal()" placeholder="Amount of ETH" type="number">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <p *ngIf="withdrawalError !== undefined" class="deposit_error">{{withdrawalError}}</p>
+                    <button *ngIf="!withdrawalSpinner" type="button" class="btn btn-outline-dark" (click)="withdrawal()">Withdrawal</button>
+                    <div *ngIf="withdrawalSpinner">
+                        <div class="lds-ripple">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
 </ng-template>
 
 <registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>

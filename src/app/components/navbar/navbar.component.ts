@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
+import { Coins } from '../../models/Coins.model';
+import * as CoinsActios from '../../actions/coins.actions';
+
 import LoomEthCoin from '../../services/LoomEthCoin';
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +22,7 @@ export class NavbarComponent {
   regisModal: boolean = false
   loomEthCoinData = null;
   web3: Web3 | undefined = null;
-  coinInfo = null;
+  coinInfo: Coins = null;
   depositAmount: number = 0;
   withdrawalAmount: number = 0;
   depositError: string = undefined;
@@ -32,6 +35,7 @@ export class NavbarComponent {
   constructor(private store: Store<AppState>, private modalService: NgbModal) {
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
+        console.log(x);
         this.nickName = x[0].nickName;
         this.connectToLoom()
       }
@@ -49,6 +53,8 @@ export class NavbarComponent {
 
   async updateBalance() {
     this.coinInfo = await this.loomEthCoinData._updateBalances()
+    this.store.dispatch(new CoinsActios.AddCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+
     this.amountSpinner = false;
     console.log(this.coinInfo);
   }

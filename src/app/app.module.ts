@@ -22,6 +22,7 @@ import { MyActivitesComponent } from './components/my-activites/my-activites.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { QuestionComponent } from './components/question/question.component';
+import { coinsReducer } from './reducers/coins.reducer';
 
 
 
@@ -44,7 +45,8 @@ import { QuestionComponent } from './components/question/question.component';
     FontAwesomeModule,
     ReactiveFormsModule,
     StoreModule.forRoot({
-      user: userReducer
+      user: userReducer,
+      coins: coinsReducer
     }),
     NgbModule,
     FormsModule

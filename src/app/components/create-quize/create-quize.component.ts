@@ -323,7 +323,7 @@ export class CreateQuizeComponent implements OnInit {
       }),
       answerQuantity: 0,
       validatorsAmount: this.questionForm.value.amountOfValidators,
-      money: this.questionForm.value.amount * 1000000000000000000,
+      money: this.questionForm.value.amount,
       finalAnswers: null,
       transactionHash: transactionHash
     }

@@ -39,7 +39,7 @@
                     </div>
                     <div class="info">
                         <p>Status: {{active.private === true ? "Private" : "Public"}}</p>
-                        <p>Bet amount: {{active.money / 1000000000000000000}} ETH</p>
+                        <p>Bet amount: {{active.money}} ETH</p>
                         <p>Wins: 2%, 5%, 90%</p>
                     </div>
                     <div class="answers_box">
@@ -64,7 +64,8 @@
                                 </div>
                                 <div *ngIf="myAnswers[index].answered === true">
                                     <div class="answered_Box" *ngFor="let answer of active.answers; let i = index">
-                                        <fa-icon class="iconCheck" *ngIf="this.getMultyIcon(myAnswers[index].multyAnswer, i)" [icon]="faCheck"></fa-icon>
+                                        <fa-icon class="iconCheck" *ngIf="this.getMultyIcon(myAnswers[index].multyAnswer, i)"
+                                            [icon]="faCheck"></fa-icon>
                                         <p class="answered">{{answer}}</p>
                                     </div>
                                 </div>
@@ -103,6 +104,9 @@
                             (click)="this.setAnswer(active)">Participate now!</button>
                         <div *ngIf="idError === active.id">
                             <p class="error_answer">Chose at leas one answer</p>
+                        </div>
+                        <div *ngIf="idErrorMoney === active.id">
+                            <p class="error_answer">Don't have enough money</p>
                         </div>
                     </div>
                 </div>

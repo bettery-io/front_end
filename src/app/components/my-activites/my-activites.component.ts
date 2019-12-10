@@ -11,7 +11,6 @@ import Contract from '../../services/contract';
 import Web3 from 'web3';
 import LoomEthCoin from '../../services/LoomEthCoin';
 
-
 declare global {
   interface Window { web3: any; }
 }
@@ -36,6 +35,8 @@ export class MyActivitesComponent implements OnInit {
   validateFilter: boolean = true;
   myAnswers: Answer[] = [];
   idError: number = 0;
+  idErrorMoney: number = null;
+  coinInfo = null;
 
   constructor(
     private store: Store<AppState>,
@@ -49,6 +50,11 @@ export class MyActivitesComponent implements OnInit {
         this.userWallet = x[0].wallet
       }
     });
+    this.store.select("coins").subscribe((x) => {
+      if (x.length !== 0) {
+        this.coinInfo = x[0];
+      }
+    })
   }
 
   ngOnInit() {
@@ -63,7 +69,7 @@ export class MyActivitesComponent implements OnInit {
       wallet: this.userWallet
     }
     this.postService.post("my_activites", data)
-      .subscribe((x) => {
+      .subscribe(async (x) => {
         this.myActivites = x;
         this.allData = x;
         this.allData.forEach((data, i) => {
@@ -186,41 +192,43 @@ export class MyActivitesComponent implements OnInit {
       if (answer.multyAnswer.length === 0) {
         this.idError = dataAnswer.id
       } else {
-        this.setToDB(answer, dataAnswer)
+        // multy answer
+        //  this.setToDB(answer, dataAnswer)
       }
     } else {
       if (answer.answer === undefined) {
         this.idError = dataAnswer.id
       } else {
-
-        //  this.setToDB(answer, dataAnswer)
         this.setToLoomNetwork(answer, dataAnswer);
       }
     }
   }
 
   async setToLoomNetwork(answer, dataAnswer) {
-    let web3 = new Web3();
-    let contract = new Contract();
-    let userAccount = contract.getUserAccount().ethereum.local.toString()
-    console.log(userAccount)
+    if (Number(this.coinInfo.loomBalance) < dataAnswer.money) {
+      this.idErrorMoney = dataAnswer.id
+    } else {
+      let web3 = new Web3();
+      let contract = new Contract();
 
-    let ether = dataAnswer.money /1000000000000000000
-    console.log(ether)
-    var _question_id = dataAnswer.id;
-    var _whichAnswer = answer.answer;
-    var _money = web3.utils.toWei(String(ether), 'ether')
-    var _timeNow = Math.floor(Date.now() / 1000);
-    let contr = await contract.initContract()
-    console.log(contr)
-    let sendToContract = contr.methods.setAnswer(_question_id).send({
- 
-      value: 1000000000000000
-    });
-  // console.log(sendToContract);
-  //let balanceOf = await contr.methods.owne
-  //console.log(balanceOf);
+      var _question_id = dataAnswer.id;
+      var _whichAnswer = answer.answer;
+      console.log(dataAnswer.money)
+      var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
+      var _timeNow = Math.floor(Date.now() / 1000);
+      let contr = await contract.initContract()
+      console.log(_question_id, _whichAnswer, _money)
+      console.log(contr)
+      // let test2 = await contr.methods.getFullAmount().call();
+      // console.log(test2);
+      // let test = await contr.methods.getIndex(_question_id, 0, 0).call();
+      // console.log(test);
+      let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
+        value: _money
+      });
+      console.log(sendToContract);
 
+    }
   }
 
 

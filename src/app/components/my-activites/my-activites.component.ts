@@ -35,10 +35,13 @@ export class MyActivitesComponent implements OnInit {
   parcipiantFilter: boolean = true;
   validateFilter: boolean = true;
   myAnswers: Answer[] = [];
-  idError: number = 0;
   idErrorMoney: number = null;
   coinInfo = null;
   spinnerAnswer: number = 0;
+  errorValidator = {
+    idError: null,
+    message: undefined
+  }
 
   constructor(
     private store: Store<AppState>,
@@ -116,17 +119,17 @@ export class MyActivitesComponent implements OnInit {
   }
 
   getParticipationTime(data) {
-    let date = new Date(data.startTime)
+    let date = new Date(data.startTime * 1000);
     return moment(date, "YYYYMMDD").fromNow();
   }
 
   getValidationTime(data) {
-    let date = new Date(data.endTime)
+    let date = new Date(data.endTime * 1000);
     return moment(date, "YYYYMMDD").fromNow();
   }
 
   getEndValidation(data) {
-    let date = new Date(data.endTime)
+    let date = new Date(data.endTime * 1000);
     date.setDate(date.getDate() + 7);
     return moment(date, "YYYYMMDD").fromNow();
   }
@@ -155,7 +158,8 @@ export class MyActivitesComponent implements OnInit {
   makeAnswer(data, i) {
     let index = _.findIndex(this.myAnswers, { 'event_id': data.id, 'from': data.from });
     this.myAnswers[index].answer = i;
-    this.idError = undefined;
+    this.errorValidator.idError = null;
+    this.errorValidator.message = undefined;
   }
 
   getParticipantsPercentage(answerIndex, questionIndex) {
@@ -170,7 +174,8 @@ export class MyActivitesComponent implements OnInit {
   }
 
   makeMultyAnswer(data, i, event) {
-    this.idError = undefined;
+    this.errorValidator.idError = null;
+    this.errorValidator.message = undefined;
     if (event.path[0].checked) {
       let findAnswer = _.findIndex(this.myAnswers, { 'event_id': data.id, 'from': data.from });
       this.myAnswers[findAnswer].multyAnswer.push(i);
@@ -192,14 +197,16 @@ export class MyActivitesComponent implements OnInit {
     let answer = _.find(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
     if (answer.multy) {
       if (answer.multyAnswer.length === 0) {
-        this.idError = dataAnswer.id
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Chose at leas one answer"
       } else {
         // multy answer
         //  this.setToDB(answer, dataAnswer)
       }
     } else {
       if (answer.answer === undefined) {
-        this.idError = dataAnswer.id
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Chose at leas one answer"
       } else {
         this.setToLoomNetwork(answer, dataAnswer);
       }
@@ -208,7 +215,8 @@ export class MyActivitesComponent implements OnInit {
 
   async setToLoomNetwork(answer, dataAnswer) {
     if (Number(this.coinInfo.loomBalance) < dataAnswer.money) {
-      this.idErrorMoney = dataAnswer.id
+      this.errorValidator.idError = dataAnswer.id
+      this.errorValidator.message = "Don't have enough money"
     } else {
       let web3 = new Web3();
       let contract = new Contract();
@@ -221,15 +229,21 @@ export class MyActivitesComponent implements OnInit {
       let contr = await contract.initContract()
       console.log(_question_id, _whichAnswer, _money)
       console.log(contr)
-      // let test2 = await contr.methods.getFullAmount().call();
-      // console.log(test2);
-      // let test = await contr.methods.getIndex(_question_id, 0, 0).call();
-      // console.log(test);
-      let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
-        value: _money
-      });
-      if (sendToContract.transactionHash !== undefined) {
-        this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
+      let validator = await contr.methods.setAnswerValidator(_question_id).call();
+      if (Number(validator) === 0) {
+        let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
+          value: _money
+        });
+        console.log(sendToContract)
+        if (sendToContract.transactionHash !== undefined) {
+          this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
+        }
+      } else if (Number(validator) === 1) {
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event not started yeat."
+      } else if (Number(validator) === 3) {
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Already finished"
       }
     }
   }

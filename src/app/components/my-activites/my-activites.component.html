@@ -102,11 +102,8 @@
                             Event</button>
                         <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
                             (click)="this.setAnswer(active)">Participate now!</button>
-                        <div *ngIf="idError === active.id">
-                            <p class="error_answer">Chose at leas one answer</p>
-                        </div>
-                        <div *ngIf="idErrorMoney === active.id">
-                            <p class="error_answer">Don't have enough money</p>
+                        <div *ngIf="errorValidator.idError === active.id">
+                            <p class="error_answer">{{errorValidator.message}}</p>
                         </div>
                     </div>
                 </div>

@@ -5,9 +5,9 @@ contract Quize {
      uint256 private fullAmount;
 
      event NewQuestionAdded(
-        int256 endTime,
+        uint256 endTime,
         int8 questionQuantity,
-        int256 startTime,
+        uint256 startTime,
         int8 percentHost,
         int8 percentValidator);
 
@@ -31,8 +31,8 @@ contract Quize {
 
      struct Qestion {
          int question_id;
-         int256 startTime;
-         int256 endTime;
+         uint256 startTime;
+         uint256 endTime;
          int8 questionQuantity;
          uint256 money;
          int8 percentHost;
@@ -53,8 +53,8 @@ contract Quize {
     function startQestion(
            address host_wallet,
            int _question_id,
-           int256 _startTime,
-           int256 _endTime,
+           uint256 _startTime,
+           uint256 _endTime,
            int8 _percentHost,
            int8 _percentValidator,
            int8 _questionQuantity
@@ -87,12 +87,28 @@ contract Quize {
         );
     }
 
+    function setAnswerValidator(int256 _question_id) public view returns(int8){
+         if(int(now - qestions[_question_id].startTime) >= 0){
+            if(int(qestions[_question_id].endTime - now) >= 0){
+              return 0;
+            }else{
+              return 2;
+            }
+         }else{
+             return 1;
+         }
+      }
+
    function setAnswer(int256 _question_id, uint8 _whichAnswer) public payable{
-        qestions[_question_id].money += msg.value;
-        uint256 i = qestions[_question_id].participant[_whichAnswer].index;
-        qestions[_question_id].participant[_whichAnswer].participants[i].parts = msg.sender;
-        qestions[_question_id].participant[_whichAnswer].index = i + 1;
-        fullAmount += msg.value;
+       if(int(now - qestions[_question_id].startTime) >= 0){
+           if(int(qestions[_question_id].endTime - now) >= 0){
+              qestions[_question_id].money += msg.value;
+              uint256 i = qestions[_question_id].participant[_whichAnswer].index;
+              qestions[_question_id].participant[_whichAnswer].participants[i].parts = msg.sender;
+              qestions[_question_id].participant[_whichAnswer].index = i + 1;
+              fullAmount += msg.value;
+           }
+       }
     }
 
     function getIndex(int256 _question_id, uint256 index, uint8 _whichAnswer) public view returns(address){
@@ -172,9 +188,9 @@ contract Quize {
     }
 
     function getQuestion(int _question_id) public view returns(
-           int256 endTime,
+           uint256 endTime,
            int8 questionQuantity,
-           int256 startTime,
+           uint256 startTime,
            int8 percentHost,
            int8 percentValidator
            ){

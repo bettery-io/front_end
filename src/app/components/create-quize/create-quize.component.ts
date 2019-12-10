@@ -227,12 +227,12 @@ export class CreateQuizeComponent implements OnInit {
 
 
   getTimeStamp(strDate) {
-    return new Date(strDate).getTime()
+    return Number((new Date(strDate).getTime() / 1000).toFixed(0));
   }
 
   getStartTime() {
     if (this.exactStartTime === false) {
-      return this.questionForm.value.startDate
+      return Number((this.questionForm.value.startDate / 1000).toFixed(0));
     } else {
       let day = this.questionForm.value.calendarStartDate.day;
       let month = this.questionForm.value.calendarStartDate.month;
@@ -246,7 +246,7 @@ export class CreateQuizeComponent implements OnInit {
 
   getEndTime() {
     if (this.exactEndTime === false) {
-      return new Date(this.getStartTime()).setHours(new Date(this.getStartTime()).getHours() + this.questionForm.value.endDate)
+      return Number(((new Date(this.getStartTime() * 1000).setHours(new Date(this.getStartTime() * 1000).getHours() + this.questionForm.value.endDate)) / 1000).toFixed(0));
     } else {
       let day = this.questionForm.value.calendarEndDate.day;
       let month = this.questionForm.value.calendarEndDate.month;
@@ -290,7 +290,9 @@ export class CreateQuizeComponent implements OnInit {
     let endTime = this.getEndTime();
     let percentHost = parseInt("-1");
     let percentValidator = parseInt("-1");
-    let questionQuantity = this.answesQuality
+    let questionQuantity = this.answesQuality;
+
+    console.log(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity)
 
     let sendToContract = await contr.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send()
     if (sendToContract.transactionHash !== undefined) {

@@ -35,11 +35,15 @@ export class NavbarComponent {
   constructor(private store: Store<AppState>, private modalService: NgbModal) {
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
-        console.log(x);
         this.nickName = x[0].nickName;
         this.connectToLoom()
       }
     });
+    this.store.select("coins").subscribe((x) => {
+      if (x.length !== 0) {
+        this.coinInfo = x[0];
+      }
+    })
   }
 
   connectToLoom() {

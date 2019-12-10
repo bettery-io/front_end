@@ -10,6 +10,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import Contract from '../../services/contract';
 import Web3 from 'web3';
 import LoomEthCoin from '../../services/LoomEthCoin';
+import * as CoinsActios from '../../actions/coins.actions';
 
 declare global {
   interface Window { web3: any; }
@@ -37,6 +38,7 @@ export class MyActivitesComponent implements OnInit {
   idError: number = 0;
   idErrorMoney: number = null;
   coinInfo = null;
+  spinnerAnswer: number = 0;
 
   constructor(
     private store: Store<AppState>,
@@ -226,20 +228,21 @@ export class MyActivitesComponent implements OnInit {
       let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
         value: _money
       });
-      console.log(sendToContract);
-
+      if (sendToContract.transactionHash !== undefined) {
+        this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
+      }
     }
   }
 
 
-  setToDB(answer, dataAnswer) {
+  setToDB(answer, dataAnswer, transactionHash) {
     let data = {
       multy: answer.multy,
       event_id: answer.event_id,
       date: new Date(),
       answer: answer.answer,
       multyAnswer: answer.multyAnswer,
-      transactionHash: "test",
+      transactionHash: transactionHash,
       wallet: this.userWallet,
       from: "participant",
       answerQuantity: dataAnswer.answerQuantity + 1
@@ -250,6 +253,15 @@ export class MyActivitesComponent implements OnInit {
       this.myAnswers[index].answered = true;
 
       this.getDataFromDb();
+      let web3 = new Web3(window.web3.currentProvider);
+      let loomEthCoinData = new LoomEthCoin()
+      loomEthCoinData.load(web3)
+
+      setTimeout(async () => {
+        this.coinInfo = await loomEthCoinData._updateBalances()
+        console.log(this.coinInfo)
+        this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+      }, 2500)
 
     },
       (err) => {

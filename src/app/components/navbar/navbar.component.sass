@@ -64,7 +64,7 @@
     margin-bottom: 0px    
 
 
-.lds-ripple
+.lds-ripple-small
     margin-top: 0px
     position: relative
     width: 40px
@@ -73,17 +73,17 @@
     margin-left: auto
     margin-right: auto
 
-.lds-ripple div
+.lds-ripple-small div
     position: absolute
     border: 4px solid #5682e2
     opacity: 1
     border-radius: 50%
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite
+    animation: lds-ripple-small 1s cubic-bezier(0, 0.2, 0.8, 1) infinite
 
-.lds-ripple div:nth-child(2)
+.lds-ripple-small div:nth-child(2)
     animation-delay: -0.5s
 
-@keyframes lds-ripple
+@keyframes lds-ripple-small
     0%
         top: 20px
         left: 20px

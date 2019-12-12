@@ -89,14 +89,14 @@
     "absolutePath": "/Users/macbook/Documents/freelance/Angular/Quiz/contracts/helpers/token/ERC20/TokenTimelock.sol",
     "exportedSymbols": {
       "TokenTimelock": [
-        7861
+        7986
       ]
     },
-    "id": 7862,
+    "id": 7987,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7761,
+        "id": 7886,
         "literals": [
           "solidity",
           "^",
@@ -109,10 +109,10 @@
       {
         "absolutePath": "/Users/macbook/Documents/freelance/Angular/Quiz/contracts/helpers/token/ERC20/SafeERC20.sol",
         "file": "./SafeERC20.sol",
-        "id": 7762,
+        "id": 7887,
         "nodeType": "ImportDirective",
-        "scope": 7862,
-        "sourceUnit": 7760,
+        "scope": 7987,
+        "sourceUnit": 7885,
         "src": "25:25:62",
         "symbolAliases": [],
         "unitAlias": ""
@@ -123,24 +123,24 @@
         "contractKind": "contract",
         "documentation": "@dev A token holder contract that will allow a beneficiary to extract the\ntokens after a given release time.\n * Useful for simple vesting schedules like \"advisors get all of their tokens\nafter 1 year\".\n * For a more complete vesting schedule, see {TokenVesting}.",
         "fullyImplemented": true,
-        "id": 7861,
+        "id": 7986,
         "linearizedBaseContracts": [
-          7861
+          7986
         ],
         "name": "TokenTimelock",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 7765,
+            "id": 7890,
             "libraryName": {
               "contractScope": null,
-              "id": 7763,
+              "id": 7888,
               "name": "SafeERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7759,
+              "referencedDeclaration": 7884,
               "src": "373:9:62",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeERC20_$7759",
+                "typeIdentifier": "t_contract$_SafeERC20_$7884",
                 "typeString": "library SafeERC20"
               }
             },
@@ -148,39 +148,39 @@
             "src": "367:27:62",
             "typeName": {
               "contractScope": null,
-              "id": 7764,
+              "id": 7889,
               "name": "IERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7539,
+              "referencedDeclaration": 7664,
               "src": "387:6:62",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC20_$7539",
+                "typeIdentifier": "t_contract$_IERC20_$7664",
                 "typeString": "contract IERC20"
               }
             }
           },
           {
             "constant": false,
-            "id": 7767,
+            "id": 7892,
             "name": "_token",
             "nodeType": "VariableDeclaration",
-            "scope": 7861,
+            "scope": 7986,
             "src": "445:21:62",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_IERC20_$7539",
+              "typeIdentifier": "t_contract$_IERC20_$7664",
               "typeString": "contract IERC20"
             },
             "typeName": {
               "contractScope": null,
-              "id": 7766,
+              "id": 7891,
               "name": "IERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7539,
+              "referencedDeclaration": 7664,
               "src": "445:6:62",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC20_$7539",
+                "typeIdentifier": "t_contract$_IERC20_$7664",
                 "typeString": "contract IERC20"
               }
             },
@@ -189,10 +189,10 @@
           },
           {
             "constant": false,
-            "id": 7769,
+            "id": 7894,
             "name": "_beneficiary",
             "nodeType": "VariableDeclaration",
-            "scope": 7861,
+            "scope": 7986,
             "src": "526:28:62",
             "stateVariable": true,
             "storageLocation": "default",
@@ -201,7 +201,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 7768,
+              "id": 7893,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "526:7:62",
@@ -216,10 +216,10 @@
           },
           {
             "constant": false,
-            "id": 7771,
+            "id": 7896,
             "name": "_releaseTime",
             "nodeType": "VariableDeclaration",
-            "scope": 7861,
+            "scope": 7986,
             "src": "608:28:62",
             "stateVariable": true,
             "storageLocation": "default",
@@ -228,7 +228,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 7770,
+              "id": 7895,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "608:7:62",
@@ -242,7 +242,7 @@
           },
           {
             "body": {
-              "id": 7800,
+              "id": 7925,
               "nodeType": "Block",
               "src": "719:259:62",
               "statements": [
@@ -256,18 +256,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 7784,
+                        "id": 7909,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 7781,
+                          "id": 7906,
                           "name": "releaseTime",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 7777,
+                          "referencedDeclaration": 7902,
                           "src": "791:11:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -280,18 +280,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 7782,
+                            "id": 7907,
                             "name": "block",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 10756,
+                            "referencedDeclaration": 10881,
                             "src": "805:5:62",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_block",
                               "typeString": "block"
                             }
                           },
-                          "id": 7783,
+                          "id": 7908,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -314,7 +314,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "546f6b656e54696d656c6f636b3a2072656c656173652074696d65206973206265666f72652063757272656e742074696d65",
-                        "id": 7785,
+                        "id": 7910,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -341,21 +341,21 @@
                           "typeString": "literal_string \"TokenTimelock: release time is before current time\""
                         }
                       ],
-                      "id": 7780,
+                      "id": 7905,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        10769,
-                        10770
+                        10894,
+                        10895
                       ],
-                      "referencedDeclaration": 10770,
+                      "referencedDeclaration": 10895,
                       "src": "783:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 7786,
+                    "id": 7911,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -369,28 +369,28 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 7787,
+                  "id": 7912,
                   "nodeType": "ExpressionStatement",
                   "src": "783:92:62"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7790,
+                    "id": 7915,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 7788,
+                      "id": 7913,
                       "name": "_token",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7767,
+                      "referencedDeclaration": 7892,
                       "src": "885:6:62",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_IERC20_$7539",
+                        "typeIdentifier": "t_contract$_IERC20_$7664",
                         "typeString": "contract IERC20"
                       }
                     },
@@ -398,42 +398,42 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 7789,
+                      "id": 7914,
                       "name": "token",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7773,
+                      "referencedDeclaration": 7898,
                       "src": "894:5:62",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_IERC20_$7539",
+                        "typeIdentifier": "t_contract$_IERC20_$7664",
                         "typeString": "contract IERC20"
                       }
                     },
                     "src": "885:14:62",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$7539",
+                      "typeIdentifier": "t_contract$_IERC20_$7664",
                       "typeString": "contract IERC20"
                     }
                   },
-                  "id": 7791,
+                  "id": 7916,
                   "nodeType": "ExpressionStatement",
                   "src": "885:14:62"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7794,
+                    "id": 7919,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 7792,
+                      "id": 7917,
                       "name": "_beneficiary",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7769,
+                      "referencedDeclaration": 7894,
                       "src": "909:12:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -444,11 +444,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 7793,
+                      "id": 7918,
                       "name": "beneficiary",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7775,
+                      "referencedDeclaration": 7900,
                       "src": "924:11:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -461,25 +461,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 7795,
+                  "id": 7920,
                   "nodeType": "ExpressionStatement",
                   "src": "909:26:62"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7798,
+                    "id": 7923,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 7796,
+                      "id": 7921,
                       "name": "_releaseTime",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7771,
+                      "referencedDeclaration": 7896,
                       "src": "945:12:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -490,11 +490,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 7797,
+                      "id": 7922,
                       "name": "releaseTime",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7777,
+                      "referencedDeclaration": 7902,
                       "src": "960:11:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -507,45 +507,45 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 7799,
+                  "id": 7924,
                   "nodeType": "ExpressionStatement",
                   "src": "945:26:62"
                 }
               ]
             },
             "documentation": null,
-            "id": 7801,
+            "id": 7926,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7778,
+              "id": 7903,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7773,
+                  "id": 7898,
                   "name": "token",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7801,
+                  "scope": 7926,
                   "src": "656:12:62",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$7539",
+                    "typeIdentifier": "t_contract$_IERC20_$7664",
                     "typeString": "contract IERC20"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 7772,
+                    "id": 7897,
                     "name": "IERC20",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 7539,
+                    "referencedDeclaration": 7664,
                     "src": "656:6:62",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$7539",
+                      "typeIdentifier": "t_contract$_IERC20_$7664",
                       "typeString": "contract IERC20"
                     }
                   },
@@ -554,10 +554,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 7775,
+                  "id": 7900,
                   "name": "beneficiary",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7801,
+                  "scope": 7926,
                   "src": "670:19:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -566,7 +566,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7774,
+                    "id": 7899,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "670:7:62",
@@ -581,10 +581,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 7777,
+                  "id": 7902,
                   "name": "releaseTime",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7801,
+                  "scope": 7926,
                   "src": "691:19:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -593,7 +593,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7776,
+                    "id": 7901,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "691:7:62",
@@ -609,12 +609,12 @@
               "src": "655:56:62"
             },
             "returnParameters": {
-              "id": 7779,
+              "id": 7904,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "719:0:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "643:335:62",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -622,70 +622,70 @@
           },
           {
             "body": {
-              "id": 7808,
+              "id": 7933,
               "nodeType": "Block",
               "src": "1083:30:62",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7806,
+                    "id": 7931,
                     "name": "_token",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 7767,
+                    "referencedDeclaration": 7892,
                     "src": "1100:6:62",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$7539",
+                      "typeIdentifier": "t_contract$_IERC20_$7664",
                       "typeString": "contract IERC20"
                     }
                   },
-                  "functionReturnParameters": 7805,
-                  "id": 7807,
+                  "functionReturnParameters": 7930,
+                  "id": 7932,
                   "nodeType": "Return",
                   "src": "1093:13:62"
                 }
               ]
             },
             "documentation": "@return the token being held.",
-            "id": 7809,
+            "id": 7934,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "token",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7802,
+              "id": 7927,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1051:2:62"
             },
             "returnParameters": {
-              "id": 7805,
+              "id": 7930,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7804,
+                  "id": 7929,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7809,
+                  "scope": 7934,
                   "src": "1075:6:62",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$7539",
+                    "typeIdentifier": "t_contract$_IERC20_$7664",
                     "typeString": "contract IERC20"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 7803,
+                    "id": 7928,
                     "name": "IERC20",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 7539,
+                    "referencedDeclaration": 7664,
                     "src": "1075:6:62",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$7539",
+                      "typeIdentifier": "t_contract$_IERC20_$7664",
                       "typeString": "contract IERC20"
                     }
                   },
@@ -695,7 +695,7 @@
               ],
               "src": "1074:8:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "1037:76:62",
             "stateMutability": "view",
             "superFunction": null,
@@ -703,54 +703,54 @@
           },
           {
             "body": {
-              "id": 7816,
+              "id": 7941,
               "nodeType": "Block",
               "src": "1234:36:62",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7814,
+                    "id": 7939,
                     "name": "_beneficiary",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 7769,
+                    "referencedDeclaration": 7894,
                     "src": "1251:12:62",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "functionReturnParameters": 7813,
-                  "id": 7815,
+                  "functionReturnParameters": 7938,
+                  "id": 7940,
                   "nodeType": "Return",
                   "src": "1244:19:62"
                 }
               ]
             },
             "documentation": "@return the beneficiary of the tokens.",
-            "id": 7817,
+            "id": 7942,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "beneficiary",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7810,
+              "id": 7935,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1201:2:62"
             },
             "returnParameters": {
-              "id": 7813,
+              "id": 7938,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7812,
+                  "id": 7937,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7817,
+                  "scope": 7942,
                   "src": "1225:7:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -759,7 +759,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7811,
+                    "id": 7936,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1225:7:62",
@@ -775,7 +775,7 @@
               ],
               "src": "1224:9:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "1181:89:62",
             "stateMutability": "view",
             "superFunction": null,
@@ -783,54 +783,54 @@
           },
           {
             "body": {
-              "id": 7824,
+              "id": 7949,
               "nodeType": "Block",
               "src": "1399:36:62",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7822,
+                    "id": 7947,
                     "name": "_releaseTime",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 7771,
+                    "referencedDeclaration": 7896,
                     "src": "1416:12:62",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 7821,
-                  "id": 7823,
+                  "functionReturnParameters": 7946,
+                  "id": 7948,
                   "nodeType": "Return",
                   "src": "1409:19:62"
                 }
               ]
             },
             "documentation": "@return the time when the tokens are released.",
-            "id": 7825,
+            "id": 7950,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "releaseTime",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7818,
+              "id": 7943,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1366:2:62"
             },
             "returnParameters": {
-              "id": 7821,
+              "id": 7946,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7820,
+                  "id": 7945,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7825,
+                  "scope": 7950,
                   "src": "1390:7:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -839,7 +839,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7819,
+                    "id": 7944,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1390:7:62",
@@ -854,7 +854,7 @@
               ],
               "src": "1389:9:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "1346:89:62",
             "stateMutability": "view",
             "superFunction": null,
@@ -862,7 +862,7 @@
           },
           {
             "body": {
-              "id": 7859,
+              "id": 7984,
               "nodeType": "Block",
               "src": "1548:344:62",
               "statements": [
@@ -876,7 +876,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 7832,
+                        "id": 7957,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -885,18 +885,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 7829,
+                            "id": 7954,
                             "name": "block",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 10756,
+                            "referencedDeclaration": 10881,
                             "src": "1620:5:62",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_block",
                               "typeString": "block"
                             }
                           },
-                          "id": 7830,
+                          "id": 7955,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -914,11 +914,11 @@
                         "operator": ">=",
                         "rightExpression": {
                           "argumentTypes": null,
-                          "id": 7831,
+                          "id": 7956,
                           "name": "_releaseTime",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 7771,
+                          "referencedDeclaration": 7896,
                           "src": "1639:12:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -934,7 +934,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "546f6b656e54696d656c6f636b3a2063757272656e742074696d65206973206265666f72652072656c656173652074696d65",
-                        "id": 7833,
+                        "id": 7958,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -961,21 +961,21 @@
                           "typeString": "literal_string \"TokenTimelock: current time is before release time\""
                         }
                       ],
-                      "id": 7828,
+                      "id": 7953,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        10769,
-                        10770
+                        10894,
+                        10895
                       ],
-                      "referencedDeclaration": 10770,
+                      "referencedDeclaration": 10895,
                       "src": "1612:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 7834,
+                    "id": 7959,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -989,21 +989,21 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 7835,
+                  "id": 7960,
                   "nodeType": "ExpressionStatement",
                   "src": "1612:94:62"
                 },
                 {
                   "assignments": [
-                    7837
+                    7962
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 7837,
+                      "id": 7962,
                       "name": "amount",
                       "nodeType": "VariableDeclaration",
-                      "scope": 7859,
+                      "scope": 7984,
                       "src": "1717:14:62",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -1012,7 +1012,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 7836,
+                        "id": 7961,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "1717:7:62",
@@ -1025,7 +1025,7 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 7844,
+                  "id": 7969,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
@@ -1034,14 +1034,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 7841,
+                            "id": 7966,
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 10912,
+                            "referencedDeclaration": 11037,
                             "src": "1759:4:62",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_TokenTimelock_$7861",
+                              "typeIdentifier": "t_contract$_TokenTimelock_$7986",
                               "typeString": "contract TokenTimelock"
                             }
                           }
@@ -1049,11 +1049,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_TokenTimelock_$7861",
+                              "typeIdentifier": "t_contract$_TokenTimelock_$7986",
                               "typeString": "contract TokenTimelock"
                             }
                           ],
-                          "id": 7840,
+                          "id": 7965,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1066,7 +1066,7 @@
                           },
                           "typeName": "address"
                         },
-                        "id": 7842,
+                        "id": 7967,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1090,32 +1090,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 7838,
+                        "id": 7963,
                         "name": "_token",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7767,
+                        "referencedDeclaration": 7892,
                         "src": "1734:6:62",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$7539",
+                          "typeIdentifier": "t_contract$_IERC20_$7664",
                           "typeString": "contract IERC20"
                         }
                       },
-                      "id": 7839,
+                      "id": 7964,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "balanceOf",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 7484,
+                      "referencedDeclaration": 7609,
                       "src": "1734:16:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
                         "typeString": "function (address) view external returns (uint256)"
                       }
                     },
-                    "id": 7843,
+                    "id": 7968,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1142,18 +1142,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 7848,
+                        "id": 7973,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 7846,
+                          "id": 7971,
                           "name": "amount",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 7837,
+                          "referencedDeclaration": 7962,
                           "src": "1783:6:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1165,7 +1165,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 7847,
+                          "id": 7972,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1189,7 +1189,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "546f6b656e54696d656c6f636b3a206e6f20746f6b656e7320746f2072656c65617365",
-                        "id": 7849,
+                        "id": 7974,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1216,21 +1216,21 @@
                           "typeString": "literal_string \"TokenTimelock: no tokens to release\""
                         }
                       ],
-                      "id": 7845,
+                      "id": 7970,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        10769,
-                        10770
+                        10894,
+                        10895
                       ],
-                      "referencedDeclaration": 10770,
+                      "referencedDeclaration": 10895,
                       "src": "1775:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 7850,
+                    "id": 7975,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1244,7 +1244,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 7851,
+                  "id": 7976,
                   "nodeType": "ExpressionStatement",
                   "src": "1775:58:62"
                 },
@@ -1254,11 +1254,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 7855,
+                        "id": 7980,
                         "name": "_beneficiary",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7769,
+                        "referencedDeclaration": 7894,
                         "src": "1864:12:62",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1267,11 +1267,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 7856,
+                        "id": 7981,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7837,
+                        "referencedDeclaration": 7962,
                         "src": "1878:6:62",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1292,32 +1292,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 7852,
+                        "id": 7977,
                         "name": "_token",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7767,
+                        "referencedDeclaration": 7892,
                         "src": "1844:6:62",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$7539",
+                          "typeIdentifier": "t_contract$_IERC20_$7664",
                           "typeString": "contract IERC20"
                         }
                       },
-                      "id": 7854,
+                      "id": 7979,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "safeTransfer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 7572,
+                      "referencedDeclaration": 7697,
                       "src": "1844:19:62",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_nonpayable$_t_contract$_IERC20_$7539_$_t_address_$_t_uint256_$returns$__$bound_to$_t_contract$_IERC20_$7539_$",
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_contract$_IERC20_$7664_$_t_address_$_t_uint256_$returns$__$bound_to$_t_contract$_IERC20_$7664_$",
                         "typeString": "function (contract IERC20,address,uint256)"
                       }
                     },
-                    "id": 7857,
+                    "id": 7982,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1331,39 +1331,39 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 7858,
+                  "id": 7983,
                   "nodeType": "ExpressionStatement",
                   "src": "1844:41:62"
                 }
               ]
             },
             "documentation": "@notice Transfers tokens held by timelock to beneficiary.",
-            "id": 7860,
+            "id": 7985,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "release",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7826,
+              "id": 7951,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1538:2:62"
             },
             "returnParameters": {
-              "id": 7827,
+              "id": 7952,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1548:0:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "1522:370:62",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 7862,
+        "scope": 7987,
         "src": "338:1556:62"
       }
     ],
@@ -1373,14 +1373,14 @@
     "absolutePath": "/Users/macbook/Documents/freelance/Angular/Quiz/contracts/helpers/token/ERC20/TokenTimelock.sol",
     "exportedSymbols": {
       "TokenTimelock": [
-        7861
+        7986
       ]
     },
-    "id": 7862,
+    "id": 7987,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7761,
+        "id": 7886,
         "literals": [
           "solidity",
           "^",
@@ -1393,10 +1393,10 @@
       {
         "absolutePath": "/Users/macbook/Documents/freelance/Angular/Quiz/contracts/helpers/token/ERC20/SafeERC20.sol",
         "file": "./SafeERC20.sol",
-        "id": 7762,
+        "id": 7887,
         "nodeType": "ImportDirective",
-        "scope": 7862,
-        "sourceUnit": 7760,
+        "scope": 7987,
+        "sourceUnit": 7885,
         "src": "25:25:62",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1407,24 +1407,24 @@
         "contractKind": "contract",
         "documentation": "@dev A token holder contract that will allow a beneficiary to extract the\ntokens after a given release time.\n * Useful for simple vesting schedules like \"advisors get all of their tokens\nafter 1 year\".\n * For a more complete vesting schedule, see {TokenVesting}.",
         "fullyImplemented": true,
-        "id": 7861,
+        "id": 7986,
         "linearizedBaseContracts": [
-          7861
+          7986
         ],
         "name": "TokenTimelock",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 7765,
+            "id": 7890,
             "libraryName": {
               "contractScope": null,
-              "id": 7763,
+              "id": 7888,
               "name": "SafeERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7759,
+              "referencedDeclaration": 7884,
               "src": "373:9:62",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeERC20_$7759",
+                "typeIdentifier": "t_contract$_SafeERC20_$7884",
                 "typeString": "library SafeERC20"
               }
             },
@@ -1432,39 +1432,39 @@
             "src": "367:27:62",
             "typeName": {
               "contractScope": null,
-              "id": 7764,
+              "id": 7889,
               "name": "IERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7539,
+              "referencedDeclaration": 7664,
               "src": "387:6:62",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC20_$7539",
+                "typeIdentifier": "t_contract$_IERC20_$7664",
                 "typeString": "contract IERC20"
               }
             }
           },
           {
             "constant": false,
-            "id": 7767,
+            "id": 7892,
             "name": "_token",
             "nodeType": "VariableDeclaration",
-            "scope": 7861,
+            "scope": 7986,
             "src": "445:21:62",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_IERC20_$7539",
+              "typeIdentifier": "t_contract$_IERC20_$7664",
               "typeString": "contract IERC20"
             },
             "typeName": {
               "contractScope": null,
-              "id": 7766,
+              "id": 7891,
               "name": "IERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7539,
+              "referencedDeclaration": 7664,
               "src": "445:6:62",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC20_$7539",
+                "typeIdentifier": "t_contract$_IERC20_$7664",
                 "typeString": "contract IERC20"
               }
             },
@@ -1473,10 +1473,10 @@
           },
           {
             "constant": false,
-            "id": 7769,
+            "id": 7894,
             "name": "_beneficiary",
             "nodeType": "VariableDeclaration",
-            "scope": 7861,
+            "scope": 7986,
             "src": "526:28:62",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1485,7 +1485,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 7768,
+              "id": 7893,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "526:7:62",
@@ -1500,10 +1500,10 @@
           },
           {
             "constant": false,
-            "id": 7771,
+            "id": 7896,
             "name": "_releaseTime",
             "nodeType": "VariableDeclaration",
-            "scope": 7861,
+            "scope": 7986,
             "src": "608:28:62",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1512,7 +1512,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 7770,
+              "id": 7895,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "608:7:62",
@@ -1526,7 +1526,7 @@
           },
           {
             "body": {
-              "id": 7800,
+              "id": 7925,
               "nodeType": "Block",
               "src": "719:259:62",
               "statements": [
@@ -1540,18 +1540,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 7784,
+                        "id": 7909,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 7781,
+                          "id": 7906,
                           "name": "releaseTime",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 7777,
+                          "referencedDeclaration": 7902,
                           "src": "791:11:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1564,18 +1564,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 7782,
+                            "id": 7907,
                             "name": "block",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 10756,
+                            "referencedDeclaration": 10881,
                             "src": "805:5:62",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_block",
                               "typeString": "block"
                             }
                           },
-                          "id": 7783,
+                          "id": 7908,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1598,7 +1598,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "546f6b656e54696d656c6f636b3a2072656c656173652074696d65206973206265666f72652063757272656e742074696d65",
-                        "id": 7785,
+                        "id": 7910,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1625,21 +1625,21 @@
                           "typeString": "literal_string \"TokenTimelock: release time is before current time\""
                         }
                       ],
-                      "id": 7780,
+                      "id": 7905,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        10769,
-                        10770
+                        10894,
+                        10895
                       ],
-                      "referencedDeclaration": 10770,
+                      "referencedDeclaration": 10895,
                       "src": "783:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 7786,
+                    "id": 7911,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1653,28 +1653,28 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 7787,
+                  "id": 7912,
                   "nodeType": "ExpressionStatement",
                   "src": "783:92:62"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7790,
+                    "id": 7915,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 7788,
+                      "id": 7913,
                       "name": "_token",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7767,
+                      "referencedDeclaration": 7892,
                       "src": "885:6:62",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_IERC20_$7539",
+                        "typeIdentifier": "t_contract$_IERC20_$7664",
                         "typeString": "contract IERC20"
                       }
                     },
@@ -1682,42 +1682,42 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 7789,
+                      "id": 7914,
                       "name": "token",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7773,
+                      "referencedDeclaration": 7898,
                       "src": "894:5:62",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_IERC20_$7539",
+                        "typeIdentifier": "t_contract$_IERC20_$7664",
                         "typeString": "contract IERC20"
                       }
                     },
                     "src": "885:14:62",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$7539",
+                      "typeIdentifier": "t_contract$_IERC20_$7664",
                       "typeString": "contract IERC20"
                     }
                   },
-                  "id": 7791,
+                  "id": 7916,
                   "nodeType": "ExpressionStatement",
                   "src": "885:14:62"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7794,
+                    "id": 7919,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 7792,
+                      "id": 7917,
                       "name": "_beneficiary",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7769,
+                      "referencedDeclaration": 7894,
                       "src": "909:12:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1728,11 +1728,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 7793,
+                      "id": 7918,
                       "name": "beneficiary",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7775,
+                      "referencedDeclaration": 7900,
                       "src": "924:11:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1745,25 +1745,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 7795,
+                  "id": 7920,
                   "nodeType": "ExpressionStatement",
                   "src": "909:26:62"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7798,
+                    "id": 7923,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 7796,
+                      "id": 7921,
                       "name": "_releaseTime",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7771,
+                      "referencedDeclaration": 7896,
                       "src": "945:12:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1774,11 +1774,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 7797,
+                      "id": 7922,
                       "name": "releaseTime",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7777,
+                      "referencedDeclaration": 7902,
                       "src": "960:11:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1791,45 +1791,45 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 7799,
+                  "id": 7924,
                   "nodeType": "ExpressionStatement",
                   "src": "945:26:62"
                 }
               ]
             },
             "documentation": null,
-            "id": 7801,
+            "id": 7926,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7778,
+              "id": 7903,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7773,
+                  "id": 7898,
                   "name": "token",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7801,
+                  "scope": 7926,
                   "src": "656:12:62",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$7539",
+                    "typeIdentifier": "t_contract$_IERC20_$7664",
                     "typeString": "contract IERC20"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 7772,
+                    "id": 7897,
                     "name": "IERC20",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 7539,
+                    "referencedDeclaration": 7664,
                     "src": "656:6:62",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$7539",
+                      "typeIdentifier": "t_contract$_IERC20_$7664",
                       "typeString": "contract IERC20"
                     }
                   },
@@ -1838,10 +1838,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 7775,
+                  "id": 7900,
                   "name": "beneficiary",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7801,
+                  "scope": 7926,
                   "src": "670:19:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1850,7 +1850,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7774,
+                    "id": 7899,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "670:7:62",
@@ -1865,10 +1865,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 7777,
+                  "id": 7902,
                   "name": "releaseTime",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7801,
+                  "scope": 7926,
                   "src": "691:19:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1877,7 +1877,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7776,
+                    "id": 7901,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "691:7:62",
@@ -1893,12 +1893,12 @@
               "src": "655:56:62"
             },
             "returnParameters": {
-              "id": 7779,
+              "id": 7904,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "719:0:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "643:335:62",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1906,70 +1906,70 @@
           },
           {
             "body": {
-              "id": 7808,
+              "id": 7933,
               "nodeType": "Block",
               "src": "1083:30:62",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7806,
+                    "id": 7931,
                     "name": "_token",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 7767,
+                    "referencedDeclaration": 7892,
                     "src": "1100:6:62",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$7539",
+                      "typeIdentifier": "t_contract$_IERC20_$7664",
                       "typeString": "contract IERC20"
                     }
                   },
-                  "functionReturnParameters": 7805,
-                  "id": 7807,
+                  "functionReturnParameters": 7930,
+                  "id": 7932,
                   "nodeType": "Return",
                   "src": "1093:13:62"
                 }
               ]
             },
             "documentation": "@return the token being held.",
-            "id": 7809,
+            "id": 7934,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "token",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7802,
+              "id": 7927,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1051:2:62"
             },
             "returnParameters": {
-              "id": 7805,
+              "id": 7930,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7804,
+                  "id": 7929,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7809,
+                  "scope": 7934,
                   "src": "1075:6:62",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_IERC20_$7539",
+                    "typeIdentifier": "t_contract$_IERC20_$7664",
                     "typeString": "contract IERC20"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 7803,
+                    "id": 7928,
                     "name": "IERC20",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 7539,
+                    "referencedDeclaration": 7664,
                     "src": "1075:6:62",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_IERC20_$7539",
+                      "typeIdentifier": "t_contract$_IERC20_$7664",
                       "typeString": "contract IERC20"
                     }
                   },
@@ -1979,7 +1979,7 @@
               ],
               "src": "1074:8:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "1037:76:62",
             "stateMutability": "view",
             "superFunction": null,
@@ -1987,54 +1987,54 @@
           },
           {
             "body": {
-              "id": 7816,
+              "id": 7941,
               "nodeType": "Block",
               "src": "1234:36:62",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7814,
+                    "id": 7939,
                     "name": "_beneficiary",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 7769,
+                    "referencedDeclaration": 7894,
                     "src": "1251:12:62",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "functionReturnParameters": 7813,
-                  "id": 7815,
+                  "functionReturnParameters": 7938,
+                  "id": 7940,
                   "nodeType": "Return",
                   "src": "1244:19:62"
                 }
               ]
             },
             "documentation": "@return the beneficiary of the tokens.",
-            "id": 7817,
+            "id": 7942,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "beneficiary",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7810,
+              "id": 7935,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1201:2:62"
             },
             "returnParameters": {
-              "id": 7813,
+              "id": 7938,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7812,
+                  "id": 7937,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7817,
+                  "scope": 7942,
                   "src": "1225:7:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2043,7 +2043,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7811,
+                    "id": 7936,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1225:7:62",
@@ -2059,7 +2059,7 @@
               ],
               "src": "1224:9:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "1181:89:62",
             "stateMutability": "view",
             "superFunction": null,
@@ -2067,54 +2067,54 @@
           },
           {
             "body": {
-              "id": 7824,
+              "id": 7949,
               "nodeType": "Block",
               "src": "1399:36:62",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 7822,
+                    "id": 7947,
                     "name": "_releaseTime",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 7771,
+                    "referencedDeclaration": 7896,
                     "src": "1416:12:62",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 7821,
-                  "id": 7823,
+                  "functionReturnParameters": 7946,
+                  "id": 7948,
                   "nodeType": "Return",
                   "src": "1409:19:62"
                 }
               ]
             },
             "documentation": "@return the time when the tokens are released.",
-            "id": 7825,
+            "id": 7950,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "releaseTime",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7818,
+              "id": 7943,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1366:2:62"
             },
             "returnParameters": {
-              "id": 7821,
+              "id": 7946,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7820,
+                  "id": 7945,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7825,
+                  "scope": 7950,
                   "src": "1390:7:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2123,7 +2123,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7819,
+                    "id": 7944,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1390:7:62",
@@ -2138,7 +2138,7 @@
               ],
               "src": "1389:9:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "1346:89:62",
             "stateMutability": "view",
             "superFunction": null,
@@ -2146,7 +2146,7 @@
           },
           {
             "body": {
-              "id": 7859,
+              "id": 7984,
               "nodeType": "Block",
               "src": "1548:344:62",
               "statements": [
@@ -2160,7 +2160,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 7832,
+                        "id": 7957,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2169,18 +2169,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 7829,
+                            "id": 7954,
                             "name": "block",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 10756,
+                            "referencedDeclaration": 10881,
                             "src": "1620:5:62",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_block",
                               "typeString": "block"
                             }
                           },
-                          "id": 7830,
+                          "id": 7955,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2198,11 +2198,11 @@
                         "operator": ">=",
                         "rightExpression": {
                           "argumentTypes": null,
-                          "id": 7831,
+                          "id": 7956,
                           "name": "_releaseTime",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 7771,
+                          "referencedDeclaration": 7896,
                           "src": "1639:12:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2218,7 +2218,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "546f6b656e54696d656c6f636b3a2063757272656e742074696d65206973206265666f72652072656c656173652074696d65",
-                        "id": 7833,
+                        "id": 7958,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2245,21 +2245,21 @@
                           "typeString": "literal_string \"TokenTimelock: current time is before release time\""
                         }
                       ],
-                      "id": 7828,
+                      "id": 7953,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        10769,
-                        10770
+                        10894,
+                        10895
                       ],
-                      "referencedDeclaration": 10770,
+                      "referencedDeclaration": 10895,
                       "src": "1612:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 7834,
+                    "id": 7959,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2273,21 +2273,21 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 7835,
+                  "id": 7960,
                   "nodeType": "ExpressionStatement",
                   "src": "1612:94:62"
                 },
                 {
                   "assignments": [
-                    7837
+                    7962
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 7837,
+                      "id": 7962,
                       "name": "amount",
                       "nodeType": "VariableDeclaration",
-                      "scope": 7859,
+                      "scope": 7984,
                       "src": "1717:14:62",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -2296,7 +2296,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 7836,
+                        "id": 7961,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "1717:7:62",
@@ -2309,7 +2309,7 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 7844,
+                  "id": 7969,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
@@ -2318,14 +2318,14 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 7841,
+                            "id": 7966,
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 10912,
+                            "referencedDeclaration": 11037,
                             "src": "1759:4:62",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_TokenTimelock_$7861",
+                              "typeIdentifier": "t_contract$_TokenTimelock_$7986",
                               "typeString": "contract TokenTimelock"
                             }
                           }
@@ -2333,11 +2333,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_TokenTimelock_$7861",
+                              "typeIdentifier": "t_contract$_TokenTimelock_$7986",
                               "typeString": "contract TokenTimelock"
                             }
                           ],
-                          "id": 7840,
+                          "id": 7965,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2350,7 +2350,7 @@
                           },
                           "typeName": "address"
                         },
-                        "id": 7842,
+                        "id": 7967,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2374,32 +2374,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 7838,
+                        "id": 7963,
                         "name": "_token",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7767,
+                        "referencedDeclaration": 7892,
                         "src": "1734:6:62",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$7539",
+                          "typeIdentifier": "t_contract$_IERC20_$7664",
                           "typeString": "contract IERC20"
                         }
                       },
-                      "id": 7839,
+                      "id": 7964,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "balanceOf",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 7484,
+                      "referencedDeclaration": 7609,
                       "src": "1734:16:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
                         "typeString": "function (address) view external returns (uint256)"
                       }
                     },
-                    "id": 7843,
+                    "id": 7968,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2426,18 +2426,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 7848,
+                        "id": 7973,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 7846,
+                          "id": 7971,
                           "name": "amount",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 7837,
+                          "referencedDeclaration": 7962,
                           "src": "1783:6:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2449,7 +2449,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 7847,
+                          "id": 7972,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2473,7 +2473,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "546f6b656e54696d656c6f636b3a206e6f20746f6b656e7320746f2072656c65617365",
-                        "id": 7849,
+                        "id": 7974,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2500,21 +2500,21 @@
                           "typeString": "literal_string \"TokenTimelock: no tokens to release\""
                         }
                       ],
-                      "id": 7845,
+                      "id": 7970,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        10769,
-                        10770
+                        10894,
+                        10895
                       ],
-                      "referencedDeclaration": 10770,
+                      "referencedDeclaration": 10895,
                       "src": "1775:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 7850,
+                    "id": 7975,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2528,7 +2528,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 7851,
+                  "id": 7976,
                   "nodeType": "ExpressionStatement",
                   "src": "1775:58:62"
                 },
@@ -2538,11 +2538,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 7855,
+                        "id": 7980,
                         "name": "_beneficiary",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7769,
+                        "referencedDeclaration": 7894,
                         "src": "1864:12:62",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -2551,11 +2551,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 7856,
+                        "id": 7981,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7837,
+                        "referencedDeclaration": 7962,
                         "src": "1878:6:62",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2576,32 +2576,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 7852,
+                        "id": 7977,
                         "name": "_token",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7767,
+                        "referencedDeclaration": 7892,
                         "src": "1844:6:62",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_IERC20_$7539",
+                          "typeIdentifier": "t_contract$_IERC20_$7664",
                           "typeString": "contract IERC20"
                         }
                       },
-                      "id": 7854,
+                      "id": 7979,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "safeTransfer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 7572,
+                      "referencedDeclaration": 7697,
                       "src": "1844:19:62",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_nonpayable$_t_contract$_IERC20_$7539_$_t_address_$_t_uint256_$returns$__$bound_to$_t_contract$_IERC20_$7539_$",
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_contract$_IERC20_$7664_$_t_address_$_t_uint256_$returns$__$bound_to$_t_contract$_IERC20_$7664_$",
                         "typeString": "function (contract IERC20,address,uint256)"
                       }
                     },
-                    "id": 7857,
+                    "id": 7982,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2615,39 +2615,39 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 7858,
+                  "id": 7983,
                   "nodeType": "ExpressionStatement",
                   "src": "1844:41:62"
                 }
               ]
             },
             "documentation": "@notice Transfers tokens held by timelock to beneficiary.",
-            "id": 7860,
+            "id": 7985,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "release",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7826,
+              "id": 7951,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1538:2:62"
             },
             "returnParameters": {
-              "id": 7827,
+              "id": 7952,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1548:0:62"
             },
-            "scope": 7861,
+            "scope": 7986,
             "src": "1522:370:62",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 7862,
+        "scope": 7987,
         "src": "338:1556:62"
       }
     ],
@@ -2659,7 +2659,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.19",
-  "updatedAt": "2019-12-06T09:09:55.028Z",
+  "updatedAt": "2019-12-12T06:04:53.062Z",
   "devdoc": {
     "details": "A token holder contract that will allow a beneficiary to extract the tokens after a given release time. * Useful for simple vesting schedules like \"advisors get all of their tokens after 1 year\". * For a more complete vesting schedule, see {TokenVesting}.",
     "methods": {

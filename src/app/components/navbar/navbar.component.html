@@ -24,7 +24,7 @@
             </li>
             <li class="nav-item">
                 <div *ngIf="amountSpinner">
-                    <div class="lds-ripple">
+                    <div class="lds-ripple-small">
                         <div></div>
                         <div></div>
                     </div>
@@ -63,7 +63,7 @@
                     <p *ngIf="depositError !== undefined" class="deposit_error">{{depositError}}</p>
                     <button *ngIf="!depositSpinner" type="button" class="btn btn-outline-dark" (click)="deposit()">Deposit</button>
                     <div *ngIf="depositSpinner">
-                        <div class="lds-ripple">
+                        <div class="lds-ripple-small">
                             <div></div>
                             <div></div>
                         </div>
@@ -87,7 +87,7 @@
                     <p *ngIf="withdrawalError !== undefined" class="deposit_error">{{withdrawalError}}</p>
                     <button *ngIf="!withdrawalSpinner" type="button" class="btn btn-outline-dark" (click)="withdrawal()">Withdrawal</button>
                     <div *ngIf="withdrawalSpinner">
-                        <div class="lds-ripple">
+                        <div class="lds-ripple-small">
                             <div></div>
                             <div></div>
                         </div>

@@ -107,7 +107,6 @@ export class MyActivitesComponent implements OnInit {
   findAnswer(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
     return findParticipiant !== -1 ? data.parcipiantAnswers[findParticipiant].answer : undefined;
-
   }
 
   findAnswered(data) {
@@ -169,8 +168,6 @@ export class MyActivitesComponent implements OnInit {
     } else {
       return 0
     }
-
-
   }
 
   makeMultyAnswer(data, i, event) {

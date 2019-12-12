@@ -46,13 +46,11 @@ export class NavbarComponent {
     })
   }
 
-  connectToLoom() {
+  async connectToLoom() {
     this.web3 = new Web3(window.web3.currentProvider);
     this.loomEthCoinData = new LoomEthCoin()
-    this.loomEthCoinData.load(this.web3)
-    setTimeout(() => {
-      this.updateBalance()
-    }, 2500)
+    await this.loomEthCoinData.load(this.web3)
+    this.updateBalance()
   }
 
   async updateBalance() {

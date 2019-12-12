@@ -284,17 +284,24 @@ export class CreateQuizeComponent implements OnInit {
   async sendToContract(id) {
     let contract = new Contract()
     let contr = await contract.initContract()
-    let userAccount = contract.getUserAccount().ethereum.local.toString()
-    let hostWallet = this.host[0].wallet;
     let startTime = this.getStartTime();
     let endTime = this.getEndTime();
     let percentHost = parseInt("-1");
     let percentValidator = parseInt("-1");
     let questionQuantity = this.answesQuality;
+    let validatorsAmount = this.questionForm.value.amountOfValidators;
 
-    console.log(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity)
+    console.log(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount)
 
-    let sendToContract = await contr.methods.startQestion(hostWallet, id, startTime, endTime, percentHost, percentValidator, questionQuantity).send()
+    let sendToContract = await contr.methods.startQestion(
+      id,
+      startTime,
+      endTime,
+      percentHost,
+      percentValidator,
+      questionQuantity,
+      validatorsAmount
+    ).send()
     if (sendToContract.transactionHash !== undefined) {
       this.setToDb(id, sendToContract.transactionHash);
     }

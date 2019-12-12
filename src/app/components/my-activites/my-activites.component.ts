@@ -220,16 +220,14 @@ export class MyActivitesComponent implements OnInit {
     } else {
       let web3 = new Web3();
       let contract = new Contract();
-
       var _question_id = dataAnswer.id;
       var _whichAnswer = answer.answer;
       console.log(dataAnswer.money)
       var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
-      var _timeNow = Math.floor(Date.now() / 1000);
       let contr = await contract.initContract()
       console.log(_question_id, _whichAnswer, _money)
       console.log(contr)
-      let validator = await contr.methods.setAnswerValidator(_question_id).call();
+      let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
         let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
           value: _money

@@ -170,6 +170,15 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
+  getValidatorsPercentage(answerIndex, questionIndex){
+    if (this.allData[questionIndex].validatorsAnswers !== undefined) {
+      let quantity = this.allData[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
+      return quantity.length;
+    } else {
+      return 0
+    }
+  }
+
   makeMultyAnswer(data, i, event) {
     this.errorValidator.idError = null;
     this.errorValidator.message = undefined;
@@ -257,20 +266,18 @@ export class MyActivitesComponent implements OnInit {
       answerQuantity: dataAnswer.answerQuantity + 1
     }
     console.log(data);
-    this.postService.post("answer", data).subscribe(() => {
+    this.postService.post("answer", data).subscribe(async () => {
       let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
       this.myAnswers[index].answered = true;
 
       this.getDataFromDb();
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
-      loomEthCoinData.load(web3)
+      await loomEthCoinData.load(web3)
 
-      setTimeout(async () => {
-        this.coinInfo = await loomEthCoinData._updateBalances()
-        console.log(this.coinInfo)
-        this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
-      }, 2500)
+      this.coinInfo = await loomEthCoinData._updateBalances()
+      console.log(this.coinInfo)
+      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
 
     },
       (err) => {

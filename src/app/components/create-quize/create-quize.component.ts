@@ -331,6 +331,7 @@ export class CreateQuizeComponent implements OnInit {
         return x.wallet
       }),
       answerQuantity: 0,
+      validatorsQuantity: 0,
       validatorsAmount: this.questionForm.value.amountOfValidators,
       money: this.questionForm.value.amount,
       finalAnswers: null,

@@ -12,6 +12,7 @@ import { PostService } from '../../services/post.service';
 import LoomEthCoin from '../../services/LoomEthCoin';
 import * as CoinsActios from '../../actions/coins.actions';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { interval } from 'rxjs';
 
 
 @Component({
@@ -30,6 +31,8 @@ export class ValidateComponent {
     idError: null,
     message: undefined
   }
+
+
 
 
   constructor(
@@ -51,6 +54,9 @@ export class ValidateComponent {
         this.coinInfo = x[0];
       }
     })
+    // interval(1000).subscribe(x => {
+    //   this.timeGuardText(x);
+    // });
   }
 
   getData() {
@@ -106,7 +112,7 @@ export class ValidateComponent {
     }
   }
 
-  getValidatorsPercentage(answerIndex, questionIndex){
+  getValidatorsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].validatorsAnswers !== undefined) {
       let quantity = this.questions[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
       return quantity.length;
@@ -133,17 +139,18 @@ export class ValidateComponent {
 
   timeGuardText(data) {
     let dateNow = Number((new Date().getTime() / 1000).toFixed(0));
-    if (data.startTime > dateNow) {
-      let date = new Date(data.startTime * 1000);
-      return "Start " + moment(date, "YYYYMMDDhhmm").fromNow();
+    if (data.endTime > dateNow) {
+      let date = new Date(data.endTime * 1000);
+      return "Start " + moment(date, "YYYYMMDDhhmm").fromNow() + (data.endTime - dateNow);
     } else {
-      return "Participate now!";
+      return "Validate now!";
     }
+
   }
 
   timeGuard(data) {
     let dateNow = Number((new Date().getTime() / 1000).toFixed(0));
-    if (data.startTime > dateNow) {
+    if (data.endTime > dateNow) {
       return true
     } else {
       return false;
@@ -155,6 +162,13 @@ export class ValidateComponent {
     this.myAnswers[index].answer = i;
     this.errorValidator.idError = null;
     this.errorValidator.message = undefined;
+  }
+
+  async info(id) {
+    let contract = new Contract();
+    let contr = await contract.initContract()
+    let validator = await contr.methods.getQuestion(id).call();
+    console.log(validator);
   }
 
   setAnswer(dataAnswer) {
@@ -172,39 +186,32 @@ export class ValidateComponent {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Chose at leas one answer"
       } else {
-        //this.setToLoomNetwork(answer, dataAnswer);
-        this.setToDB(answer, dataAnswer, "hash")
+        this.setToLoomNetwork(answer, dataAnswer);
       }
     }
   }
 
   async setToLoomNetwork(answer, dataAnswer) {
-    if (Number(this.coinInfo.loomBalance) < dataAnswer.money) {
-      this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "Don't have enough money"
-    } else {
-      let web3 = new Web3();
-      let contract = new Contract();
-      var _question_id = dataAnswer.id;
-      var _whichAnswer = answer.answer;
-      var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
-      let contr = await contract.initContract()
-      let validator = await contr.methods.setTimeAnswer(_question_id).call();
-      if (Number(validator) === 0) {
-        let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
-          value: _money
-        });
-        if (sendToContract.transactionHash !== undefined) {
-          this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
-        }
-      } else if (Number(validator) === 1) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event not started yeat."
-      } else if (Number(validator) === 3) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Already finished"
+
+    let contract = new Contract();
+    var _question_id = dataAnswer.id;
+    var _whichAnswer = answer.answer;
+    let contr = await contract.initContract()
+    let validator = await contr.methods.setTimeValidator(_question_id).call();
+    console.log(validator);
+    if (Number(validator) === 0) {
+      let sendToContract = await contr.methods.setValidator(_question_id, _whichAnswer).send();
+      if (sendToContract.transactionHash !== undefined) {
+        this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
       }
+    } else if (Number(validator) === 1) {
+      this.errorValidator.idError = dataAnswer.id
+      this.errorValidator.message = "Event not started yeat."
+    } else if (Number(validator) === 2) {
+      this.errorValidator.idError = dataAnswer.id
+      this.errorValidator.message = "Already finished"
     }
+
   }
 
 

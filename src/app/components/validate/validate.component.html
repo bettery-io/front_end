@@ -15,6 +15,7 @@
                             <p class="question">{{question.question}}</p>
                             <p class="from">You are: {{question.from}}</p>
                             <a [routerLink]="['/~ki339203/question', question.id]">Open Link</a>
+                            <button (click)="this.info(question.id)">info</button>
                         </div>
                         <div class="hashtags_box">
                             <p class="hashtags" *ngFor="let hashtag of question.hashtags">#{{hashtag}}</p>
@@ -83,9 +84,9 @@
                         </div>
 
                         <div class="button_box">
-                            <button [disabled]="this.timeGuard(question)" *ngIf="myAnswers[index].answered === false"
+                            <button *ngIf="myAnswers[index].answered === false"
                                 type="button" class="btn" [ngClass]="{'btn-primary':this.timeGuard(question) === false, 'btn-danger':this.timeGuard(question) === true }"
-                                (click)="this.setAnswer(question)">{{this.timeGuardText(question)}}</button>
+                                (click)="this.setAnswer(question)">{{[this.timeGuardText(question)]}}</button>
                             <div *ngIf="errorValidator.idError === question.id">
                                 <p class="error_answer">{{errorValidator.message}}</p>
                             </div>

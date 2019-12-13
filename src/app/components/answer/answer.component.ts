@@ -199,7 +199,7 @@ export class AnswerComponent {
       } else if (Number(validator) === 1) {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Event not started yeat."
-      } else if (Number(validator) === 3) {
+      } else if (Number(validator) === 2) {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Already finished"
       }

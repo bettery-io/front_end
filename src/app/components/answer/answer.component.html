@@ -83,7 +83,7 @@
                         </div>
 
                         <div class="button_box">
-                            <button [disabled]="this.timeGuard(question)" *ngIf="myAnswers[index].answered === false" type="button" class="btn"
+                            <button *ngIf="myAnswers[index].answered === false" type="button" class="btn"
                             [ngClass]="{'btn-primary':this.timeGuard(question) === false, 'btn-danger':this.timeGuard(question) === true }"
                                 (click)="this.setAnswer(question)">{{this.timeGuardText(question)}}</button>
                             <div *ngIf="errorValidator.idError === question.id">

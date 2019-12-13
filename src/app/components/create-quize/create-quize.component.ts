@@ -286,8 +286,8 @@ export class CreateQuizeComponent implements OnInit {
     let contr = await contract.initContract()
     let startTime = this.getStartTime();
     let endTime = this.getEndTime();
-    let percentHost = parseInt("-1");
-    let percentValidator = parseInt("-1");
+    let percentHost = 0;
+    let percentValidator = 0;
     let questionQuantity = this.answesQuality;
     let validatorsAmount = this.questionForm.value.amountOfValidators;
 

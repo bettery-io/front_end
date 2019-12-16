@@ -106,16 +106,16 @@ export class ValidateComponent {
   getParticipantsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].parcipiantAnswers !== undefined) {
       let quantity = this.questions[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return quantity.length;
+      return ((quantity.length / Number(this.questions[questionIndex].answerQuantity)) * 100).toFixed(0); 
     } else {
       return 0
     }
   }
 
-  getValidatorsPercentage(answerIndex, questionIndex) {
+  getValidatorsPercentage(answerIndex, questionIndex){
     if (this.questions[questionIndex].validatorsAnswers !== undefined) {
       let quantity = this.questions[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return quantity.length;
+      return ((quantity.length / Number(this.questions[questionIndex].validatorsQuantity)) * 100).toFixed(0); 
     } else {
       return 0
     }

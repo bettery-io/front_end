@@ -164,7 +164,7 @@ export class MyActivitesComponent implements OnInit {
   getParticipantsPercentage(answerIndex, questionIndex) {
     if (this.allData[questionIndex].parcipiantAnswers !== undefined) {
       let quantity = this.allData[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return quantity.length;
+      return ((quantity.length / Number(this.allData[questionIndex].answerQuantity)) * 100).toFixed(0); 
     } else {
       return 0
     }
@@ -173,7 +173,7 @@ export class MyActivitesComponent implements OnInit {
   getValidatorsPercentage(answerIndex, questionIndex){
     if (this.allData[questionIndex].validatorsAnswers !== undefined) {
       let quantity = this.allData[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return quantity.length;
+      return ((quantity.length / Number(this.allData[questionIndex].validatorsQuantity)) * 100).toFixed(0); 
     } else {
       return 0
     }

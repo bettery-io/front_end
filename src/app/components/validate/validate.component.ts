@@ -164,13 +164,6 @@ export class ValidateComponent {
     this.errorValidator.message = undefined;
   }
 
-  async info(id) {
-    let contract = new Contract();
-    let contr = await contract.initContract()
-    let validator = await contr.methods.getQuestion(id).call();
-    console.log(validator);
-  }
-
   setAnswer(dataAnswer) {
     let answer = _.find(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
     if (answer.multy) {

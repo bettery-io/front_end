@@ -54,6 +54,7 @@ export class CreateQuizeComponent implements OnInit {
   startCaledarMeasure = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
   listHashtags = [];
   myHashtags = [];
+  spinner: boolean = false;
 
 
   constructor(
@@ -261,7 +262,6 @@ export class CreateQuizeComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.myHashtags)
 
     if (this.exactEndTime === false) {
       this.questionForm.controls.calendarEndDate.setValue('test');
@@ -282,6 +282,7 @@ export class CreateQuizeComponent implements OnInit {
   }
 
   async sendToContract(id) {
+    this.spinner = true;
     let contract = new Contract()
     let contr = await contract.initContract()
     let startTime = this.getStartTime();
@@ -293,17 +294,22 @@ export class CreateQuizeComponent implements OnInit {
 
     console.log(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount)
 
-    let sendToContract = await contr.methods.startQestion(
-      id,
-      startTime,
-      endTime,
-      percentHost,
-      percentValidator,
-      questionQuantity,
-      validatorsAmount
-    ).send()
-    if (sendToContract.transactionHash !== undefined) {
-      this.setToDb(id, sendToContract.transactionHash);
+    try {
+      let sendToContract = await contr.methods.startQestion(
+        id,
+        startTime,
+        endTime,
+        percentHost,
+        percentValidator,
+        questionQuantity,
+        validatorsAmount
+      ).send();
+      if (sendToContract.transactionHash !== undefined) {
+        this.setToDb(id, sendToContract.transactionHash);
+      }
+    } catch (error) {
+      console.log(error);
+      this.spinner = false;
     }
   }
 
@@ -342,6 +348,7 @@ export class CreateQuizeComponent implements OnInit {
       .subscribe(
         () => {
           this.generatedLink = id;
+          this.spinner = false;
           console.log("set to db DONE")
         },
         (err) => {

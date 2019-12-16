@@ -15,7 +15,6 @@
                             <p class="question">{{question.question}}</p>
                             <p class="from">You are: {{question.from}}</p>
                             <a [routerLink]="['/~ki339203/question', question.id]">Open Link</a>
-                            <button (click)="this.info(question.id)">info</button>
                         </div>
                         <div class="hashtags_box">
                             <p class="hashtags" *ngFor="let hashtag of question.hashtags">#{{hashtag}}</p>

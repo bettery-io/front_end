@@ -226,7 +226,13 @@
         </div>
 
         <div class="form_container button_pos">
-            <button type="button" (click)="onSubmit()" class="btn btn-success btn-lg btn-block">Create</button>
+            <button *ngIf="!spinner" type="button" (click)="onSubmit()" class="btn btn-success btn-lg btn-block">Create</button>
+            <div *ngIf="spinner">
+                <div class="lds-ripple-small">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
         </div>
     </form>
 

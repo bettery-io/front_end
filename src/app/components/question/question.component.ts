@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Router } from "@angular/router"
+import Contract from '../../services/contract';
 
 
 @Component({
@@ -47,7 +48,8 @@ export class QuestionComponent implements OnInit {
               this.startTime = moment(x.startTime).format("MM/DD/YYYY HH:mm:ss");
               this.endTime = moment(x.endTime).format("MM/DD/YYYY HH:mm:ss");
               this.access = x.private ? "Private" : "Public";
-              this.spinner = false
+              this.spinner = false;
+            //  this.info(question.id)
             }
           })
 
@@ -62,6 +64,14 @@ export class QuestionComponent implements OnInit {
         this.registError = false;
       }
     });
+  }
+
+  async info(id) {
+    let contract = new Contract();
+    let contr = await contract.initContract()
+    let infoData = await contr.methods.getQuestion(id).call();
+    this.spinner = false
+    console.log(infoData);
   }
 
 }

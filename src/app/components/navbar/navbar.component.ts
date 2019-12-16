@@ -30,6 +30,7 @@ export class NavbarComponent {
   amountSpinner: boolean = true;
   depositSpinner: boolean = false;
   withdrawalSpinner: boolean = false;
+  activeTab: string = undefined;
 
 
   constructor(private store: Store<AppState>, private modalService: NgbModal) {
@@ -51,6 +52,10 @@ export class NavbarComponent {
     this.loomEthCoinData = new LoomEthCoin()
     await this.loomEthCoinData.load(this.web3)
     this.updateBalance()
+  }
+
+  setActiveTab(data){
+    this.activeTab = data;
   }
 
   async updateBalance() {

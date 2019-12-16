@@ -23,6 +23,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { QuestionComponent } from './components/question/question.component';
 import { coinsReducer } from './reducers/coins.reducer';
+import { TimeComponent } from './components/time/time.component';
 
 
 
@@ -36,7 +37,8 @@ import { coinsReducer } from './reducers/coins.reducer';
     AnswerComponent,
     ValidateComponent,
     MyActivitesComponent,
-    QuestionComponent
+    QuestionComponent,
+    TimeComponent
   ],
   imports: [
     BrowserModule,

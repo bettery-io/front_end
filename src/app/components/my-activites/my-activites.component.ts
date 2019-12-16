@@ -117,20 +117,10 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
-  getParticipationTime(data) {
-    let date = new Date(data.startTime * 1000);
-    return moment(date, "YYYYMMDD").fromNow();
-  }
-
-  getValidationTime(data) {
-    let date = new Date(data.endTime * 1000);
-    return moment(date, "YYYYMMDD").fromNow();
-  }
-
   getEndValidation(data) {
     let date = new Date(data.endTime * 1000);
-    date.setDate(date.getDate() + 7);
-    return moment(date, "YYYYMMDD").fromNow();
+    let x = date.setDate(date.getDate() + 7);
+    return Number((new Date(x).getTime() / 1000).toFixed(0));
   }
 
   filter() {

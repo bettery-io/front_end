@@ -76,9 +76,9 @@
                             </div>
                             <div class="time">
                                 <p style="height: 25px"> </p>
-                                <p>Participation since: {{this.getParticipationTime(question)}}</p>
-                                <p>Validation: {{this.getValidationTime(question)}}</p>
-                                <p>Validation over: {{this.getEndValidation(question)}}</p>
+                                <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
+                                <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>
+                                <p style="display: flex">Validation over <time [timer]="this.getEndValidation(question)"></time> </p>
                             </div>
                         </div>
 

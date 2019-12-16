@@ -15,6 +15,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { interval } from 'rxjs';
 
 
+
 @Component({
   selector: 'validate',
   templateUrl: './validate.component.html',
@@ -54,9 +55,6 @@ export class ValidateComponent {
         this.coinInfo = x[0];
       }
     })
-    // interval(1000).subscribe(x => {
-    //   this.timeGuardText(x);
-    // });
   }
 
   getData() {
@@ -121,27 +119,18 @@ export class ValidateComponent {
     }
   }
 
-  getParticipationTime(data) {
-    let date = new Date(data.startTime * 1000);
-    return moment(date, "YYYYMMDD").fromNow();
-  }
-
-  getValidationTime(data) {
-    let date = new Date(data.endTime * 1000);
-    return moment(date, "YYYYMMDD").fromNow();
-  }
 
   getEndValidation(data) {
     let date = new Date(data.endTime * 1000);
-    date.setDate(date.getDate() + 7);
-    return moment(date, "YYYYMMDD").fromNow();
+    let x = date.setDate(date.getDate() + 7);
+    return Number((new Date(x).getTime() / 1000).toFixed(0));
   }
 
   timeGuardText(data) {
     let dateNow = Number((new Date().getTime() / 1000).toFixed(0));
     if (data.endTime > dateNow) {
       let date = new Date(data.endTime * 1000);
-      return "Start " + moment(date, "YYYYMMDDhhmm").fromNow() + (data.endTime - dateNow);
+      return "Start " + moment(date, "YYYYMMDDhhmm").fromNow();
     } else {
       return "Validate now!";
     }

@@ -94,9 +94,9 @@
                         </div>
                         <div class="time">
                             <p style="height: 25px"> </p>
-                            <p>Participation since: {{this.getParticipationTime(active)}}</p>
-                            <p>Validation: {{this.getValidationTime(active)}}</p>
-                            <p>Validation over: {{this.getEndValidation(active)}}</p>
+                            <p style="display: flex">Participation <time [timer]="active.startTime"></time></p>
+                            <p style="display: flex">Validation <time [timer]="active.endTime"></time></p>
+                            <p style="display: flex">Validation over <time [timer]="this.getEndValidation(active)"></time> </p>
                         </div>
                     </div>
 

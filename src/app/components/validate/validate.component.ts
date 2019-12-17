@@ -57,6 +57,11 @@ export class ValidateComponent {
     })
   }
 
+  getMultyIcon(answers, i) {
+    let index = answers.indexOf(i);
+    return index !== -1 ? true : false
+  }
+
   getData() {
     this.getService.get("question/get_all_private").subscribe((x) => {
       this.questions = _.orderBy(x, ['endTime'], ['asc']);
@@ -71,8 +76,9 @@ export class ValidateComponent {
         }
 
         this.myAnswers.push(z);
-        this.spinner = false;
       });
+      this.spinner = false;
+
       console.log(this.questions)
     })
   }

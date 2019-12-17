@@ -53,6 +53,11 @@ export class AnswerComponent {
     })
   }
 
+  getMultyIcon(answers, i) {
+    let index = answers.indexOf(i);
+    return index !== -1 ? true : false
+  }
+
   getData() {
     this.getService.get("question/get_all_private").subscribe((x) => {
       this.questions = _.orderBy(x, ['startTime'], ['asc']);
@@ -67,8 +72,8 @@ export class AnswerComponent {
         }
 
         this.myAnswers.push(z);
-        this.spinner = false;
       });
+      this.spinner = false;
       console.log(this.questions)
     })
   }

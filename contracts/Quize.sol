@@ -6,12 +6,9 @@ contract Quize {
      uint256 private sevenDaysTimeStamp = 604800;
      address payable companyAddress = 0x02810c3bc07De2ddAef89827b0dD6b223C7759d5;
 
-     event NewQuestionAdded(
-        uint256 endTime,
-        uint8 questionQuantity,
-        uint256 startTime,
-        uint8 percentHost,
-        uint8 percentValidator);
+    event eventIsFinish(
+        int question_id
+        );
 
     struct Participant{
         mapping (uint256 => Part) participants;
@@ -47,6 +44,7 @@ contract Quize {
          uint persentFee;
          uint persentForEachValidators;
          uint monayForParticipant;
+         uint correctAnswer;
      }
 
      struct Host {
@@ -85,14 +83,6 @@ contract Quize {
         }else{
            questions[_question_id].percentValidator = _percentValidator;
         }
-
-        emit NewQuestionAdded(
-            _endTime,
-            _questionQuantity,
-           _startTime,
-           _percentHost,
-           _percentValidator
-        );
     }
 
    function setAnswer(int256 _question_id, uint8 _whichAnswer) public payable{
@@ -154,6 +144,8 @@ contract Quize {
           }
         }
 
+        questions[_question_id].correctAnswer = correctAnswer;
+
 
          // calculate percent for validator
         uint256 persentForValidators = getPersent(questions[_question_id].money, questions[_question_id].percentValidator);
@@ -180,6 +172,10 @@ contract Quize {
 
         questions[_question_id].monayForParticipant = monayForParticipant;
 
+        emit eventIsFinish(
+            _question_id
+        );
+
         // // Delete question from storage
         // delete questions[_question_id];
     }
@@ -193,19 +189,17 @@ contract Quize {
            uint persentFee,
            uint persentForEachValidators,
            uint256 money,
+           uint monayForParticipant,
            uint8 questionQuantity,
-           int activeValidators,
-           int validatorsAmount,
-           uint monayForParticipant
+           uint correctAnswer
            ){
        return(
               questions[_question_id].persentFee,
               questions[_question_id].persentForEachValidators,
               questions[_question_id].money,
+              questions[_question_id].monayForParticipant,
               questions[_question_id].questionQuantity,
-              questions[_question_id].activeValidators,
-              questions[_question_id].validatorsAmount,
-              questions[_question_id].monayForParticipant
+              questions[_question_id].correctAnswer
               );
     }
 

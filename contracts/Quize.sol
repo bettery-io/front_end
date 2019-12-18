@@ -194,6 +194,15 @@ contract Quize {
     function setTimeValidator(int _question_id) public view returns(int8){
         if(int(now - questions[_question_id].endTime) >= 0){
           if(int((questions[_question_id].endTime + sevenDaysTimeStamp) - now) >= 0){
+
+        // if validator made activities like participants.
+        for(uint8 i = 0; i < questions[_question_id].questionQuantity; i++){
+          for(uint8 z = 0; z < questions[_question_id].participant[i].index; z++){
+           if(questions[_question_id].participant[i].participants[z].parts == msg.sender){
+               return 3;
+           }
+          }
+        }
             // user can validate because time is valid.
             return 0;
           }else{

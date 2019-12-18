@@ -154,16 +154,16 @@ export class MyActivitesComponent implements OnInit {
   getParticipantsPercentage(answerIndex, questionIndex) {
     if (this.allData[questionIndex].parcipiantAnswers !== undefined) {
       let quantity = this.allData[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.allData[questionIndex].answerQuantity)) * 100).toFixed(0); 
+      return ((quantity.length / Number(this.allData[questionIndex].answerQuantity)) * 100).toFixed(0);
     } else {
       return 0
     }
   }
 
-  getValidatorsPercentage(answerIndex, questionIndex){
+  getValidatorsPercentage(answerIndex, questionIndex) {
     if (this.allData[questionIndex].validatorsAnswers !== undefined) {
       let quantity = this.allData[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.allData[questionIndex].validatorsQuantity)) * 100).toFixed(0); 
+      return ((quantity.length / Number(this.allData[questionIndex].validatorsQuantity)) * 100).toFixed(0);
     } else {
       return 0
     }
@@ -221,96 +221,100 @@ export class MyActivitesComponent implements OnInit {
       var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
       let contr = await contract.initContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
-      if (Number(validator) === 0) {
-        let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
-          value: _money
-        });
-        if (sendToContract.transactionHash !== undefined) {
-          this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
-        }
-      } else if (Number(validator) === 1) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event not started yeat."
-      } else if (Number(validator) === 2) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Already finished"
+
+      switch (Number(validator)) {
+        case 0:
+          let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
+            value: _money
+          });
+          if (sendToContract.transactionHash !== undefined) {
+            this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
+          }
+          break;
+        case 1:
+          this.errorValidator.idError = dataAnswer.id
+          this.errorValidator.message = "Event not started yeat."
+          break;
+        case 2:
+          this.errorValidator.idError = dataAnswer.id
+          this.errorValidator.message = "Already finished"
+          break;
       }
     }
   }
 
 
-  setToDB(answer, dataAnswer, transactionHash) {
-    let data = {
-      multy: answer.multy,
-      event_id: answer.event_id,
-      date: new Date(),
-      answer: answer.answer,
-      multyAnswer: answer.multyAnswer,
-      transactionHash: transactionHash,
-      wallet: this.userWallet,
-      from: "participant",
-      answerQuantity: dataAnswer.answerQuantity + 1
-    }
-    console.log(data);
-    this.postService.post("answer", data).subscribe(async () => {
-      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
-      this.myAnswers[index].answered = true;
+    setToDB(answer, dataAnswer, transactionHash) {
+      let data = {
+        multy: answer.multy,
+        event_id: answer.event_id,
+        date: new Date(),
+        answer: answer.answer,
+        multyAnswer: answer.multyAnswer,
+        transactionHash: transactionHash,
+        wallet: this.userWallet,
+        from: "participant",
+        answerQuantity: dataAnswer.answerQuantity + 1
+      }
+      console.log(data);
+      this.postService.post("answer", data).subscribe(async () => {
+        let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
+        this.myAnswers[index].answered = true;
 
-      this.getDataFromDb();
-      let web3 = new Web3(window.web3.currentProvider);
-      let loomEthCoinData = new LoomEthCoin()
-      await loomEthCoinData.load(web3)
-
-      this.coinInfo = await loomEthCoinData._updateBalances()
-      console.log(this.coinInfo)
-      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
-
-    },
-      (err) => {
-        console.log(err)
-      })
-  }
-
-  async deleteEvent(data){
-    let id = data.id
-    let contract = new Contract();
-    let contr = await contract.initContract()
-    let deleteValidator = await contr.methods.deleteEventValidator(id).call();
-    if(Number(deleteValidator) === 0){
-      this.letsDeleteEvent(id, contr);
-    }else if(Number(deleteValidator) === 1){
-      this.errorValidator.idError = id
-      this.errorValidator.message = "You can't delete event because event has money on balance."
-    }else if(Number(deleteValidator) === 2){
-      this.errorValidator.idError = id
-      this.errorValidator.message = "You are now a owner of event, only owner can delete event."
-    }
-
-  }
-
-  async letsDeleteEvent(id, contr){
-    let deleteEvent = await contr.methods.deleteEvent(id).send();
-    console.log(deleteEvent);
-    if(deleteEvent.transactionHash !== undefined){
-       this.deleteFromDb(id);
-    }else{
-      this.errorValidator.idError = id
-      this.errorValidator.message = "error from contract. Check console log."
-    }
-  }
-
-  deleteFromDb(id){
-    let data = {
-      id: id
-    }
-    this.postService.post("delete_event", data)
-      .subscribe(() => {
         this.getDataFromDb();
-      }, 
-      (err)=>{
-        console.log("from delete wallet")
-        console.log(err)
-      })
-  }
+        let web3 = new Web3(window.web3.currentProvider);
+        let loomEthCoinData = new LoomEthCoin()
+        await loomEthCoinData.load(web3)
 
-}
+        this.coinInfo = await loomEthCoinData._updateBalances()
+        console.log(this.coinInfo)
+        this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+
+      },
+        (err) => {
+          console.log(err)
+        })
+    }
+
+    async deleteEvent(data){
+      let id = data.id
+      let contract = new Contract();
+      let contr = await contract.initContract()
+      let deleteValidator = await contr.methods.deleteEventValidator(id).call();
+      if (Number(deleteValidator) === 0) {
+        this.letsDeleteEvent(id, contr);
+      } else if (Number(deleteValidator) === 1) {
+        this.errorValidator.idError = id
+        this.errorValidator.message = "You can't delete event because event has money on balance."
+      } else if (Number(deleteValidator) === 2) {
+        this.errorValidator.idError = id
+        this.errorValidator.message = "You are now a owner of event, only owner can delete event."
+      }
+
+    }
+
+    async letsDeleteEvent(id, contr){
+      let deleteEvent = await contr.methods.deleteEvent(id).send();
+      if (deleteEvent.transactionHash !== undefined) {
+        this.deleteFromDb(id);
+      } else {
+        this.errorValidator.idError = id
+        this.errorValidator.message = "error from contract. Check console log."
+      }
+    }
+
+    deleteFromDb(id){
+      let data = {
+        id: id
+      }
+      this.postService.post("delete_event", data)
+        .subscribe(() => {
+          this.getDataFromDb();
+        },
+          (err) => {
+            console.log("from delete wallet")
+            console.log(err)
+          })
+    }
+
+  }

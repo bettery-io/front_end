@@ -110,16 +110,16 @@ export class ValidateComponent {
   getParticipantsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].parcipiantAnswers !== undefined) {
       let quantity = this.questions[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.questions[questionIndex].answerQuantity)) * 100).toFixed(0); 
+      return ((quantity.length / Number(this.questions[questionIndex].answerQuantity)) * 100).toFixed(0);
     } else {
       return 0
     }
   }
 
-  getValidatorsPercentage(answerIndex, questionIndex){
+  getValidatorsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].validatorsAnswers !== undefined) {
       let quantity = this.questions[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.questions[questionIndex].validatorsQuantity)) * 100).toFixed(0); 
+      return ((quantity.length / Number(this.questions[questionIndex].validatorsQuantity)) * 100).toFixed(0);
     } else {
       return 0
     }
@@ -186,18 +186,27 @@ export class ValidateComponent {
     var _whichAnswer = answer.answer;
     let contr = await contract.initContract()
     let validator = await contr.methods.setTimeValidator(_question_id).call();
-    console.log(validator);
-    if (Number(validator) === 0) {
-      let sendToContract = await contr.methods.setValidator(_question_id, _whichAnswer).send();
-      if (sendToContract.transactionHash !== undefined) {
-        this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
-      }
-    } else if (Number(validator) === 1) {
-      this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "Event not started yeat."
-    } else if (Number(validator) === 2) {
-      this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "Already finished"
+    console.log("validatin number: " + validator);
+
+    switch (Number(validator)) {
+      case 0:
+        let sendToContract = await contr.methods.setValidator(_question_id, _whichAnswer).send();
+        if (sendToContract.transactionHash !== undefined) {
+          this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
+        }
+        break;
+      case 1:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event not started yeat."
+        break;
+      case 2:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event not started yeat."
+        break;
+      case 3:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "You have been like the participant in this event. The participant can't be the validator."
+        break;
     }
 
   }

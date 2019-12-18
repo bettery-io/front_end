@@ -40,19 +40,14 @@ contract Quize {
          mapping (uint256 => Validator) validator;
          int validatorsAmount;
          int activeValidators;
-         bool pay;
+         address hostWallet;
          uint persentFee;
          uint persentForEachValidators;
          uint monayForParticipant;
          uint correctAnswer;
      }
 
-     struct Host {
-         int[] questions_id;
-     }
-
         mapping (int => Question) questions;
-        mapping (address => Host) host_id_wallet;
 
     function startQestion(
            int _question_id,
@@ -63,14 +58,12 @@ contract Quize {
            uint8 _questionQuantity,
            int _validatorsAmount
         ) public payable {
-           host_id_wallet[msg.sender].questions_id.push(_question_id);
-
            questions[_question_id].question_id = _question_id;
            questions[_question_id].endTime = _endTime;
            questions[_question_id].questionQuantity = _questionQuantity;
            questions[_question_id].startTime = _startTime;
            questions[_question_id].validatorsAmount = _validatorsAmount;
-           questions[_question_id].pay = false;
+           questions[_question_id].hostWallet = msg.sender;
 
         if(_percentHost == 0){
             questions[_question_id].percentHost = 3;
@@ -97,10 +90,6 @@ contract Quize {
        }
     }
 
-    function getIndex(int256 _question_id, uint256 index, uint8 _whichAnswer) public view returns(address){
-       return questions[_question_id].participant[_whichAnswer].participants[index].parts;
-    }
-
     function getFullAmount() public view returns(uint256){
         return fullAmount;
     }
@@ -125,8 +114,7 @@ contract Quize {
     function letsPayMoney(int _question_id) private {
        uint biggestValue = 0;
        uint correctAnswer;
-        questions[_question_id].pay = true;
-        int256 questionQuantity = questions[_question_id].questionQuantity;
+       int256 questionQuantity = questions[_question_id].questionQuantity;
 
         // pay fee for company
         uint256 persentFee = getPersent(questions[_question_id].money, percentQuiz);
@@ -206,11 +194,14 @@ contract Quize {
     function setTimeValidator(int _question_id) public view returns(int8){
         if(int(now - questions[_question_id].endTime) >= 0){
           if(int((questions[_question_id].endTime + sevenDaysTimeStamp) - now) >= 0){
+            // user can validate because time is valid.
             return 0;
           }else{
+            // user can't validate because time is finish.
             return 2;
           }
         }else{
+            // user can't validate because event is not started yet.
             return 1;
         }
     }
@@ -218,13 +209,39 @@ contract Quize {
     function setTimeAnswer(int256 _question_id) public view returns(int8){
          if(int(now - questions[_question_id].startTime) >= 0){
             if(int(questions[_question_id].endTime - now) >= 0){
+            // user can make answer because time is valid.
               return 0;
             }else{
+            // user can't make answer because event is finish.
               return 2;
             }
          }else{
+             // user can't make answer because event is not started yet.
              return 1;
          }
+      }
+
+      function deleteEventValidator(int _question_id) public view returns(int8){
+          if(questions[_question_id].hostWallet == msg.sender){
+            if(questions[_question_id].money == 0){
+              // user can delete event
+              return 0;
+            }else{
+              // user can't delete event because event has money on balance
+              return 1;
+            }
+          }else{
+              // only owner can delete event.
+              return 2;
+          }
+      }
+
+      function deleteEvent(int _question_id) public {
+        if(questions[_question_id].hostWallet == msg.sender){
+          if(questions[_question_id].money == 0){
+            delete questions[_question_id];
+          }
+        }
       }
 
 }

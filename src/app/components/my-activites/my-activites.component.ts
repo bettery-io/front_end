@@ -218,24 +218,20 @@ export class MyActivitesComponent implements OnInit {
       let contract = new Contract();
       var _question_id = dataAnswer.id;
       var _whichAnswer = answer.answer;
-      console.log(dataAnswer.money)
       var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
       let contr = await contract.initContract()
-      console.log(_question_id, _whichAnswer, _money)
-      console.log(contr)
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
         let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
           value: _money
         });
-        console.log(sendToContract)
         if (sendToContract.transactionHash !== undefined) {
           this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
         }
       } else if (Number(validator) === 1) {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Event not started yeat."
-      } else if (Number(validator) === 3) {
+      } else if (Number(validator) === 2) {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Already finished"
       }
@@ -271,6 +267,48 @@ export class MyActivitesComponent implements OnInit {
 
     },
       (err) => {
+        console.log(err)
+      })
+  }
+
+  async deleteEvent(data){
+    let id = data.id
+    let contract = new Contract();
+    let contr = await contract.initContract()
+    let deleteValidator = await contr.methods.deleteEventValidator(id).call();
+    if(Number(deleteValidator) === 0){
+      this.letsDeleteEvent(id, contr);
+    }else if(Number(deleteValidator) === 1){
+      this.errorValidator.idError = id
+      this.errorValidator.message = "You can't delete event because event has money on balance."
+    }else if(Number(deleteValidator) === 2){
+      this.errorValidator.idError = id
+      this.errorValidator.message = "You are now a owner of event, only owner can delete event."
+    }
+
+  }
+
+  async letsDeleteEvent(id, contr){
+    let deleteEvent = await contr.methods.deleteEvent(id).send();
+    console.log(deleteEvent);
+    if(deleteEvent.transactionHash !== undefined){
+       this.deleteFromDb(id);
+    }else{
+      this.errorValidator.idError = id
+      this.errorValidator.message = "error from contract. Check console log."
+    }
+  }
+
+  deleteFromDb(id){
+    let data = {
+      id: id
+    }
+    this.postService.post("delete_event", data)
+      .subscribe(() => {
+        this.getDataFromDb();
+      }, 
+      (err)=>{
+        console.log("from delete wallet")
         console.log(err)
       })
   }

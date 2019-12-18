@@ -101,7 +101,7 @@
                     </div>
 
                     <div class="button_box">
-                        <button type="button" class="btn btn-danger delete_button" *ngIf="active.from === 'Host'">Delete
+                        <button (click)="this.deleteEvent(active)" type="button" class="btn btn-danger delete_button" *ngIf="active.from === 'Host'">Delete
                             Event</button>
                         <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
                             (click)="this.setAnswer(active)">Participate now!</button>

@@ -260,25 +260,28 @@ export class CreateQuizeComponent implements OnInit {
   }
 
 
+
+
   onSubmit() {
-    this.submitted = true;
 
-    if (this.exactEndTime === false) {
-      this.questionForm.controls.calendarEndDate.setValue('test');
-      this.questionForm.controls.endTime.setValue("test");
-    } else {
-      this.questionForm.controls.endDate.setValue("test");
-    }
+    let promise = new Promise((resolve) => {
+      if (this.exactEndTime === false) {
+        this.questionForm.controls.calendarEndDate.setValue({year: 2019, month: 12, day: 18});
+        this.questionForm.controls.endTime.setValue({ hour: 1, minute: 1, second: 1 });
 
-
-    if (this.questionForm.invalid) {
-      return;
-    }
-
-    let id = this.generateID()
-
-    this.sendToContract(id);
-
+      } else {
+        this.questionForm.controls.endDate.setValue(1);
+      }
+        resolve("done")
+    })
+    promise.then(() => {
+      this.submitted = true;
+      if (this.questionForm.invalid) {
+        return;
+      }
+      let id = this.generateID()
+      this.sendToContract(id);
+    })
   }
 
   async sendToContract(id) {

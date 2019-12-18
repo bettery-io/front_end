@@ -10,7 +10,7 @@ import { QuestionComponent } from './components/question/question.component';
 
 const routes: Routes = [
   { path: "~ki339203/home", component: HomeComponent },
-  { path: "", redirectTo: "~ki339203/home", pathMatch: "full" },
+  { path: "~ki339203", redirectTo: "~ki339203/home", pathMatch: "full" },
   { path: "~ki339203/create-quize", component: CreateQuizeComponent },
   { path: "~ki339203/questions", component: AnswerComponent },
   { path: "~ki339203/validate", component: ValidateComponent },

@@ -30,6 +30,8 @@ export class AnswerComponent {
     idError: null,
     message: undefined
   }
+  userData:any = [];
+  
 
 
   constructor(
@@ -98,6 +100,20 @@ export class AnswerComponent {
       return this.findMultyAnswer(data).length !== 0 ? true : false;
     } else {
       return this.findAnswer(data) !== undefined ? true : false;
+    }
+  }
+
+  getPosition(data){
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    if(findParticipiant !== -1){
+     return "Participiant"
+    }else{
+      let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+       if(findValidator !== -1){
+        return "Validator"
+       }else{
+         return "Guest"
+       }
     }
   }
 

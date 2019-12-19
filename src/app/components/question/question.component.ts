@@ -11,8 +11,7 @@ import { Answer } from 'src/app/models/Answer.model';
 import _ from 'lodash';
 import Web3 from 'web3';
 import LoomEthCoin from '../../services/LoomEthCoin';
-import * as CoinsActios from '../../actions/coins.actions'; 
-
+import * as CoinsActios from '../../actions/coins.actions';
 
 @Component({
   selector: 'question',
@@ -62,7 +61,7 @@ export class QuestionComponent implements OnInit {
             setTimeout(() => {
               this.info(question.id)
             }, 3000)
-          }else{
+          } else {
             this.getDatafromDb(data);
           }
         });
@@ -70,29 +69,29 @@ export class QuestionComponent implements OnInit {
   }
 
 
-  getDatafromDb(data){
+  getDatafromDb(data) {
     this.postService.post("question/get_by_id", data)
-    .subscribe((x: Question) => {
-      if (x.id === undefined) {
-        this.empty = true
-        this.spinner = false
-      } else {
-        console.log(x);
-        this.question = x
-        let z = {
-          event_id: this.question.id,
-          answer: this.findAnswer(this.question),
-          from: this.question.from,
-          multy: this.question.multiChose,
-          answered: this.findAnswered(this.question),
-          multyAnswer: this.findMultyAnswer(this.question)
+      .subscribe((x: Question) => {
+        if (x.id === undefined) {
+          this.empty = true
+          this.spinner = false
+        } else {
+          console.log(x);
+          this.question = x
+          let z = {
+            event_id: this.question.id,
+            answer: this.findAnswer(this.question),
+            from: this.question.from,
+            multy: this.question.multiChose,
+            answered: this.findAnswered(this.question),
+            multyAnswer: this.findMultyAnswer(this.question)
+          }
+          this.myAnswers = z;
+          this.errorValidator.idError = null;
+          this.errorValidator.message = undefined;
+          this.spinner = false;
         }
-        this.myAnswers = z;
-        this.errorValidator.idError = null;
-        this.errorValidator.message = undefined;
-        this.spinner = false;
-      }
-    })
+      })
   }
 
   getMultyIcon(answers, i) {
@@ -109,16 +108,29 @@ export class QuestionComponent implements OnInit {
 
   findMultyAnswer(data) {
     let z = []
-    let search = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
-    search.forEach((x) => {
+    let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
+    part.forEach((x) => {
       z.push(x.answer)
     })
-    return z
+    if (z.length === 0) {
+      let part = _.filter(data.validatorsAnswers, { 'wallet': this.userWallet });
+      part.forEach((x) => {
+        z.push(x.answer)
+      })
+      return z;
+    } else {
+      return z;
+    }
   }
 
   findAnswer(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
-    return findParticipiant !== -1 ? data.parcipiantAnswers[findParticipiant].answer : undefined;
+    if (findParticipiant === -1) {
+      let findValidators = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
+    } else {
+      return data.parcipiantAnswers[findParticipiant].answer
+    }
   }
 
   findAnswered(data) {
@@ -140,7 +152,6 @@ export class QuestionComponent implements OnInit {
   }
 
   async info(id) {
-    console.log('get info')
     let contract = new Contract();
     let contr = await contract.initContract()
     this.infoData = await contr.methods.getQuestion(id).call();
@@ -202,7 +213,7 @@ export class QuestionComponent implements OnInit {
     }
   }
 
-  weiConvert(data){
+  weiConvert(data) {
     let web3 = new Web3();
     return web3.utils.fromWei(String(data), 'ether')
   }

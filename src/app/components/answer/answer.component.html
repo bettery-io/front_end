@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <div class="title">
                             <p class="question">{{question.question}}</p>
-                            <p class="from">You are: </p>
+                            <p class="from">You are: {{this.getPosition(question)}}</p>
                             <a [routerLink]="['/~ki339203/question', question.id]">Open Link</a>
                         </div>
                         <div class="hashtags_box">

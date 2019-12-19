@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <div class="title">
                         <p class="question">{{question.question}}</p>
-                        <p class="from">You are: {{question.from}}</p>
+                        <p class="from">You are: {{this.getPosition(question)}}</p>
                     </div>
                     <div class="hashtags_box">
                         <p class="hashtags" *ngFor="let hashtag of question.hashtags">#{{hashtag}}</p>

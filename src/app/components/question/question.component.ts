@@ -33,6 +33,7 @@ export class QuestionComponent implements OnInit {
   };
   infoData: any = undefined;
   coinInfo: any;
+  userData: any = [];
 
 
   constructor(
@@ -57,6 +58,7 @@ export class QuestionComponent implements OnInit {
         this.store.select("user").subscribe((x) => {
           if (x.length !== 0) {
             this.userWallet = x[0].wallet
+            this.userData = x[0]
             this.getDatafromDb(data);
             setTimeout(() => {
               this.info(question.id)
@@ -76,7 +78,6 @@ export class QuestionComponent implements OnInit {
           this.empty = true
           this.spinner = false
         } else {
-          console.log(x);
           this.question = x
           let z = {
             event_id: this.question.id,
@@ -150,6 +151,46 @@ export class QuestionComponent implements OnInit {
       }
     });
   }
+
+  getPosition(data) {
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    if (findParticipiant !== -1) {
+      let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+      if (findInHost !== -1) {
+        return 'Host, Participiant'
+      } else {
+        return "Participiant"
+      }
+    } else {
+      let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      if (findValidator !== -1) {
+        let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+        if (findInHost !== -1) {
+          return 'Host, Validator'
+        } else {
+          return "Validator"
+        }
+      } else {
+        let findInParticInvites = _.findIndex(this.userData.listParticipantEvents, { "event": data.id })
+        if (findInParticInvites !== -1) {
+          return "invited as participiant"
+        } else {
+          let findInValidatorInvites = _.findIndex(this.userData.listValidatorEvents, { "event": data.id })
+          if (findInValidatorInvites !== -1) {
+            return 'invited as validator'
+          } else {
+            let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+            if (findInHost !== -1) {
+              return 'Host'
+            } else {
+              return "Guest"
+            }
+          }
+        }
+      }
+    }
+  }
+
 
   async info(id) {
     let contract = new Contract();

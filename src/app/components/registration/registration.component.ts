@@ -88,7 +88,7 @@ export class RegistrationComponent implements OnInit {
             this.userWallet = wallet;
             this.userWalletIsUndefinded = false
           } else {
-            this.addUser(x.email, x.nickName, x.wallet);
+            this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents);
           }
         },
         (err) => {
@@ -120,23 +120,33 @@ export class RegistrationComponent implements OnInit {
     let data: User = {
       nickName: this.registerForm.value.nickName,
       email: this.registerForm.value.email,
-      wallet: this.userWallet
+      wallet: this.userWallet,
+      listHostEvents: [],
+      listParticipantEvents: [],
+      listValidatorEvents: []
     }
 
 
     this.http.post("user/regist", data)
       .subscribe(
         () => {
-          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet);
+          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], []);
         },
         (err) => {
           this.registerError = err.error;
         })
   }
 
-  addUser(email: string, nickName: string, wallet: string) {
+  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object) {
 
-    this.store.dispatch(new UserActions.AddUser({ email: email, nickName: nickName, wallet: wallet }))
+    this.store.dispatch(new UserActions.AddUser({ 
+      email: email, 
+      nickName: nickName, 
+      wallet: wallet, 
+      listHostEvents: listHostEvents,
+      listParticipantEvents: listParticipantEvents,
+      listValidatorEvents: listValidatorEvents
+    }))
     this.onReset();
   }
 

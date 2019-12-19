@@ -30,8 +30,8 @@ export class AnswerComponent {
     idError: null,
     message: undefined
   }
-  userData:any = [];
-  
+  userData: any = [];
+
 
 
   constructor(
@@ -45,6 +45,7 @@ export class AnswerComponent {
         this.router.navigate(['~ki339203/home'])
       } else {
         this.userWallet = x[0].wallet
+        this.userData = x[0];
         this.getData();
       }
     });
@@ -76,7 +77,6 @@ export class AnswerComponent {
         this.myAnswers.push(z);
       });
       this.spinner = false;
-      console.log(this.questions)
     })
   }
 
@@ -103,34 +103,59 @@ export class AnswerComponent {
     }
   }
 
-  // getPosition(data){
-  //   let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
-  //   if(findParticipiant !== -1){
-  //    return "Participiant"
-  //   }else{
-  //     let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
-  //      if(findValidator !== -1){
-  //       return "Validator"
-  //      }else{
-  //        return "Guest"
-  //      }
-  //   }
-  // }
+  getPosition(data) {
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    if (findParticipiant !== -1) {
+      let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+      if (findInHost !== -1) {
+        return 'Host, Participiant'
+      } else {
+        return "Participiant"
+      }
+    } else {
+      let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      if (findValidator !== -1) {
+        let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+        if (findInHost !== -1) {
+          return 'Host, Validator'
+        } else {
+          return "Validator"
+        }
+      } else {
+        let findInParticInvites = _.findIndex(this.userData.listParticipantEvents, { "event": data.id })
+        if (findInParticInvites !== -1) {
+          return "invited as participiant"
+        } else {
+          let findInValidatorInvites = _.findIndex(this.userData.listValidatorEvents, { "event": data.id })
+          if (findInValidatorInvites !== -1) {
+            return 'invited as validator'
+          } else {
+            let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+            if (findInHost !== -1) {
+              return 'Host'
+            } else {
+              return "Guest"
+            }
+          }
+        }
+      }
+    }
+  }
 
 
   getParticipantsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].parcipiantAnswers !== undefined) {
       let quantity = this.questions[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.questions[questionIndex].answerQuantity)) * 100).toFixed(0); 
+      return ((quantity.length / Number(this.questions[questionIndex].answerQuantity)) * 100).toFixed(0);
     } else {
       return 0
     }
   }
 
-  getValidatorsPercentage(answerIndex, questionIndex){
+  getValidatorsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].validatorsAnswers !== undefined) {
       let quantity = this.questions[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.questions[questionIndex].validatorsQuantity)) * 100).toFixed(0); 
+      return ((quantity.length / Number(this.questions[questionIndex].validatorsQuantity)) * 100).toFixed(0);
     } else {
       return 0
     }

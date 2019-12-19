@@ -83,6 +83,7 @@ export class RegistrationComponent implements OnInit {
     this.http.post("user/validate", data)
       .subscribe(
         (x: User) => {
+          console.log(x);
           if (x.wallet === undefined) {
             this.userWallet = wallet;
             this.userWalletIsUndefinded = false

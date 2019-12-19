@@ -103,19 +103,19 @@ export class AnswerComponent {
     }
   }
 
-  getPosition(data){
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
-    if(findParticipiant !== -1){
-     return "Participiant"
-    }else{
-      let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
-       if(findValidator !== -1){
-        return "Validator"
-       }else{
-         return "Guest"
-       }
-    }
-  }
+  // getPosition(data){
+  //   let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+  //   if(findParticipiant !== -1){
+  //    return "Participiant"
+  //   }else{
+  //     let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+  //      if(findValidator !== -1){
+  //       return "Validator"
+  //      }else{
+  //        return "Guest"
+  //      }
+  //   }
+  // }
 
 
   getParticipantsPercentage(answerIndex, questionIndex) {

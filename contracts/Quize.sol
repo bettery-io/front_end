@@ -45,6 +45,7 @@ contract Quize {
          uint persentForEachValidators;
          uint monayForParticipant;
          uint correctAnswer;
+         address[] allParticipant;
      }
 
         mapping (int => Question) questions;
@@ -85,6 +86,7 @@ contract Quize {
               uint256 i = questions[_question_id].participant[_whichAnswer].index;
               questions[_question_id].participant[_whichAnswer].participants[i].parts = msg.sender;
               questions[_question_id].participant[_whichAnswer].index = i + 1;
+              questions[_question_id].allParticipant.push(msg.sender);
               fullAmount += msg.value;
            }
        }
@@ -196,13 +198,12 @@ contract Quize {
           if(int((questions[_question_id].endTime + sevenDaysTimeStamp) - now) >= 0){
 
         // if validator made activities like participants.
-        for(uint8 i = 0; i < questions[_question_id].questionQuantity; i++){
-          for(uint8 z = 0; z < questions[_question_id].participant[i].index; z++){
-           if(questions[_question_id].participant[i].participants[z].parts == msg.sender){
+          for(uint8 i = 0; i < questions[_question_id].allParticipant.length; i++){
+           if(questions[_question_id].allParticipant[i] == msg.sender){
                return 3;
            }
           }
-        }
+        
             // user can validate because time is valid.
             return 0;
           }else{

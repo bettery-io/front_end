@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Router } from "@angular/router";
@@ -12,7 +12,6 @@ import { PostService } from '../../services/post.service';
 import LoomEthCoin from '../../services/LoomEthCoin';
 import * as CoinsActios from '../../actions/coins.actions';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { interval } from 'rxjs';
 
 
 
@@ -21,7 +20,7 @@ import { interval } from 'rxjs';
   templateUrl: './validate.component.html',
   styleUrls: ['./validate.component.sass']
 })
-export class ValidateComponent {
+export class ValidateComponent implements OnDestroy {
   private spinner: boolean = true;
   private questions: any;
   myAnswers: Answer[] = [];
@@ -33,6 +32,8 @@ export class ValidateComponent {
     message: undefined
   }
   userData: any = []
+  storeUserSubscribe;
+  storeCoinsSubscrive;
 
 
 
@@ -43,7 +44,7 @@ export class ValidateComponent {
     private getService: GetService,
     private postService: PostService
   ) {
-    this.store.select("user").subscribe((x) => {
+    this.storeUserSubscribe = this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
       } else {
@@ -52,7 +53,7 @@ export class ValidateComponent {
         this.getData();
       }
     });
-    this.store.select("coins").subscribe((x) => {
+    this.storeCoinsSubscrive = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }
@@ -65,7 +66,7 @@ export class ValidateComponent {
   }
 
   getData() {
-    this.getService.get("question/get_all_private").subscribe((x) => {
+   this.getService.get("question/get_all_private").subscribe((x) => {
       this.questions = _.orderBy(x, ['endTime'], ['asc']);
       this.questions.forEach((data, i) => {
         let z = {
@@ -283,6 +284,11 @@ export class ValidateComponent {
       (err) => {
         console.log(err)
       })
+  }
+
+  ngOnDestroy(){
+    this.storeUserSubscribe.unsubscribe();
+    this.storeCoinsSubscrive.unsubscribe();
   }
 
 

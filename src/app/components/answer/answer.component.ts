@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Router } from "@angular/router";
@@ -19,7 +19,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './answer.component.html',
   styleUrls: ['./answer.component.sass']
 })
-export class AnswerComponent {
+export class AnswerComponent implements OnDestroy {
   private spinner: boolean = true;
   private questions: any;
   myAnswers: Answer[] = [];
@@ -31,7 +31,8 @@ export class AnswerComponent {
     message: undefined
   }
   userData: any = [];
-
+  storeUserSubscribe;
+  storeCoinsSubscrive;
 
 
   constructor(
@@ -40,7 +41,7 @@ export class AnswerComponent {
     private getService: GetService,
     private postService: PostService
   ) {
-    this.store.select("user").subscribe((x) => {
+    this.storeUserSubscribe = this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
       } else {
@@ -49,7 +50,7 @@ export class AnswerComponent {
         this.getData();
       }
     });
-    this.store.select("coins").subscribe((x) => {
+    this.storeCoinsSubscrive = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }
@@ -273,6 +274,11 @@ export class AnswerComponent {
       (err) => {
         console.log(err)
       })
+  }
+
+  ngOnDestroy() {
+    this.storeUserSubscribe.unsubscribe();
+    this.storeCoinsSubscrive.unsubscribe();
   }
 
 

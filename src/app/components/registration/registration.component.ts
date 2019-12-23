@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
@@ -14,7 +14,7 @@ import Web3 from 'web3';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.sass']
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent implements OnInit, OnDestroy {
 
   registerForm: FormGroup;
   submitted: boolean = false;
@@ -25,6 +25,7 @@ export class RegistrationComponent implements OnInit {
   userWallet: string = undefined;
   userWalletIsUndefinded: boolean = true;
   networkEror: boolean = false;
+  validateSubscribe;
 
 
   @Output() regisModalEvent = new EventEmitter<boolean>();
@@ -85,7 +86,7 @@ export class RegistrationComponent implements OnInit {
       let data = {
         wallet: wallet
       }
-      this.http.post("user/validate", data)
+      this.validateSubscribe = this.http.post("user/validate", data)
         .subscribe(
           (x: User) => {
             console.log(x);
@@ -161,6 +162,10 @@ export class RegistrationComponent implements OnInit {
     this.submitted = false;
     this.registerForm.reset();
     this.registrationModal();
+  }
+
+  ngOnDestroy(){
+    this.validateSubscribe.unsubscribe();
   }
 
 }

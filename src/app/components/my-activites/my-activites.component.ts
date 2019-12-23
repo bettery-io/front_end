@@ -47,6 +47,8 @@ export class MyActivitesComponent implements OnInit {
   }
   pathForApi = 'invites';
   userData: any = [];
+  UserSubscribe;
+  CoinsSubscribe;
 
   constructor(
     private store: Store<AppState>,
@@ -55,7 +57,7 @@ export class MyActivitesComponent implements OnInit {
     tabs: NgbTabsetConfig
   ) {
     tabs.justify = 'center';
-    this.store.select("user").subscribe((x) => {
+    this.UserSubscribe = this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
       } else {
@@ -63,7 +65,7 @@ export class MyActivitesComponent implements OnInit {
         this.userData = x[0];
       }
     });
-    this.store.select("coins").subscribe((x) => {
+    this.CoinsSubscribe = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }
@@ -400,6 +402,11 @@ export class MyActivitesComponent implements OnInit {
           console.log("from delete wallet")
           console.log(err)
         })
+  }
+
+  ngOnDestroy(){
+    this.UserSubscribe.unsubscribe();
+    this.CoinsSubscribe.unsubscribe();
   }
 
 }

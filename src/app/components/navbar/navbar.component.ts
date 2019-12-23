@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Coins } from '../../models/Coins.model';
@@ -17,7 +17,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.sass']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   nickName: string = undefined;
   regisModal: boolean = false
@@ -33,7 +33,8 @@ export class NavbarComponent implements OnInit {
   withdrawalSpinner: boolean = false;
   activeTab: string = undefined;
   userWallet: string = undefined;
-
+  UserSubscribe;
+  CoinsSubscribe;
 
    constructor(private store: Store<AppState>, private modalService: NgbModal) {
     this.store.select("user").subscribe((x) => {
@@ -145,6 +146,11 @@ export class NavbarComponent implements OnInit {
     } else {
       this.withdrawalError = "Must be more than zero"
     }
+  }
+
+  ngOnDestroy(){
+    this.UserSubscribe.unsubscribe();
+    this.CoinsSubscribe.unsubscribe();
   }
 
 

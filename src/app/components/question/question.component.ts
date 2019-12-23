@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { Question } from '../../models/Question.model';
@@ -18,7 +18,7 @@ import * as CoinsActios from '../../actions/coins.actions';
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.sass']
 })
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, OnDestroy {
   private spinner: boolean = true;
   private empty: boolean = false;
   private registError: boolean = false;
@@ -34,14 +34,16 @@ export class QuestionComponent implements OnInit {
   infoData: any = undefined;
   coinInfo: any;
   userData: any = [];
-
+  CoinsSubscribe;
+  RouterSubscribe;
+  UserSubscribe;
 
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,
     private store: Store<AppState>,
   ) {
-    this.store.select("coins").subscribe((x) => {
+   this.CoinsSubscribe = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }
@@ -49,13 +51,13 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params
+    this.RouterSubscribe = this.route.params
       .subscribe((question) => {
         let data = {
           id: Number(question.id)
         }
 
-        this.store.select("user").subscribe((x) => {
+        this.UserSubscribe = this.store.select("user").subscribe((x) => {
           if (x.length !== 0) {
             this.userWallet = x[0].wallet
             this.userData = x[0]
@@ -318,6 +320,12 @@ export class QuestionComponent implements OnInit {
       (err) => {
         console.log(err)
       })
+  }
+
+  ngOnDestroy(){
+    this.CoinsSubscribe.unsubscribe();
+    this.RouterSubscribe.unsubscribe();
+    this.UserSubscribe.unsubscribe();
   }
 
 }

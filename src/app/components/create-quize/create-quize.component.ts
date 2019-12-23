@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Router } from "@angular/router";
@@ -31,7 +31,7 @@ const times: Time[] = [
   templateUrl: './create-quize.component.html',
   styleUrls: ['./create-quize.component.sass']
 })
-export class CreateQuizeComponent implements OnInit {
+export class CreateQuizeComponent implements OnInit, OnDestroy {
 
   submitted: boolean = false;
   questionForm: FormGroup;
@@ -55,6 +55,7 @@ export class CreateQuizeComponent implements OnInit {
   listHashtags = [];
   myHashtags = [];
   spinner: boolean = false;
+  UserSubscribe;
 
 
   constructor(
@@ -67,7 +68,7 @@ export class CreateQuizeComponent implements OnInit {
   ) {
     // check if user registerd
     // if no -> regirect to home page
-    this.store.select("user").subscribe((x) => {
+    this.UserSubscribe = this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
       } else {
@@ -358,6 +359,10 @@ export class CreateQuizeComponent implements OnInit {
           console.log("set qestion error");
           console.log(err);
         })
+  }
+
+  ngOnDestroy(){
+    this.UserSubscribe.unsubscribe();
   }
 
 }

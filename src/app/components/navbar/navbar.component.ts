@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Coins } from '../../models/Coins.model';
 import * as CoinsActios from '../../actions/coins.actions';
+import * as UserActions from '../../actions/user.actions';
 
 import LoomEthCoin from '../../services/LoomEthCoin';
 import Web3 from 'web3';
@@ -16,7 +17,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.sass']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
 
   nickName: string = undefined;
   regisModal: boolean = false
@@ -31,12 +32,14 @@ export class NavbarComponent {
   depositSpinner: boolean = false;
   withdrawalSpinner: boolean = false;
   activeTab: string = undefined;
+  userWallet: string = undefined;
 
 
-  constructor(private store: Store<AppState>, private modalService: NgbModal) {
+   constructor(private store: Store<AppState>, private modalService: NgbModal) {
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
+        this.userWallet = x[0].wallet
         this.connectToLoom()
       }
     });
@@ -45,6 +48,18 @@ export class NavbarComponent {
         this.coinInfo = x[0];
       }
     })
+  }
+
+  ngOnInit(){
+    // setInterval(async ()=>{
+    //   if(this.userWallet !== undefined){
+    //     let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
+    //     if(checkSelectedAddress !== this.userWallet){
+    //       this.store.dispatch(new UserActions.RemoveUser(0));
+    //       this.nickName = undefined;
+    //     }
+    //   }
+    // },100)
   }
 
   async connectToLoom() {

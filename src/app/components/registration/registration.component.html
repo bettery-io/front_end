@@ -1,5 +1,8 @@
 <div *ngIf="!userWalletIsUndefinded" id="close" class="registration_module" (click)=closeOutSide($event) >
-    <div class="registration_box">
+    <div class="registration_box" *ngIf="networkEror">
+      <p class="networkError">Plaese switch your network in MetaMask to the Rinkeby network.</p>
+    </div>
+    <div class="registration_box" *ngIf="!networkEror">
         <div>
             <h4 class="registration_title">Registration</h4>
             <fa-icon (click)="registrationModal()" class="modal_close" [icon]="faTimes"></fa-icon>

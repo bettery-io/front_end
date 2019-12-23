@@ -23,7 +23,8 @@ export class RegistrationComponent implements OnInit {
   web3: Web3 | undefined = null;
   metamaskError: string = undefined;
   userWallet: string = undefined;
-  userWalletIsUndefinded: boolean = true
+  userWalletIsUndefinded: boolean = true;
+  networkEror: boolean = false;
 
 
   @Output() regisModalEvent = new EventEmitter<boolean>();
@@ -56,7 +57,6 @@ export class RegistrationComponent implements OnInit {
           await (window as any).ethereum.enable();
           window.web3 = new Web3(window.web3.currentProvider);
           this.web3 = new Web3(window.web3.currentProvider);
-          console.log(this.web3);
         } catch (error) {
           this.registrationModal()
           window.alert('You need to allow MetaMask.');
@@ -70,31 +70,37 @@ export class RegistrationComponent implements OnInit {
         window.alert('Please activate MetaMask first.');
         return;
       } else {
-        this.detectWalletInDB(coinbase)
+        this.detectWalletInDB(coinbase, this.web3)
 
       }
     }
   }
 
-  detectWalletInDB(wallet: string) {
-    let data = {
-      wallet: wallet
+  async detectWalletInDB(wallet: string, web3) {
+    let checkNetwork = await web3._provider.networkVersion
+    if(checkNetwork !== '4'){
+     this.userWalletIsUndefinded = false;
+     this.networkEror = true;
+    }else{
+      let data = {
+        wallet: wallet
+      }
+      this.http.post("user/validate", data)
+        .subscribe(
+          (x: User) => {
+            console.log(x);
+            if (x.wallet === undefined) {
+              this.userWallet = wallet;
+              this.userWalletIsUndefinded = false
+            } else {
+              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents);
+            }
+          },
+          (err) => {
+            console.log("validate user error")
+            console.log(err);
+          })
     }
-    this.http.post("user/validate", data)
-      .subscribe(
-        (x: User) => {
-          console.log(x);
-          if (x.wallet === undefined) {
-            this.userWallet = wallet;
-            this.userWalletIsUndefinded = false
-          } else {
-            this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents);
-          }
-        },
-        (err) => {
-          console.log("validate user error")
-          console.log(err);
-        })
   }
 
   registrationModal() {

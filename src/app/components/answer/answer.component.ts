@@ -63,7 +63,7 @@ export class AnswerComponent {
 
   getData() {
     this.getService.get("question/get_all_private").subscribe((x) => {
-      this.questions = _.orderBy(x, ['startTime'], ['asc']);
+      this.questions = _.orderBy(x, ['endTime'], ['asc']);
       this.questions.forEach((data, i) => {
         let z = {
           event_id: data.id,

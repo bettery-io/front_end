@@ -11,6 +11,8 @@ import Contract from '../../services/contract';
 import Web3 from 'web3';
 import LoomEthCoin from '../../services/LoomEthCoin';
 import * as CoinsActios from '../../actions/coins.actions';
+import { NgbTabsetConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+
 
 declare global {
   interface Window { web3: any; }
@@ -23,7 +25,8 @@ window.web3 = window.web3 || {};
 @Component({
   selector: 'my-activites',
   templateUrl: './my-activites.component.html',
-  styleUrls: ['./my-activites.component.sass']
+  styleUrls: ['./my-activites.component.sass'],
+  providers: [NgbTabsetConfig]
 })
 export class MyActivitesComponent implements OnInit {
   faCheck = faCheck;
@@ -42,17 +45,22 @@ export class MyActivitesComponent implements OnInit {
     idError: null,
     message: undefined
   }
+  pathForApi = 'invites';
+  userData: any = [];
 
   constructor(
     private store: Store<AppState>,
     private router: Router,
-    private postService: PostService
+    private postService: PostService,
+    tabs: NgbTabsetConfig
   ) {
+    tabs.justify = 'center';
     this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
       } else {
         this.userWallet = x[0].wallet
+        this.userData = x[0];
       }
     });
     this.store.select("coins").subscribe((x) => {
@@ -64,16 +72,80 @@ export class MyActivitesComponent implements OnInit {
 
   ngOnInit() {
     if (this.userWallet != undefined) {
-      this.getDataFromDb();
+      this.getDataFromDb("invites");
     }
-
   }
 
-  getDataFromDb() {
+  tabChange($event: NgbTabChangeEvent) {
+    switch ($event.nextId) {
+      case 'invitations':
+        this.pathForApi = 'invites';
+        this.spinner = true;
+        this.getDataFromDb("invites");
+        break;
+      case 'current_events':
+        this.pathForApi = 'current';
+        this.spinner = true;
+        this.getDataFromDb("current");
+        break;
+      case 'past_events':
+        this.pathForApi = 'past';
+        this.spinner = true;
+        this.getDataFromDb("past");
+        break;
+    }
+  }
+
+  getPosition(data) {
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    if (findParticipiant !== -1) {
+      let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+      if (findInHost !== -1) {
+        return 'Host, Participiant'
+      } else {
+        return "Participiant"
+      }
+    } else {
+      let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      if (findValidator !== -1) {
+        let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+        if (findInHost !== -1) {
+          return 'Host, Validator'
+        } else {
+          return "Validator"
+        }
+      } else {
+        let findInParticInvites = _.findIndex(this.userData.listParticipantEvents, { "event": data.id })
+        if (findInParticInvites !== -1) {
+          return "invited as participiant"
+        } else {
+          let findInValidatorInvites = _.findIndex(this.userData.listValidatorEvents, { "event": data.id })
+          if (findInValidatorInvites !== -1) {
+            return 'invited as validator'
+          } else {
+            let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
+            if (findInHost !== -1) {
+              return 'Host'
+            } else {
+              return "Guest"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  deleteButton(data) {
+    let result = this.getPosition(data);
+    let z = result.search("Host")
+    return z === -1 ? false : true;
+  }
+
+  getDataFromDb(from) {
     let data = {
       wallet: this.userWallet
     }
-    this.postService.post("my_activites", data)
+    this.postService.post("my_activites/" + from, data)
       .subscribe(async (x) => {
         this.myActivites = x;
         this.allData = x;
@@ -97,16 +169,29 @@ export class MyActivitesComponent implements OnInit {
 
   findMultyAnswer(data) {
     let z = []
-    let search = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
-    search.forEach((x) => {
+    let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
+    part.forEach((x) => {
       z.push(x.answer)
     })
-    return z
+    if (z.length === 0) {
+      let part = _.filter(data.validatorsAnswers, { 'wallet': this.userWallet });
+      part.forEach((x) => {
+        z.push(x.answer)
+      })
+      return z;
+    } else {
+      return z;
+    }
   }
 
   findAnswer(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
-    return findParticipiant !== -1 ? data.parcipiantAnswers[findParticipiant].answer : undefined;
+    if (findParticipiant === -1) {
+      let findValidators = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
+    } else {
+      return data.parcipiantAnswers[findParticipiant].answer
+    }
   }
 
   findAnswered(data) {
@@ -244,77 +329,77 @@ export class MyActivitesComponent implements OnInit {
   }
 
 
-    setToDB(answer, dataAnswer, transactionHash) {
-      let data = {
-        multy: answer.multy,
-        event_id: answer.event_id,
-        date: new Date(),
-        answer: answer.answer,
-        multyAnswer: answer.multyAnswer,
-        transactionHash: transactionHash,
-        wallet: this.userWallet,
-        from: "participant",
-        answerQuantity: dataAnswer.answerQuantity + 1
-      }
-      console.log(data);
-      this.postService.post("answer", data).subscribe(async () => {
-        let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
-        this.myAnswers[index].answered = true;
-
-        this.getDataFromDb();
-        let web3 = new Web3(window.web3.currentProvider);
-        let loomEthCoinData = new LoomEthCoin()
-        await loomEthCoinData.load(web3)
-
-        this.coinInfo = await loomEthCoinData._updateBalances()
-        console.log(this.coinInfo)
-        this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
-
-      },
-        (err) => {
-          console.log(err)
-        })
+  setToDB(answer, dataAnswer, transactionHash) {
+    let data = {
+      multy: answer.multy,
+      event_id: answer.event_id,
+      date: new Date(),
+      answer: answer.answer,
+      multyAnswer: answer.multyAnswer,
+      transactionHash: transactionHash,
+      wallet: this.userWallet,
+      from: "participant",
+      answerQuantity: dataAnswer.answerQuantity + 1
     }
+    console.log(data);
+    this.postService.post("answer", data).subscribe(async () => {
+      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
+      this.myAnswers[index].answered = true;
 
-    async deleteEvent(data){
-      let id = data.id
-      let contract = new Contract();
-      let contr = await contract.initContract()
-      let deleteValidator = await contr.methods.deleteEventValidator(id).call();
-      if (Number(deleteValidator) === 0) {
-        this.letsDeleteEvent(id, contr);
-      } else if (Number(deleteValidator) === 1) {
-        this.errorValidator.idError = id
-        this.errorValidator.message = "You can't delete event because event has money on balance."
-      } else if (Number(deleteValidator) === 2) {
-        this.errorValidator.idError = id
-        this.errorValidator.message = "You are now a owner of event, only owner can delete event."
-      }
+      this.getDataFromDb(this.pathForApi);
+      let web3 = new Web3(window.web3.currentProvider);
+      let loomEthCoinData = new LoomEthCoin()
+      await loomEthCoinData.load(web3)
 
-    }
+      this.coinInfo = await loomEthCoinData._updateBalances()
+      console.log(this.coinInfo)
+      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
 
-    async letsDeleteEvent(id, contr){
-      let deleteEvent = await contr.methods.deleteEvent(id).send();
-      if (deleteEvent.transactionHash !== undefined) {
-        this.deleteFromDb(id);
-      } else {
-        this.errorValidator.idError = id
-        this.errorValidator.message = "error from contract. Check console log."
-      }
-    }
+    },
+      (err) => {
+        console.log(err)
+      })
+  }
 
-    deleteFromDb(id){
-      let data = {
-        id: id
-      }
-      this.postService.post("delete_event", data)
-        .subscribe(() => {
-          this.getDataFromDb();
-        },
-          (err) => {
-            console.log("from delete wallet")
-            console.log(err)
-          })
+  async deleteEvent(data) {
+    let id = data.id
+    let contract = new Contract();
+    let contr = await contract.initContract()
+    let deleteValidator = await contr.methods.deleteEventValidator(id).call();
+    if (Number(deleteValidator) === 0) {
+      this.letsDeleteEvent(id, contr);
+    } else if (Number(deleteValidator) === 1) {
+      this.errorValidator.idError = id
+      this.errorValidator.message = "You can't delete event because event has money on balance."
+    } else if (Number(deleteValidator) === 2) {
+      this.errorValidator.idError = id
+      this.errorValidator.message = "You are now a owner of event, only owner can delete event."
     }
 
   }
+
+  async letsDeleteEvent(id, contr) {
+    let deleteEvent = await contr.methods.deleteEvent(id).send();
+    if (deleteEvent.transactionHash !== undefined) {
+      this.deleteFromDb(id);
+    } else {
+      this.errorValidator.idError = id
+      this.errorValidator.message = "error from contract. Check console log."
+    }
+  }
+
+  deleteFromDb(id) {
+    let data = {
+      id: id
+    }
+    this.postService.post("delete_event", data)
+      .subscribe(() => {
+        this.getDataFromDb(this.pathForApi);
+      },
+        (err) => {
+          console.log("from delete wallet")
+          console.log(err)
+        })
+  }
+
+}

@@ -1,11 +1,25 @@
 <div class="container">
+    <ngb-tabset (tabChange)="tabChange($event)">
+        <ngb-tab id="invitations" title="Invitations">
+            <ng-template ngbTabContent>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="current_events" title="Current Events">
+            <ng-template ngbTabContent>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="past_events" title="Past Events">
+            <ng-template ngbTabContent>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+
     <div *ngIf="spinner">
         <div class="lds-ripple">
             <div></div>
             <div></div>
         </div>
     </div>
-
 
     <div *ngIf="!spinner">
         <div class="filterCheckBox">
@@ -26,87 +40,107 @@
             </div>
         </div>
 
-        <div *ngFor="let active of myActivites; let index = index">
-            <div class="card card_box">
-                <div class="card-body">
-                    <div class="title">
-                        <p class="question">{{active.question}}</p>
-                        <p class="from">You are: {{active.from}}</p>
-                        <a [routerLink]="['/~ki339203/question', active.id]">Open Link</a>
-                    </div>
-                    <div class="hashtags_box">
-                        <p class="hashtags" *ngFor="let hashtag of active.hashtags">#{{hashtag}}</p>
-                    </div>
-                    <div class="info">
-                        <p>Status: {{active.private === true ? "Private" : "Public"}}</p>
-                        <p>Bet amount: {{active.money}} ETH</p>
-                        <p>Wins: 3%, 5%, 90%</p>
-                    </div>
-                    <div class="answers_box">
-                        <div class="validators_box">
-                            <p>Validators ({{active.validatorsQuantity}} of {{active.validatorsAmount}})</p>
-                            <div class="participants_Percentage_box" *ngFor="let answer of active.answers; let i = index">
-                                <p class="participants_Percentage">{{this.getValidatorsPercentage(i, index)}} %</p>
-                            </div>
-                        </div>
-                        <div class="participants_box">
-                            <p>Participants ({{active.answerQuantity}})</p>
-                            <div class="participants_Percentage_box" *ngFor="let answer of active.answers; let i = index">
-                                <p class="participants_Percentage">{{this.getParticipantsPercentage(i, index)}} %</p>
-                            </div>
-                        </div>
-                        <div class="answers">
-                            <p>Answers</p>
-                            <div *ngIf="active.multiChose === true">
-                                <div *ngIf="myAnswers[index].answered === false">
-                                    <div class="each_answer" *ngFor="let answer of active.answers; let i = index">
-                                        <input (click)="this.makeMultyAnswer(active, i, $event)" class="checkbox_answer"
-                                            id="{{active.id}}{{active.from}}" value="i" type="checkbox">
-                                        <label class="label">{{answer}}</label>
-                                    </div>
-                                </div>
-                                <div *ngIf="myAnswers[index].answered === true">
-                                    <div class="answered_Box" *ngFor="let answer of active.answers; let i = index">
-                                        <fa-icon class="iconCheck" *ngIf="this.getMultyIcon(myAnswers[index].multyAnswer, i)"
-                                            [icon]="faCheck"></fa-icon>
-                                        <p class="answered">{{answer}}</p>
-                                    </div>
-                                </div>
+        <div *ngIf="myActivites.length === 0">
+            <p class="dontActivites">Don't have any activites.</p>
+        </div>
 
-                            </div>
-                            <div *ngIf="active.multiChose === false">
-                                <div *ngIf="myAnswers[index].answered === false">
-                                    <div class="each_answer" *ngFor="let answer of active.answers; let i = index">
-                                        <input class="checkbox_answer" id="{{active.id}}{{active.from}}" (click)="this.makeAnswer(active, i)"
-                                            value="i" type="radio" name="{{active.id}}{{active.from}}">
-                                        <label class="label">{{answer}}</label>
-                                    </div>
-                                </div>
-
-                                <div *ngIf="myAnswers[index].answered === true">
-                                    <div class="answered_Box" *ngFor="let answer of active.answers; let i = index">
-                                        <fa-icon class="iconCheck" *ngIf="myAnswers[index].answer === i" [icon]="faCheck"></fa-icon>
-                                        <p class="answered">{{answer}}</p>
-                                    </div>
+        <div *ngIf="myActivites.length !== 0">
+            <div *ngFor="let active of myActivites; let index = index">
+                <div class="card card_box">
+                    <div class="card-body">
+                        <div class="title">
+                            <p class="question">{{active.question}}</p>
+                            <p class="from">You are: {{this.getPosition(active)}}</p>
+                            <a [routerLink]="['/~ki339203/question', active.id]">Open Link</a>
+                        </div>
+                        <div class="hashtags_box">
+                            <p class="hashtags" *ngFor="let hashtag of active.hashtags">#{{hashtag}}</p>
+                        </div>
+                        <div class="info">
+                            <p>Status: {{active.private === true ? "Private" : "Public"}}</p>
+                            <p>Bet amount: {{active.money}} ETH</p>
+                            <p>Wins: 3%, 5%, 90%</p>
+                        </div>
+                        <div class="answers_box">
+                            <div class="validators_box">
+                                <p>Validators ({{active.validatorsQuantity}} of {{active.validatorsAmount}})</p>
+                                <div class="participants_Percentage_box" *ngFor="let answer of active.answers; let i = index">
+                                    <p class="participants_Percentage">{{this.getValidatorsPercentage(i, index)}} %</p>
                                 </div>
                             </div>
+                            <div class="participants_box">
+                                <p>Participants ({{active.answerQuantity}})</p>
+                                <div class="participants_Percentage_box" *ngFor="let answer of active.answers; let i = index">
+                                    <p class="participants_Percentage">{{this.getParticipantsPercentage(i, index)}} %</p>
+                                </div>
+                            </div>
+                            <div class="answers">
+                                <p>Answers</p>
+                                <!-- if event is finish and we know answer -->
+                                <div *ngIf="active.finalAnswers !== null">
+                                    <div>
+                                        <div class="answered_Box" *ngFor="let answer of active.answers; let i = index">
+                                            <fa-icon class="iconCheck" *ngIf="myAnswers[index].answer === i" [icon]="faCheck"></fa-icon>
+                                            <p [ngClass]="{'text-success event_is_finish':active.finalAnswers === i}"
+                                                class="answered">{{answer}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- if event is not finish-->
+                                <div *ngIf="active.finalAnswers === null">
+                                    <div *ngIf="active.multiChose === true">
+                                        <div *ngIf="myAnswers[index].answered === false">
+                                            <div class="each_answer" *ngFor="let answer of active.answers; let i = index">
+                                                <input (click)="this.makeMultyAnswer(active, i, $event)" class="checkbox_answer"
+                                                    id="{{active.id}}{{active.from}}" value="i" type="checkbox">
+                                                <label class="label">{{answer}}</label>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="myAnswers[index].answered === true">
+                                            <div class="answered_Box" *ngFor="let answer of active.answers; let i = index">
+                                                <fa-icon class="iconCheck" *ngIf="this.getMultyIcon(myAnswers[index].multyAnswer, i)"
+                                                    [icon]="faCheck"></fa-icon>
+                                                <p class="answered">{{answer}}</p>
+                                            </div>
+                                        </div>
 
-                        </div>
-                        <div class="time">
-                            <p style="height: 25px"> </p>
-                            <p style="display: flex">Participation <time [timer]="active.startTime"></time></p>
-                            <p style="display: flex">Validation <time [timer]="active.endTime"></time></p>
-                            <p style="display: flex">Validation over <time [timer]="this.getEndValidation(active)"></time> </p>
-                        </div>
-                    </div>
+                                    </div>
+                                    <div *ngIf="active.multiChose === false">
+                                        <div *ngIf="myAnswers[index].answered === false">
+                                            <div class="each_answer" *ngFor="let answer of active.answers; let i = index">
+                                                <input class="checkbox_answer" id="{{active.id}}{{active.from}}"
+                                                    (click)="this.makeAnswer(active, i)" value="i" type="radio" name="{{active.id}}{{active.from}}">
+                                                <label class="label">{{answer}}</label>
+                                            </div>
+                                        </div>
 
-                    <div class="button_box">
-                        <button (click)="this.deleteEvent(active)" type="button" class="btn btn-danger delete_button" *ngIf="active.from === 'Host'">Delete
-                            Event</button>
-                        <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
-                            (click)="this.setAnswer(active)">Participate now!</button>
-                        <div *ngIf="errorValidator.idError === active.id">
-                            <p class="error_answer">{{errorValidator.message}}</p>
+                                        <div *ngIf="myAnswers[index].answered === true">
+                                            <div class="answered_Box" *ngFor="let answer of active.answers; let i = index">
+                                                <fa-icon class="iconCheck" *ngIf="myAnswers[index].answer === i" [icon]="faCheck"></fa-icon>
+                                                <p class="answered">{{answer}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="time">
+                                <p style="height: 25px"> </p>
+                                <p style="display: flex">Participation <time [timer]="active.startTime"></time></p>
+                                <p style="display: flex">Validation <time [timer]="active.endTime"></time></p>
+                                <p style="display: flex">Validation over <time [timer]="this.getEndValidation(active)"></time>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="button_box">
+                            <button (click)="this.deleteEvent(active)" type="button" class="btn btn-danger delete_button"
+                                *ngIf="this.deleteButton(active)">Delete
+                                Event</button>
+                            <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
+                                (click)="this.setAnswer(active)">Participate now!</button>
+                            <div *ngIf="errorValidator.idError === active.id">
+                                <p class="error_answer">{{errorValidator.message}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

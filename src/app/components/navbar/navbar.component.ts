@@ -40,6 +40,7 @@ export class NavbarComponent implements OnInit {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet
+        this.amountSpinner = true;
         this.connectToLoom()
       }
     });
@@ -51,15 +52,17 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(){
-    // setInterval(async ()=>{
-    //   if(this.userWallet !== undefined){
-    //     let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
-    //     if(checkSelectedAddress !== this.userWallet){
-    //       this.store.dispatch(new UserActions.RemoveUser(0));
-    //       this.nickName = undefined;
-    //     }
-    //   }
-    // },100)
+   let interval = setInterval(async ()=>{
+      if(this.userWallet !== undefined){
+        let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
+        if(checkSelectedAddress !== this.userWallet){
+          this.store.dispatch(new UserActions.RemoveUser(0));
+          this.nickName = undefined;
+          clearImmediate(interval);
+        }
+      }
+    },500)
+    
   }
 
   async connectToLoom() {
@@ -74,11 +77,9 @@ export class NavbarComponent implements OnInit {
   }
 
   async updateBalance() {
-    this.coinInfo = await this.loomEthCoinData._updateBalances()
-    this.store.dispatch(new CoinsActios.AddCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
-
+    this.coinInfo = await this.loomEthCoinData._updateBalances();
+    this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
     this.amountSpinner = false;
-    console.log(this.coinInfo);
   }
 
 

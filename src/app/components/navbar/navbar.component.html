@@ -36,7 +36,7 @@
                 </div>
                 <p *ngIf="!amountSpinner" class="loom_balance">Loom balance: {{coinInfo.loomBalance}}</p>
             </li>
-            <li *ngIf="coinInfo !== null" class="nav-item">
+            <li *ngIf="!amountSpinner" class="nav-item">
                 <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="open(content)">Deposit /
                     Withdrawal</button>
             </li>

@@ -243,7 +243,7 @@ export class ValidateComponent implements OnDestroy {
         break;
       case 2:
         this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event not started yeat."
+        this.errorValidator.message = "Event is finished."
         break;
       case 3:
         this.errorValidator.idError = dataAnswer.id

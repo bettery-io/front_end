@@ -137,7 +137,7 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
-  deleteButton(data) {
+  validateButton(data) {
     let result = this.getPosition(data);
     let z = result.search("Host")
     return z === -1 ? false : true;
@@ -291,12 +291,17 @@ export class MyActivitesComponent implements OnInit {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Chose at leas one answer"
       } else {
-        this.setToLoomNetwork(answer, dataAnswer);
+        if(this.validateButton(dataAnswer)){
+          this.setParticipiation(answer, dataAnswer);
+        }else{
+          this.setValidation(answer, dataAnswer)
+        }
       }
     }
   }
 
-  async setToLoomNetwork(answer, dataAnswer) {
+  async setParticipiation(answer, dataAnswer) {
+    console.log("setParticipiation work")
     if (Number(this.coinInfo.loomBalance) < dataAnswer.money) {
       this.errorValidator.idError = dataAnswer.id
       this.errorValidator.message = "Don't have enough money"
@@ -362,6 +367,70 @@ export class MyActivitesComponent implements OnInit {
         console.log(err)
       })
   }
+
+  async setValidation(answer, dataAnswer) {
+    console.log("validation work")
+    let contract = new Contract();
+    var _question_id = dataAnswer.id;
+    var _whichAnswer = answer.answer;
+    let contr = await contract.initContract()
+    let validator = await contr.methods.setTimeValidator(_question_id).call();
+    console.log("validatin number: " + validator);
+
+    switch (Number(validator)) {
+      case 0:
+        let sendToContract = await contr.methods.setValidator(_question_id, _whichAnswer).send();
+        if (sendToContract.transactionHash !== undefined) {
+          this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash)
+        }
+        break;
+      case 1:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event not started yeat."
+        break;
+      case 2:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event is finished."
+        break;
+      case 3:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "You have been like the participant in this event. The participant can't be the validator."
+        break;
+    }
+  }
+
+  setToDBValidation(answer, dataAnswer, transactionHash) {
+    let data = {
+      multy: answer.multy,
+      event_id: answer.event_id,
+      date: new Date(),
+      answer: answer.answer,
+      multyAnswer: answer.multyAnswer,
+      transactionHash: transactionHash,
+      wallet: this.userWallet,
+      from: "validator",
+      validatorsQuantity: dataAnswer.validatorsQuantity + 1
+    }
+    console.log(data);
+    this.postService.post("answer", data).subscribe(async () => {
+      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
+      this.myAnswers[index].answered = true;
+
+      this.getDataFromDb(this.pathForApi);
+      let web3 = new Web3(window.web3.currentProvider);
+      let loomEthCoinData = new LoomEthCoin()
+      await loomEthCoinData.load(web3)
+
+      this.coinInfo = await loomEthCoinData._updateBalances()
+      console.log(this.coinInfo)
+      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+
+    },
+      (err) => {
+        console.log(err)
+      })
+  }
+
 
   async deleteEvent(data) {
     let id = data.id

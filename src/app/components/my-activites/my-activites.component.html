@@ -134,10 +134,10 @@
 
                         <div class="button_box">
                             <button (click)="this.deleteEvent(active)" type="button" class="btn btn-danger delete_button"
-                                *ngIf="this.deleteButton(active)">Delete
+                                *ngIf="this.validateButton(active)">Delete
                                 Event</button>
                             <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
-                                (click)="this.setAnswer(active)">Participate now!</button>
+                                (click)="this.setAnswer(active)">{{this.validateButton(active) ? 'Participate now!' : 'Validate now'}}</button>
                             <div *ngIf="errorValidator.idError === active.id">
                                 <p class="error_answer">{{errorValidator.message}}</p>
                             </div>

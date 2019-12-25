@@ -203,7 +203,6 @@ contract Quize {
                return 3;
            }
           }
-        
             // user can validate because time is valid.
             return 0;
           }else{

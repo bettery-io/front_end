@@ -44,6 +44,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.userWallet = x[0].wallet
         if (this.connectToLoomGuard) {
           this.amountSpinner = true;
+          this.activeTab = undefined;
           this.connectToLoom()
         }
       }

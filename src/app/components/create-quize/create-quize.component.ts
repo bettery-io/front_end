@@ -11,6 +11,8 @@ import { User } from '../../models/User.model';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import Contract from '../../services/contract';
+import * as UserActions from '../../actions/user.actions';
+
 
 type Time = { name: string, date: any, value: number };
 
@@ -73,23 +75,42 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         this.router.navigate(['~ki339203/home'])
       } else {
         this.host = x;
-        this.getAllUsers()
+        this.getAllUsers(false);
+        this.getHashtags();
       }
     });
   }
 
   // get all users form server
 
-  getAllUsers() {
+  getAllUsers(update) {
     this.getSevice.get("user/all")
       .subscribe(
         (data: User[]) => {
           this.allUsers = data;
           this.users = data;
+          if (update === true) {
+            let currentUser = data.find((x) => x.wallet === this.host[0].wallet);
+            console.log("update user")
+            console.log(currentUser)
+            this.store.dispatch(new UserActions.UpdateUser({
+              email: currentUser.email,
+              nickName: currentUser.nickName,
+              wallet: currentUser.wallet,
+              listHostEvents: currentUser.listHostEvents,
+              listParticipantEvents: currentUser.listParticipantEvents,
+              listValidatorEvents: currentUser.listValidatorEvents
+            }))
+          }
+
+
         },
         (err) => {
           console.log("get Users error: " + err)
         })
+  }
+
+  getHashtags() {
     this.getSevice.get('hashtags/get_all').subscribe(
       (data) => {
         this.listHashtags = data[0].hashtags;
@@ -267,13 +288,13 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
     let promise = new Promise((resolve) => {
       if (this.exactEndTime === false) {
-        this.questionForm.controls.calendarEndDate.setValue({year: 2019, month: 12, day: 18});
+        this.questionForm.controls.calendarEndDate.setValue({ year: 2019, month: 12, day: 18 });
         this.questionForm.controls.endTime.setValue({ hour: 1, minute: 1, second: 1 });
 
       } else {
         this.questionForm.controls.endDate.setValue(1);
       }
-        resolve("done")
+      resolve("done")
     })
     promise.then(() => {
       this.submitted = true;
@@ -295,8 +316,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let percentValidator = 0;
     let questionQuantity = this.answesQuality;
     let validatorsAmount = this.questionForm.value.amountOfValidators;
-
-    console.log(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount)
 
     try {
       let sendToContract = await contr.methods.startQestion(
@@ -351,6 +370,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     this.PostService.post("question/set", data)
       .subscribe(
         () => {
+          this.getAllUsers(true);
           this.generatedLink = id;
           this.spinner = false;
           console.log("set to db DONE")
@@ -361,7 +381,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         })
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.UserSubscribe.unsubscribe();
   }
 

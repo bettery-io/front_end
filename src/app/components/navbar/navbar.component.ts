@@ -35,14 +35,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userWallet: string = undefined;
   UserSubscribe;
   CoinsSubscribe;
+  connectToLoomGuard = true;
 
-   constructor(private store: Store<AppState>, private modalService: NgbModal) {
+  constructor(private store: Store<AppState>, private modalService: NgbModal) {
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet
-        this.amountSpinner = true;
-        this.connectToLoom()
+        if (this.connectToLoomGuard) {
+          this.amountSpinner = true;
+          this.connectToLoom()
+        }
       }
     });
     this.store.select("coins").subscribe((x) => {
@@ -52,28 +55,30 @@ export class NavbarComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnInit(){
-   let interval = setInterval(async ()=>{
-      if(this.userWallet !== undefined){
+  ngOnInit() {
+    let interval = setInterval(async () => {
+      if (this.userWallet !== undefined) {
         let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
-        if(checkSelectedAddress !== this.userWallet){
+        if (checkSelectedAddress !== this.userWallet) {
+          this.connectToLoomGuard = true;
           this.store.dispatch(new UserActions.RemoveUser(0));
           this.nickName = undefined;
           clearImmediate(interval);
         }
       }
-    },500)
-    
+    }, 500)
+
   }
 
   async connectToLoom() {
+    this.connectToLoomGuard = false;
     this.web3 = new Web3(window.web3.currentProvider);
     this.loomEthCoinData = new LoomEthCoin()
     await this.loomEthCoinData.load(this.web3)
     this.updateBalance()
   }
 
-  setActiveTab(data){
+  setActiveTab(data) {
     this.activeTab = data;
   }
 
@@ -148,7 +153,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.UserSubscribe.unsubscribe();
     this.CoinsSubscribe.unsubscribe();
   }

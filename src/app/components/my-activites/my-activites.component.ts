@@ -149,6 +149,7 @@ export class MyActivitesComponent implements OnInit {
     }
     this.postService.post("my_activites/" + from, data)
       .subscribe(async (x) => {
+        this.myAnswers = [];
         this.myActivites = x;
         this.allData = x;
         this.allData.forEach((data, i) => {

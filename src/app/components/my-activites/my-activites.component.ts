@@ -220,6 +220,15 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
+  timeGuard(data) {
+    let dateNow = Number((new Date().getTime() / 1000).toFixed(0));
+    if (data.endTime > dateNow) {
+      return true
+    } else {
+      return false;
+    }
+  }
+
   getEndValidation(data) {
     let date = new Date(data.endTime * 1000);
     let x = date.setDate(date.getDate() + 7);

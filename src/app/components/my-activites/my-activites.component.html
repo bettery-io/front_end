@@ -136,8 +136,12 @@
                             <button (click)="this.deleteEvent(active)" type="button" class="btn btn-danger delete_button"
                                 *ngIf="this.validateButton(active)">Delete
                                 Event</button>
-                            <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
-                                (click)="this.setAnswer(active)">{{this.guardPath(active) ? 'Participate now!' : 'Validate now'}}</button>
+                            <div *ngIf="myAnswers[index].answered === false" style="display: inline-block;">
+                                <button type="button" *ngIf="!this.timeGuard(active)" class="btn btn-primary" (click)="this.setAnswer(active)">{{this.guardPath(active)
+                                    ? 'Participate now!' : 'Validate now'}}</button>
+                                <button class="btn btn-danger" *ngIf="this.timeGuard(active)" (click)="this.setAnswer(active)">Start<time
+                                        style="display:inline-block" [timer]="active.endTime"></time></button>
+                            </div>
                             <div *ngIf="errorValidator.idError === active.id">
                                 <p class="error_answer">{{errorValidator.message}}</p>
                             </div>

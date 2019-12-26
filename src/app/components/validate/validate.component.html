@@ -96,10 +96,12 @@
                         </div>
 
                         <div class="button_box" *ngIf="question.finalAnswers === null">
-                            <button type="button" *ngIf="!this.timeGuard(question)" class="btn btn-primary" (click)="this.setAnswer(question)">Validate
-                                now</button>
-                            <button class="btn btn-danger" *ngIf="this.timeGuard(question)" (click)="this.setAnswer(question)">Start<time style="display:inline-block" [timer]="question.endTime"></time></button>
-
+                            <div *ngIf="myAnswers[index].answered === false">
+                                <button type="button" *ngIf="!this.timeGuard(question)" class="btn btn-primary" (click)="this.setAnswer(question)">Validate
+                                    now</button>
+                                <button class="btn btn-danger" *ngIf="this.timeGuard(question)" (click)="this.setAnswer(question)">Start<time
+                                        style="display:inline-block" [timer]="question.endTime"></time></button>
+                            </div>
                             <div *ngIf="errorValidator.idError === question.id">
                                 <p class="error_answer">{{errorValidator.message}}</p>
                             </div>

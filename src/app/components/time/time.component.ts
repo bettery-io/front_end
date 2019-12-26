@@ -14,6 +14,8 @@ export class TimeComponent implements OnInit {
   hour: any;
   minutes: any;
   future: any;
+  oneDay = 24 * 60 * 60 * 1000;
+  oneHours = 60 * 60 * 1000;
 
 
   ngOnInit() {
@@ -21,20 +23,20 @@ export class TimeComponent implements OnInit {
   }
 
   calculateDate() {
-    const oneDay = 24 * 60 * 60 * 1000; 
     let startDate = new Date();
+
     let endTime = new Date(this.timer * 1000);
+    var diffMs = (endTime.getTime() - startDate.getTime()); 
+    this.day = Math.floor(Math.abs(diffMs / 86400000)); 
+    let hour= Math.floor(Math.abs((diffMs % 86400000) / 3600000)); 
+    let minutes = Math.round(Math.abs(((diffMs % 86400000) % 3600000) / 60000)); 
 
-    let hour = Math.abs(startDate.getHours() - endTime.getHours());
-    let minutes = Math.abs(startDate.getMinutes() - endTime.getMinutes());
-
-    this.day = Math.round(Math.abs((startDate.getTime() - endTime.getTime()) / oneDay));
-    this.hour = hour > 9 ? hour : "0" + hour;
+    this.hour = Number(hour) > 9 ? hour : "0" + hour;
     this.minutes = minutes > 9 ? minutes : "0" + minutes;
 
-    if(startDate > endTime){
+    if (startDate > endTime) {
       this.future = 'sinse'
-    }else{
+    } else {
       this.future = 'in'
     }
 

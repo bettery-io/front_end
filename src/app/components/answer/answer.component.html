@@ -44,7 +44,8 @@
                                     <div>
                                         <div class="answered_Box" *ngFor="let answer of question.answers; let i = index">
                                             <fa-icon class="iconCheck" *ngIf="myAnswers[index].answer === i" [icon]="faCheck"></fa-icon>
-                                            <p [ngClass]="{'text-success event_is_finish':question.finalAnswers === i}" class="answered">{{answer}}</p>
+                                            <p [ngClass]="{'text-success event_is_finish':question.finalAnswers === i}"
+                                                class="answered">{{answer}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -96,15 +97,18 @@
                         </div>
 
                         <div class="button_box" *ngIf="question.finalAnswers === null">
-                            <button *ngIf="myAnswers[index].answered === false" type="button" class="btn" [ngClass]="{'btn-primary':this.timeGuard(question) === false, 'btn-danger':this.timeGuard(question) === true }"
-                                (click)="this.setAnswer(question)">{{this.timeGuardText(question)}}</button>
+                            <div *ngIf="myAnswers[index].answered === false">
+                                <button type="button" *ngIf="!this.timeGuard(question)" class="btn btn-primary"
+                                    (click)="this.setAnswer(question)">Participant now</button>
+                                <button class="btn btn-danger" *ngIf="this.timeGuard(question)" (click)="this.setAnswer(question)" >Start <time style="display:inline-block" [timer]="question.startTime"></time></button>   
+                            </div>
                             <div *ngIf="errorValidator.idError === question.id">
                                 <p class="error_answer">{{errorValidator.message}}</p>
                             </div>
                         </div>
                         <div class="button_box" *ngIf="question.finalAnswers !== null">
-                             <p class="text-success event_is_finish">Event is finish!!!</p>
-                        </div> 
+                            <p class="text-success event_is_finish">Event is finish!!!</p>
+                        </div>
                     </div>
                 </div>
             </div>

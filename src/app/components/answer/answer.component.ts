@@ -168,16 +168,6 @@ export class AnswerComponent implements OnDestroy {
     return Number((new Date(x).getTime() / 1000).toFixed(0));
   }
 
-  timeGuardText(data) {
-    let dateNow = Number((new Date().getTime() / 1000).toFixed(0));
-    if (data.startTime > dateNow) {
-      let date = new Date(data.startTime * 1000);
-      return "Start " + moment(date, "YYYYMMDDhhmm").fromNow();
-    } else {
-      return "Participate now!";
-    }
-  }
-
   timeGuard(data) {
     let dateNow = Number((new Date().getTime() / 1000).toFixed(0));
     if (data.startTime > dateNow) {

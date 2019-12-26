@@ -143,6 +143,21 @@ export class MyActivitesComponent implements OnInit {
     return z === -1 ? false : true;
   }
 
+  guardPath(data) {
+    let result = this.getPosition(data);
+    let searchHost = result.search("Host")
+    if (searchHost === -1) {
+      let searchValidator = result.search("articipiant")
+      if (searchValidator === -1) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
+  }
+
   getDataFromDb(from) {
     let data = {
       wallet: this.userWallet
@@ -292,9 +307,9 @@ export class MyActivitesComponent implements OnInit {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Chose at leas one answer"
       } else {
-        if(this.validateButton(dataAnswer)){
+        if (this.guardPath(dataAnswer)) {
           this.setParticipiation(answer, dataAnswer);
-        }else{
+        } else {
           this.setValidation(answer, dataAnswer)
         }
       }
@@ -474,7 +489,7 @@ export class MyActivitesComponent implements OnInit {
         })
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.UserSubscribe.unsubscribe();
     this.CoinsSubscribe.unsubscribe();
   }

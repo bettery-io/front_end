@@ -59,7 +59,7 @@
                         <div class="info">
                             <p>Status: {{active.private === true ? "Private" : "Public"}}</p>
                             <p>Bet amount: {{active.money}} ETH</p>
-                            <p>Wins: 3%, 5%, 90%</p>
+                            <p>Wins: 3%, 5%, 92%</p>
                         </div>
                         <div class="answers_box">
                             <div class="validators_box">
@@ -132,15 +132,18 @@
                             </div>
                         </div>
 
-                        <div class="button_box">
+                        <div class="button_box" *ngIf="active.finalAnswers === null">
                             <button (click)="this.deleteEvent(active)" type="button" class="btn btn-danger delete_button"
                                 *ngIf="this.validateButton(active)">Delete
                                 Event</button>
                             <button *ngIf="myAnswers[index].answered === false" type="button" class="btn btn-primary"
-                                (click)="this.setAnswer(active)">{{this.validateButton(active) ? 'Participate now!' : 'Validate now'}}</button>
+                                (click)="this.setAnswer(active)">{{this.guardPath(active) ? 'Participate now!' : 'Validate now'}}</button>
                             <div *ngIf="errorValidator.idError === active.id">
                                 <p class="error_answer">{{errorValidator.message}}</p>
                             </div>
+                        </div>
+                        <div class="button_box" *ngIf="active.finalAnswers !== null">
+                            <p class="text-success event_is_finish">Event is finish!!!</p>
                         </div>
                     </div>
                 </div>

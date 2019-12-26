@@ -105,9 +105,7 @@ contract Quize {
             int active = questions[_question_id].activeValidators + 1;
            if(active == questions[_question_id].validatorsAmount){
              questions[_question_id].activeValidators = active;
-             if(questions[_question_id].money > 0){
-                letsPayMoney(_question_id);
-             }
+             letsPayMoney(_question_id);
            }else{
                questions[_question_id].activeValidators = active;
            }
@@ -120,14 +118,6 @@ contract Quize {
        uint correctAnswer;
        int256 questionQuantity = questions[_question_id].questionQuantity;
 
-        // pay fee for company
-        uint256 persentFee = getPersent(questions[_question_id].money, percentQuiz);
-        questions[_question_id].money = questions[_question_id].money - persentFee;
-        fullAmount = fullAmount - persentFee;
-        address(companyAddress).transfer(persentFee);
-
-        questions[_question_id].persentFee = persentFee;
-
         // find correct answer
         for(uint8 i = 0; i < questionQuantity; i++){
           if(questions[_question_id].validator[i].index > biggestValue){
@@ -139,30 +129,41 @@ contract Quize {
         questions[_question_id].correctAnswer = correctAnswer;
 
 
-         // calculate percent for validator
-        uint256 persentForValidators = getPersent(questions[_question_id].money, questions[_question_id].percentValidator);
-        uint256 persentForEachValidators = persentForValidators / questions[_question_id].validator[correctAnswer].index;
-        fullAmount = fullAmount - persentForValidators;
+        if(questions[_question_id].money > 0){
+           // pay fee for company
+           uint256 persentFee = getPersent(questions[_question_id].money, percentQuiz);
+           questions[_question_id].money = questions[_question_id].money - persentFee;
+           fullAmount = fullAmount - persentFee;
+           address(companyAddress).transfer(persentFee);
 
-        questions[_question_id].persentForEachValidators = persentForEachValidators;
+           questions[_question_id].persentFee = persentFee;
+
+           // calculate percent for validator
+           uint256 persentForValidators = getPersent(questions[_question_id].money, questions[_question_id].percentValidator);
+           uint256 persentForEachValidators = persentForValidators / questions[_question_id].validator[correctAnswer].index;
+           fullAmount = fullAmount - persentForValidators;
+
+           questions[_question_id].persentForEachValidators = persentForEachValidators;
 
 
-        // pay for validatos
-        for(uint8 i = 0; i < questions[_question_id].validator[correctAnswer].index; i++){
-          address payable _validator = questions[_question_id].validator[correctAnswer].validators[i].valid;
-          questions[_question_id].money = questions[_question_id].money - persentForEachValidators;
-          address(_validator).transfer(persentForEachValidators);
-        }
+           // pay for validatos
+           for(uint8 i = 0; i < questions[_question_id].validator[correctAnswer].index; i++){
+             address payable _validator = questions[_question_id].validator[correctAnswer].validators[i].valid;
+             questions[_question_id].money = questions[_question_id].money - persentForEachValidators;
+             address(_validator).transfer(persentForEachValidators);
+          }
 
-        // Pay for participant
-        uint256 monayForParticipant = questions[_question_id].money / questions[_question_id].participant[correctAnswer].index;
+             // Pay for participant
+            uint256 monayForParticipant = questions[_question_id].money / questions[_question_id].participant[correctAnswer].index;
             for(uint8 i = 0; i < questions[_question_id].participant[correctAnswer].index; i++){
                 address payable _participant = questions[_question_id].participant[correctAnswer].participants[i].parts;
                 questions[_question_id].money = questions[_question_id].money - monayForParticipant;
                 address(_participant).transfer(monayForParticipant);
             }
 
-        questions[_question_id].monayForParticipant = monayForParticipant;
+            questions[_question_id].monayForParticipant = monayForParticipant;
+        }
+
 
         emit eventIsFinish(
             _question_id

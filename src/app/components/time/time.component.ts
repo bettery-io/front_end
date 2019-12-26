@@ -10,7 +10,7 @@ export class TimeComponent implements OnInit {
 
   @Input() timer: any
 
-  day: any;
+  day;
   hour: any;
   minutes: any;
   future: any;
@@ -21,13 +21,14 @@ export class TimeComponent implements OnInit {
   }
 
   calculateDate() {
+    const oneDay = 24 * 60 * 60 * 1000; 
     let startDate = new Date();
     let endTime = new Date(this.timer * 1000);
 
     let hour = Math.abs(startDate.getHours() - endTime.getHours());
     let minutes = Math.abs(startDate.getMinutes() - endTime.getMinutes());
 
-    this.day = Math.abs(startDate.getDate() - endTime.getDate());
+    this.day = Math.round(Math.abs((startDate.getTime() - endTime.getTime()) / oneDay));
     this.hour = hour > 9 ? hour : "0" + hour;
     this.minutes = minutes > 9 ? minutes : "0" + minutes;
 

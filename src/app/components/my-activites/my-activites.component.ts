@@ -368,6 +368,8 @@ export class MyActivitesComponent implements OnInit {
     this.postService.post("answer", data).subscribe(async () => {
       let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
       this.myAnswers[index].answered = true;
+      this.errorValidator.idError = null;
+      this.errorValidator.message = undefined;
 
       this.getDataFromDb(this.pathForApi);
       let web3 = new Web3(window.web3.currentProvider);
@@ -431,6 +433,8 @@ export class MyActivitesComponent implements OnInit {
     this.postService.post("answer", data).subscribe(async () => {
       let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
       this.myAnswers[index].answered = true;
+      this.errorValidator.idError = null;
+      this.errorValidator.message = undefined;
 
       this.getDataFromDb(this.pathForApi);
       let web3 = new Web3(window.web3.currentProvider);

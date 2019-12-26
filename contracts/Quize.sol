@@ -105,7 +105,9 @@ contract Quize {
             int active = questions[_question_id].activeValidators + 1;
            if(active == questions[_question_id].validatorsAmount){
              questions[_question_id].activeValidators = active;
-             letsPayMoney(_question_id);
+             if(questions[_question_id].money > 0){
+                letsPayMoney(_question_id);
+             }
            }else{
                questions[_question_id].activeValidators = active;
            }
@@ -165,9 +167,6 @@ contract Quize {
         emit eventIsFinish(
             _question_id
         );
-
-        // // Delete question from storage
-        // delete questions[_question_id];
     }
 
 

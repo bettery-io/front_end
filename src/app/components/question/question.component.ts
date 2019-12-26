@@ -43,7 +43,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     private postService: PostService,
     private store: Store<AppState>,
   ) {
-   this.CoinsSubscribe = this.store.select("coins").subscribe((x) => {
+    this.CoinsSubscribe = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }
@@ -256,11 +256,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
   }
 
-  weiConvert(data) {
-    let web3 = new Web3();
-    return web3.utils.fromWei(String(data), 'ether')
-  }
-
   async setToLoomNetwork(answer, dataAnswer) {
     if (Number(this.coinInfo.loomBalance) < dataAnswer.money) {
       this.errorValidator.idError = dataAnswer.id
@@ -324,7 +319,107 @@ export class QuestionComponent implements OnInit, OnDestroy {
       })
   }
 
-  ngOnDestroy(){
+  setValidation(dataAnswer) {
+    if (this.myAnswers.multy) {
+      if (this.myAnswers.multyAnswer.length === 0) {
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Chose at leas one answer"
+      } else {
+        if (this.userWallet === undefined) {
+          this.errorValidator.idError = dataAnswer.id
+          this.errorValidator.message = "You must registr first"
+        } else {
+          // multy answer
+          //  this.setToDB(answer, dataAnswer)
+        }
+      }
+    } else {
+      if (this.myAnswers.answer === undefined) {
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Chose at leas one answer"
+      } else {
+        if (this.userWallet === undefined) {
+          this.errorValidator.idError = dataAnswer.id
+          this.errorValidator.message = "You must registr first"
+        } else {
+          this.setToLoomNetworkValidation(this.myAnswers.answer, dataAnswer);
+        }
+      }
+    }
+  }
+
+  async setToLoomNetworkValidation(answer, dataAnswer) {
+
+    let contract = new Contract();
+    var _question_id = dataAnswer.id;
+    var _whichAnswer = answer.answer;
+    let contr = await contract.initContract()
+    let validator = await contr.methods.setTimeValidator(_question_id).call();
+    console.log("validatin number: " + validator);
+
+    switch (Number(validator)) {
+      case 0:
+        let sendToContract = await contr.methods.setValidator(_question_id, _whichAnswer).send();
+        if (sendToContract.transactionHash !== undefined) {
+          this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash)
+        }
+        break;
+      case 1:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event not started yeat."
+        break;
+      case 2:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event is finished."
+        break;
+      case 3:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "You have been like the participant in this event. The participant can't be the validator."
+        break;
+    }
+  }
+
+  setToDBValidation(answer, dataAnswer, transactionHash) {
+    let data = {
+      multy: answer.multy,
+      event_id: answer.event_id,
+      date: new Date(),
+      answer: answer.answer,
+      multyAnswer: answer.multyAnswer,
+      transactionHash: transactionHash,
+      wallet: this.userWallet,
+      from: "validator",
+      validatorsQuantity: dataAnswer.validatorsQuantity + 1
+    }
+    console.log(data);
+    this.postService.post("answer", data).subscribe(async () => {
+      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
+      this.myAnswers[index].answered = true;
+      this.errorValidator.idError = null;
+      this.errorValidator.message = undefined;
+
+      this.getDatafromDb(dataAnswer.id);
+      let web3 = new Web3(window.web3.currentProvider);
+      let loomEthCoinData = new LoomEthCoin()
+      await loomEthCoinData.load(web3)
+
+      this.coinInfo = await loomEthCoinData._updateBalances()
+      console.log(this.coinInfo)
+      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+
+    },
+      (err) => {
+        console.log(err)
+      })
+  }
+
+
+  weiConvert(data) {
+    let web3 = new Web3();
+    return web3.utils.fromWei(String(data), 'ether')
+  }
+
+  ngOnDestroy() {
     this.CoinsSubscribe.unsubscribe();
     this.RouterSubscribe.unsubscribe();
     this.UserSubscribe.unsubscribe();

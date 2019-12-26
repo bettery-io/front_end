@@ -98,8 +98,9 @@
                     </div>
 
                     <div class="button_box" *ngIf="question.finalAnswers === null">
-                        <button *ngIf="myAnswers.answered === false" type="button" class="btn btn-primary" (click)="this.setAnswer(question)">Make
-                            decisions.</button>
+                        <button *ngIf="myAnswers.answered === false" type="button" class="btn btn-primary" style="margin-right: 15px"
+                            (click)="this.setAnswer(question)">Participiate</button>
+                        <button *ngIf="myAnswers.answered === false" type="button" class="btn btn-info" (click)="this.setValidation(question)">Validate</button>
                         <div *ngIf="errorValidator.idError === question.id">
                             <p class="error_answer">{{errorValidator.message}}</p>
                         </div>

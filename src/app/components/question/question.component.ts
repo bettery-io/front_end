@@ -250,7 +250,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
           this.errorValidator.idError = dataAnswer.id
           this.errorValidator.message = "You must registr first"
         } else {
-          this.setToLoomNetwork(this.myAnswers.answer, dataAnswer);
+          this.setToLoomNetwork(this.myAnswers, dataAnswer);
         }
       }
     }
@@ -265,6 +265,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       let contract = new Contract();
       var _question_id = dataAnswer.id;
       var _whichAnswer = answer.answer;
+      console.log(_whichAnswer)
       var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
       let contr = await contract.initContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
@@ -299,12 +300,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
-      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
-      this.myAnswers[index].answered = true;
+      this.myAnswers.answered = true;
       this.errorValidator.idError = null;
       this.errorValidator.message = undefined;
+      
+      let data = {
+        id: Number(dataAnswer.id)
+      }
+      this.getDatafromDb(data);
 
-      this.getDatafromDb(dataAnswer.id);
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)
@@ -342,7 +346,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
           this.errorValidator.idError = dataAnswer.id
           this.errorValidator.message = "You must registr first"
         } else {
-          this.setToLoomNetworkValidation(this.myAnswers.answer, dataAnswer);
+          this.setToLoomNetworkValidation(this.myAnswers, dataAnswer);
         }
       }
     }
@@ -393,12 +397,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
-      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
-      this.myAnswers[index].answered = true;
+      this.myAnswers.answered = true;
       this.errorValidator.idError = null;
       this.errorValidator.message = undefined;
 
-      this.getDatafromDb(dataAnswer.id);
+      let data = {
+        id: Number(dataAnswer.id)
+      }
+      this.getDatafromDb(data);
+
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)

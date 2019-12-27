@@ -1,5 +1,9 @@
 <div class="container">
-    <ngb-tabset (tabChange)="tabChange($event)">
+    <ngb-tabset (tabChange)="tabChange($event)" class="tabs">
+        <ngb-tab id="host" title="Hosted">
+            <ng-template ngbTabContent>
+            </ng-template>
+        </ngb-tab>
         <ngb-tab id="invitations" title="Invitations">
             <ng-template ngbTabContent>
             </ng-template>
@@ -22,8 +26,8 @@
     </div>
 
     <div *ngIf="!spinner">
-        <div class="filterCheckBox">
-            <div class="filter_box">
+        <div class="filterCheckBox" *ngIf="pathForApi !== 'host'">
+            <div class="filter_box" *ngIf="pathForApi === 'invites'">
                 <label for="hostFilter">
                     <input id="hostFilter" [(ngModel)]="hostFilet" (click)="filter()" type="checkbox">
                     Hosted ({{this.getActiveQuantity("Host")}})</label>
@@ -44,7 +48,7 @@
             <p class="dontActivites">Don't have any activites.</p>
         </div>
 
-        <div *ngIf="myActivites.length !== 0">
+        <div *ngIf="myActivites.length !== 0" class="question_cards">
             <div *ngFor="let active of myActivites; let index = index">
                 <div class="card card_box">
                     <div class="card-body">
@@ -137,10 +141,8 @@
                                 *ngIf="this.validateButton(active)">Delete
                                 Event</button>
                             <div *ngIf="myAnswers[index].answered === false" style="display: inline-block;">
-                                <button type="button" *ngIf="!this.timeGuard(active)" class="btn btn-primary" (click)="this.setAnswer(active)">{{this.guardPath(active)
+                                <button type="button" class="btn btn-primary" (click)="this.setAnswer(active)">{{this.guardPath(active)
                                     ? 'Participate now!' : 'Validate now'}}</button>
-                                <button class="btn btn-danger" *ngIf="this.timeGuard(active)" (click)="this.setAnswer(active)">Start<time
-                                        style="display:inline-block" [timer]="active.endTime"></time></button>
                             </div>
                             <div *ngIf="errorValidator.idError === active.id">
                                 <p class="error_answer">{{errorValidator.message}}</p>

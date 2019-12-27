@@ -45,7 +45,7 @@ export class MyActivitesComponent implements OnInit {
     idError: null,
     message: undefined
   }
-  pathForApi = 'invites';
+  pathForApi = 'host';
   userData: any = [];
   UserSubscribe;
   CoinsSubscribe;
@@ -74,11 +74,14 @@ export class MyActivitesComponent implements OnInit {
 
   ngOnInit() {
     if (this.userWallet != undefined) {
-      this.getDataFromDb("invites");
+      this.getDataFromDb(this.pathForApi);
     }
   }
 
   tabChange($event: NgbTabChangeEvent) {
+    this.hostFilet = true;
+    this.parcipiantFilter = true;
+    this.validateFilter = true;
     switch ($event.nextId) {
       case 'invitations':
         this.pathForApi = 'invites';
@@ -94,6 +97,11 @@ export class MyActivitesComponent implements OnInit {
         this.pathForApi = 'past';
         this.spinner = true;
         this.getDataFromDb("past");
+        break;
+      case 'host':
+        this.pathForApi = 'host';
+        this.spinner = true;
+        this.getDataFromDb("host");
         break;
     }
   }
@@ -185,6 +193,18 @@ export class MyActivitesComponent implements OnInit {
       })
   }
 
+  removeDuplicates(array, key) {
+    let lookup = {};
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+      if (!lookup[array[i][key]]) {
+        lookup[array[i][key]] = true;
+        result.push(array[i]);
+      }
+    }
+    return result;
+  }
+
   findMultyAnswer(data) {
     let z = []
     let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
@@ -247,12 +267,14 @@ export class MyActivitesComponent implements OnInit {
       if (!this.validateFilter) {
         data = data.filter((x) => x.from !== "Validator");
       }
+      // let z = this.removeDuplicates(data, 'id');
       this.myActivites = data;
     }, 100)
   }
 
   getActiveQuantity(from) {
     let data = this.allData.filter((x) => x.from === from);
+    // let z = this.removeDuplicates(data, 'id');
     return data.length
   }
 

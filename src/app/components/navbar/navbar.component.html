@@ -34,7 +34,7 @@
                         <div></div>
                     </div>
                 </div>
-                <p *ngIf="!amountSpinner" class="loom_balance">Loom balance: {{coinInfo.loomBalance}}</p>
+                <p *ngIf="!amountSpinner" class="loom_balance">Balance: {{coinInfo.loomBalance | number:'1.0-4'}}</p>
             </li>
             <li *ngIf="!amountSpinner" class="nav-item">
                 <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="open(content)">Deposit /
@@ -56,8 +56,8 @@
             <ng-template ngbTabContent>
                 <div class="modal-body">
                     <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
-                    <p>ETH balance: {{coinInfo.mainNetBalance}}</p>
-                    <p>Loom balance: {{coinInfo.loomBalance}}</p>
+                    <p>ETH Balance (ETH Mainnet): {{coinInfo.mainNetBalance | number:'1.0-4'}}</p>
+                    <p>ETH Balance (Loom Sidechain): {{coinInfo.loomBalance | number:'1.0-4'}}</p>
                     <div>
                         <label class="amount_deposit_label">Amount deposit:</label>
                         <input min="0" class="form-control deposit_input" [(ngModel)]="depositAmount" (ngModelChange)="changeInput()"
@@ -80,8 +80,8 @@
             <ng-template ngbTabContent>
                 <div class="modal-body">
                     <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
-                    <p>ETH balance: {{coinInfo.mainNetBalance}}</p>
-                    <p>Loom balance: {{coinInfo.loomBalance}}</p>
+                    <p>ETH Balance (ETH Mainnet): {{coinInfo.mainNetBalance | number:'1.0-4'}}</p>
+                    <p>ETH Balance (Loom Sidechain): {{coinInfo.loomBalance | number:'1.0-4'}}</p>
                     <div>
                         <label class="amount_deposit_label">Withdrawal amount: </label>
                         <input min="0" class="form-control deposit_input" [(ngModel)]="withdrawalAmount"

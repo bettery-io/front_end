@@ -13,6 +13,7 @@ export class TimeComponent implements OnInit {
   day;
   hour: any;
   minutes: any;
+  seconds: any;
   future: any;
   oneDay = 24 * 60 * 60 * 1000;
   oneHours = 60 * 60 * 1000;
@@ -26,13 +27,21 @@ export class TimeComponent implements OnInit {
     let startDate = new Date();
 
     let endTime = new Date(this.timer * 1000);
-    var diffMs = (endTime.getTime() - startDate.getTime()); 
-    this.day = Math.floor(Math.abs(diffMs / 86400000)); 
-    let hour= Math.floor(Math.abs((diffMs % 86400000) / 3600000)); 
-    let minutes = Math.round(Math.abs(((diffMs % 86400000) % 3600000) / 60000)); 
+    var diffMs = (endTime.getTime() - startDate.getTime());
+    this.day = Math.floor(Math.abs(diffMs / 86400000));
+    let hour = Math.floor(Math.abs((diffMs % 86400000) / 3600000));
+    let minutes = Math.floor(Math.abs(((diffMs % 86400000) % 3600000) / 60000));
+    let second = Math.round(Math.abs((((diffMs % 86400000) % 3600000) % 60000) / 1000));
 
     this.hour = Number(hour) > 9 ? hour : "0" + hour;
-    this.minutes = minutes > 9 ? minutes : "0" + minutes;
+    this.minutes = Number(minutes) > 9 ? minutes : "0" + minutes;
+    if(second === 60){
+      this.seconds = "00"
+    }else{
+      this.seconds = second > 9 ? second : "0" + second;
+
+    }
+
 
     if (startDate > endTime) {
       this.future = 'sinse'

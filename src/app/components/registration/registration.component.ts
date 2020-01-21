@@ -7,6 +7,7 @@ import { AppState } from '../../app.state';
 import * as UserActions from '../../actions/user.actions';
 import { PostService } from '../../services/post.service';
 import Web3 from 'web3';
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -34,7 +35,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
-    private http: PostService
+    private http: PostService,
+    private router: Router
   ) {
     this.getUseWalletInMetamask();
   }
@@ -95,6 +97,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               this.userWalletIsUndefinded = false
             } else {
               this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents);
+              this.router.navigate(['~ki339203/eventFeed'])
+
             }
           },
           (err) => {
@@ -138,6 +142,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], []);
+          this.router.navigate(['~ki339203/eventFeed'])
         },
         (err) => {
           this.registerError = err.error;

@@ -18,6 +18,7 @@ type Time = { name: string, date: any, value: number };
 
 const times: Time[] = [
   { name: "Now", date: new Date().setHours(new Date().getHours() + 0), value: null },
+  { name: "5 minutes", date: new Date().setMinutes(new Date().getMinutes() + 5), value: 0.083 },
   { name: "1 hour", date: new Date().setHours(new Date().getHours() + 1), value: 1 },
   { name: "2 hours", date: new Date().setHours(new Date().getHours() + 2), value: 2 },
   { name: "4 hours", date: new Date().setHours(new Date().getHours() + 4), value: 4 },
@@ -46,7 +47,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   allUsers: User[] = [];
   startTimeValue: string = "Now";
   exactStartTime = false;
-  endTimeValue: string = "Chose end time";
+  endTimeValue: string = "5 minutes";
   exactEndTime = false;
   times = times;
   inviteValidators: User[] = [];
@@ -147,7 +148,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       startDate: [new Date().setHours(new Date().getHours() + 0), Validators.required],
       calendarStartDate: [{ year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() }, Validators.required],
       startTime: [{ hour: 0, minute: 0, second: 0 }, Validators.required],
-      endDate: ['', Validators.required],
+      endDate: [0.083, Validators.required],
       calendarEndDate: ['', Validators.required],
       endTime: [{ hour: 0, minute: 0, second: 0 }, Validators.required],
       privateOrPublic: "public",
@@ -269,7 +270,11 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
   getEndTime() {
     if (this.exactEndTime === false) {
-      return Number(((new Date(this.getStartTime() * 1000).setHours(new Date(this.getStartTime() * 1000).getHours() + this.questionForm.value.endDate)) / 1000).toFixed(0));
+      if (this.questionForm.value.endDate < 1) {
+        return Number(((new Date(this.getStartTime() * 1000).setMinutes(new Date(this.getStartTime() * 1000).getMinutes() + 5)) / 1000).toFixed(0));
+      } else {
+        return Number(((new Date(this.getStartTime() * 1000).setHours(new Date(this.getStartTime() * 1000).getHours() + this.questionForm.value.endDate)) / 1000).toFixed(0));
+      }
     } else {
       let day = this.questionForm.value.calendarEndDate.day;
       let month = this.questionForm.value.calendarEndDate.month;
@@ -316,6 +321,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let percentValidator = 0;
     let questionQuantity = this.answesQuality;
     let validatorsAmount = this.questionForm.value.amountOfValidators;
+
+    console.log(endTime)
 
     try {
       let sendToContract = await contr.methods.startQestion(

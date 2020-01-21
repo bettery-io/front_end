@@ -15,11 +15,11 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
-  selector: 'answer',
-  templateUrl: './answer.component.html',
-  styleUrls: ['./answer.component.sass']
+  selector: 'eventFeed',
+  templateUrl: './eventFeed.component.html',
+  styleUrls: ['./eventFeed.component.sass']
 })
-export class AnswerComponent implements OnDestroy {
+export class EventFeedComponent implements OnDestroy {
   private spinner: boolean = true;
   private questions: any;
   myAnswers: Answer[] = [];

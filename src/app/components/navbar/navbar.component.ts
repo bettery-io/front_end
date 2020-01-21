@@ -8,6 +8,7 @@ import * as UserActions from '../../actions/user.actions';
 import LoomEthCoin from '../../services/LoomEthCoin';
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { PostService } from '../../services/post.service';
 
 
 
@@ -36,15 +37,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
   UserSubscribe;
   CoinsSubscribe;
   connectToLoomGuard = true;
+  invitationQuantity = null
 
-  constructor(private store: Store<AppState>, private modalService: NgbModal) {
+  constructor(
+    private store: Store<AppState>, 
+    private modalService: NgbModal,
+    private postService: PostService
+    ) {
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet
+        this.activeTab = "eventFeed"
+        this.getInvitation()
         if (this.connectToLoomGuard) {
           this.amountSpinner = true;
-          this.activeTab = undefined;
           this.connectToLoom()
         }
       }
@@ -54,6 +61,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.coinInfo = x[0];
       }
     })
+  }
+
+  getInvitation(){
+    let data = {
+      wallet: this.userWallet
+    }
+    this.postService.post("my_activites/invites", data)
+      .subscribe(async (x:any) => {
+        this.invitationQuantity = x.length
+      })
   }
 
   ngOnInit() {

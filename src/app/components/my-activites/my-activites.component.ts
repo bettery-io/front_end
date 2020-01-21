@@ -38,7 +38,7 @@ export class MyActivitesComponent implements OnInit {
     idError: null,
     message: undefined
   }
-  pathForApi = 'host';
+  pathForApi = 'current';
   userData: any = [];
   UserSubscribe;
   CoinsSubscribe;

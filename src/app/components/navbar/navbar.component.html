@@ -15,9 +15,10 @@
                 <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}" routerLink="~ki339203/eventFeed"
                     (click)="setActiveTab('eventFeed')">Event Feed</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item invitation">
                 <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'invitation'}" routerLink="~ki339203/invitation"
                     (click)="setActiveTab('invitation')">Invitation</a>
+                    <p *ngIf="invitationQuantity !== 0" class="badge">{{invitationQuantity}}</p>
             </li>
             <li class="nav-item">
                 <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'activites'}" routerLink="~ki339203/my-activites"

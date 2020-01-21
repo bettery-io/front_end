@@ -394,6 +394,19 @@ export class InvitationComponent implements OnInit {
       })
   }
 
+  deleteInvitation(value){
+    console.log(value.id)
+    let data = {
+      id: value.id,
+      wallet: this.userWallet,
+      from: this.guardPath(value) ? 'listParticipantEvents' : 'listValidatorEvents'
+    }
+    this.postService.post("invites/delete", data)
+      .subscribe(async (x) => {
+         this.getDataFromDb()
+      })
+  }
+
 
   ngOnDestroy() {
     this.UserSubscribe.unsubscribe();

@@ -115,7 +115,8 @@
         </div>
         <div *ngIf="infoData !== undefined">
             <p>Money on event - {{this.weiConvert(infoData.money)}} ETH</p>
-            <p>Money for company - {{this.weiConvert(infoData.persentFee)}} ETH</p>
+            <p>Money for company - {{this.weiConvert(infoData.persentFeeCompany)}} ETH</p>
+            <p>Money for host - {{this.weiConvert(infoData.persentFeeHost)}} ETH</p>
             <p>Money for each validators - {{this.weiConvert(infoData.persentForEachValidators)}} ETH</p>
             <p>Money for each participant - {{this.weiConvert(infoData.monayForParticipant)}} ETH</p>
         </div>

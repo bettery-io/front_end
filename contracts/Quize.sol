@@ -1,7 +1,7 @@
 pragma solidity >=0.4.22 <0.6.0;
 
 contract Quize {
-     uint8 private percentQuiz = 3;
+     uint8 private percentQuiz = 2;
      uint256 private fullAmount;
      uint256 private sevenDaysTimeStamp = 604800;
      address payable companyAddress = 0x02810c3bc07De2ddAef89827b0dD6b223C7759d5;
@@ -40,8 +40,9 @@ contract Quize {
          mapping (uint256 => Validator) validator;
          int validatorsAmount;
          int activeValidators;
-         address hostWallet;
-         uint persentFee;
+         address payable hostWallet;
+         uint persentFeeCompany;
+         uint persentFeeHost;
          uint persentForEachValidators;
          uint monayForParticipant;
          uint correctAnswer;
@@ -136,7 +137,15 @@ contract Quize {
            fullAmount = fullAmount - persentFee;
            address(companyAddress).transfer(persentFee);
 
-           questions[_question_id].persentFee = persentFee;
+           questions[_question_id].persentFeeCompany = persentFee;
+
+          // pay fee for host
+           uint256 persHostFee = getPersent(questions[_question_id].money, questions[_question_id].percentHost);
+           questions[_question_id].money = questions[_question_id].money - persHostFee;
+           fullAmount = fullAmount - persHostFee;
+           address(questions[_question_id].hostWallet).transfer(persHostFee);
+
+           questions[_question_id].persentFeeHost = persHostFee;
 
            // calculate percent for validator
            uint256 persentForValidators = getPersent(questions[_question_id].money, questions[_question_id].percentValidator);
@@ -176,20 +185,22 @@ contract Quize {
     }
 
     function getQuestion(int _question_id) public view returns(
-           uint persentFee,
+           uint persentFeeCompany,
            uint persentForEachValidators,
            uint256 money,
            uint monayForParticipant,
            uint8 questionQuantity,
-           uint correctAnswer
+           uint correctAnswer,
+           uint persentFeeHost
            ){
        return(
-              questions[_question_id].persentFee,
+              questions[_question_id].persentFeeCompany,
               questions[_question_id].persentForEachValidators,
               questions[_question_id].money,
               questions[_question_id].monayForParticipant,
               questions[_question_id].questionQuantity,
-              questions[_question_id].correctAnswer
+              questions[_question_id].correctAnswer,
+              questions[_question_id].persentFeeHost
               );
     }
 

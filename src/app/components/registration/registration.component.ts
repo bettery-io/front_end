@@ -97,8 +97,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               this.userWalletIsUndefinded = false
             } else {
               this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents, x.historyTransaction);
-              this.router.navigate(['~ki339203/eventFeed'])
-
+              let getLocation = document.location.href
+              let gurd = getLocation.search("question")
+              if(gurd === -1){
+                this.router.navigate(['~ki339203/eventFeed'])
+              }
             }
           },
           (err) => {
@@ -143,7 +146,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], [], []);
-          this.router.navigate(['~ki339203/eventFeed'])
+          let getLocation = document.location.href
+          let gurd = getLocation.search("question")
+          if(gurd === -1){
+            this.router.navigate(['~ki339203/eventFeed'])
+          }
         },
         (err) => {
           this.registerError = err.error;

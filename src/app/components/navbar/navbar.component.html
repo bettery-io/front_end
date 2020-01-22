@@ -8,21 +8,21 @@
     <div *ngIf="nickName !== undefined">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
             <li class="nav-item">
-                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}" routerLink="~ki339203/create-quize"
-                    (click)="setActiveTab('add')">Add new Quize</a>
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}"
+                    routerLink="~ki339203/create-quize" (click)="setActiveTab('add')">Add new Quize</a>
             </li>
             <li class="nav-item">
-                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}" routerLink="~ki339203/eventFeed"
-                    (click)="setActiveTab('eventFeed')">Event Feed</a>
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}"
+                    routerLink="~ki339203/eventFeed" (click)="setActiveTab('eventFeed')">Event Feed</a>
             </li>
             <li class="nav-item invitation">
-                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'invitation'}" routerLink="~ki339203/invitation"
-                    (click)="setActiveTab('invitation')">Invitation</a>
-                    <p *ngIf="invitationQuantity !== 0" class="badge">{{invitationQuantity}}</p>
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'invitation'}"
+                    routerLink="~ki339203/invitation" (click)="setActiveTab('invitation')">Invitation</a>
+                <p *ngIf="invitationQuantity !== 0" class="badge">{{invitationQuantity}}</p>
             </li>
             <li class="nav-item">
-                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'activites'}" routerLink="~ki339203/my-activites"
-                    (click)="setActiveTab('activites')">My
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'activites'}"
+                    routerLink="~ki339203/my-activites" (click)="setActiveTab('activites')">My
                     activites</a>
             </li>
             <li class="nav-item">
@@ -35,7 +35,8 @@
                         <div></div>
                     </div>
                 </div>
-                <p *ngIf="!amountSpinner" class="loom_balance">Balance: {{coinInfo.loomBalance | number:'1.0-4'}}</p>
+                <p [ngbPopover]="popContent" [popoverTitle]="popTitle" *ngIf="!amountSpinner" class="loom_balance">
+                    Balance: {{coinInfo.loomBalance | number:'1.0-4'}}</p>
             </li>
             <li *ngIf="!amountSpinner" class="nav-item">
                 <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="open(content)">Deposit /
@@ -61,13 +62,14 @@
                     <p>ETH Balance (Loom Sidechain): {{coinInfo.loomBalance | number:'1.0-4'}}</p>
                     <div>
                         <label class="amount_deposit_label">Amount deposit:</label>
-                        <input min="0" class="form-control deposit_input" [(ngModel)]="depositAmount" (ngModelChange)="changeInput()"
-                            placeholder="Amount of ETH" type="number">
+                        <input min="0" class="form-control deposit_input" [(ngModel)]="depositAmount"
+                            (ngModelChange)="changeInput()" placeholder="Amount of ETH" type="number">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <p *ngIf="depositError !== undefined" class="deposit_error">{{depositError}}</p>
-                    <button *ngIf="!depositSpinner" type="button" class="btn btn-outline-dark" (click)="deposit()">Deposit</button>
+                    <button *ngIf="!depositSpinner" type="button" class="btn btn-outline-dark"
+                        (click)="deposit()">Deposit</button>
                     <div *ngIf="depositSpinner">
                         <div class="lds-ripple-small">
                             <div></div>
@@ -91,7 +93,8 @@
                 </div>
                 <div class="modal-footer">
                     <p *ngIf="withdrawalError !== undefined" class="deposit_error">{{withdrawalError}}</p>
-                    <button *ngIf="!withdrawalSpinner" type="button" class="btn btn-outline-dark" (click)="withdrawal()">Withdrawal</button>
+                    <button *ngIf="!withdrawalSpinner" type="button" class="btn btn-outline-dark"
+                        (click)="withdrawal()">Withdrawal</button>
                     <div *ngIf="withdrawalSpinner">
                         <div class="lds-ripple-small">
                             <div></div>
@@ -105,3 +108,20 @@
 </ng-template>
 
 <registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>
+
+<ng-template #popTitle>History transaction in LOOM </ng-template>
+<ng-template #popContent>
+    <div *ngIf="userHistory.length !== 0">
+        <div *ngFor="let history of userHistory; let i = index">
+            <div class="historyBox">
+                <p>{{history.date | date:'short'}}</p>
+                <p>{{history.amount}} ETH</p>
+                <a *ngIf="history.paymentWay === 'send'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconSend" [icon]="faReply"></fa-icon></a>
+                <a *ngIf="history.paymentWay === 'receive'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconReceive" [icon]="faShare"></fa-icon></a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="userHistory.length === 0">
+        <p class="noneHistory">Do not have any transaction in LOOM network.</p>
+    </div>
+</ng-template>

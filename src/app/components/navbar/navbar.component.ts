@@ -9,6 +9,7 @@ import LoomEthCoin from '../../services/LoomEthCoin';
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../services/post.service';
+import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -37,7 +38,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   UserSubscribe;
   CoinsSubscribe;
   connectToLoomGuard = true;
-  invitationQuantity = null
+  invitationQuantity = null;
+  userHistory: any = []
+  faReply = faReply 
+  faShare = faShare
 
   constructor(
     private store: Store<AppState>, 
@@ -48,6 +52,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet
+        this.userHistory = x[0].historyTransaction === undefined ? [] : x[0].historyTransaction
         this.activeTab = "eventFeed"
         this.getInvitation()
         if (this.connectToLoomGuard) {

@@ -5,10 +5,5 @@ export interface User {
     listHostEvents: Object;
     listParticipantEvents: Object;
     listValidatorEvents: Object;
-}
-
-interface Invires {
-    event: number,
-    transactionHash: string,
-    date: number
+    historyTransaction: Object;
 }

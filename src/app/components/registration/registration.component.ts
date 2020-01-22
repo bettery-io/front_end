@@ -96,7 +96,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               this.userWallet = wallet;
               this.userWalletIsUndefinded = false
             } else {
-              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents);
+              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents, x.historyTransaction);
               this.router.navigate(['~ki339203/eventFeed'])
 
             }
@@ -134,14 +134,15 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       wallet: this.userWallet,
       listHostEvents: [],
       listParticipantEvents: [],
-      listValidatorEvents: []
+      listValidatorEvents: [],
+      historyTransaction: []
     }
 
 
     this.http.post("user/regist", data)
       .subscribe(
         () => {
-          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], []);
+          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], [], []);
           this.router.navigate(['~ki339203/eventFeed'])
         },
         (err) => {
@@ -149,7 +150,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         })
   }
 
-  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object) {
+  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object, historyTransaction: Object) {
 
     this.store.dispatch(new UserActions.AddUser({ 
       email: email, 
@@ -157,7 +158,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       wallet: wallet, 
       listHostEvents: listHostEvents,
       listParticipantEvents: listParticipantEvents,
-      listValidatorEvents: listValidatorEvents
+      listValidatorEvents: listValidatorEvents,
+      historyTransaction: historyTransaction
     }))
     this.onReset();
   }

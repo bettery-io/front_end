@@ -100,7 +100,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
               wallet: currentUser.wallet,
               listHostEvents: currentUser.listHostEvents,
               listParticipantEvents: currentUser.listParticipantEvents,
-              listValidatorEvents: currentUser.listValidatorEvents
+              listValidatorEvents: currentUser.listValidatorEvents,
+              historyTransaction: currentUser.historyTransaction
             }))
           }
 

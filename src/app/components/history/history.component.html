@@ -1,0 +1,25 @@
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Role</th>
+                <th scope="col">Event ID</th>
+                <th scope="col">Action</th>
+                <th scope="col">Money</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let history of historyData; index as i">
+                <td>{{history.date | date:'short'}}</td>
+                <td>{{ history.role}}</td>
+                <td><a [routerLink]="['/~ki339203/question', history.eventId]">{{ history.eventId}}</a></td>
+                <td>{{history.paymentWay}}
+                    <fa-icon *ngIf="history.paymentWay === 'send'" class="historyIconSend" [icon]="faReply"></fa-icon>
+                    <fa-icon *ngIf="history.paymentWay === 'receive'" class="historyIconReceive" [icon]="faShare"></fa-icon>
+                </td>
+                <td>{{ history.amount | number:'1.0-4'}} ETH</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

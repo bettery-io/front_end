@@ -7,6 +7,7 @@ import { ValidateComponent } from './components/validate/validate.component';
 import { MyActivitesComponent } from './components/my-activites/my-activites.component';
 import { QuestionComponent } from './components/question/question.component';
 import { InvitationComponent} from './components/invitation/invitation.component';
+import { HistoryComponent } from './components/history/history.component';
 
 
 const routes: Routes = [
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: "~ki339203/validate", component: ValidateComponent },
   { path: "~ki339203/my-activites", component: MyActivitesComponent },
   { path: '~ki339203/question/:id', component: QuestionComponent },
-  { path: '~ki339203/invitation', component: InvitationComponent }
+  { path: '~ki339203/invitation', component: InvitationComponent },
+  { path: '~ki339203/history', component: HistoryComponent }
 ];
 
 @NgModule({

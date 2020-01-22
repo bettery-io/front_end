@@ -25,6 +25,7 @@ import { QuestionComponent } from './components/question/question.component';
 import { coinsReducer } from './reducers/coins.reducer';
 import { TimeComponent } from './components/time/time.component';
 import { InvitationComponent } from './components/invitation/invitation.component';
+import { HistoryComponent } from './components/history/history.component';
 
 
 
@@ -40,7 +41,8 @@ import { InvitationComponent } from './components/invitation/invitation.componen
     MyActivitesComponent,
     QuestionComponent,
     TimeComponent,
-    InvitationComponent
+    InvitationComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

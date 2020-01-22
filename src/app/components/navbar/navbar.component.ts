@@ -10,6 +10,7 @@ import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../services/post.service';
 import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
+import _ from "lodash";
 
 
 
@@ -40,20 +41,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
   connectToLoomGuard = true;
   invitationQuantity = null;
   userHistory: any = []
-  faReply = faReply 
+  faReply = faReply
   faShare = faShare
+  loadMore = false
 
   constructor(
-    private store: Store<AppState>, 
+    private store: Store<AppState>,
     private modalService: NgbModal,
     private postService: PostService
-    ) {
+  ) {
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet
-        this.userHistory = x[0].historyTransaction === undefined ? [] : x[0].historyTransaction
         this.activeTab = "eventFeed"
+        
+        let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
+        this.getHistoryUsers(historyData)
         this.getInvitation()
         if (this.connectToLoomGuard) {
           this.amountSpinner = true;
@@ -68,12 +72,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
     })
   }
 
-  getInvitation(){
+  getHistoryUsers(data) {
+    if (data === undefined) {
+      this.userHistory = []
+      this.loadMore = false
+    } else {
+      if (data.length > 5) {
+        this.loadMore = true
+        this.userHistory = data.slice(0, 5)
+      } else {
+        this.loadMore = false
+        this.userHistory = data;
+      }
+    }
+  }
+
+  getInvitation() {
     let data = {
       wallet: this.userWallet
     }
     this.postService.post("my_activites/invites", data)
-      .subscribe(async (x:any) => {
+      .subscribe(async (x: any) => {
         this.invitationQuantity = x.length
       })
   }

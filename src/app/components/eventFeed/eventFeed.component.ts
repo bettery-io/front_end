@@ -33,7 +33,9 @@ export class EventFeedComponent implements OnDestroy {
   userData: any = [];
   storeUserSubscribe;
   storeCoinsSubscrive;
-
+  allData = [];
+  parcipiantFilter = true;
+  validateFilter = true;
 
   constructor(
     private store: Store<AppState>,
@@ -64,7 +66,9 @@ export class EventFeedComponent implements OnDestroy {
 
   getData() {
     this.getService.get("question/get_all_private").subscribe((x) => {
+      this.myAnswers = [];
       this.questions = _.orderBy(x, ['endTime'], ['desc']);
+      this.allData = this.questions;
       this.questions.forEach((data, i) => {
         let z = {
           event_id: data.id,
@@ -81,19 +85,31 @@ export class EventFeedComponent implements OnDestroy {
     })
   }
 
-
   findMultyAnswer(data) {
     let z = []
-    let search = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
-    search.forEach((x) => {
+    let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
+    part.forEach((x) => {
       z.push(x.answer)
     })
-    return z
+    if (z.length === 0) {
+      let part = _.filter(data.validatorsAnswers, { 'wallet': this.userWallet });
+      part.forEach((x) => {
+        z.push(x.answer)
+      })
+      return z;
+    } else {
+      return z;
+    }
   }
 
   findAnswer(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
-    return findParticipiant !== -1 ? data.parcipiantAnswers[findParticipiant].answer : undefined;
+    if (findParticipiant === -1) {
+      let findValidators = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
+    } else {
+      return data.parcipiantAnswers[findParticipiant].answer
+    }
   }
 
   findAnswered(data) {
@@ -177,11 +193,46 @@ export class EventFeedComponent implements OnDestroy {
     }
   }
 
+  getActiveQuantity(from) {
+    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+    if (from === "participant") {
+      let part = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
+      return part.length;
+    } else {
+      let valid = _.filter(this.allData, (o) => { return o.endTime <= timeNow })
+      return valid.length;
+    }
+  }
+
+  filter() {
+    setTimeout(() => {
+      let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+      let data = this.allData
+
+      if (!this.parcipiantFilter) {
+        data = _.filter(data, (o) => { return o.endTime <= timeNow })
+      }
+      if (!this.validateFilter) {
+        data = _.filter(data, (o) => { return o.endTime >= timeNow })
+      }
+      this.questions = data;
+    }, 100)
+  }
+
   makeAnswer(data, i) {
     let index = _.findIndex(this.myAnswers, { 'event_id': data.id, 'from': data.from });
     this.myAnswers[index].answer = i;
     this.errorValidator.idError = null;
     this.errorValidator.message = undefined;
+  }
+
+  nameGuard(data) {
+    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+    if (data >= timeNow) {
+      return "Participate"
+    } else {
+      return "Validate"
+    }
   }
 
   setAnswer(dataAnswer) {
@@ -199,7 +250,11 @@ export class EventFeedComponent implements OnDestroy {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Chose at leas one answer"
       } else {
-        this.setToLoomNetwork(answer, dataAnswer);
+        if(this.nameGuard(dataAnswer.endTime) === "Participate"){
+          this.setToLoomNetwork(answer, dataAnswer);
+        }else{
+          this.setToLoomNetworkValidation(answer, dataAnswer)
+        }
       }
     }
   }
@@ -254,6 +309,72 @@ export class EventFeedComponent implements OnDestroy {
       this.errorValidator.message = undefined;
 
       this.getData();
+      let web3 = new Web3(window.web3.currentProvider);
+      let loomEthCoinData = new LoomEthCoin()
+      await loomEthCoinData.load(web3)
+
+      this.coinInfo = await loomEthCoinData._updateBalances()
+      console.log(this.coinInfo)
+      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+
+    },
+      (err) => {
+        console.log(err)
+      })
+  }
+
+  async setToLoomNetworkValidation(answer, dataAnswer) {
+
+    let contract = new Contract();
+    var _question_id = dataAnswer.id;
+    var _whichAnswer = answer.answer;
+    let contr = await contract.initContract()
+    let validator = await contr.methods.setTimeValidator(_question_id).call();
+    console.log("validatin number: " + validator);
+
+    switch (Number(validator)) {
+      case 0:
+        let sendToContract = await contr.methods.setValidator(_question_id, _whichAnswer).send();
+        if (sendToContract.transactionHash !== undefined) {
+          this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash)
+        }
+        break;
+      case 1:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event not started yeat."
+        break;
+      case 2:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event is finished."
+        break;
+      case 3:
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "You have been like the participant in this event. The participant can't be the validator."
+        break;
+    }
+  }
+
+  setToDBValidation(answer, dataAnswer, transactionHash) {
+    let data = {
+      multy: answer.multy,
+      event_id: answer.event_id,
+      date: new Date(),
+      answer: answer.answer,
+      multyAnswer: answer.multyAnswer,
+      transactionHash: transactionHash,
+      wallet: this.userWallet,
+      from: "validator",
+      validatorsQuantity: dataAnswer.validatorsQuantity + 1
+    }
+    console.log(data);
+    this.postService.post("answer", data).subscribe(async () => {
+      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
+      this.myAnswers[index].answered = true;
+      this.errorValidator.idError = null;
+      this.errorValidator.message = undefined;
+
+      this.getData();
+
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)

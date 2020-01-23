@@ -17,7 +17,6 @@ import { GetService } from './services/get.service';
 import { CreateQuizeComponent } from './components/create-quize/create-quize.component';
 import { HomeComponent } from './components/home/home.component';
 import { EventFeedComponent } from './components/eventFeed/eventFeed.component';
-import { ValidateComponent } from './components/validate/validate.component';
 import { MyActivitesComponent } from './components/my-activites/my-activites.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
@@ -37,7 +36,6 @@ import { HistoryComponent } from './components/history/history.component';
     CreateQuizeComponent,
     HomeComponent,
     EventFeedComponent,
-    ValidateComponent,
     MyActivitesComponent,
     QuestionComponent,
     TimeComponent,

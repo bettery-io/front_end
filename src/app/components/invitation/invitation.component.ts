@@ -395,7 +395,6 @@ export class InvitationComponent implements OnInit {
   }
 
   deleteInvitation(value){
-    console.log(value.id)
     let data = {
       id: value.id,
       wallet: this.userWallet,

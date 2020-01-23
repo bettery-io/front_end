@@ -7,6 +7,18 @@
     </div>
 
     <div *ngIf="!spinner">
+        <div class="filterCheckBox">
+            <div class="filter_box">
+                <label for="participatedFilter">
+                    <input id="participatedFilter" [(ngModel)]="parcipiantFilter" (click)="filter()" type="checkbox">
+                    Participate ({{this.getActiveQuantity("participant")}})</label>
+            </div>
+            <div>
+                <label for="validatedFilter">
+                    <input id="validatedFilter" [(ngModel)]="validateFilter" (click)="filter()" type="checkbox">
+                    Validate ({{this.getActiveQuantity("validator")}})</label>
+            </div>
+        </div>
         <div *ngIf='questions.length !== 0'>
             <div *ngFor="let question of questions; let index = index">
                 <div class="card card_box">
@@ -99,7 +111,7 @@
                         <div class="button_box" *ngIf="question.finalAnswers === null">
                             <div *ngIf="myAnswers[index].answered === false">
                                 <button type="button" *ngIf="!this.timeGuard(question)" class="btn btn-primary"
-                                    (click)="this.setAnswer(question)">Participant now</button>
+                                    (click)="this.setAnswer(question)">{{this.nameGuard(question.endTime)}}</button>
                                 <button class="btn btn-danger" *ngIf="this.timeGuard(question)" (click)="this.setAnswer(question)" >Start<time style="display:inline-block" [timer]="question.startTime"></time></button>   
                             </div>
                             <div *ngIf="errorValidator.idError === question.id">

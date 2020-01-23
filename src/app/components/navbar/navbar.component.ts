@@ -55,7 +55,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet
         this.activeTab = "eventFeed"
-        
+
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
         this.getHistoryUsers(historyData)
         this.getInvitation()
@@ -81,7 +81,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.loadMore = true
         this.userHistory = data.slice(0, 5)
       } else {
-        this.loadMore = false
+        this.loadMore = true
         this.userHistory = data;
       }
     }

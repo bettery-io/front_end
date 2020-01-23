@@ -12,6 +12,7 @@ import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators'
 import { Observable } from 'rxjs';
 import Contract from '../../services/contract';
 import * as UserActions from '../../actions/user.actions';
+import * as InvitesAction from '../../actions/invites.actions';
 
 
 type Time = { name: string, date: any, value: number };
@@ -381,12 +382,24 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.getAllUsers(true);
           this.generatedLink = id;
           this.spinner = false;
+          this.updateInvites(this.host[0].wallet);
           console.log("set to db DONE")
         },
         (err) => {
           console.log("set qestion error");
           console.log(err);
         })
+  }
+
+  updateInvites(wallet){
+    let data = {
+      wallet: wallet
+    }
+    this.PostService.post("my_activites/invites", data)
+    .subscribe(async (x: any) => {
+      let amount = x.length
+      this.store.dispatch(new InvitesAction.UpdateInvites({amount: amount}));
+    })
   }
 
   ngOnDestroy() {

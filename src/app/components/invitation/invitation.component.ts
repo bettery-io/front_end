@@ -9,6 +9,7 @@ import Web3 from 'web3';
 import LoomEthCoin from '../../services/LoomEthCoin';
 import Contract from '../../services/contract';
 import * as CoinsActios from '../../actions/coins.actions';
+import * as InvitesAction from '../../actions/invites.actions';
 
 
 
@@ -68,7 +69,6 @@ export class InvitationComponent implements OnInit {
     }
     this.postService.post("my_activites/invites", data)
       .subscribe(async (x) => {
-        console.log(x)
         this.myAnswers = [];
         this.myActivites = x;
         this.allData = x;
@@ -84,6 +84,7 @@ export class InvitationComponent implements OnInit {
 
           this.myAnswers.push(z);
         });
+        this.store.dispatch(new InvitesAction.UpdateInvites({amount: this.allData.length}));
         this.spinner = false;
       }, (err) => {
         console.log(err);

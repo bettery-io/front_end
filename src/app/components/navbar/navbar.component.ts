@@ -4,6 +4,7 @@ import { AppState } from '../../app.state';
 import { Coins } from '../../models/Coins.model';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
+import * as InvitesAction from '../../actions/invites.actions';
 
 import LoomEthCoin from '../../services/LoomEthCoin';
 import Web3 from 'web3';
@@ -70,6 +71,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.coinInfo = x[0];
       }
     })
+    this.store.select("invites").subscribe((x)=>{
+      if(x.length !== 0) {
+        this.invitationQuantity = x[0].amount
+      }
+    })
   }
 
   getHistoryUsers(data) {
@@ -93,7 +99,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
     this.postService.post("my_activites/invites", data)
       .subscribe(async (x: any) => {
-        this.invitationQuantity = x.length
+        let amount = x.length
+        this.store.dispatch(new InvitesAction.AddInvites({amount: amount}));
       })
   }
 

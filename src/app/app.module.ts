@@ -1,10 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { StoreModule } from '@ngrx/store';
+
 import { userReducer } from './reducers/user.reducer';
-import { HttpClientModule } from '@angular/common/http';
+import { coinsReducer } from './reducers/coins.reducer';
+import { invitesReducer } from './reducers/invites.reducer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,7 +24,6 @@ import { MyActivitesComponent } from './components/my-activites/my-activites.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { QuestionComponent } from './components/question/question.component';
-import { coinsReducer } from './reducers/coins.reducer';
 import { TimeComponent } from './components/time/time.component';
 import { InvitationComponent } from './components/invitation/invitation.component';
 import { HistoryComponent } from './components/history/history.component';
@@ -50,7 +52,8 @@ import { HistoryComponent } from './components/history/history.component';
     ReactiveFormsModule,
     StoreModule.forRoot({
       user: userReducer,
-      coins: coinsReducer
+      coins: coinsReducer,
+      invites: invitesReducer
     }),
     NgbModule,
     FormsModule

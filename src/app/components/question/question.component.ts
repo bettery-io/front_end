@@ -227,6 +227,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
   }
 
+  nameGuard(data) {
+    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+    if (data >= timeNow) {
+      return "Participate"
+    } else {
+      return "Validate"
+    }
+  }
+
   setAnswer(dataAnswer) {
     if (this.myAnswers.multy) {
       if (this.myAnswers.multyAnswer.length === 0) {
@@ -250,7 +259,11 @@ export class QuestionComponent implements OnInit, OnDestroy {
           this.errorValidator.idError = dataAnswer.id
           this.errorValidator.message = "You must registr first"
         } else {
-          this.setToLoomNetwork(this.myAnswers, dataAnswer);
+          if(this.nameGuard(dataAnswer.endTime) === "Participate"){
+            this.setToLoomNetwork(this.myAnswers, dataAnswer);
+          }else{
+            this.setToLoomNetworkValidation(this.myAnswers, dataAnswer);
+          }
         }
       }
     }
@@ -322,35 +335,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
       (err) => {
         console.log(err)
       })
-  }
-
-  setValidation(dataAnswer) {
-    if (this.myAnswers.multy) {
-      if (this.myAnswers.multyAnswer.length === 0) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Chose at leas one answer"
-      } else {
-        if (this.userWallet === undefined) {
-          this.errorValidator.idError = dataAnswer.id
-          this.errorValidator.message = "You must registr first"
-        } else {
-          // multy answer
-          //  this.setToDB(answer, dataAnswer)
-        }
-      }
-    } else {
-      if (this.myAnswers.answer === undefined) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Chose at leas one answer"
-      } else {
-        if (this.userWallet === undefined) {
-          this.errorValidator.idError = dataAnswer.id
-          this.errorValidator.message = "You must registr first"
-        } else {
-          this.setToLoomNetworkValidation(this.myAnswers, dataAnswer);
-        }
-      }
-    }
   }
 
   async setToLoomNetworkValidation(answer, dataAnswer) {

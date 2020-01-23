@@ -138,10 +138,18 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
-  validateButton(data) {
+  validateDeleteButton(data) {
     let result = this.getPosition(data);
     let z = result.search("Host")
-    return z === -1 ? false : true;
+    if (z !== -1) {
+      if (data.answerQuantity >= 1) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return false
+    }
   }
 
   guardPath(data) {

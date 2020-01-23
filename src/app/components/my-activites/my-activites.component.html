@@ -130,8 +130,7 @@
 
                         <div class="button_box" *ngIf="active.finalAnswers === null">
                             <button (click)="this.deleteEvent(active)" type="button" class="btn btn-danger delete_button"
-                                *ngIf="this.validateButton(active)">Delete
-                                Event</button>
+                                *ngIf="this.validateDeleteButton(active)">Delete Event</button>
                             <div *ngIf="myAnswers[index].answered === false" style="display: inline-block;">
                                 <button type="button" class="btn btn-primary" (click)="this.setAnswer(active)">{{this.guardPath(active)
                                     ? 'Participate now!' : 'Validate now'}}</button>

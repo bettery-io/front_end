@@ -109,6 +109,16 @@ export class InvitationComponent implements OnInit {
     }
   }
 
+  validatorGuard(data){
+    if(this.getPosition(data) === "Guest"){
+      return false
+    }else if(this.getPosition(data) === 'invited as validator'){
+      return false
+    }else{
+      return true
+    }
+  }
+
   findMultyAnswer(data) {
     let z = []
     let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });

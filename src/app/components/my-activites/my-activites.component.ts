@@ -152,6 +152,16 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
+  validatorGuard(data){
+    if(this.getPosition(data) === "Guest"){
+      return false
+    }else if(this.getPosition(data) === 'invited as validator'){
+      return false
+    }else{
+      return true
+    }
+  }
+
   guardPath(data) {
     let result = this.getPosition(data);
     let searchHost = result.search("Host")

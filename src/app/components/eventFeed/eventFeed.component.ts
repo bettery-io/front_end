@@ -159,6 +159,16 @@ export class EventFeedComponent implements OnDestroy {
     }
   }
 
+  validatorGuard(data){
+    if(this.getPosition(data) === "Guest"){
+      return false
+    }else if(this.getPosition(data) === 'invited as validator'){
+      return false
+    }else{
+      return true
+    }
+  }
+
 
   getParticipantsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].parcipiantAnswers !== undefined) {

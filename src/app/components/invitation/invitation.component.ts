@@ -10,6 +10,8 @@ import LoomEthCoin from '../../services/LoomEthCoin';
 import Contract from '../../services/contract';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as InvitesAction from '../../actions/invites.actions';
+import * as UserActions from '../../actions/user.actions';
+import { User } from '../../models/User.model';
 
 
 
@@ -325,6 +327,7 @@ export class InvitationComponent implements OnInit {
       this.errorValidator.idError = null;
       this.errorValidator.message = undefined;
 
+      this.updateUser();
       this.getDataFromDb();
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
@@ -403,6 +406,25 @@ export class InvitationComponent implements OnInit {
       (err) => {
         console.log(err)
       })
+  }
+
+  updateUser(){
+    let data = {
+      wallet: this.userWallet
+    }
+    this.postService.post("user/validate", data)
+        .subscribe(
+          (currentUser: User) => {
+            this.store.dispatch(new UserActions.UpdateUser({
+              email: currentUser.email,
+              nickName: currentUser.nickName,
+              wallet: currentUser.wallet,
+              listHostEvents: currentUser.listHostEvents,
+              listParticipantEvents: currentUser.listParticipantEvents,
+              listValidatorEvents: currentUser.listValidatorEvents,
+              historyTransaction: currentUser.historyTransaction
+            }))
+          })
   }
 
   deleteInvitation(value){

@@ -12,6 +12,8 @@ import _ from 'lodash';
 import Web3 from 'web3';
 import LoomEthCoin from '../../services/LoomEthCoin';
 import * as CoinsActios from '../../actions/coins.actions';
+import * as UserActions from '../../actions/user.actions';
+import { User } from '../../models/User.model';
 
 @Component({
   selector: 'question',
@@ -193,6 +195,16 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
   }
 
+  validatorGuard(data){
+    if(this.getPosition(data) === "Guest"){
+      return false
+    }else if(this.getPosition(data) === 'invited as validator'){
+      return false
+    }else{
+      return true
+    }
+  }
+
 
   async info(id) {
     let contract = new Contract();
@@ -320,6 +332,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       let data = {
         id: Number(dataAnswer.id)
       }
+      this.updateUser();
       this.getDatafromDb(data);
       this.info(dataAnswer.id);
 
@@ -403,6 +416,25 @@ export class QuestionComponent implements OnInit, OnDestroy {
       (err) => {
         console.log(err)
       })
+  }
+
+  updateUser(){
+    let data = {
+      wallet: this.userWallet
+    }
+    this.postService.post("user/validate", data)
+        .subscribe(
+          (currentUser: User) => {
+            this.store.dispatch(new UserActions.UpdateUser({
+              email: currentUser.email,
+              nickName: currentUser.nickName,
+              wallet: currentUser.wallet,
+              listHostEvents: currentUser.listHostEvents,
+              listParticipantEvents: currentUser.listParticipantEvents,
+              listValidatorEvents: currentUser.listValidatorEvents,
+              historyTransaction: currentUser.historyTransaction
+            }))
+          })
   }
 
 

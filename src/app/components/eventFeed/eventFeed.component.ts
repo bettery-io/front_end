@@ -11,7 +11,9 @@ import Contract from '../../services/contract';
 import { PostService } from '../../services/post.service';
 import LoomEthCoin from '../../services/LoomEthCoin';
 import * as CoinsActios from '../../actions/coins.actions';
+import * as UserActions from '../../actions/user.actions';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { User } from '../../models/User.model';
 
 
 @Component({
@@ -318,7 +320,9 @@ export class EventFeedComponent implements OnDestroy {
       this.errorValidator.idError = null;
       this.errorValidator.message = undefined;
 
+      this.updateUser();
       this.getData();
+      
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)
@@ -397,6 +401,25 @@ export class EventFeedComponent implements OnDestroy {
       (err) => {
         console.log(err)
       })
+  }
+
+  updateUser(){
+    let data = {
+      wallet: this.userWallet
+    }
+    this.postService.post("user/validate", data)
+        .subscribe(
+          (currentUser: User) => {
+            this.store.dispatch(new UserActions.UpdateUser({
+              email: currentUser.email,
+              nickName: currentUser.nickName,
+              wallet: currentUser.wallet,
+              listHostEvents: currentUser.listHostEvents,
+              listParticipantEvents: currentUser.listParticipantEvents,
+              listValidatorEvents: currentUser.listValidatorEvents,
+              historyTransaction: currentUser.historyTransaction
+            }))
+          })
   }
 
   ngOnDestroy() {

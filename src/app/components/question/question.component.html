@@ -30,13 +30,17 @@
                     <div class="answers_box">
                         <div class="validators_box">
                             <p>Validators ({{question.validatorsQuantity}} of {{question.validatorsAmount}})</p>
-                            <div class="participants_Percentage_box" *ngFor="let answer of question.answers; let i = index">
-                                <p class="participants_Percentage">{{this.getValidatorsPercentage(i)}} %</p>
+                            <div *ngIf="validatorGuard(question)">
+                                <div class="participants_Percentage_box"
+                                    *ngFor="let answer of question.answers; let i = index">
+                                    <p class="participants_Percentage">{{this.getValidatorsPercentage(i)}} %</p>
+                                </div>
                             </div>
                         </div>
                         <div class="participants_box">
                             <p>Participants ({{question.answerQuantity}})</p>
-                            <div class="participants_Percentage_box" *ngFor="let answer of question.answers; let i = index">
+                            <div class="participants_Percentage_box"
+                                *ngFor="let answer of question.answers; let i = index">
                                 <p class="participants_Percentage">{{this.getParticipantsPercentage(i)}} %</p>
                             </div>
                         </div>
@@ -46,7 +50,8 @@
                             <div *ngIf="question.finalAnswers !== null">
                                 <div>
                                     <div class="answered_Box" *ngFor="let answer of question.answers; let i = index">
-                                        <fa-icon class="iconCheck" *ngIf="myAnswers.answer === i" [icon]="faCheck"></fa-icon>
+                                        <fa-icon class="iconCheck" *ngIf="myAnswers.answer === i" [icon]="faCheck">
+                                        </fa-icon>
                                         <p [ngClass]="{'text-success event_is_finish':question.finalAnswers === i}"
                                             class="answered">{{answer}}</p>
                                     </div>
@@ -57,15 +62,18 @@
                                 <div *ngIf="question.multiChose === true">
                                     <div *ngIf="myAnswers.answered === false">
                                         <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
-                                            <input (click)="this.makeMultyAnswer(question, i, $event)" class="checkbox_answer"
-                                                id="{{question.id}}{{active.from}}" value="i" type="checkbox">
+                                            <input (click)="this.makeMultyAnswer(question, i, $event)"
+                                                class="checkbox_answer" id="{{question.id}}{{active.from}}" value="i"
+                                                type="checkbox">
                                             <label class="label">{{answer}}</label>
                                         </div>
                                     </div>
                                     <div *ngIf="myAnswers.answered === true">
-                                        <div class="answered_Box" *ngFor="let answer of question.answers; let i = index">
-                                            <fa-icon class="iconCheck" *ngIf="this.getMultyIcon(myAnswers.multyAnswer, i)"
-                                                [icon]="faCheck"></fa-icon>
+                                        <div class="answered_Box"
+                                            *ngFor="let answer of question.answers; let i = index">
+                                            <fa-icon class="iconCheck"
+                                                *ngIf="this.getMultyIcon(myAnswers.multyAnswer, i)" [icon]="faCheck">
+                                            </fa-icon>
                                             <p class="answered">{{answer}}</p>
                                         </div>
                                     </div>
@@ -75,14 +83,17 @@
                                     <div *ngIf="myAnswers.answered === false">
                                         <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                                             <input class="checkbox_answer" id="{{question.id}}{{question.from}}"
-                                                (click)="this.makeAnswer(i)" value="i" type="radio" name="{{question.id}}{{question.from}}">
+                                                (click)="this.makeAnswer(i)" value="i" type="radio"
+                                                name="{{question.id}}{{question.from}}">
                                             <label class="label">{{answer}}</label>
                                         </div>
                                     </div>
 
                                     <div *ngIf="myAnswers.answered === true">
-                                        <div class="answered_Box" *ngFor="let answer of question.answers; let i = index">
-                                            <fa-icon class="iconCheck" *ngIf="myAnswers.answer === i" [icon]="faCheck"></fa-icon>
+                                        <div class="answered_Box"
+                                            *ngFor="let answer of question.answers; let i = index">
+                                            <fa-icon class="iconCheck" *ngIf="myAnswers.answer === i" [icon]="faCheck">
+                                            </fa-icon>
                                             <p class="answered">{{answer}}</p>
                                         </div>
                                     </div>
@@ -93,12 +104,14 @@
                             <p style="height: 25px"> </p>
                             <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
                             <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>
-                            <p style="display: flex">Validation over <time [timer]="this.getEndValidation(question)"></time></p>
+                            <p style="display: flex">Validation over <time
+                                    [timer]="this.getEndValidation(question)"></time></p>
                         </div>
                     </div>
 
                     <div class="button_box" *ngIf="question.finalAnswers === null">
-                        <button *ngIf="myAnswers.answered === false" type="button" class="btn btn-primary" style="margin-right: 15px"
+                        <button *ngIf="myAnswers.answered === false" type="button" class="btn btn-primary"
+                            style="margin-right: 15px"
                             (click)="this.setAnswer(question)">{{this.nameGuard(question.endTime)}}</button>
                         <div *ngIf="errorValidator.idError === question.id">
                             <p class="error_answer">{{errorValidator.message}}</p>

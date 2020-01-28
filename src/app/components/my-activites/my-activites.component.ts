@@ -12,6 +12,8 @@ import Web3 from 'web3';
 import LoomEthCoin from '../../services/LoomEthCoin';
 import * as CoinsActios from '../../actions/coins.actions';
 import { NgbTabsetConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import * as UserActions from '../../actions/user.actions';
+import { User } from '../../models/User.model';
 
 
 
@@ -519,6 +521,26 @@ export class MyActivitesComponent implements OnInit {
       this.errorValidator.idError = id
       this.errorValidator.message = "error from contract. Check console log."
     }
+  }
+
+
+  updateUser(){
+    let data = {
+      wallet: this.userWallet
+    }
+    this.postService.post("user/validate", data)
+        .subscribe(
+          (currentUser: User) => {
+            this.store.dispatch(new UserActions.UpdateUser({
+              email: currentUser.email,
+              nickName: currentUser.nickName,
+              wallet: currentUser.wallet,
+              listHostEvents: currentUser.listHostEvents,
+              listParticipantEvents: currentUser.listParticipantEvents,
+              listValidatorEvents: currentUser.listValidatorEvents,
+              historyTransaction: currentUser.historyTransaction
+            }))
+          })
   }
 
   deleteFromDb(id) {

@@ -17,4 +17,5 @@ export interface Question {
     transactionHash: number;
     answerQuantity: number;
     validatorsQuantity: number;
+    showDistribution: boolean;
 }

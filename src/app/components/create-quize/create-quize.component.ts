@@ -153,6 +153,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       endDate: [0.083, Validators.required],
       calendarEndDate: ['', Validators.required],
       endTime: [{ hour: 0, minute: 0, second: 0 }, Validators.required],
+      showDistribution: true,
       privateOrPublic: "public",
       amountOfValidators: [2, [Validators.min(1), Validators.required]],
       amount: [0.1, [Validators.min(0.01), Validators.required]]
@@ -373,7 +374,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       validatorsAmount: this.questionForm.value.amountOfValidators,
       money: this.questionForm.value.amount,
       finalAnswers: null,
-      transactionHash: transactionHash
+      transactionHash: transactionHash,
+      showDistribution: this.questionForm.value.showDistribution
     }
 
     this.PostService.post("question/set", data)

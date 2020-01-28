@@ -5,8 +5,8 @@
 
         <div class="form-group">
             <label for="Question">Question <b style="font-size: 12px">*required</b></label>
-            <input type="text" formControlName="question" class="form-control" id="Question" placeholder="Enter your question"
-                [ngClass]="{ 'is_invalid': submitted && f.question.errors }">
+            <input type="text" formControlName="question" class="form-control" id="Question"
+                placeholder="Enter your question" [ngClass]="{ 'is_invalid': submitted && f.question.errors }">
             <div *ngIf="submitted && f.question.errors">
                 <small *ngIf="f.question.errors.required" class="form-text quize_validation_error">Question is
                     required</small>
@@ -17,7 +17,8 @@
 
         <div class="form-group">
             <label for="Question">Hashtags <b style="font-size: 12px">*optional</b></label>
-            <input id="hashtags" type="text" class="form-control" (keyup.enter)="addNewHash($event)" (selectItem)="selectedHasgtags($event)" placeholder="Choose hashtag or press enter to add hashtag"
+            <input id="hashtags" type="text" class="form-control" (keyup.enter)="addNewHash($event)"
+                (selectItem)="selectedHasgtags($event)" placeholder="Choose hashtag or press enter to add hashtag"
                 [ngbTypeahead]="searchHashtags" [editable]='false' />
             <div style="padding-top:10px">
                 <div class="display_validators" *ngFor="let myHashtag of myHashtags; let i = index">
@@ -49,7 +50,8 @@
                     </div>
                 </div>
                 <div *ngIf="submitted && answer.controls.name.errors">
-                    <small style="padding-bottom: 10px" *ngIf="answer.controls.name.errors.required" class="form-text quize_validation_error">Answers
+                    <small style="padding-bottom: 10px" *ngIf="answer.controls.name.errors.required"
+                        class="form-text quize_validation_error">Answers
                         is required</small>
                 </div>
             </div>
@@ -68,15 +70,17 @@
         <div class="form-group time_all">
             <div class="time_box">
                 <label class="start_label">Start time <b style="font-size: 12px">*required</b></label>
-                <button (click)="switchTimeMethods('exactStartTime')" type="button" class="btn btn-secondary btn-sm button_swith_time_pos">Switch
+                <button (click)="switchTimeMethods('exactStartTime')" type="button"
+                    class="btn btn-secondary btn-sm button_swith_time_pos">Switch
                     end time methods</button>
                 <div *ngIf="!exactStartTime">
                     <div ngbDropdown class="d-inline-block">
-                        <button [ngClass]="{ 'is_invalid': submitted && f.startDate.errors }" type="button" class="btn btn-outline-primary"
-                            id="startTime" ngbDropdownToggle>{{startTimeValue}}</button>
+                        <button [ngClass]="{ 'is_invalid': submitted && f.startDate.errors }" type="button"
+                            class="btn btn-outline-primary" id="startTime" ngbDropdownToggle>{{startTimeValue}}</button>
                         <div ngbDropdownMenu aria-labelledby="startTime">
                             <div *ngFor="let time of times">
-                                <button (click)="choseStartTime(time)" type="button" ngbDropdownItem>{{time.name}}</button>
+                                <button (click)="choseStartTime(time)" type="button"
+                                    ngbDropdownItem>{{time.name}}</button>
                             </div>
                         </div>
                     </div>
@@ -88,8 +92,8 @@
                 <div *ngIf="exactStartTime">
                     <div style="display: flex">
                         <div class="calendar_box">
-                            <input [minDate]="startCaledarMeasure" class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                                formControlName="calendarStartDate" ngbDatepicker #z="ngbDatepicker">
+                            <input [minDate]="startCaledarMeasure" class="form-control" placeholder="yyyy-mm-dd"
+                                name="dp" formControlName="calendarStartDate" ngbDatepicker #z="ngbDatepicker">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary calendar" (click)="z.toggle()" type="button">
                                     <fa-icon [icon]="faCalendarAlt"></fa-icon>
@@ -105,7 +109,8 @@
                             picker is required</small>
                     </div>
                     <div *ngIf="submitted && f.calendarStartDate.errors">
-                        <small *ngIf="f.calendarStartDate.errors.required" class="form-text quize_validation_error">Start
+                        <small *ngIf="f.calendarStartDate.errors.required"
+                            class="form-text quize_validation_error">Start
                             time is required</small>
                     </div>
                 </div>
@@ -113,13 +118,14 @@
             <div class="time_box">
                 <div>
                     <label class="start_label">End time <b style="font-size: 12px">*required</b></label>
-                    <button (click)="switchTimeMethods('exactEndTime')" type="button" class="btn btn-secondary btn-sm button_swith_time_pos">Switch
+                    <button (click)="switchTimeMethods('exactEndTime')" type="button"
+                        class="btn btn-secondary btn-sm button_swith_time_pos">Switch
                         start time methods</button>
                 </div>
                 <div *ngIf="!exactEndTime">
                     <div ngbDropdown class="d-inline-block">
-                        <button [ngClass]="{ 'is_invalid': submitted && f.endDate.errors }" type="button" class="btn btn-outline-primary"
-                            id="endTime" ngbDropdownToggle>{{endTimeValue}}</button>
+                        <button [ngClass]="{ 'is_invalid': submitted && f.endDate.errors }" type="button"
+                            class="btn btn-outline-primary" id="endTime" ngbDropdownToggle>{{endTimeValue}}</button>
                         <div ngbDropdownMenu aria-labelledby="endTime">
                             <div *ngFor="let time of times">
                                 <button *ngIf="time.name !== 'Now'" (click)="choseEndTime(time)" type="button"
@@ -163,8 +169,21 @@
 
         <div class="form-group">
             <label>Security guard <b style="font-size: 12px">*optional</b></label><br>
-            <input formControlName="privateOrPublic" name="privateOrPublic" value="private" type="radio" class="multy_choise">Private<br>
-            <input formControlName="privateOrPublic" name="privateOrPublic" value="public" type="radio" class="multy_choise">Public<br>
+            <input formControlName="privateOrPublic" name="privateOrPublic" value="private" type="radio"
+                class="multy_choise">Private<br>
+            <input formControlName="privateOrPublic" name="privateOrPublic" value="public" type="radio"
+                class="multy_choise">Public<br>
+        </div>
+
+        <!-- Show / hide Validator percentage -->
+
+        <div class="form-group">
+            <label>Show distribution after action</label>
+            <div>
+                <input type="checkbox" formControlName="showDistribution" name="showDistribution">
+                <label class="show">Show</label>
+            </div>
+
         </div>
 
         <!-- Invite friends -->
@@ -174,8 +193,9 @@
                 [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false' />
             <div style="padding-top:10px">
                 <div class="display_validators" *ngFor="let participant of inviteParcipiant; let i = index">
-                    <button (click)="deleteValidatorOrParcipiant(participant.nickName, 'inviteParcipiant')" type="button"
-                        class="btn btn-info btn-sm">{{participant.nickName}} <fa-icon [icon]="faTimes"></fa-icon></button>
+                    <button (click)="deleteValidatorOrParcipiant(participant.nickName, 'inviteParcipiant')"
+                        type="button" class="btn btn-info btn-sm">{{participant.nickName}} <fa-icon [icon]="faTimes">
+                        </fa-icon></button>
                 </div>
             </div>
         </div>
@@ -199,8 +219,8 @@
 
         <div class="form-group">
             <label>Amount of Validators <b style="font-size: 12px">*required</b></label>
-            <input [ngClass]="{ 'is_invalid': submitted && f.amountOfValidators.errors }" class="form-control" type="number"
-                formControlName="amountOfValidators" placeholder="Enter amount of validators">
+            <input [ngClass]="{ 'is_invalid': submitted && f.amountOfValidators.errors }" class="form-control"
+                type="number" formControlName="amountOfValidators" placeholder="Enter amount of validators">
             <div *ngIf="submitted && f.amountOfValidators.errors">
                 <small *ngIf="f.amountOfValidators.errors.min" class="form-text quize_validation_error">Minimum amount
                     is
@@ -226,7 +246,8 @@
         </div>
 
         <div class="form_container button_pos">
-            <button *ngIf="!spinner" type="button" (click)="onSubmit()" class="btn btn-success btn-lg btn-block">Create</button>
+            <button *ngIf="!spinner" type="button" (click)="onSubmit()"
+                class="btn btn-success btn-lg btn-block">Create</button>
             <div *ngIf="spinner">
                 <div class="lds-ripple-small">
                     <div></div>
@@ -238,7 +259,8 @@
 
     <div style="text-align: center" *ngIf="generatedLink !== undefined">
         <p>Your question link is -></p>
-        <a [routerLink]="['/~ki339203/question', generatedLink]" style="font-style: oblique">http://m3661.contabo.net/~ki339203/question/{{generatedLink}}</a>
+        <a [routerLink]="['/~ki339203/question', generatedLink]"
+            style="font-style: oblique">http://m3661.contabo.net/~ki339203/question/{{generatedLink}}</a>
     </div>
 
 </div>

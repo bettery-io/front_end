@@ -439,6 +439,18 @@ export class InvitationComponent implements OnInit {
       })
   }
 
+  participantGuard(data, i) {
+    if (data.showDistribution === true) {
+      return true
+    } else {
+      if (this.myAnswers[i].answered === true) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
 
   ngOnDestroy() {
     this.UserSubscribe.unsubscribe();

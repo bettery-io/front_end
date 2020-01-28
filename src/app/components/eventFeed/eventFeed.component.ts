@@ -161,12 +161,12 @@ export class EventFeedComponent implements OnDestroy {
     }
   }
 
-  validatorGuard(data){
-    if(this.getPosition(data) === "Guest"){
+  validatorGuard(data) {
+    if (this.getPosition(data) === "Guest") {
       return false
-    }else if(this.getPosition(data) === 'invited as validator'){
+    } else if (this.getPosition(data) === 'invited as validator') {
       return false
-    }else{
+    } else {
       return true
     }
   }
@@ -262,9 +262,9 @@ export class EventFeedComponent implements OnDestroy {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Chose at leas one answer"
       } else {
-        if(this.nameGuard(dataAnswer.endTime) === "Participate"){
+        if (this.nameGuard(dataAnswer.endTime) === "Participate") {
           this.setToLoomNetwork(answer, dataAnswer);
-        }else{
+        } else {
           this.setToLoomNetworkValidation(answer, dataAnswer)
         }
       }
@@ -322,7 +322,7 @@ export class EventFeedComponent implements OnDestroy {
 
       this.updateUser();
       this.getData();
-      
+
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)
@@ -403,23 +403,35 @@ export class EventFeedComponent implements OnDestroy {
       })
   }
 
-  updateUser(){
+  updateUser() {
     let data = {
       wallet: this.userWallet
     }
     this.postService.post("user/validate", data)
-        .subscribe(
-          (currentUser: User) => {
-            this.store.dispatch(new UserActions.UpdateUser({
-              email: currentUser.email,
-              nickName: currentUser.nickName,
-              wallet: currentUser.wallet,
-              listHostEvents: currentUser.listHostEvents,
-              listParticipantEvents: currentUser.listParticipantEvents,
-              listValidatorEvents: currentUser.listValidatorEvents,
-              historyTransaction: currentUser.historyTransaction
-            }))
-          })
+      .subscribe(
+        (currentUser: User) => {
+          this.store.dispatch(new UserActions.UpdateUser({
+            email: currentUser.email,
+            nickName: currentUser.nickName,
+            wallet: currentUser.wallet,
+            listHostEvents: currentUser.listHostEvents,
+            listParticipantEvents: currentUser.listParticipantEvents,
+            listValidatorEvents: currentUser.listValidatorEvents,
+            historyTransaction: currentUser.historyTransaction
+          }))
+        })
+  }
+
+  participantGuard(data, i) {
+    if (data.showDistribution === true) {
+      return true
+    } else {
+      if (this.myAnswers[i].answered === true) {
+        return true
+      } else {
+        return false
+      }
+    }
   }
 
   ngOnDestroy() {

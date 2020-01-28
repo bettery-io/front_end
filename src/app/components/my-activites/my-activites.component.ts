@@ -543,6 +543,18 @@ export class MyActivitesComponent implements OnInit {
           })
   }
 
+  participantGuard(data, i) {
+    if (data.showDistribution === true) {
+      return true
+    } else {
+      if (this.myAnswers[i].answered === true) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
   deleteFromDb(id) {
     let data = {
       id: id

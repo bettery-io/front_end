@@ -437,6 +437,18 @@ export class QuestionComponent implements OnInit, OnDestroy {
           })
   }
 
+  participantGuard(data) {
+    if (data.showDistribution === true) {
+      return true
+    } else {
+      if (this.myAnswers.answered === true) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
 
   weiConvert(data) {
     let web3 = new Web3();

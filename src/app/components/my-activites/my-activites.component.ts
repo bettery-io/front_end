@@ -185,8 +185,9 @@ export class MyActivitesComponent implements OnInit {
     }
     this.postService.post("my_activites/" + from, data)
       .subscribe(async (x) => {
+        let unique = _.uniqBy(x, 'id');
         this.myAnswers = [];
-        this.myActivites = x;
+        this.myActivites = unique;
         this.allData = x;
         this.allData.forEach((data, i) => {
           let z = {

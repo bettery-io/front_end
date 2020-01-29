@@ -137,7 +137,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="time">
+                            <div class="time" *ngIf="active.finalAnswers === null">
                                 <p style="height: 25px"> </p>
                                 <p style="display: flex">Participation <time [timer]="active.startTime"></time></p>
                                 <p style="display: flex">Validation <time [timer]="active.endTime"></time></p>

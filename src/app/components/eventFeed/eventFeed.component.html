@@ -118,13 +118,13 @@
                                 </div>
 
                             </div>
-                            <div class="time">
-                                <p style="height: 25px"> </p>
-                                <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
-                                <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>
-                                <p style="display: flex">Validation over <time
-                                        [timer]="this.getEndValidation(question)"></time>
-                                </p>
+                            <div *ngIf="question.finalAnswers === null" class="time">
+                                    <p style="height: 25px"> </p>
+                                    <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
+                                    <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>
+                                    <p style="display: flex">Validation over <time
+                                            [timer]="this.getEndValidation(question)"></time>
+                                    </p>
                             </div>
                         </div>
 

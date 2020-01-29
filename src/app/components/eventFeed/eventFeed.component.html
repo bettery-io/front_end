@@ -13,10 +13,15 @@
                     <input id="participatedFilter" [(ngModel)]="parcipiantFilter" (click)="filter()" type="checkbox">
                     Participate ({{this.getActiveQuantity("participant")}})</label>
             </div>
-            <div>
+            <div class="filter_box">
                 <label for="validatedFilter">
                     <input id="validatedFilter" [(ngModel)]="validateFilter" (click)="filter()" type="checkbox">
                     Validate ({{this.getActiveQuantity("validator")}})</label>
+            </div>
+            <div>
+                <label for="historyFilter">
+                    <input id="historyFilter" [(ngModel)]="historyFilter" (click)="filter()" type="checkbox">
+                    History ({{this.getActiveQuantity("history")}})</label>
             </div>
         </div>
         <div *ngIf='questions.length !== 0'>
@@ -119,12 +124,12 @@
 
                             </div>
                             <div *ngIf="question.finalAnswers === null" class="time">
-                                    <p style="height: 25px"> </p>
-                                    <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
-                                    <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>
-                                    <p style="display: flex">Validation over <time
-                                            [timer]="this.getEndValidation(question)"></time>
-                                    </p>
+                                <p style="height: 25px"> </p>
+                                <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
+                                <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>
+                                <p style="display: flex">Validation over <time
+                                        [timer]="this.getEndValidation(question)"></time>
+                                </p>
                             </div>
                         </div>
 

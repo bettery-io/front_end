@@ -38,6 +38,7 @@ export class EventFeedComponent implements OnDestroy {
   allData = [];
   parcipiantFilter = true;
   validateFilter = true;
+  historyFilter = false;
 
   constructor(
     private store: Store<AppState>,
@@ -69,10 +70,12 @@ export class EventFeedComponent implements OnDestroy {
   getData() {
     this.getService.get("question/get_all_private").subscribe((x) => {
       this.myAnswers = [];
-      this.questions = _.orderBy(x, ['endTime'], ['desc']);
-      this.allData = this.questions;
-      this.questions.forEach((data, i) => {
-        let z = {
+      let data = _.orderBy(x, ['endTime'], ['asc']);
+      this.allData = data
+
+      this.questions = _.filter(data, (o) => { return o.finalAnswers === null })
+      this.myAnswers = this.questions.map((data) => {
+        return {
           event_id: data.id,
           answer: this.findAnswer(data),
           from: data.from,
@@ -80,8 +83,6 @@ export class EventFeedComponent implements OnDestroy {
           answered: this.findAnswered(data),
           multyAnswer: this.findMultyAnswer(data)
         }
-
-        this.myAnswers.push(z);
       });
       this.spinner = false;
     })
@@ -210,24 +211,44 @@ export class EventFeedComponent implements OnDestroy {
     if (from === "participant") {
       let part = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
       return part.length;
-    } else {
+    } else if (from === "validator") {
       let valid = _.filter(this.allData, (o) => { return o.endTime <= timeNow })
       return valid.length;
+    } else if (from === "history") {
+      let history = _.filter(this.allData, (o) => { return o.finalAnswers !== null })
+      return history.length;
     }
   }
 
   filter() {
     setTimeout(() => {
       let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-      let data = this.allData
+      let z = this.allData
 
       if (!this.parcipiantFilter) {
-        data = _.filter(data, (o) => { return o.endTime <= timeNow })
+        z = _.filter(z, (o) => { return o.endTime <= timeNow })
       }
+
       if (!this.validateFilter) {
-        data = _.filter(data, (o) => { return o.endTime >= timeNow })
+        z = _.filter(z, (o) => { return o.endTime >= timeNow })
       }
-      this.questions = data;
+
+      if (!this.historyFilter) {
+        z = _.filter(z, (o) => { return o.finalAnswers === null })
+      }
+
+      this.myAnswers = z.map((data, i) => {
+        return {
+          event_id: data.id,
+          answer: this.findAnswer(data),
+          from: data.from,
+          multy: data.multiChose,
+          answered: this.findAnswered(data),
+          multyAnswer: this.findMultyAnswer(data)
+        }
+      })
+
+      this.questions = z;
     }, 100)
   }
 

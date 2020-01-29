@@ -288,7 +288,6 @@ export class MyActivitesComponent implements OnInit {
 
   getActiveQuantity(from) {
     let data = this.allData.filter((x) => x.from === from);
-    // let z = this.removeDuplicates(data, 'id');
     return data.length
   }
 

@@ -71,8 +71,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.coinInfo = x[0];
       }
     })
-    this.store.select("invites").subscribe((x)=>{
-      if(x.length !== 0) {
+    this.store.select("invites").subscribe((x) => {
+      if (x.length !== 0) {
         this.invitationQuantity = x[0].amount
       }
     })
@@ -83,12 +83,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.userHistory = []
       this.loadMore = false
     } else {
-      if (data.length > 5) {
+      let z = data.map((x) => {
+        return {
+          date: x.date,
+          amount: x.amount.toFixed(4),
+          paymentWay: x.paymentWay,
+          eventId: x.eventId,
+          role: x.role
+        }
+      })
+      if (z.length > 5) {
         this.loadMore = true
-        this.userHistory = data.slice(0, 5)
+        this.userHistory = z.slice(0, 5)
       } else {
         this.loadMore = true
-        this.userHistory = data;
+        this.userHistory = z;
       }
     }
   }
@@ -100,7 +109,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.postService.post("my_activites/invites", data)
       .subscribe(async (x: any) => {
         let amount = x.length
-        this.store.dispatch(new InvitesAction.AddInvites({amount: amount}));
+        this.store.dispatch(new InvitesAction.UpdateInvites({ amount: amount }));
       })
   }
 

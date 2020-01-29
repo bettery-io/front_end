@@ -115,7 +115,7 @@
         <div *ngFor="let history of userHistory; let i = index">
             <div class="historyBox">
                 <p>{{history.date | date:'short'}}</p>
-                <p>{{history.amount | number:'1.0-4'}} ETH</p>
+                <p>{{history.amount}} ETH</p>
                 <a *ngIf="history.paymentWay === 'send'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconSend" [icon]="faReply"></fa-icon></a>
                 <a *ngIf="history.paymentWay === 'receive'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconReceive" [icon]="faShare"></fa-icon></a>
             </div>

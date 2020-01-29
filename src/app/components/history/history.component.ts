@@ -40,8 +40,17 @@ export class HistoryComponent implements OnInit {
       .subscribe(
         (x: User) => {
           if (x.wallet !== undefined) {
-            this.historyData = _.orderBy(x.historyTransaction, ['date'], ['desc']);
-            console.log(this.historyData)
+            let allData = _.orderBy(x.historyTransaction, ['date'], ['desc']);
+            let z = allData.map((x) => {
+              return {
+                date: x.date,
+                amount: x.amount.toFixed(4),
+                paymentWay: x.paymentWay,
+                eventId: x.eventId,
+                role: x.role
+              }
+            })
+            this.historyData = z
           } 
         },
         (err) => {

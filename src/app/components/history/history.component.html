@@ -18,7 +18,7 @@
                     <fa-icon *ngIf="history.paymentWay === 'send'" class="historyIconSend" [icon]="faReply"></fa-icon>
                     <fa-icon *ngIf="history.paymentWay === 'receive'" class="historyIconReceive" [icon]="faShare"></fa-icon>
                 </td>
-                <td>{{ history.amount | number:'1.0-4'}} ETH</td>
+                <td>{{ history.amount }} ETH</td>
             </tr>
         </tbody>
     </table>

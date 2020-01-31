@@ -154,12 +154,12 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
-  validatorGuard(data){
-    if(this.getPosition(data) === "Guest"){
+  validatorGuard(data) {
+    if (this.getPosition(data) === "Guest") {
       return false
-    }else if(this.getPosition(data) === 'invited as validator'){
+    } else if (this.getPosition(data) === 'invited as validator') {
       return false
-    }else{
+    } else {
       return true
     }
   }
@@ -185,9 +185,8 @@ export class MyActivitesComponent implements OnInit {
     }
     this.postService.post("my_activites/" + from, data)
       .subscribe(async (x) => {
-        let unique = _.uniqBy(x, 'id');
         this.myAnswers = [];
-        this.myActivites = unique;
+        this.myActivites = x
         this.allData = x;
         this.allData.forEach((data, i) => {
           let z = {
@@ -273,7 +272,7 @@ export class MyActivitesComponent implements OnInit {
     setTimeout(() => {
       let data = this.allData
       if (!this.hostFilet) {
-        data = data.filter((x) => x.from !== "Host");
+        data = data.filter((x) => x.host !== true);
       }
       if (!this.parcipiantFilter) {
         data = data.filter((x) => x.from !== "Participant");
@@ -281,13 +280,29 @@ export class MyActivitesComponent implements OnInit {
       if (!this.validateFilter) {
         data = data.filter((x) => x.from !== "Validator");
       }
-      // let z = this.removeDuplicates(data, 'id');
+
+      this.myAnswers = data.map((data, i) => {
+        return {
+          event_id: data.id,
+          answer: this.findAnswer(data),
+          from: data.from,
+          multy: data.multiChose,
+          answered: this.findAnswered(data),
+          multyAnswer: this.findMultyAnswer(data)
+        }
+      })
+
       this.myActivites = data;
     }, 100)
   }
 
   getActiveQuantity(from) {
-    let data = this.allData.filter((x) => x.from === from);
+    let data
+    if (from === "Host") {
+      data = this.allData.filter((x) => x.host === true);
+    } else {
+      data = this.allData.filter((x) => x.from === from);
+    }
     return data.length
   }
 
@@ -524,23 +539,23 @@ export class MyActivitesComponent implements OnInit {
   }
 
 
-  updateUser(){
+  updateUser() {
     let data = {
       wallet: this.userWallet
     }
     this.postService.post("user/validate", data)
-        .subscribe(
-          (currentUser: User) => {
-            this.store.dispatch(new UserActions.UpdateUser({
-              email: currentUser.email,
-              nickName: currentUser.nickName,
-              wallet: currentUser.wallet,
-              listHostEvents: currentUser.listHostEvents,
-              listParticipantEvents: currentUser.listParticipantEvents,
-              listValidatorEvents: currentUser.listValidatorEvents,
-              historyTransaction: currentUser.historyTransaction
-            }))
-          })
+      .subscribe(
+        (currentUser: User) => {
+          this.store.dispatch(new UserActions.UpdateUser({
+            email: currentUser.email,
+            nickName: currentUser.nickName,
+            wallet: currentUser.wallet,
+            listHostEvents: currentUser.listHostEvents,
+            listParticipantEvents: currentUser.listParticipantEvents,
+            listValidatorEvents: currentUser.listValidatorEvents,
+            historyTransaction: currentUser.historyTransaction
+          }))
+        })
   }
 
   participantGuard(data, i) {

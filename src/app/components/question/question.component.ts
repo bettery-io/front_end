@@ -456,7 +456,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   weiConvert(data) {
     let web3 = new Web3();
-    return web3.utils.fromWei(String(data), 'ether')
+    let number = web3.utils.fromWei(String(data), 'ether')
+    return Number(number).toFixed(4);
   }
 
   ngOnDestroy() {

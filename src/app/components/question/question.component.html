@@ -102,7 +102,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="time">
+                        <div class="time" *ngIf="question.finalAnswers === null">
                             <p style="height: 25px"> </p>
                             <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
                             <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>

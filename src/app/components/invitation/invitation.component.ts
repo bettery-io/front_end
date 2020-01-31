@@ -111,13 +111,17 @@ export class InvitationComponent implements OnInit {
     }
   }
 
-  validatorGuard(data){
-    if(this.getPosition(data) === "Guest"){
-      return false
-    }else if(this.getPosition(data) === 'invited as validator'){
-      return false
-    }else{
+  validatorGuard(data) {
+    if (data.finalAnswers !== null) {
       return true
+    } else {
+      if (this.getPosition(data) === "Guest") {
+        return false
+      } else if (this.getPosition(data) === 'invited as validator') {
+        return false
+      } else {
+        return true
+      }
     }
   }
 

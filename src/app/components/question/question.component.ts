@@ -195,13 +195,17 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
   }
 
-  validatorGuard(data){
-    if(this.getPosition(data) === "Guest"){
-      return false
-    }else if(this.getPosition(data) === 'invited as validator'){
-      return false
-    }else{
+  validatorGuard(data) {
+    if (data.finalAnswers !== null) {
       return true
+    } else {
+      if (this.getPosition(data) === "Guest") {
+        return false
+      } else if (this.getPosition(data) === 'invited as validator') {
+        return false
+      } else {
+        return true
+      }
     }
   }
 
@@ -271,9 +275,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
           this.errorValidator.idError = dataAnswer.id
           this.errorValidator.message = "You must registr first"
         } else {
-          if(this.nameGuard(dataAnswer.endTime) === "Participate"){
+          if (this.nameGuard(dataAnswer.endTime) === "Participate") {
             this.setToLoomNetwork(this.myAnswers, dataAnswer);
-          }else{
+          } else {
             this.setToLoomNetworkValidation(this.myAnswers, dataAnswer);
           }
         }
@@ -328,7 +332,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       this.myAnswers.answered = true;
       this.errorValidator.idError = null;
       this.errorValidator.message = undefined;
-      
+
       let data = {
         id: Number(dataAnswer.id)
       }
@@ -418,23 +422,23 @@ export class QuestionComponent implements OnInit, OnDestroy {
       })
   }
 
-  updateUser(){
+  updateUser() {
     let data = {
       wallet: this.userWallet
     }
     this.postService.post("user/validate", data)
-        .subscribe(
-          (currentUser: User) => {
-            this.store.dispatch(new UserActions.UpdateUser({
-              email: currentUser.email,
-              nickName: currentUser.nickName,
-              wallet: currentUser.wallet,
-              listHostEvents: currentUser.listHostEvents,
-              listParticipantEvents: currentUser.listParticipantEvents,
-              listValidatorEvents: currentUser.listValidatorEvents,
-              historyTransaction: currentUser.historyTransaction
-            }))
-          })
+      .subscribe(
+        (currentUser: User) => {
+          this.store.dispatch(new UserActions.UpdateUser({
+            email: currentUser.email,
+            nickName: currentUser.nickName,
+            wallet: currentUser.wallet,
+            listHostEvents: currentUser.listHostEvents,
+            listParticipantEvents: currentUser.listParticipantEvents,
+            listValidatorEvents: currentUser.listValidatorEvents,
+            historyTransaction: currentUser.historyTransaction
+          }))
+        })
   }
 
   participantGuard(data) {

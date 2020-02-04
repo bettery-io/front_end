@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Question } from '../../models/Question.model';
 import { faTimesCircle, faPlus, faCalendarAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faFacebookSquare, faTwitter, faInstagram} from '@fortawesome/fontawesome-free-brands'
 import { GetService } from '../../services/get.service';
 import { PostService } from '../../services/post.service'
 import { User } from '../../models/User.model';
@@ -39,10 +40,14 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
   submitted: boolean = false;
   questionForm: FormGroup;
+
   faTimesCircle = faTimesCircle;
   faPlus = faPlus;
   faTimes = faTimes;
   faCalendarAlt = faCalendarAlt;
+  faFacebook = faFacebookSquare;
+  faInstagram = faInstagram;
+  faTwitter = faTwitter;
   answesQuality: number = 2;
   users: User[] = [];
   allUsers: User[] = [];
@@ -60,6 +65,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   myHashtags = [];
   spinner: boolean = false;
   UserSubscribe;
+  quizData: Question
 
 
   constructor(
@@ -155,7 +161,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       endTime: [{ hour: 0, minute: 0, second: 0 }, Validators.required],
       showDistribution: true,
       privateOrPublic: "public",
-      amountOfValidators: [2, [Validators.min(1), Validators.required]],
+      amountOfValidators: [3, [Validators.min(1), Validators.required]],
       amount: [0.1, [Validators.min(0.01), Validators.required]]
     });
 
@@ -346,11 +352,17 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     }
   }
 
+  getEndValidation(data) {
+    let date = new Date(data.endTime * 1000);
+    let x = date.setDate(date.getDate() + 7);
+    return Number((new Date(x).getTime() / 1000).toFixed(0));
+  }
+
 
   setToDb(id, transactionHash) {
     // think about status
 
-    let data: Question = {
+    this.quizData = {
       id: id,
       status: "deployed",
       hostWallet: this.host[0].wallet,
@@ -378,7 +390,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       showDistribution: this.questionForm.value.showDistribution
     }
 
-    this.PostService.post("question/set", data)
+    this.PostService.post("question/set", this.quizData)
       .subscribe(
         () => {
           this.getAllUsers(true);

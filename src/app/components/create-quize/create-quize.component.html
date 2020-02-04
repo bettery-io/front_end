@@ -257,10 +257,60 @@
         </div>
     </form>
 
-    <div style="text-align: center" *ngIf="generatedLink !== undefined">
-        <p>Your question link is -></p>
-        <a [routerLink]="['/~ki339203/question', generatedLink]"
-            style="font-style: oblique">http://m3661.contabo.net/~ki339203/question/{{generatedLink}}</a>
+    <div *ngIf="generatedLink !== undefined">
+        <div style="text-align: center">
+            <p>Your question link is -></p>
+            <a [routerLink]="['/~ki339203/question', generatedLink]"
+                style="font-style: oblique">http://m3661.contabo.net/~ki339203/question/{{generatedLink}}</a>
+        </div>
+        <div class="card_box">
+            <div class="card-body">
+                <div class="title">
+                    <p class="question">{{quizData.question}}</p>
+                    <p class="from">You are: Host</p>
+                </div>
+                <div class="hashtags_box">
+                    <p class="hashtags" *ngFor="let hashtag of quizData.hashtags">#{{hashtag}}</p>
+                </div>
+                <div class="info">
+                    <p>Status: {{quizData.private === true ? "Private" : "Public"}}</p>
+                    <p>Bet amount: {{quizData.money}} ETH</p>
+                    <p>Wins: 2%, 3%, 5%, 90%</p>
+                </div>
+                <div class="answers_box">
+                    <div class="validators_box">
+                        <p>Validators ({{quizData.validatorsQuantity}} of {{quizData.validatorsAmount}})</p>
+                        <div class="participants_Percentage_box" *ngFor="let answer of quizData.answers; let i = index">
+                            <p class="participants_Percentage">0 %</p>
+                        </div>
+                    </div>
+                    <div class="participants_box">
+                        <p>Participants ({{quizData.answerQuantity}})</p>
+                        <div class="participants_Percentage_box" *ngFor="let answer of quizData.answers; let i = index">
+                            <p class="participants_Percentage">0 %</p>
+                        </div>
+                    </div>
+                    <div class="answers">
+                        <p>Answers</p>
+                        <div class="each_answer" *ngFor="let answer of quizData.answers; let i = index">
+                            <p class="label">{{answer}}</p>
+                        </div>
+                    </div>
+                    <div class="time">
+                        <p style="height: 25px"> </p>
+                        <p style="display: flex">Participation <time [timer]="quizData.startTime"></time></p>
+                        <p style="display: flex">Validation <time [timer]="quizData.endTime"></time></p>
+                        <p style="display: flex">Validation over <time [timer]="this.getEndValidation(quizData)"></time>
+                        </p>
+                    </div>
+                </div>
+                <div class="socialBox">
+                    <fa-icon size="2x" [icon]="faFacebook"></fa-icon>
+                    <fa-icon size="2x" [icon]="faTwitter"></fa-icon>
+                    <fa-icon size="2x" [icon]="faInstagram"></fa-icon>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

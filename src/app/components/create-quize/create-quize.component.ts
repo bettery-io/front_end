@@ -99,8 +99,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.users = data;
           if (update === true) {
             let currentUser = data.find((x) => x.wallet === this.host[0].wallet);
-            console.log("update user")
-            console.log(currentUser)
             this.store.dispatch(new UserActions.UpdateUser({
               email: currentUser.email,
               nickName: currentUser.nickName,

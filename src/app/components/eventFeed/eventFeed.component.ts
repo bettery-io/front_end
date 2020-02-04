@@ -88,6 +88,15 @@ export class EventFeedComponent implements OnDestroy {
     })
   }
 
+  validationGuard(data){
+    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+    if(data.endTime <= timeNow && data.hostWallet === this.userWallet){
+      return false
+    }else {
+      return true
+    }
+  }
+
   findMultyAnswer(data) {
     let z = []
     let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
@@ -213,14 +222,13 @@ export class EventFeedComponent implements OnDestroy {
   getActiveQuantity(from) {
     let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
     if (from === "participant") {
-      let part = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
-      return part.length;
+      return _.filter(this.allData, (o) => { return o.endTime >= timeNow }).length
     } else if (from === "validator") {
-      let valid = _.filter(this.allData, (o) => { return o.endTime <= timeNow })
-      return valid.length;
+      return this.allData.filter((data) => {
+        return data.endTime <= timeNow && data.hostWallet !== this.userWallet
+      }).length
     } else if (from === "history") {
-      let history = _.filter(this.allData, (o) => { return o.finalAnswers !== null })
-      return history.length;
+      return _.filter(this.allData, (o) => { return o.finalAnswers !== null }).length
     }
   }
 

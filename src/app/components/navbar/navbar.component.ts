@@ -45,6 +45,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   faReply = faReply
   faShare = faShare
   loadMore = false
+  avatar;
 
   constructor(
     private store: Store<AppState>,
@@ -54,7 +55,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
-        this.userWallet = x[0].wallet
+        this.userWallet = x[0].wallet;
+        this.avatar = x[0].avatar
         this.activeTab = "eventFeed"
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);

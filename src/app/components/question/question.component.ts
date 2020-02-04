@@ -436,7 +436,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
             listHostEvents: currentUser.listHostEvents,
             listParticipantEvents: currentUser.listParticipantEvents,
             listValidatorEvents: currentUser.listValidatorEvents,
-            historyTransaction: currentUser.historyTransaction
+            historyTransaction: currentUser.historyTransaction,
+            avatar: currentUser.avatar
           }))
         })
   }

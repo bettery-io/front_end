@@ -96,7 +96,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               this.userWallet = wallet;
               this.userWalletIsUndefinded = false
             } else {
-              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents, x.historyTransaction);
+              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents, x.historyTransaction, x.avatar);
               let getLocation = document.location.href
               let gurd = getLocation.search("question")
               if(gurd === -1){
@@ -123,9 +123,19 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   get f() { return this.registerForm.controls; }
 
+  getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
 
   onSubmit() {
     this.submitted = true;
+    let color = this.getRandomColor()
 
     if (this.registerForm.invalid) {
       return;
@@ -138,14 +148,15 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       listHostEvents: [],
       listParticipantEvents: [],
       listValidatorEvents: [],
-      historyTransaction: []
+      historyTransaction: [],
+      avatar: color
     }
 
 
     this.http.post("user/regist", data)
       .subscribe(
         () => {
-          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], [], []);
+          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], [], [], color);
           let getLocation = document.location.href
           let gurd = getLocation.search("question")
           if(gurd === -1){
@@ -157,7 +168,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         })
   }
 
-  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object, historyTransaction: Object) {
+  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object, historyTransaction: Object, color: string) {
 
     this.store.dispatch(new UserActions.AddUser({ 
       email: email, 
@@ -166,7 +177,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       listHostEvents: listHostEvents,
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
-      historyTransaction: historyTransaction
+      historyTransaction: historyTransaction,
+      avatar: color
     }))
     this.onReset();
   }

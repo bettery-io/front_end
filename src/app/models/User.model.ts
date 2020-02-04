@@ -6,4 +6,5 @@ export interface User {
     listParticipantEvents: Object;
     listValidatorEvents: Object;
     historyTransaction: Object;
+    avatar: string
 }

@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Router } from "@angular/router";
 import { GetService } from '../../services/get.service';
-import * as moment from 'moment';
 import { Answer } from '../../models/Answer.model';
 import _ from 'lodash';
 import Web3 from 'web3';
@@ -71,6 +70,7 @@ export class EventFeedComponent implements OnDestroy {
     this.getService.get("question/get_all_private").subscribe((x) => {
       this.myAnswers = [];
       let data = _.orderBy(x, ['endTime'], ['asc']);
+      console.log(data)
       this.allData = data
 
       this.questions = _.filter(data, (o) => { return o.finalAnswers === null })
@@ -88,13 +88,18 @@ export class EventFeedComponent implements OnDestroy {
     })
   }
 
-  validationGuard(data){
+  validationGuard(data) {
     let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-    if(data.endTime <= timeNow && data.hostWallet === this.userWallet){
-      return false
-    }else {
+    if (data.finalAnswers === null) {
+      if (data.endTime <= timeNow && data.hostWallet === this.userWallet) {
+        return false
+      } else {
+        return true
+      }
+    } else {
       return true
     }
+
   }
 
   findMultyAnswer(data) {
@@ -235,18 +240,35 @@ export class EventFeedComponent implements OnDestroy {
   filter() {
     setTimeout(() => {
       let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-      let z = this.allData
+      let z
 
-      if (!this.parcipiantFilter) {
-        z = _.filter(z, (o) => { return o.endTime <= timeNow })
-      }
+      if (this.parcipiantFilter && this.validateFilter && this.historyFilter) {
+        z = this.allData;
+      } else if (!this.parcipiantFilter && !this.validateFilter && !this.historyFilter) {
+        z = []
+      } else if (!this.parcipiantFilter && this.validateFilter && this.historyFilter) {
+        let x = _.filter(this.allData, (o) => { return o.endTime <= timeNow })
+        let y = _.filter(this.allData, (o) => { return o.finalAnswers !== null })
+        y.forEach((e) => {
+          x.push(e)
+        })
+        z = _.orderBy(x, ['endTime'], ['asc']);
+      } else if (this.parcipiantFilter && !this.validateFilter && this.historyFilter) {
+        let x = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
+        let y = _.filter(this.allData, (o) => { return o.finalAnswers !== null })
 
-      if (!this.validateFilter) {
-        z = _.filter(z, (o) => { return o.endTime >= timeNow })
-      }
-
-      if (!this.historyFilter) {
-        z = _.filter(z, (o) => { return o.finalAnswers === null })
+        y.forEach((e) => {
+          x.push(e)
+        })
+        z = _.orderBy(x, ['endTime'], ['asc']);
+      } else if (!this.parcipiantFilter && this.validateFilter && !this.historyFilter) {
+        z = _.filter(this.allData, (o) => { return o.endTime <= timeNow })
+      } else if (this.parcipiantFilter && !this.validateFilter && !this.historyFilter) {
+        z = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
+      } else if (this.parcipiantFilter && this.validateFilter && !this.historyFilter) {
+        z = _.filter(this.allData, (o) => { return o.finalAnswers === null })
+      } else if (!this.parcipiantFilter && !this.validateFilter && this.historyFilter) {
+        z = _.filter(this.allData, (o) => { return o.finalAnswers !== null })
       }
 
       this.myAnswers = z.map((data, i) => {
@@ -346,7 +368,6 @@ export class EventFeedComponent implements OnDestroy {
       from: "participant",
       answerQuantity: dataAnswer.answerQuantity + 1
     }
-    console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
       let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
       this.myAnswers[index].answered = true;
@@ -361,7 +382,6 @@ export class EventFeedComponent implements OnDestroy {
       await loomEthCoinData.load(web3)
 
       this.coinInfo = await loomEthCoinData._updateBalances()
-      console.log(this.coinInfo)
       this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
 
     },
@@ -377,7 +397,6 @@ export class EventFeedComponent implements OnDestroy {
     var _whichAnswer = answer.answer;
     let contr = await contract.initContract()
     let validator = await contr.methods.setTimeValidator(_question_id).call();
-    console.log("validatin number: " + validator);
 
     switch (Number(validator)) {
       case 0:

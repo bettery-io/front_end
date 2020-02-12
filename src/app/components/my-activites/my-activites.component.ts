@@ -551,6 +551,7 @@ export class MyActivitesComponent implements OnInit {
       .subscribe(
         (currentUser: User) => {
           this.store.dispatch(new UserActions.UpdateUser({
+            _id: currentUser._id,
             email: currentUser.email,
             nickName: currentUser.nickName,
             wallet: currentUser.wallet,

@@ -96,7 +96,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               this.userWallet = wallet;
               this.userWalletIsUndefinded = false
             } else {
-              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents, x.historyTransaction, x.avatar);
+              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents, x.historyTransaction, x.avatar, x._id);
               let getLocation = document.location.href
               let gurd = getLocation.search("question")
               if(gurd === -1){
@@ -142,6 +142,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     }
 
     let data: User = {
+      _id: null,
       nickName: this.registerForm.value.nickName,
       email: this.registerForm.value.email,
       wallet: this.userWallet,
@@ -155,8 +156,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     this.http.post("user/regist", data)
       .subscribe(
-        () => {
-          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], [], [], color);
+        (x: any) => {
+          console.log(x)
+          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], [], [], color, x._id);
           let getLocation = document.location.href
           let gurd = getLocation.search("question")
           if(gurd === -1){
@@ -168,9 +170,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         })
   }
 
-  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object, historyTransaction: Object, color: string) {
+  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object, historyTransaction: Object, color: string, _id: number) {
 
     this.store.dispatch(new UserActions.AddUser({ 
+      _id: _id,
       email: email, 
       nickName: nickName, 
       wallet: wallet, 

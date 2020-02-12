@@ -78,7 +78,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   getDatafromDb(data) {
     this.postService.post("question/get_by_id", data)
       .subscribe((x: Question) => {
-        if (x.id === undefined) {
+        if (x._id === undefined) {
           this.empty = true
           this.spinner = false
         } else {
@@ -430,6 +430,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       .subscribe(
         (currentUser: User) => {
           this.store.dispatch(new UserActions.UpdateUser({
+            _id: currentUser._id,
             email: currentUser.email,
             nickName: currentUser.nickName,
             wallet: currentUser.wallet,

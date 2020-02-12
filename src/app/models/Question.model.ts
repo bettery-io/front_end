@@ -1,5 +1,5 @@
 export interface Question {
-    id: number;
+    _id: number;
     status: string;
     hostWallet: string;
     question: string;

@@ -1,4 +1,5 @@
 export interface User {
+    _id: number,
     nickName: string;
     email: string;
     wallet: string;

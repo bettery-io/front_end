@@ -73,13 +73,13 @@ export class EventFeedComponent implements OnDestroy {
       console.log(data)
       this.allData = data
 
-      this.questions = _.filter(data, (o) => { return o.finalAnswers === null })
+      this.questions = _.filter(data, (o) => { return o.finalAnswer === null })
       this.myAnswers = this.questions.map((data) => {
         return {
           event_id: data.id,
           answer: this.findAnswer(data),
           from: data.from,
-          multy: data.multiChose,
+          multy: data.multiChoise,
           answered: this.findAnswered(data),
           multyAnswer: this.findMultyAnswer(data)
         }
@@ -90,7 +90,7 @@ export class EventFeedComponent implements OnDestroy {
 
   validationGuard(data) {
     let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-    if (data.finalAnswers === null) {
+    if (data.finalAnswer === null) {
       if (data.endTime <= timeNow && data.hostWallet === this.userWallet) {
         return false
       } else {
@@ -130,7 +130,7 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   findAnswered(data) {
-    if (data.multiChose) {
+    if (data.multiChoise) {
       return this.findMultyAnswer(data).length !== 0 ? true : false;
     } else {
       return this.findAnswer(data) !== undefined ? true : false;
@@ -177,7 +177,7 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   validatorGuard(data) {
-    if (data.finalAnswers !== null) {
+    if (data.finalAnswer !== null) {
       return true
     } else {
       if (this.getPosition(data) === "Guest") {
@@ -194,7 +194,7 @@ export class EventFeedComponent implements OnDestroy {
   getParticipantsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].parcipiantAnswers !== undefined) {
       let quantity = this.questions[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.questions[questionIndex].answerQuantity)) * 100).toFixed(0);
+      return ((quantity.length / Number(this.questions[questionIndex].answerAmount)) * 100).toFixed(0);
     } else {
       return 0
     }
@@ -203,7 +203,7 @@ export class EventFeedComponent implements OnDestroy {
   getValidatorsPercentage(answerIndex, questionIndex) {
     if (this.questions[questionIndex].validatorsAnswers !== undefined) {
       let quantity = this.questions[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.questions[questionIndex].validatorsQuantity)) * 100).toFixed(0);
+      return ((quantity.length / Number(this.questions[questionIndex].validated)) * 100).toFixed(0);
     } else {
       return 0
     }
@@ -233,7 +233,7 @@ export class EventFeedComponent implements OnDestroy {
         return data.endTime <= timeNow && data.hostWallet !== this.userWallet
       }).length
     } else if (from === "history") {
-      return _.filter(this.allData, (o) => { return o.finalAnswers !== null }).length
+      return _.filter(this.allData, (o) => { return o.finalAnswer !== null }).length
     }
   }
 
@@ -248,14 +248,14 @@ export class EventFeedComponent implements OnDestroy {
         z = []
       } else if (!this.parcipiantFilter && this.validateFilter && this.historyFilter) {
         let x = _.filter(this.allData, (o) => { return o.endTime <= timeNow })
-        let y = _.filter(this.allData, (o) => { return o.finalAnswers !== null })
+        let y = _.filter(this.allData, (o) => { return o.finalAnswer !== null })
         y.forEach((e) => {
           x.push(e)
         })
         z = _.orderBy(x, ['endTime'], ['asc']);
       } else if (this.parcipiantFilter && !this.validateFilter && this.historyFilter) {
         let x = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
-        let y = _.filter(this.allData, (o) => { return o.finalAnswers !== null })
+        let y = _.filter(this.allData, (o) => { return o.finalAnswer !== null })
 
         y.forEach((e) => {
           x.push(e)
@@ -266,9 +266,9 @@ export class EventFeedComponent implements OnDestroy {
       } else if (this.parcipiantFilter && !this.validateFilter && !this.historyFilter) {
         z = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
       } else if (this.parcipiantFilter && this.validateFilter && !this.historyFilter) {
-        z = _.filter(this.allData, (o) => { return o.finalAnswers === null })
+        z = _.filter(this.allData, (o) => { return o.finalAnswer === null })
       } else if (!this.parcipiantFilter && !this.validateFilter && this.historyFilter) {
-        z = _.filter(this.allData, (o) => { return o.finalAnswers !== null })
+        z = _.filter(this.allData, (o) => { return o.finalAnswer !== null })
       }
 
       this.myAnswers = z.map((data, i) => {
@@ -276,7 +276,7 @@ export class EventFeedComponent implements OnDestroy {
           event_id: data.id,
           answer: this.findAnswer(data),
           from: data.from,
-          multy: data.multiChose,
+          multy: data.multiChoise,
           answered: this.findAnswered(data),
           multyAnswer: this.findMultyAnswer(data)
         }
@@ -366,7 +366,7 @@ export class EventFeedComponent implements OnDestroy {
       transactionHash: transactionHash,
       wallet: this.userWallet,
       from: "participant",
-      answerQuantity: dataAnswer.answerQuantity + 1
+      answerAmount: dataAnswer.answerAmount + 1
     }
     this.postService.post("answer", data).subscribe(async () => {
       let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
@@ -430,7 +430,7 @@ export class EventFeedComponent implements OnDestroy {
       transactionHash: transactionHash,
       wallet: this.userWallet,
       from: "validator",
-      validatorsQuantity: dataAnswer.validatorsQuantity + 1
+      validated: dataAnswer.validated + 1
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {

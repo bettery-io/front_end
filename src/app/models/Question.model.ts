@@ -1,11 +1,11 @@
 export interface Question {
     _id: number;
     status: string;
-    hostWallet: string;
+    host: number;
     question: string;
     hashtags: Object[];
     answers: Object[];
-    multiChose: boolean;
+    multiChoise: boolean;
     startTime: number;
     endTime: number;
     private: boolean;
@@ -13,9 +13,9 @@ export interface Question {
     validators: Object[];
     validatorsAmount: number;
     money: number;
-    finalAnswers: number;
+    finalAnswer: number;
     transactionHash: number;
-    answerQuantity: number;
-    validatorsQuantity: number;
+    answerAmount: number;
+    validated: number;
     showDistribution: boolean;
 }

@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Question } from '../../models/Question.model';
 import { faTimesCircle, faPlus, faCalendarAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faFacebookSquare, faTwitter, faInstagram} from '@fortawesome/fontawesome-free-brands'
+import { faFacebookSquare, faTwitter, faInstagram } from '@fortawesome/fontawesome-free-brands'
 import { GetService } from '../../services/get.service';
 import { PostService } from '../../services/post.service'
 import { User } from '../../models/User.model';
@@ -98,6 +98,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.allUsers = data;
           this.users = data;
           if (update === true) {
+            console.log(data)
+            console.log(this.host[0].wallet)
             let currentUser = data.find((x) => x.wallet === this.host[0].wallet);
             this.store.dispatch(new UserActions.UpdateUser({
               _id: currentUser._id,
@@ -255,7 +257,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   }
 
   generateID() {
-    return Math.floor((Math.random() * 1000000000000000) + 1)
+    return this.getSevice.get("question/createId")
   }
 
 
@@ -316,7 +318,14 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         return;
       }
       let id = this.generateID()
-      this.sendToContract(id);
+      id.subscribe((x: any) => {
+        console.log(x._id)
+        this.sendToContract(x._id);
+
+      }, (err) => {
+        console.log(err)
+        console.log("error from generate id")
+      })
     })
   }
 
@@ -365,13 +374,13 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     this.quizData = {
       _id: id,
       status: "deployed",
-      hostWallet: this.host[0].wallet,
+      host: this.host[0]._id,
       question: this.questionForm.value.question,
       hashtags: this.myHashtags,
       answers: this.questionForm.value.answers.map((x) => {
         return x.name
       }),
-      multiChose: this.questionForm.value.multyChoise === "one" ? false : true,
+      multiChoise: this.questionForm.value.multyChoise === "one" ? false : true,
       startTime: this.getStartTime(),
       endTime: this.getEndTime(),
       private: this.questionForm.value.privateOrPublic === "private" ? true : false,
@@ -381,11 +390,11 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       validators: this.inviteValidators.map((x) => {
         return x.wallet
       }),
-      answerQuantity: 0,
-      validatorsQuantity: 0,
+      answerAmount: 0,
+      validated: 0,
       validatorsAmount: this.questionForm.value.amountOfValidators,
       money: this.questionForm.value.amount,
-      finalAnswers: null,
+      finalAnswer: null,
       transactionHash: transactionHash,
       showDistribution: this.questionForm.value.showDistribution
     }
@@ -405,15 +414,15 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         })
   }
 
-  updateInvites(wallet){
+  updateInvites(wallet) {
     let data = {
       wallet: wallet
     }
     this.PostService.post("my_activites/invites", data)
-    .subscribe(async (x: any) => {
-      let amount = x.length
-      this.store.dispatch(new InvitesAction.UpdateInvites({amount: amount}));
-    })
+      .subscribe(async (x: any) => {
+        let amount = x.length
+        this.store.dispatch(new InvitesAction.UpdateInvites({ amount: amount }));
+      })
   }
 
   ngOnDestroy() {

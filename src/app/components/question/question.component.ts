@@ -87,7 +87,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
             event_id: this.question.id,
             answer: this.findAnswer(this.question),
             from: this.question.from,
-            multy: this.question.multiChose,
+            multy: this.question.multiChoise,
             answered: this.findAnswered(this.question),
             multyAnswer: this.findMultyAnswer(this.question)
           }
@@ -139,7 +139,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   findAnswered(data) {
-    if (data.multiChose) {
+    if (data.multiChoise) {
       return this.findMultyAnswer(data).length !== 0 ? true : false;
     } else {
       return this.findAnswer(data) !== undefined ? true : false;
@@ -196,7 +196,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   validatorGuard(data) {
-    if (data.finalAnswers !== null) {
+    if (data.finalAnswer !== null) {
       return true
     } else {
       if (this.getPosition(data) === "Guest") {
@@ -228,7 +228,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   getParticipantsPercentage(answerIndex) {
     if (this.question.parcipiantAnswers !== undefined) {
       let quantity = this.question.parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.question.answerQuantity)) * 100).toFixed(0);
+      return ((quantity.length / Number(this.question.answerAmount)) * 100).toFixed(0);
     } else {
       return 0
     }
@@ -237,7 +237,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   getValidatorsPercentage(answerIndex) {
     if (this.question.validatorsAnswers !== undefined) {
       let quantity = this.question.validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.question.validatorsQuantity)) * 100).toFixed(0);
+      return ((quantity.length / Number(this.question.validated)) * 100).toFixed(0);
     } else {
       return 0
     }
@@ -325,7 +325,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       transactionHash: transactionHash,
       wallet: this.userWallet,
       from: "participant",
-      answerQuantity: dataAnswer.answerQuantity + 1
+      answerAmount: dataAnswer.answerAmount + 1
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
@@ -395,7 +395,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       transactionHash: transactionHash,
       wallet: this.userWallet,
       from: "validator",
-      validatorsQuantity: dataAnswer.validatorsQuantity + 1
+      validated: dataAnswer.validated + 1
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {

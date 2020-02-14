@@ -79,7 +79,7 @@ export class InvitationComponent implements OnInit {
             event_id: data.id,
             answer: this.findAnswer(data),
             from: data.from,
-            multy: data.multiChose,
+            multy: data.multiChoise,
             answered: this.findAnswered(data),
             multyAnswer: this.findMultyAnswer(data)
           }
@@ -104,7 +104,7 @@ export class InvitationComponent implements OnInit {
   }
 
   findAnswered(data) {
-    if (data.multiChose) {
+    if (data.multiChoise) {
       return this.findMultyAnswer(data).length !== 0 ? true : false;
     } else {
       return this.findAnswer(data) !== undefined ? true : false;
@@ -112,7 +112,7 @@ export class InvitationComponent implements OnInit {
   }
 
   validatorGuard(data) {
-    if (data.finalAnswers !== null) {
+    if (data.finalAnswer !== null) {
       return true
     } else {
       if (this.getPosition(data) === "Guest") {
@@ -156,7 +156,7 @@ export class InvitationComponent implements OnInit {
   getValidatorsPercentage(answerIndex, questionIndex) {
     if (this.allData[questionIndex].validatorsAnswers !== undefined) {
       let quantity = this.allData[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.allData[questionIndex].validatorsQuantity)) * 100).toFixed(0);
+      return ((quantity.length / Number(this.allData[questionIndex].validated)) * 100).toFixed(0);
     } else {
       return 0
     }
@@ -165,7 +165,7 @@ export class InvitationComponent implements OnInit {
   getParticipantsPercentage(answerIndex, questionIndex) {
     if (this.allData[questionIndex].parcipiantAnswers !== undefined) {
       let quantity = this.allData[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.allData[questionIndex].answerQuantity)) * 100).toFixed(0);
+      return ((quantity.length / Number(this.allData[questionIndex].answerAmount)) * 100).toFixed(0);
     } else {
       return 0
     }
@@ -322,7 +322,7 @@ export class InvitationComponent implements OnInit {
       transactionHash: transactionHash,
       wallet: this.userWallet,
       from: "participant",
-      answerQuantity: dataAnswer.answerQuantity + 1
+      answerAmount: dataAnswer.answerAmount + 1
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
@@ -388,7 +388,7 @@ export class InvitationComponent implements OnInit {
       transactionHash: transactionHash,
       wallet: this.userWallet,
       from: "validator",
-      validatorsQuantity: dataAnswer.validatorsQuantity + 1
+      validated: dataAnswer.validated + 1
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {

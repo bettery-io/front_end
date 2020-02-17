@@ -363,7 +363,8 @@ export class EventFeedComponent implements OnDestroy {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "participant",
-      answerAmount: dataAnswer.answerAmount + 1
+      answerAmount: dataAnswer.answerAmount + 1,
+      money: dataAnswer.money
     }
     this.postService.post("answer", data).subscribe(async () => {
       let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
@@ -427,7 +428,8 @@ export class EventFeedComponent implements OnDestroy {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "validator",
-      validated: dataAnswer.validated + 1
+      validated: dataAnswer.validated + 1,
+      money: dataAnswer.money
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {

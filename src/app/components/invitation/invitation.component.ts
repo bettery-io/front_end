@@ -319,7 +319,8 @@ export class InvitationComponent implements OnInit {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "participant",
-      answerAmount: dataAnswer.answerAmount + 1
+      answerAmount: dataAnswer.answerAmount + 1,
+      money: dataAnswer.money
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
@@ -385,7 +386,8 @@ export class InvitationComponent implements OnInit {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "validator",
-      validated: dataAnswer.validated + 1
+      validated: dataAnswer.validated + 1,
+      money: dataAnswer.money
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {

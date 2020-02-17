@@ -194,8 +194,7 @@ export class InvitationComponent implements OnInit {
   getPosition(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
     if (findParticipiant !== -1) {
-      let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
-      if (findInHost !== -1) {
+      if (data.host == this.userWallet) {
         return 'Host, Participiant'
       } else {
         return "Participiant"
@@ -203,8 +202,7 @@ export class InvitationComponent implements OnInit {
     } else {
       let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
       if (findValidator !== -1) {
-        let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
-        if (findInHost !== -1) {
+        if (data.host == this.userWallet) {
           return 'Host, Validator'
         } else {
           return "Validator"
@@ -218,8 +216,7 @@ export class InvitationComponent implements OnInit {
           if (findInValidatorInvites !== -1) {
             return 'invited as validator'
           } else {
-            let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
-            if (findInHost !== -1) {
+            if (data.host == this.userWallet) {
               return 'Host'
             } else {
               return "Guest"
@@ -320,7 +317,7 @@ export class InvitationComponent implements OnInit {
       answer: answer.answer,
       multyAnswer: answer.multyAnswer,
       transactionHash: transactionHash,
-      wallet: this.userWallet,
+      userId: this.userData._id,
       from: "participant",
       answerAmount: dataAnswer.answerAmount + 1
     }
@@ -386,7 +383,7 @@ export class InvitationComponent implements OnInit {
       answer: answer.answer,
       multyAnswer: answer.multyAnswer,
       transactionHash: transactionHash,
-      wallet: this.userWallet,
+      userId: this.userData._id,
       from: "validator",
       validated: dataAnswer.validated + 1
     }

@@ -24,7 +24,7 @@
                         <div class="title">
                             <p class="question">{{active.event.question}}</p>
                             <p class="from">You are: {{this.getPosition(active.event)}}</p>
-                            <a [routerLink]="['/~ki339203/question', active._id]">Open Link</a>
+                            <a [routerLink]="['/~ki339203/question', active.event.id]">Open Link</a>
                         </div>
                         <div>
                             <p class="markAsRead" (click)="deleteInvitation(active)">Mark as read</p>

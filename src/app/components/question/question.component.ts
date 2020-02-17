@@ -160,8 +160,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   getPosition(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
     if (findParticipiant !== -1) {
-      let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
-      if (findInHost !== -1) {
+      if (data.host == this.userWallet) {
         return 'Host, Participiant'
       } else {
         return "Participiant"
@@ -169,8 +168,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     } else {
       let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
       if (findValidator !== -1) {
-        let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
-        if (findInHost !== -1) {
+        if (data.host === this.userData.wallet) {
           return 'Host, Validator'
         } else {
           return "Validator"
@@ -184,8 +182,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
           if (findInValidatorInvites !== -1) {
             return 'invited as validator'
           } else {
-            let findInHost = _.findIndex(this.userData.listHostEvents, { "event": data.id })
-            if (findInHost !== -1) {
+            if (data.host === this.userData.wallet) {
               return 'Host'
             } else {
               return "Guest"
@@ -324,7 +321,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       answer: answer.answer,
       multyAnswer: answer.multyAnswer,
       transactionHash: transactionHash,
-      wallet: this.userWallet,
+      userId: this.userData._id,
       from: "participant",
       answerAmount: dataAnswer.answerAmount + 1
     }
@@ -394,7 +391,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       answer: answer.answer,
       multyAnswer: answer.multyAnswer,
       transactionHash: transactionHash,
-      wallet: this.userWallet,
+      userId: this.userData._id,
       from: "validator",
       validated: dataAnswer.validated + 1
     }

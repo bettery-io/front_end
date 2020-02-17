@@ -71,6 +71,7 @@ export class InvitationComponent implements OnInit {
     }
     this.postService.post("my_activites/invites", data)
       .subscribe(async (x) => {
+        console.log(x)
         this.myAnswers = [];
         this.myActivites = x;
         this.allData = x;
@@ -142,8 +143,8 @@ export class InvitationComponent implements OnInit {
     }
   }
 
-  getActiveQuantity(from) {
-    let data = this.allData.filter((x) => x.from === from);
+  getActiveQuantity(role) {
+    let data = this.allData.filter((x) => x.role === role);
     return data.length
   }
 
@@ -175,12 +176,11 @@ export class InvitationComponent implements OnInit {
     setTimeout(() => {
       let data = this.allData
       if (!this.parcipiantFilter) {
-        data = data.filter((x) => x.from !== "Participant");
+        data = data.filter((x) => x.role !== "Participant");
       }
       if (!this.validateFilter) {
-        data = data.filter((x) => x.from !== "Validator");
+        data = data.filter((x) => x.role !== "Validate");
       }
-      // let z = this.removeDuplicates(data, 'id');
       this.myActivites = data;
     }, 100)
   }
@@ -435,9 +435,7 @@ export class InvitationComponent implements OnInit {
 
   deleteInvitation(value){
     let data = {
-      id: value.id,
-      wallet: this.userWallet,
-      from: this.guardPath(value) ? 'listParticipantEvents' : 'listValidatorEvents'
+      id: value.id
     }
     this.postService.post("invites/delete", data)
       .subscribe(async (x) => {

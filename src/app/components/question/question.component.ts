@@ -77,8 +77,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   getDatafromDb(data) {
     this.postService.post("question/get_by_id", data)
-      .subscribe((x: Question) => {
-        if (x._id === undefined) {
+      .subscribe((x: any) => {
+        console.log(x)
+        if (x.id === undefined) {
           this.empty = true
           this.spinner = false
         } else {

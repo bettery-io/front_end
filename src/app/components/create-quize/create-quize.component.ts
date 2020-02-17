@@ -385,18 +385,18 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       endTime: this.getEndTime(),
       private: this.questionForm.value.privateOrPublic === "private" ? true : false,
       parcipiant: this.inviteParcipiant.map((x) => {
-        return x.wallet
+        return x._id
       }),
       validators: this.inviteValidators.map((x) => {
-        return x.wallet
+        return x._id
       }),
       answerAmount: 0,
       validated: 0,
       validatorsAmount: this.questionForm.value.amountOfValidators,
       money: this.questionForm.value.amount,
-      finalAnswer: null,
+      finalAnswer: undefined,
       transactionHash: transactionHash,
-      showDistribution: this.questionForm.value.showDistribution
+      showDistribution: this.questionForm.value.showDistribution,
     }
 
     this.PostService.post("question/set", this.quizData)

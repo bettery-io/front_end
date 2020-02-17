@@ -87,7 +87,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     } else {
       let z = data.map((x) => {
         return {
-          date: x.date,
+          date: Number((new Date(x.date).getTime() * 1000).toFixed(0)),
           amount: x.amount.toFixed(4),
           paymentWay: x.paymentWay,
           eventId: x.eventId,

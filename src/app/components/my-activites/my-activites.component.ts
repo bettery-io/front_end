@@ -78,11 +78,6 @@ export class MyActivitesComponent implements OnInit {
     this.parcipiantFilter = true;
     this.validateFilter = true;
     switch ($event.nextId) {
-      case 'invitations':
-        this.pathForApi = 'invites';
-        this.spinner = true;
-        this.getDataFromDb("invites");
-        break;
       case 'current_events':
         this.pathForApi = 'current';
         this.spinner = true;
@@ -92,11 +87,6 @@ export class MyActivitesComponent implements OnInit {
         this.pathForApi = 'past';
         this.spinner = true;
         this.getDataFromDb("past");
-        break;
-      case 'host':
-        this.pathForApi = 'host';
-        this.spinner = true;
-        this.getDataFromDb("host");
         break;
     }
   }
@@ -182,7 +172,7 @@ export class MyActivitesComponent implements OnInit {
 
   getDataFromDb(from) {
     let data = {
-      wallet: this.userWallet
+      id: this.userData._id
     }
     this.postService.post("my_activites/" + from, data)
       .subscribe(async (x) => {

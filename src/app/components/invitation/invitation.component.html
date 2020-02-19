@@ -100,7 +100,7 @@
                                             <div class="each_answer"
                                                 *ngFor="let answer of active.event.answers; let i = index">
                                                 <input class="checkbox_answer" id="{{active.event.id}}{{active.event.from}}"
-                                                    (click)="this.makeAnswer(active.event, i)" value="i" type="radio"
+                                                    (click)="this.makeAnswer(active, i)" value="i" type="radio"
                                                     name="{{active.event.id}}{{active.event.from}}">
                                                 <label class="label">{{answer}}</label>
                                             </div>
@@ -129,7 +129,7 @@
 
                         <div class="button_box" *ngIf="active.event.finalAnswer === null">
                             <div *ngIf="myAnswers[index].answered === false" style="display: inline-block;">
-                                <button type="button" class="btn btn-primary" (click)="this.setAnswer(active.event)">{{this.guardPath(active.event)
+                                <button type="button" class="btn btn-primary" (click)="this.setAnswer(active)">{{this.guardPath(active.event)
                                 ? 'Participate now!' : 'Validate now'}}</button>
                             </div>
                             <div *ngIf="errorValidator.idError === active.event.id">

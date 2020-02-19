@@ -12,6 +12,7 @@ import * as CoinsActios from '../../actions/coins.actions';
 import * as InvitesAction from '../../actions/invites.actions';
 import * as UserActions from '../../actions/user.actions';
 import { User } from '../../models/User.model';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -37,6 +38,7 @@ export class InvitationComponent implements OnInit {
     idError: null,
     message: undefined
   }
+  faCheck = faCheck;
 
 
   constructor(
@@ -77,16 +79,17 @@ export class InvitationComponent implements OnInit {
         this.allData = x;
         this.allData.forEach((data, i) => {
           let z = {
-            event_id: data.id,
-            answer: this.findAnswer(data),
-            from: data.from,
-            multy: data.multiChoise,
-            answered: this.findAnswered(data),
-            multyAnswer: this.findMultyAnswer(data)
+            event_id: data.event.id,
+            answer: this.findAnswer(data.event),
+            from: data.role,
+            multy: data.event.multiChoise,
+            answered: this.findAnswered(data.event),
+            multyAnswer: this.findMultyAnswer(data.event)
           }
 
           this.myAnswers.push(z);
         });
+        console.log(this.myAnswers)
         this.store.dispatch(new InvitesAction.UpdateInvites({amount: this.allData.length}));
         this.spinner = false;
       }, (err) => {
@@ -228,7 +231,8 @@ export class InvitationComponent implements OnInit {
   }
 
   makeAnswer(data, i) {
-    let index = _.findIndex(this.myAnswers, { 'event_id': data.id, 'from': data.from });
+
+    let index = _.findIndex(this.myAnswers, { 'event_id': data.event.id, 'from': data.role });
     this.myAnswers[index].answer = i;
     this.errorValidator.idError = null;
     this.errorValidator.message = undefined;
@@ -250,10 +254,10 @@ export class InvitationComponent implements OnInit {
   }
 
   setAnswer(dataAnswer) {
-    let answer = _.find(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
+    let answer = _.find(this.myAnswers, { 'event_id': dataAnswer.event.id, 'from': dataAnswer.role });
     if (answer.multy) {
       if (answer.multyAnswer.length === 0) {
-        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.idError = dataAnswer.event.id
         this.errorValidator.message = "Chose at leas one answer"
       } else {
         // multy answer
@@ -261,10 +265,10 @@ export class InvitationComponent implements OnInit {
       }
     } else {
       if (answer.answer === undefined) {
-        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.idError = dataAnswer.event.id
         this.errorValidator.message = "Chose at leas one answer"
       } else {
-        if (this.guardPath(dataAnswer)) {
+        if (this.guardPath(dataAnswer.event)) {
           this.setParticipiation(answer, dataAnswer);
         } else {
           this.setValidation(answer, dataAnswer)
@@ -275,15 +279,15 @@ export class InvitationComponent implements OnInit {
 
   async setParticipiation(answer, dataAnswer) {
     console.log("setParticipiation work")
-    if (Number(this.coinInfo.loomBalance) < dataAnswer.money) {
-      this.errorValidator.idError = dataAnswer.id
+    if (Number(this.coinInfo.loomBalance) < dataAnswer.event.money) {
+      this.errorValidator.idError = dataAnswer.event.id
       this.errorValidator.message = "Don't have enough money"
     } else {
       let web3 = new Web3();
       let contract = new Contract();
-      var _question_id = dataAnswer.id;
+      var _question_id = dataAnswer.event.id;
       var _whichAnswer = answer.answer;
-      var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
+      var _money = web3.utils.toWei(String(dataAnswer.event.money), 'ether')
       let contr = await contract.initContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
 
@@ -297,11 +301,11 @@ export class InvitationComponent implements OnInit {
           }
           break;
         case 1:
-          this.errorValidator.idError = dataAnswer.id
+          this.errorValidator.idError = dataAnswer.event.id
           this.errorValidator.message = "Event not started yeat."
           break;
         case 2:
-          this.errorValidator.idError = dataAnswer.id
+          this.errorValidator.idError = dataAnswer.event.id
           this.errorValidator.message = "Already finished"
           break;
       }
@@ -319,12 +323,12 @@ export class InvitationComponent implements OnInit {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "participant",
-      answerAmount: dataAnswer.answerAmount + 1,
-      money: dataAnswer.money
+      answerAmount: dataAnswer.event.answerAmount + 1,
+      money: dataAnswer.event.money
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
-      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
+      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.event.id, 'from': dataAnswer.role });
       this.myAnswers[index].answered = true;
       this.errorValidator.idError = null;
       this.errorValidator.message = undefined;
@@ -348,7 +352,7 @@ export class InvitationComponent implements OnInit {
   async setValidation(answer, dataAnswer) {
     console.log("validation work")
     let contract = new Contract();
-    var _question_id = dataAnswer.id;
+    var _question_id = dataAnswer.event.id;
     var _whichAnswer = answer.answer;
     let contr = await contract.initContract()
     let validator = await contr.methods.setTimeValidator(_question_id).call();
@@ -362,15 +366,15 @@ export class InvitationComponent implements OnInit {
         }
         break;
       case 1:
-        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.idError = dataAnswer.event.id
         this.errorValidator.message = "Event not started yeat."
         break;
       case 2:
-        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.idError = dataAnswer.event.id
         this.errorValidator.message = "Event is finished."
         break;
       case 3:
-        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.idError = dataAnswer.event.id
         this.errorValidator.message = "You have been like the participant in this event. The participant can't be the validator."
         break;
     }
@@ -386,12 +390,12 @@ export class InvitationComponent implements OnInit {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "validator",
-      validated: dataAnswer.validated + 1,
-      money: dataAnswer.money
+      validated: dataAnswer.event.validated + 1,
+      money: dataAnswer.event.money
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
-      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
+      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.event.id, 'from': dataAnswer.role });
       this.myAnswers[index].answered = true;
       this.errorValidator.idError = null;
       this.errorValidator.message = undefined;

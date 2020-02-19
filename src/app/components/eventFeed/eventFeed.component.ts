@@ -140,7 +140,7 @@ export class EventFeedComponent implements OnDestroy {
   getPosition(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
     if (findParticipiant !== -1) {
-      if (data.host == this.userWallet)  {
+      if (data.host == this.userWallet) {
         return 'Host, Participiant'
       } else {
         return "Participiant"
@@ -226,9 +226,10 @@ export class EventFeedComponent implements OnDestroy {
     if (from === "participant") {
       return _.filter(this.allData, (o) => { return o.endTime >= timeNow }).length
     } else if (from === "validator") {
-      return this.allData.filter((data) => {
+      let z = this.allData.filter((data) => {
         return data.endTime <= timeNow && data.hostWallet !== this.userWallet
-      }).length
+      })
+      return z.filter((data) => { return data.finalAnswer === null }).length
     } else if (from === "history") {
       return _.filter(this.allData, (o) => { return o.finalAnswer !== null }).length
     }

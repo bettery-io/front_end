@@ -43,7 +43,7 @@ export class HistoryComponent implements OnInit {
             let allData = _.orderBy(x.historyTransaction, ['date'], ['desc']);
             let z = allData.map((x) => {
               return {
-                date: x.date,
+                date: Number((new Date(x.date).getTime() * 1000).toFixed(0)),
                 amount: x.amount.toFixed(4),
                 paymentWay: x.paymentWay,
                 eventId: x.eventId,

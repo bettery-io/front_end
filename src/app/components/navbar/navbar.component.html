@@ -117,8 +117,15 @@
             <div class="historyBox">
                 <p>{{history.date | date:'short'}} / </p>
                 <p>{{history.amount}} ETH</p>
-                <a *ngIf="history.paymentWay === 'send'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconSend" [icon]="faReply"></fa-icon></a>
-                <a *ngIf="history.paymentWay === 'receive'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconReceive" [icon]="faShare"></fa-icon></a>
+                <div *ngIf="history.eventId !=='Deleted'">
+                    <a *ngIf="history.paymentWay === 'send'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconSend" [icon]="faReply"></fa-icon></a>
+                    <a *ngIf="history.paymentWay === 'receive'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconReceive" [icon]="faShare"></fa-icon></a>
+                </div>
+                <div *ngIf="history.eventId ==='Deleted'">
+                    <fa-icon *ngIf="history.paymentWay === 'send'" class="historyIconSend" [icon]="faReply"></fa-icon>
+                    <fa-icon *ngIf="history.paymentWay === 'receive'" class="historyIconReceive" [icon]="faShare"></fa-icon>
+                </div>
+               
             </div>
         </div>
         <div *ngIf="loadMore === true" class="showAll">

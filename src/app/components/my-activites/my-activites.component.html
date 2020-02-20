@@ -27,12 +27,12 @@
             <div class="filter_box">
                 <label for="participatedFilter">
                     <input id="participatedFilter" [(ngModel)]="parcipiantFilter" (click)="filter()" type="checkbox">
-                    Participated ({{this.getActiveQuantity("Participant")}})</label>
+                    Participated ({{this.getActiveQuantity("participant")}})</label>
             </div>
             <div>
                 <label for="validatedFilter">
                     <input id="validatedFilter" [(ngModel)]="validateFilter" (click)="filter()" type="checkbox">
-                    Validated ({{this.getActiveQuantity("Validator")}})</label>
+                    Validated ({{this.getActiveQuantity("validator")}})</label>
             </div>
         </div>
 

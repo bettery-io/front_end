@@ -94,7 +94,7 @@ export class MyActivitesComponent implements OnInit {
   getPosition(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
     if (findParticipiant !== -1) {
-      if (data.host == this.userWallet) {
+      if (data.host) {
         return 'Host, Participiant'
       } else {
         return "Participiant"
@@ -102,7 +102,7 @@ export class MyActivitesComponent implements OnInit {
     } else {
       let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
       if (findValidator !== -1) {
-        if (data.host == this.userWallet) {
+        if (data.host) {
           return 'Host, Validator'
         } else {
           return "Validator"
@@ -116,7 +116,7 @@ export class MyActivitesComponent implements OnInit {
           if (findInValidatorInvites !== -1) {
             return 'invited as validator'
           } else {
-            if (data.host == this.userWallet)  {
+            if (data.host)  {
               return 'Host'
             } else {
               return "Guest"
@@ -266,10 +266,10 @@ export class MyActivitesComponent implements OnInit {
         data = data.filter((x) => x.host !== true);
       }
       if (!this.parcipiantFilter) {
-        data = data.filter((x) => x.from !== "Participant");
+        data = data.filter((x) => x.from !== "participant");
       }
       if (!this.validateFilter) {
-        data = data.filter((x) => x.from !== "Validator");
+        data = data.filter((x) => x.from !== "validator");
       }
 
       this.myAnswers = data.map((data, i) => {

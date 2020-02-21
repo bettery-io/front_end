@@ -65,7 +65,9 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   myHashtags = [];
   spinner: boolean = false;
   UserSubscribe;
-  quizData: Question
+  quizData: any;
+  hashtagsId;
+  
 
 
   constructor(
@@ -98,8 +100,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.allUsers = data;
           this.users = data;
           if (update === true) {
-            console.log(data)
-            console.log(this.host[0].wallet)
             let currentUser = data.find((x) => x.wallet === this.host[0].wallet);
             this.store.dispatch(new UserActions.UpdateUser({
               _id: currentUser._id,
@@ -123,9 +123,9 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
   getHashtags() {
     this.getSevice.get('hashtags/get_all').subscribe(
-      (data) => {
-        console.log(data)
-        this.listHashtags = data;
+      (data: any) => {
+        this.listHashtags = data.hashtags;
+        this.hashtagsId = data.id;
       },
       (err) => {
         console.log("get Hashtags error: " + err)
@@ -420,6 +420,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       finalAnswer: undefined,
       transactionHash: transactionHash,
       showDistribution: this.questionForm.value.showDistribution,
+      hashtagsId: this.hashtagsId
     }
 
     this.PostService.post("question/set", this.quizData)

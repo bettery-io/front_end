@@ -340,8 +340,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let questionQuantity = this.answesQuality;
     let validatorsAmount = this.questionForm.value.amountOfValidators;
 
-    console.log(endTime)
-
     try {
       let sendToContract = await contr.methods.startQestion(
         id,
@@ -357,8 +355,22 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.log(error);
-      this.spinner = false;
+      this.deleteEvent(id)
     }
+  }
+
+  deleteEvent(id) {
+    let data = {
+      id: id
+    }
+    this.PostService.post("delete_event", data)
+      .subscribe(() => {
+        this.spinner = false;
+      },
+        (err) => {
+          console.log("from delete wallet")
+          console.log(err)
+        })
   }
 
   getEndValidation(data) {

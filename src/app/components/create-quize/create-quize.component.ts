@@ -61,7 +61,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   host: User[] = [];
   generatedLink: number = undefined;
   startCaledarMeasure = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
-  listHashtags = [];
+  listHashtags: any = [];
   myHashtags = [];
   spinner: boolean = false;
   UserSubscribe;
@@ -124,7 +124,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   getHashtags() {
     this.getSevice.get('hashtags/get_all').subscribe(
       (data) => {
-        this.listHashtags = data[0].hashtags;
+        console.log(data)
+        this.listHashtags = data;
       },
       (err) => {
         console.log("get Hashtags error: " + err)
@@ -209,14 +210,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     this.questionForm.controls.endDate.setValue(value.value);
   }
 
-  selectedHasgtags(value) {
-    this.myHashtags.push(value.item);
-    let input = <HTMLInputElement>document.getElementById("hashtags")
-    setTimeout(() => {
-      input.value = null;
-    }, 100)
-  }
-
   selectedValidators(item) {
     this.inviteValidators.push(item.item)
     this.users = this.users.filter((x) => x.nickName !== item.item.nickName);
@@ -249,7 +242,25 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let input = <HTMLInputElement>document.getElementById("hashtags")
     let search = this.myHashtags.find(e => e === input.value);
     if (search === undefined) {
-      this.myHashtags.push(input.value)
+      if (input.value.length !== 0) {
+        this.myHashtags.push(input.value)
+        setTimeout(() => {
+          input.value = null;
+        }, 100)
+      }
+    }
+  }
+
+  selectedHasgtags(value) {
+    let input = <HTMLInputElement>document.getElementById("hashtags")
+
+    let search = this.myHashtags.find(e => e === value.item);
+    if (search === undefined) {
+      this.myHashtags.push(value.item);
+      setTimeout(() => {
+        input.value = null;
+      }, 100)
+    } else {
       setTimeout(() => {
         input.value = null;
       }, 100)

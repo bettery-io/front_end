@@ -127,6 +127,24 @@
                 </div>
             </div>
         </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">From</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let history of historyAction; index as i">
+                    <td>{{history.time | date:'short'}}</td>
+                    <td>{{ history.action}}</td>
+                    <td>{{ history.from }}</td>
+                </tr>
+            </tbody>
+        </table>
+
         <div *ngIf="infoData !== undefined">
             <p>Money on event - {{this.weiConvert(infoData.money)}} ETH</p>
             <p>Money for company - {{this.weiConvert(infoData.persentFeeCompany)}} ETH</p>

@@ -39,6 +39,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   CoinsSubscribe;
   RouterSubscribe;
   UserSubscribe;
+  historyAction: any = []
 
   constructor(
     private route: ActivatedRoute,
@@ -64,11 +65,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
             this.userWallet = x[0].wallet
             this.userData = x[0]
             this.getDatafromDb(data);
+            this.getHistoryById(data)
             setTimeout(() => {
               this.info(question.id)
             }, 3000)
           } else {
             this.getDatafromDb(data);
+            this.getHistoryById(data);
           }
         });
       });
@@ -97,6 +100,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
           this.errorValidator.message = undefined;
           this.spinner = false;
         }
+      })
+  }
+
+  getHistoryById(id) {
+    this.postService.post("history_quize/get_by_id", id)
+      .subscribe((x: any) => {
+       this.historyAction = x 
+      }, (err) => {
+        console.log(err)
       })
   }
 

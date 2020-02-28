@@ -349,6 +349,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
       }
       this.updateUser();
       this.getDatafromDb(data);
+      this.getHistoryById(data);
       this.info(dataAnswer.id);
 
       let web3 = new Web3(window.web3.currentProvider);
@@ -419,6 +420,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
         id: Number(dataAnswer.id)
       }
       this.getDatafromDb(data);
+      this.getHistoryById(data);
+      this.info(dataAnswer.id);
 
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()

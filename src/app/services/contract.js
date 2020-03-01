@@ -24,5 +24,12 @@ export default class Contract {
         return contract.getWeb3Loom().userAccount;
     }
 
+    async initHolderContract() {
+        let contract = new LoomEthCoin();
+        let web3Loom = contract.getWeb3Loom().web3LoomData
+        let from = contract.getWeb3Loom().userAccount.ethereum.local.toString()
+
+    }
+
 
 } 

@@ -36,8 +36,11 @@
                         <div></div>
                     </div>
                 </div>
-                <p [ngbPopover]="popContent" [popoverTitle]="popTitle" *ngIf="!amountSpinner" class="loom_balance">
-                    Balance: {{coinInfo.loomBalance | number:'1.0-4'}}</p>
+                <div *ngIf="!amountSpinner">
+                    <p [ngbPopover]="popContent" [popoverTitle]="popTitle"  class="loom_balance">
+                        Balance: {{coinInfo.loomBalance | number:'1.0-4'}}</p>
+                    <p *ngIf="holdBalance !== 0" class="loom_hold_balance">Hold balance: {{holdBalance}}</p>
+                </div>
             </li>
             <li *ngIf="!amountSpinner" class="nav-item">
                 <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="open(content)">Deposit /

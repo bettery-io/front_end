@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import Contract from '../../services/contract';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
+import Web3 from 'web3';
 
 
 type Time = { name: string, date: any, value: number };
@@ -67,7 +68,11 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   UserSubscribe;
   quizData: any;
   hashtagsId;
-  
+  coinInfo: any = [];
+  UserCoinSubscribe;
+  holdMoneyError = false;
+  getCoinsForHold;
+
 
 
   constructor(
@@ -89,6 +94,12 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         this.getHashtags();
       }
     });
+
+    this.UserCoinSubscribe = this.store.select("coins").subscribe((x) => {
+      if (x.length !== 0) {
+        this.coinInfo = x[0];
+      }
+    })
   }
 
   // get all users form server
@@ -342,32 +353,53 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
   async sendToContract(id) {
     this.spinner = true;
+    let web3 = new Web3();
     let contract = new Contract()
     let contr = await contract.initContract()
-    let startTime = this.getStartTime();
-    let endTime = this.getEndTime();
-    let percentHost = 0;
-    let percentValidator = 0;
-    let questionQuantity = this.answesQuality;
-    let validatorsAmount = this.questionForm.value.amountOfValidators;
 
-    try {
-      let sendToContract = await contr.methods.startQestion(
-        id,
-        startTime,
-        endTime,
-        percentHost,
-        percentValidator,
-        questionQuantity,
-        validatorsAmount
-      ).send();
-      if (sendToContract.transactionHash !== undefined) {
-        this.setToDb(id, sendToContract.transactionHash);
-      }
-    } catch (error) {
-      console.log(error);
+    let userBalance = web3.utils.toWei(this.coinInfo.loomBalance, 'ether');
+
+    let calcCoinsForHold = await contr.methods.moneyRetentionCalculate().call();
+    this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
+
+    let amountGuard = Number(await contr.methods.amountGuard(userBalance).call());
+    if (amountGuard !== 0) {
+      this.spinner = false;
+      this.holdMoneyError = true;
       this.deleteEvent(id)
+
+    } else {
+      let startTime = this.getStartTime();
+      let endTime = this.getEndTime();
+      let percentHost = 0;
+      let percentValidator = 0;
+      let questionQuantity = this.answesQuality;
+      let validatorsAmount = this.questionForm.value.amountOfValidators;
+
+      try {
+        let sendToContract = await contr.methods.startQestion(
+          id,
+          startTime,
+          endTime,
+          percentHost,
+          percentValidator,
+          questionQuantity,
+          validatorsAmount,
+          userBalance,
+          calcCoinsForHold
+        ).send({
+          value: calcCoinsForHold
+        });
+        if (sendToContract.transactionHash !== undefined) {
+          this.setToDb(id, sendToContract.transactionHash);
+        }
+      } catch (error) {
+        console.log(error);
+        this.deleteEvent(id)
+      }
     }
+
+
   }
 
   deleteEvent(id) {
@@ -451,6 +483,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.UserSubscribe.unsubscribe();
+    this.UserCoinSubscribe.unsubscribe();
   }
 
 }

@@ -246,8 +246,15 @@
         </div>
 
         <div class="form_container button_pos">
-            <button *ngIf="!spinner" type="button" (click)="onSubmit()"
+            <div *ngIf="!spinner" >
+                <button *ngIf="!holdMoneyError" type="button" (click)="onSubmit()"
                 class="btn btn-success btn-lg btn-block">Create</button>
+                <div *ngIf="holdMoneyError" class="quize_validation_error errorBalance">
+                    <p>You don't have enough Ethereum for retention. Try to replenish balance!</p>
+                    <p>Minimum balance is {{getCoinsForHold}} ETH</p>
+                </div>
+            </div>
+
             <div *ngIf="spinner">
                 <div class="lds-ripple-small">
                     <div></div>

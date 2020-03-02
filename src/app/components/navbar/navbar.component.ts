@@ -12,6 +12,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../services/post.service';
 import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
+import Contract from '../../services/contract';
 
 
 
@@ -46,6 +47,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   faShare = faShare
   loadMore = false
   avatar;
+  holdBalance:any = 0;
 
   constructor(
     private store: Store<AppState>,
@@ -145,6 +147,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async updateBalance() {
     this.coinInfo = await this.loomEthCoinData._updateBalances();
     this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+    this.getMoneyHolder();
+  }
+
+  async getMoneyHolder() {
+    let contract = new Contract()
+    let contr = await contract.initContract();
+    let holdBalance = await contr.methods.onHold().call();
+    if (Number(holdBalance) > 0) {
+      let web3 = new Web3();
+      this.holdBalance = Number(web3.utils.fromWei(holdBalance, 'ether')).toFixed(4);
+    } else {
+      this.holdBalance = holdBalance;
+    }
+    console.log(this.holdBalance);
     this.amountSpinner = false;
   }
 

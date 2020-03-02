@@ -18,7 +18,7 @@ contract HoldMoney {
 
     mapping( address => quizeAmount ) qAmount;
 
-    function setMoneyRetention(
+    function _setMoneyRetention(
         uint256 _amountHost,
         int _question_id,
         uint256 _money,
@@ -40,14 +40,14 @@ contract HoldMoney {
        }
     }
 
-    function getMoneyRetention(int _question_id) public payable{
+    function _getMoneyRetention(int _question_id) public payable{
         if(int(now - holder[_question_id].endTime) >= 0){
             address(holder[_question_id].hostWallet).transfer(holder[_question_id].money);
         }
     }
 
 
-    function moneyRetentionCalculate() public view returns(uint){
+    function _moneyRetentionCalculate() public view returns(uint){
         if(qAmount[msg.sender].amount > 0){
           return (qAmount[msg.sender].amount + 1) * amountGuardWei;
         }else{
@@ -55,12 +55,12 @@ contract HoldMoney {
         }
     }
 
-    function onHold() public view returns(uint){
+    function _onHold() public view returns(uint){
         return qAmount[msg.sender].amount * amountGuardWei;
     }
 
 
-    function amountGuard(uint256 _amountHost) public view returns(int8){
+    function _amountGuard(uint256 _amountHost) public view returns(int8){
         if(qAmount[msg.sender].amount > 0){
             if(_amountHost >= (qAmount[msg.sender].amount * amountGuardWei)){
               // don't have any errors

@@ -1,6 +1,8 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-contract Quize {
+import "./HoldMoney.sol";
+
+contract Quize is HoldMoney {
      uint8 private percentQuiz = 2;
      uint256 private fullAmount;
      uint256 private sevenDaysTimeStamp = 604800;
@@ -58,7 +60,9 @@ contract Quize {
            uint8 _percentHost,
            uint8 _percentValidator,
            uint8 _questionQuantity,
-           int _validatorsAmount
+           int _validatorsAmount,
+           uint256 _amountHost,
+           uint256 _money
         ) public payable {
            questions[_question_id].question_id = _question_id;
            questions[_question_id].endTime = _endTime;
@@ -78,6 +82,8 @@ contract Quize {
         }else{
            questions[_question_id].percentValidator = _percentValidator;
         }
+
+        _setMoneyRetention(_amountHost, _question_id, _money, _endTime);
     }
 
    function setAnswer(int256 _question_id, uint8 _whichAnswer) public payable{
@@ -262,6 +268,22 @@ contract Quize {
             delete questions[_question_id];
           }
         }
+      }
+
+      function amountGuard(uint256 _amountHost) public view returns(int8){
+        return _amountGuard(_amountHost);
+      }
+
+      function onHold() public view returns(uint){
+        return _onHold();
+      }
+
+      function moneyRetentionCalculate() public view returns(uint){
+        return _moneyRetentionCalculate();
+      }
+
+      function getMoneyRetention(int _question_id) public payable{
+        _getMoneyRetention(_question_id);
       }
 
 }

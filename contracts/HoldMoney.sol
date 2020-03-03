@@ -48,15 +48,31 @@ contract HoldMoney {
 
 
     function _moneyRetentionCalculate() public view returns(uint){
-        if(qAmount[msg.sender].amount > 0){
-          return (qAmount[msg.sender].amount + 1) * amountGuardWei;
-        }else{
-          return amountGuardWei;
-        }
+       return moneyCalc(qAmount[msg.sender].amount + 1);
     }
 
     function _onHold() public view returns(uint){
-        return qAmount[msg.sender].amount * amountGuardWei;
+      if(qAmount[msg.sender].amount >= 1){
+        uint value = 0;
+        for(uint8 i = 0; i <= qAmount[msg.sender].amount; i++){
+          value = value + moneyCalc(i);
+        }
+        return value;
+      }else{
+        return 0;
+      }
+    }
+
+    function moneyCalc(uint number) private view returns(uint){
+      uint value = amountGuardWei;
+      if(number == 1){
+        return value;
+      }else if(number >= 2){
+         for(uint8 i = 1; i < number; i++){
+            value = value + value;
+         }
+         return value;
+      }
     }
 
 

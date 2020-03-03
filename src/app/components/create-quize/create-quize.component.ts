@@ -14,7 +14,10 @@ import { Observable } from 'rxjs';
 import Contract from '../../services/contract';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
+import * as CoinsActios from '../../actions/coins.actions';
+
 import Web3 from 'web3';
+import LoomEthCoin from '../../services/LoomEthCoin';
 
 
 type Time = { name: string, date: any, value: number };
@@ -391,7 +394,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           value: calcCoinsForHold
         });
         if (sendToContract.transactionHash !== undefined) {
-          this.setToDb(id, sendToContract.transactionHash);
+          this.setToDb(id, sendToContract.transactionHash, this.getCoinsForHold);
         }
       } catch (error) {
         console.log(error);
@@ -423,7 +426,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   }
 
 
-  setToDb(id, transactionHash) {
+  setToDb(id, transactionHash, getCoinsForHold) {
     // think about status
 
     this.quizData = {
@@ -452,7 +455,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       finalAnswer: undefined,
       transactionHash: transactionHash,
       showDistribution: this.questionForm.value.showDistribution,
-      hashtagsId: this.hashtagsId
+      hashtagsId: this.hashtagsId,
+      getCoinsForHold: Number(getCoinsForHold)
     }
 
     this.PostService.post("question/set", this.quizData)
@@ -462,6 +466,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.generatedLink = id;
           this.spinner = false;
           this.updateInvites(this.host[0].wallet);
+          this.updateBalance();
           console.log("set to db DONE")
         },
         (err) => {
@@ -479,6 +484,14 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         let amount = x.length
         this.store.dispatch(new InvitesAction.UpdateInvites({ amount: amount }));
       })
+  }
+
+  async updateBalance(){
+    let web3 = new Web3(window.web3.currentProvider);
+    let loomEthCoinData = new LoomEthCoin()
+    await loomEthCoinData.load(web3)
+    this.coinInfo = await loomEthCoinData._updateBalances();
+    this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
   }
 
   ngOnDestroy() {

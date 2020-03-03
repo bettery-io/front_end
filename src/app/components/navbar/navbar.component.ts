@@ -73,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
+        this.getMoneyHolder();
       }
     })
     this.store.select("invites").subscribe((x) => {
@@ -147,7 +148,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async updateBalance() {
     this.coinInfo = await this.loomEthCoinData._updateBalances();
     this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
-    this.getMoneyHolder();
   }
 
   async getMoneyHolder() {

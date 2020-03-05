@@ -87,37 +87,33 @@ contract Quize is HoldMoney {
     }
 
    function setAnswer(int256 _question_id, uint8 _whichAnswer) public payable{
-       if(int(now - questions[_question_id].startTime) >= 0){
-           if(int(questions[_question_id].endTime - now) >= 0){
-              questions[_question_id].money += msg.value;
-              uint256 i = questions[_question_id].participant[_whichAnswer].index;
-              questions[_question_id].participant[_whichAnswer].participants[i].parts = msg.sender;
-              questions[_question_id].participant[_whichAnswer].index = i + 1;
-              questions[_question_id].allParticipant.push(msg.sender);
-              fullAmount += msg.value;
-           }
-       }
-    }
-
-    function getFullAmount() public view returns(uint256){
-        return fullAmount;
+      if(setTimeAnswer(_question_id) == 0){
+        questions[_question_id].money += msg.value;
+        uint256 i = questions[_question_id].participant[_whichAnswer].index;
+        questions[_question_id].participant[_whichAnswer].participants[i].parts = msg.sender;
+        questions[_question_id].participant[_whichAnswer].index = i + 1;
+        questions[_question_id].allParticipant.push(msg.sender);
+        fullAmount += msg.value;
+      }
     }
 
     function setValidator(int _question_id, uint8 _whichAnswer ) public payable{
-        if(int(now - questions[_question_id].endTime) >= 0){
-          if(int((questions[_question_id].endTime + sevenDaysTimeStamp) - now) >= 0){
-            uint256 i = questions[_question_id].validator[_whichAnswer].index;
-            questions[_question_id].validator[_whichAnswer].validators[i].valid = msg.sender;
-            questions[_question_id].validator[_whichAnswer].index = i + 1;
-            int active = questions[_question_id].activeValidators + 1;
-           if(active == questions[_question_id].validatorsAmount){
-             questions[_question_id].activeValidators = active;
-             letsPayMoney(_question_id);
-           }else{
-               questions[_question_id].activeValidators = active;
-           }
+      if(setTimeValidator(_question_id) == 0){
+        uint256 i = questions[_question_id].validator[_whichAnswer].index;
+        questions[_question_id].validator[_whichAnswer].validators[i].valid = msg.sender;
+        questions[_question_id].validator[_whichAnswer].index = i + 1;
+        int active = questions[_question_id].activeValidators + 1;
+        if(active == questions[_question_id].validatorsAmount){
+          questions[_question_id].activeValidators = active;
+          letsPayMoney(_question_id);
+        }else{
+          questions[_question_id].activeValidators = active;
           }
-        }
+      }
+    }
+
+    function getFullAmount() public view returns(uint256){
+      return fullAmount;
     }
 
     function letsPayMoney(int _question_id) private {
@@ -263,11 +259,9 @@ contract Quize is HoldMoney {
       }
 
       function deleteEvent(int _question_id) public {
-        if(questions[_question_id].hostWallet == msg.sender){
-          if(questions[_question_id].money == 0){
+          if(deleteEventValidator(_question_id) == 0){
             delete questions[_question_id];
           }
-        }
       }
 
       function amountGuard(uint256 _amountHost) public view returns(int8){
@@ -282,8 +276,11 @@ contract Quize is HoldMoney {
         return _moneyRetentionCalculate();
       }
 
-      function getMoneyRetention(int _question_id) public payable{
+      function getMoneyRetention(int256 _question_id) public payable{
         _getMoneyRetention(_question_id);
       }
 
+      function getHoldMoneyById(int256 _question_id) public view returns(uint256){
+        return _getHoldMoneyById(_question_id);
+      }
 }

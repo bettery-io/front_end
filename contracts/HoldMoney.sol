@@ -24,6 +24,8 @@ contract HoldMoney {
         uint256 _money,
         uint256 _endTime
     ) public {
+        // rewrite all to this function
+        // uint balance = address(this).balance;
         if (_amountHost >= _moneyRetentionCalculate()) {
             holder[_question_id].hostWallet = msg.sender;
             holder[_question_id].money = _money;

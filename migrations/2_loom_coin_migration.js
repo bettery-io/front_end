@@ -1,4 +1,5 @@
 const MyLoomCoin = artifacts.require('MyLoomCoin.sol')
+const QuizeMigrations = artifacts.require("Quize.sol");
 
 let gatewayAddress = '0xE754d9518bF4a9C63476891eF9Aa7D91c8236a5d'.toLowerCase()
 
@@ -8,8 +9,9 @@ module.exports = function (deployer, network, accounts) {
   }
 
   deployer.then(async () => {
-    await deployer.deploy(MyLoomCoin, gatewayAddress)
-    const myLoomCoinInstance = await MyLoomCoin.deployed()
+    await deployer.deploy(QuizeMigrations);
+    await deployer.deploy(MyLoomCoin, gatewayAddress);
+    const myLoomCoinInstance = await MyLoomCoin.deployed();
 
     console.log('\n*************************************************************************\n')
     console.log(`MyLoomCoin Contract Address: ${myLoomCoinInstance.address}`)

@@ -4,7 +4,7 @@ import "./HoldMoney.sol";
 
 contract Quize is HoldMoney {
      uint8 private percentQuiz = 2;
-     uint256 private fullAmount;
+     uint256 public fullAmount;
      uint256 private sevenDaysTimeStamp = 604800;
      address payable companyAddress = 0x02810c3bc07De2ddAef89827b0dD6b223C7759d5;
 
@@ -110,10 +110,6 @@ contract Quize is HoldMoney {
           questions[_question_id].activeValidators = active;
           }
       }
-    }
-
-    function getFullAmount() public view returns(uint256){
-      return fullAmount;
     }
 
     function letsPayMoney(int _question_id) private {

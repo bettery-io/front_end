@@ -2,8 +2,19 @@
     <div class="logo">
         <h3 style="padding-left: 20px; padding-top: 10px">Quize Logo</h3>
     </div>
-    <div class="registration" *ngIf="nickName === undefined">
-        <button type="button" class="btn btn-success" (click)="registrationModal()">Login / Registration</button>
+    <div *ngIf="nickName === undefined">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
+            <li class="nav-item">
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'erc20'}"
+                    routerLink="~ki339203/erc20" (click)="setActiveTab('erc20')">ERC-20</a>
+            </li>
+            <li class="nav-item">
+                <div class="registration">
+                    <button type="button" class="btn btn-success" (click)="registrationModal()">Login /
+                        Registration</button>
+                </div>
+            </li>
+        </ul>
     </div>
     <div *ngIf="nickName !== undefined">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
@@ -26,6 +37,10 @@
                     activites</a>
             </li>
             <li class="nav-item">
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'erc20'}"
+                    routerLink="~ki339203/erc20" (click)="setActiveTab('erc20')">ERC-20</a>
+            </li>
+            <li class="nav-item">
                 <div class="circle" [style.background]="avatar"></div>
                 <div class="user_email"> {{nickName}}</div>
             </li>
@@ -37,7 +52,7 @@
                     </div>
                 </div>
                 <div *ngIf="!amountSpinner">
-                    <p [ngbPopover]="popContent" [popoverTitle]="popTitle"  class="loom_balance">
+                    <p [ngbPopover]="popContent" [popoverTitle]="popTitle" class="loom_balance">
                         Balance: {{coinInfo.loomBalance | number:'1.0-4'}}</p>
                     <p *ngIf="holdBalance !== 0" class="loom_hold_balance">Hold balance: {{holdBalance}}</p>
                 </div>
@@ -121,14 +136,19 @@
                 <p>{{history.date | date:'short'}} / </p>
                 <p>{{history.amount}} ETH</p>
                 <div *ngIf="history.eventId !=='Deleted'">
-                    <a *ngIf="history.paymentWay === 'send'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconSend" [icon]="faReply"></fa-icon></a>
-                    <a *ngIf="history.paymentWay === 'receive'" [routerLink]="['/~ki339203/question', history.eventId]"><fa-icon class="historyIconReceive" [icon]="faShare"></fa-icon></a>
+                    <a *ngIf="history.paymentWay === 'send'" [routerLink]="['/~ki339203/question', history.eventId]">
+                        <fa-icon class="historyIconSend" [icon]="faReply"></fa-icon>
+                    </a>
+                    <a *ngIf="history.paymentWay === 'receive'" [routerLink]="['/~ki339203/question', history.eventId]">
+                        <fa-icon class="historyIconReceive" [icon]="faShare"></fa-icon>
+                    </a>
                 </div>
                 <div *ngIf="history.eventId ==='Deleted'">
                     <fa-icon *ngIf="history.paymentWay === 'send'" class="historyIconSend" [icon]="faReply"></fa-icon>
-                    <fa-icon *ngIf="history.paymentWay === 'receive'" class="historyIconReceive" [icon]="faShare"></fa-icon>
+                    <fa-icon *ngIf="history.paymentWay === 'receive'" class="historyIconReceive" [icon]="faShare">
+                    </fa-icon>
                 </div>
-               
+
             </div>
         </div>
         <div *ngIf="loadMore === true" class="showAll">

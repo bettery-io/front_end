@@ -27,6 +27,7 @@ import { QuestionComponent } from './components/question/question.component';
 import { TimeComponent } from './components/time/time.component';
 import { InvitationComponent } from './components/invitation/invitation.component';
 import { HistoryComponent } from './components/history/history.component';
+import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.component';
 
 
 
@@ -42,7 +43,8 @@ import { HistoryComponent } from './components/history/history.component';
     QuestionComponent,
     TimeComponent,
     InvitationComponent,
-    HistoryComponent
+    HistoryComponent,
+    ErcCoinSaleComponent
   ],
   imports: [
     BrowserModule,

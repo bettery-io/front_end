@@ -1,4 +1,4 @@
-pragma solidity ^0.6.1;
+pragma solidity 0.6.1;
 
 contract DappToken {
     string public name = 'Maximus Token';

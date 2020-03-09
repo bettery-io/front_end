@@ -1,4 +1,4 @@
-pragma solidity >=0.4.22 <0.6.0;
+pragma solidity 0.6.1;
 
 import "./HoldMoney.sol";
 
@@ -133,7 +133,7 @@ contract Quize is HoldMoney {
            uint256 persentFee = getPersent(questions[_question_id].money, percentQuiz);
            questions[_question_id].money = questions[_question_id].money - persentFee;
            fullAmount = fullAmount - persentFee;
-           address(companyAddress).transfer(persentFee);
+           companyAddress.transfer(persentFee);
 
            questions[_question_id].persentFeeCompany = persentFee;
 
@@ -141,7 +141,7 @@ contract Quize is HoldMoney {
            uint256 persHostFee = getPersent(questions[_question_id].money, questions[_question_id].percentHost);
            questions[_question_id].money = questions[_question_id].money - persHostFee;
            fullAmount = fullAmount - persHostFee;
-           address(questions[_question_id].hostWallet).transfer(persHostFee);
+           questions[_question_id].hostWallet.transfer(persHostFee);
 
            questions[_question_id].persentFeeHost = persHostFee;
 
@@ -157,7 +157,7 @@ contract Quize is HoldMoney {
            for(uint8 i = 0; i < questions[_question_id].validator[correctAnswer].index; i++){
              address payable _validator = questions[_question_id].validator[correctAnswer].validators[i].valid;
              questions[_question_id].money = questions[_question_id].money - persentForEachValidators;
-             address(_validator).transfer(persentForEachValidators);
+             _validator.transfer(persentForEachValidators);
           }
 
              // Pay for participant
@@ -165,7 +165,7 @@ contract Quize is HoldMoney {
             for(uint8 i = 0; i < questions[_question_id].participant[correctAnswer].index; i++){
                 address payable _participant = questions[_question_id].participant[correctAnswer].participants[i].parts;
                 questions[_question_id].money = questions[_question_id].money - monayForParticipant;
-                address(_participant).transfer(monayForParticipant);
+                _participant.transfer(monayForParticipant);
             }
 
             questions[_question_id].monayForParticipant = monayForParticipant;

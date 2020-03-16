@@ -31,8 +31,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -51,8 +50,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -65,8 +63,7 @@
       "name": "_getMoneyRetention",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -79,8 +76,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -93,8 +89,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -135,8 +130,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -189,8 +183,7 @@
       "name": "startQestion",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -208,8 +201,7 @@
       "name": "setAnswer",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -227,8 +219,7 @@
       "name": "setValidator",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -277,8 +268,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -297,8 +287,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -317,8 +306,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -337,8 +325,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -370,8 +357,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -384,8 +370,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -398,8 +383,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -412,8 +396,7 @@
       "name": "getMoneyRetention",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -432,8 +415,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.6.1+commit.e6f7d5a4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"question_id\",\"type\":\"int256\"}],\"name\":\"eventIsFinish\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amountHost\",\"type\":\"uint256\"}],\"name\":\"_amountGuard\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"_getHoldMoneyById\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"_getMoneyRetention\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"_moneyRetentionCalculate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"_onHold\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amountHost\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"_money\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_endTime\",\"type\":\"uint256\"}],\"name\":\"_setMoneyRetention\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amountHost\",\"type\":\"uint256\"}],\"name\":\"amountGuard\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"deleteEvent\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"deleteEventValidator\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"fullAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"getHoldMoneyById\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"getMoneyRetention\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"getQuestion\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"persentFeeCompany\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"persentForEachValidators\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"money\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"monayForParticipant\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"questionQuantity\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"correctAnswer\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"persentFeeHost\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"moneyRetentionCalculate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"onHold\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"},{\"internalType\":\"uint8\",\"name\":\"_whichAnswer\",\"type\":\"uint8\"}],\"name\":\"setAnswer\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"setTimeAnswer\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"}],\"name\":\"setTimeValidator\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"},{\"internalType\":\"uint8\",\"name\":\"_whichAnswer\",\"type\":\"uint8\"}],\"name\":\"setValidator\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"_question_id\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"_startTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_endTime\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_percentHost\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"_percentValidator\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"_questionQuantity\",\"type\":\"uint8\"},{\"internalType\":\"int256\",\"name\":\"_validatorsAmount\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"_amountHost\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_money\",\"type\":\"uint256\"}],\"name\":\"startQestion\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/macbook/Documents/freelance/node/QUIZE/frontend/contracts/Quize.sol\":\"Quize\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/macbook/Documents/freelance/node/QUIZE/frontend/contracts/HoldMoney.sol\":{\"keccak256\":\"0xe8b7bad88cb5784de31282fffaef63a55204b442eaceffa975d7c4de75f4a8ff\",\"urls\":[\"bzz-raw://76c85886b67668bd7f2338701a7b869d85b0da797a74d81f5d55215d76b5f6ea\",\"dweb:/ipfs/QmRqtWdBgyaF64tSTAuvU9kKENCoCJ9j49vypKeYbM1czR\"]},\"/Users/macbook/Documents/freelance/node/QUIZE/frontend/contracts/Quize.sol\":{\"keccak256\":\"0xa33096259fdcc955f58a5037eb81e35cb6dfdcbb64f35a6e1bf2c6bd4663ac51\",\"urls\":[\"bzz-raw://7aebc2622eb896ddadb6f11440ad65bc9a63f873fc80e7dc03d81bcf8d420527\",\"dweb:/ipfs/QmXHmtZYUEznJUMQYzCsaLgnMB3KHDeZG7vX7uZwiqsUo3\"]}},\"version\":1}",
@@ -25681,6 +25663,19 @@
           "name": "NewQuestionAdded",
           "type": "event",
           "signature": "0xeffecb84940c82e81eefc2662e9896256cbaf3ae6dbdc05cb987673f210ae704"
+        },
+        "0xb0b53c79f7cd0d8c624f48414bdb76a381085a786cc7a98931e2fc76933b644e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "int256",
+              "name": "question_id",
+              "type": "int256"
+            }
+          ],
+          "name": "eventIsFinish",
+          "type": "event"
         }
       },
       "links": {},
@@ -25743,8 +25738,8 @@
         }
       },
       "links": {},
-      "address": "0xdB8e5cd31cFf3a79CFcA62EC821D08300c3989A5",
-      "transactionHash": "0x977115ac9098479ca6465c367f9176b99e0fdea657c067520f25186ae544c631"
+      "address": "0xFa5F9b70cC547B00B6266C467879Df97C10f7033",
+      "transactionHash": "0xad31d4bbf9f46bc4cb86260c407ebb6c5e0f50c0d9281bbc47aa78d0f63a7f10"
     },
     "13654820909954": {
       "events": {
@@ -25823,11 +25818,25 @@
           "name": "NewQuestionAdded",
           "type": "event",
           "signature": "0xeffecb84940c82e81eefc2662e9896256cbaf3ae6dbdc05cb987673f210ae704"
+        },
+        "0xb0b53c79f7cd0d8c624f48414bdb76a381085a786cc7a98931e2fc76933b644e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "int256",
+              "name": "question_id",
+              "type": "int256"
+            }
+          ],
+          "name": "eventIsFinish",
+          "type": "event",
+          "signature": "0xb0b53c79f7cd0d8c624f48414bdb76a381085a786cc7a98931e2fc76933b644e"
         }
       },
       "links": {},
-      "address": "0xeD6b23BD04D5a38b6a519663AE45FE09d71AE61e",
-      "transactionHash": "0x8aced5e5acece5f823df919d909e0e5dbdd264279af89d7b3f41f0b8e3aa60c6"
+      "address": "0xE2f4e0DCd478E2334de8E0F56D2F1caB15efC2b9",
+      "transactionHash": "0x20173bb1991a2aaeb8da1e2cd4b92a07b5ec87c41c79a01fa5614b15aba43b17"
     },
     "9545242630824": {
       "events": {
@@ -26004,7 +26013,7 @@
     }
   },
   "schemaVersion": "3.0.19",
-  "updatedAt": "2020-03-09T14:30:28.148Z",
+  "updatedAt": "2020-03-16T14:39:27.086Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

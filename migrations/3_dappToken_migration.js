@@ -3,7 +3,7 @@ const DappTokenSale = artifacts.require("DappTokenSale");
 
 module.exports = function (deployer, network) {
 
-  if (network === 'rinkeby' || network === "development") {
+  if (network === 'rinkeby' || network === "development" || network === 'rinkeby-fork') {
 
     // add initial supply to the constructor
     deployer.deploy(DappToken, 1000000).then(() => {

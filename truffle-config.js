@@ -26,13 +26,20 @@ module.exports = {
       },
       network_id: '5101040124304'
     },
-    rinkeby: {
-      provider: function () {
-        const mnemonic = readFileSync(path.join(__dirname, 'rinkeby_mnemonic'), 'utf-8')
+    // rinkeby: {
+    //   provider: function () {
+    //     const mnemonic = readFileSync(path.join(__dirname, 'rinkeby_mnemonic'), 'utf-8')
 
-        return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/2b5ec85db4a74c8d8ed304ff2398690d`, 0, 10)
-      },
-      network_id: 4,
+    //     return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/2b5ec85db4a74c8d8ed304ff2398690d`, 0, 10)
+    //   },
+    //   network_id: 4,
+    //   gasPrice: 15000000001,
+    //   skipDryRun: true
+    // },
+    rinkeby: {
+      host: "localhost",
+      port: "8545",
+      network_id: "4",
       gasPrice: 15000000001,
       skipDryRun: true
     },

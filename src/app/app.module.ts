@@ -28,6 +28,7 @@ import { TimeComponent } from './components/time/time.component';
 import { InvitationComponent } from './components/invitation/invitation.component';
 import { HistoryComponent } from './components/history/history.component';
 import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.component';
+import {NumericDirective} from './helpers/numeric';
 
 
 
@@ -44,7 +45,8 @@ import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.c
     TimeComponent,
     InvitationComponent,
     HistoryComponent,
-    ErcCoinSaleComponent
+    ErcCoinSaleComponent,
+    NumericDirective
   ],
   imports: [
     BrowserModule,

@@ -1,34 +1,44 @@
-<div class="container" style="width: 650px;">
-    <div class="row">
+<div class="container" style="width: 750px;">
+    <div *ngIf="spinner">
+        <div class="lds-ripple">
+            <div></div>
+            <div></div>
+        </div>
+        <p class="text-center" *ngIf="buyTokensMessage">Wait a while, your Tokens are coming...</p>
+    </div>
+
+    <div *ngIf="!spinner" class="row">
         <div class="col-lg-12">
             <h1 class="text-center">Quize token sale</h1>
             <hr />
             <br />
             <p class="text-center">Introduing "Quize Token" (QUIZE)! Token price is {{tokenPrice}} Ether. You currently
-                have
-                {{tokenOwner}} QUIZE. </p>
+                have {{tokenOwner}} QUIZE. </p>
             <br />
             <form role="form">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="number" name="number" value="1" min="1" pattern="[0-9]" class="form-control">
+                        <input [(ngModel)]="numberOfTokens" type="number" name="number" value="1" min="1" numeric
+                            class="form-control">
                         <span class="input-group-btn">
-                            <button (click)="this.initMetamask()" type="submit" class="btn btn-primary">Buy
+                            <button [disabled]="metamaskError !== undefined" (click)="this.buyToken()" type="submit"
+                                class="btn btn-primary">Buy
                                 Tokens</button>
                         </span>
                     </div>
                 </div>
+                <p class="text-danger text-center" *ngIf="numberError">Value must be bigger than 0.</p>
             </form>
-            <p *ngIf="metamaskError !== undefined">{{metamaskError}}</p>
+            <p *ngIf="metamaskError !== undefined" class="text-danger text-center">{{metamaskError}}</p>
             <br />
             <div class="progress">
-                <div id="progress" [attr.aria-valuenow]="progressToken" class="progress-bar progress-bar-striped active"
-                    aria-valuemin="0" aria-valuemax="100">
+                <div id="progress" [ngStyle]="{'width.%': progressToken}" [attr.aria-valuenow]="progressToken"
+                    class="progress-bar progress-bar-striped active" aria-valuemin="0" aria-valuemax="100">
                 </div>
             </div>
             <br />
             <div>
-                <p>{{tokenSold}} / {{tokenSupply}} token sold</p>
+                <p class="text-center">{{tokenSold}} tokens sold, {{tokensAvailable}} tokens avaliable</p>
             </div>
         </div>
     </div>

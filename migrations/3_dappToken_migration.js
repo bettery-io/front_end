@@ -1,15 +1,17 @@
-const DappToken = artifacts.require("DappToken");
+const EthERC20Coin = artifacts.require("EthERC20Coin");
 const DappTokenSale = artifacts.require("DappTokenSale");
+const Web3 = require("web3");
 
 module.exports = function (deployer, network) {
 
   if (network === 'rinkeby' || network === "development" || network === 'rinkeby-fork') {
 
     // add initial supply to the constructor
-    deployer.deploy(DappToken, 1000000).then(() => {
-      // token price is 0.001 Ether
-      var tokenPrice = 1000000000000000;
-      return deployer.deploy(DappTokenSale, DappToken.address, tokenPrice);
+    deployer.deploy(EthERC20Coin, 1000000000).then(() => {
+      // token price is 1 Ether
+      let web3 = new Web3();
+      let tokenPrice = web3.utils.toWei("1", 'ether');
+      return deployer.deploy(DappTokenSale, EthERC20Coin.address, tokenPrice);
     });
   } else {
     return

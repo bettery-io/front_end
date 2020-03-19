@@ -1,16 +1,16 @@
-pragma solidity 0.6.1;
+pragma solidity ^0.5.2;
 
-import "./DappToken.sol";
+import "./EthERC20Coin.sol";
 
 contract DappTokenSale {
     address payable admin;
-    DappToken public tokenContract;
+    EthERC20Coin public tokenContract;
     uint256 public tokenPrice;
     uint256 public tokensSold;
 
     event Sell(address _buyer, uint256 _amount);
 
-    constructor(DappToken _tokenContract, uint256 _tokenPrice) public {
+    constructor(EthERC20Coin _tokenContract, uint256 _tokenPrice) public {
         admin = msg.sender;
         tokenContract = _tokenContract;
         tokenPrice = _tokenPrice;

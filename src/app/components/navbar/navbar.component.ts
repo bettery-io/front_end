@@ -7,6 +7,8 @@ import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
 
 import LoomEthCoin from '../../services/LoomEthCoin';
+import ERC20 from '../../services/ERC20';
+
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../services/post.service';
@@ -48,6 +50,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   loadMore = false
   avatar;
   holdBalance:any = 0;
+  ERC20Connection: any = null;
 
   constructor(
     private store: Store<AppState>,
@@ -138,6 +141,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.web3 = new Web3(window.web3.currentProvider);
     this.loomEthCoinData = new LoomEthCoin()
     await this.loomEthCoinData.load(this.web3)
+    this.ERC20Connection = new ERC20()
+    await this.ERC20Connection.load(this.web3)
     this.updateBalance()
   }
 
@@ -148,6 +153,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async updateBalance() {
     this.coinInfo = await this.loomEthCoinData._updateBalances();
     this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+    let ERC20Info = await this.ERC20Connection._updateBalances();
+    console.log(ERC20Info);
   }
 
   async getMoneyHolder() {

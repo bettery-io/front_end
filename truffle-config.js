@@ -26,23 +26,24 @@ module.exports = {
       },
       network_id: '5101040124304'
     },
-    // rinkeby: {
-    //   provider: function () {
-    //     const mnemonic = readFileSync(path.join(__dirname, 'rinkeby_mnemonic'), 'utf-8')
-
-    //     return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/2b5ec85db4a74c8d8ed304ff2398690d`, 0, 10)
-    //   },
-    //   network_id: 4,
-    //   gasPrice: 15000000001,
-    //   skipDryRun: true
-    // },
     rinkeby: {
-      host: "localhost",
-      port: "8545",
-      network_id: "4",
+      provider: function () {
+        const mnemonic = readFileSync(path.join(__dirname, 'rinkeby_mnemonic'), 'utf-8')
+
+        return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/2b5ec85db4a74c8d8ed304ff2398690d`, 0, 10)
+      },
+      network_id: 4,
       gasPrice: 15000000001,
       skipDryRun: true
     },
+    // for local rinkeby network
+    // rinkeby: {
+    //   host: "localhost",
+    //   port: "8545",
+    //   network_id: "4",
+    //   gasPrice: 15000000001,
+    //   skipDryRun: true
+    // },
     development: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 7545,            // Standard Ethereum port (default: none)
@@ -51,7 +52,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: "0.6.1",    // Fetch exact version from solc-bin (default: truffle's version)
+     // version: "0.5.2",    // Fetch exact version from solc-bin (default: truffle's version)
       docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       settings: {          // See the solidity docs for advice about optimization and evmVersion
         optimizer: {

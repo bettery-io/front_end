@@ -21,7 +21,7 @@ export class ErcCoinSaleComponent implements OnInit {
   metamaskError: string = undefined
   web3: Web3 | undefined = null;
   token: any = null;
-  tokensAvailable: number = 75000;
+  tokensAvailable: number = 750000000;
   tokenSale: any = null;
   numberOfTokens = 1;
   numberError: boolean = false
@@ -74,12 +74,14 @@ export class ErcCoinSaleComponent implements OnInit {
       TokenSaleJSON.networks[networkConfigs.networks.rinkeby.networkId].address)
 
     let tokenSold = await this.tokenSale.methods.tokensSold().call();
-    this.tokenSold = Number(tokenSold)
+    let web3 = new Web3();
+    this.tokenSold = Number(web3.utils.fromWei(tokenSold, 'ether'));
 
     this.progressToken = (Math.ceil(this.tokenSold) / this.tokensAvailable) * 100;
 
     let price = await this.tokenSale.methods.tokenPrice().call();
     this.tokenPricePrivate = Number(price);
+    console.log(this.tokenPricePrivate)
     this.tokenPrice = Number(this.web3.utils.fromWei(price, "ether"));
 
     // Detect Sell event
@@ -115,7 +117,9 @@ export class ErcCoinSaleComponent implements OnInit {
       try {
         this.buyTokensMessage = true;
         this.spinner = true;
-        await this.tokenSale.methods.buyTokens(this.numberOfTokens).send({
+        let web3 = new Web3()
+        let amount = web3.utils.toWei(String(this.numberOfTokens), 'ether');
+        await this.tokenSale.methods.buyTokens(amount).send({
           from: this.userWallet,
           value: this.numberOfTokens * this.tokenPricePrivate,
           gas: 500000
@@ -133,7 +137,13 @@ export class ErcCoinSaleComponent implements OnInit {
   }
 
   async transferToken(){
-
+   let web3 = new Web3()
+   let amount = web3.utils.toWei('750000000', 'ether');
+   let address = TokenSaleJSON.networks[networkConfigs.networks.rinkeby.networkId].address
+   let test = await this.token.methods.transfer(address, amount).send({
+     from: this.userWallet,
+   })
+   console.log(test);
   }
 
 }

@@ -76,7 +76,7 @@ import {
           from: this.accountMapping.ethereum.local.toString()
         })
       const balance = this.web3Loom.utils.fromWei(loomWei.toString(), 'ether')
-      const limitDecimals = parseFloat(balance).toFixed(2)
+      const limitDecimals = balance
       return limitDecimals
     }
   
@@ -87,7 +87,8 @@ import {
           from: this.accountMapping.ethereum.local.toString()
         })
       const balance = this.web3Ethereum.utils.fromWei(loomWei.toString(), 'ether')
-      const limitDecimals = parseFloat(balance).toFixed(2)
+      console.log(balance)
+      const limitDecimals = balance
       return limitDecimals
     }
   

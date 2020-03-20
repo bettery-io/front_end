@@ -49,8 +49,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   faShare = faShare
   loadMore = false
   avatar;
-  holdBalance:any = 0;
+  holdBalance: any = 0;
   ERC20Connection: any = null;
+  ERC20Coins: any = null;
+  ERC20depositError: string = undefined;
+  ERC20depositAmount: number = 0;
+  ERC20withdrawalError: string = undefined;
+  ERC20withdrawalAmount: number = 0;
 
   constructor(
     private store: Store<AppState>,
@@ -153,21 +158,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async updateBalance() {
     this.coinInfo = await this.loomEthCoinData._updateBalances();
     this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
-    let ERC20Info = await this.ERC20Connection._updateBalances();
-    console.log(ERC20Info);
+    this.ERC20Coins = await this.ERC20Connection._updateBalances();
+    console.log(this.ERC20Coins);
   }
 
   async getMoneyHolder() {
     let contract = new Contract()
     let contr = await contract.initContract();
-    let holdBalance = await contr.methods.onHold().call();
-    if (Number(holdBalance) > 0) {
+    let holdBalance = Number(await contr.methods.onHold().call());
+    if (holdBalance > 0) {
       let web3 = new Web3();
-      this.holdBalance = Number(web3.utils.fromWei(holdBalance, 'ether')).toFixed(4);
+      this.holdBalance = Number(web3.utils.fromWei(String(holdBalance), 'ether')).toFixed(4);
     } else {
       this.holdBalance = holdBalance;
     }
-    console.log(this.holdBalance);
     this.amountSpinner = false;
   }
 
@@ -188,10 +192,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   changeInput() {
     this.depositError = undefined;
+    this.ERC20depositError = undefined;
   }
 
   changeWithdrawal() {
     this.withdrawalError = undefined;
+    this.ERC20withdrawalError = undefined;
   }
 
   async deposit() {
@@ -233,6 +239,49 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     } else {
       this.withdrawalError = "Must be more than zero"
+    }
+  }
+
+  async depositERC20() {
+    if (this.ERC20depositAmount > 0) {
+      if (Number(this.ERC20depositAmount) > Number(this.ERC20Coins.mainNetBalance)) {
+        this.ERC20depositError = "You don't have enough tokens in Ethereum network"
+      } else {
+        this.depositSpinner = true;
+        let response = await this.ERC20Connection.depositERC20(Number(this.ERC20depositAmount));
+        if (response === undefined) {
+          this.modalService.dismissAll()
+          this.depositSpinner = false;
+        } else {
+          this.depositSpinner = false;
+          this.ERC20depositError = response.message
+        }
+        console.log(response);
+      }
+    } else {
+      this.ERC20depositError = "Value must be more that 0"
+    }
+  }
+
+  async withdrawalERC20() {
+    if (this.ERC20withdrawalAmount > 0) {
+      if (Number(this.ERC20withdrawalAmount) > Number(this.ERC20Coins.loomBalance)) {
+        this.ERC20withdrawalError = "You don't have enough tokens in Ethereum network"
+      } else {
+        this.withdrawalSpinner = true;
+        await this.loomEthCoinData.approveFee();
+        let response = await this.ERC20Connection.withdrawERC20(Number(this.ERC20withdrawalAmount));
+        if (response === undefined) {
+          this.modalService.dismissAll()
+          this.withdrawalSpinner = false;
+        } else {
+          this.withdrawalSpinner = false;
+          this.ERC20withdrawalError = response.message
+        }
+        console.log(response);
+      }
+    } else {
+      this.ERC20withdrawalError = "Value must be more that 0"
     }
   }
 

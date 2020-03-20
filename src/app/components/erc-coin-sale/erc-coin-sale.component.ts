@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
 import Web3 from 'web3';
 import TokenSaleJSON from '../../../../build/contracts/DappTokenSale.json';
-import TokenJSON from '../../../../build/contracts/DappToken.json';
+import TokenJSON from '../../../../build/contracts/EthERC20Coin.json';
 import networkConfigs from '../../../network-configs.json'
 
 
@@ -15,7 +15,7 @@ export class ErcCoinSaleComponent implements OnInit {
   private tokenPricePrivate: number = 0;
 
   tokenPrice: number = 0.001;
-  tokenOwner: number = 0;
+  tokenOwner: any = 0;
   progressToken: number = 0
   tokenSold: number = 0;
   metamaskError: string = undefined
@@ -100,7 +100,9 @@ export class ErcCoinSaleComponent implements OnInit {
       TokenJSON.networks[networkConfigs.networks.rinkeby.networkId].address)
 
     let avaliableTokens = await this.token.methods.balanceOf(wallet).call();
-    this.tokenOwner = Number(avaliableTokens);
+    console.log(avaliableTokens);
+    let tokens = this.web3.utils.fromWei(avaliableTokens, 'ether'); 
+    this.tokenOwner = tokens;
     this.spinner = false;
     this.buyTokensMessage = false;
   }
@@ -128,6 +130,10 @@ export class ErcCoinSaleComponent implements OnInit {
         console.log(err);
       }
     }
+  }
+
+  async transferToken(){
+
   }
 
 }

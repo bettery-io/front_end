@@ -8,6 +8,7 @@ import {
   import EthERC20Coin from '../../../build/contracts/EthERC20Coin.json'
   import LoomERC20Coin from '../../../build/contracts/LoomERC20Coin.json'
   import { UniversalSigning } from './universalSigning'
+ // import mapper from './mapContract';
   
   const BN = require('bn.js')
   
@@ -21,6 +22,7 @@ import {
     }
   
     async load (web3Ethereum) {
+    //  mapper.mapper();
       const { web3Loom, accountMapping, client } = await super._load(web3Ethereum)
       this.accountMapping = accountMapping
       this.web3Ethereum = web3Ethereum
@@ -68,7 +70,6 @@ import {
     }
   
     async _getLoomBalance () {
-      console.log(this.loomCoinContract)
       const loomWei = await this.loomCoinContract.methods
         .balanceOf(this.accountMapping.plasma.local.toString())
         .call({
@@ -80,7 +81,6 @@ import {
     }
   
     async _getMainNetBalance () {
-      console.log(this.mainNetCoinContract)
       const loomWei = await this.mainNetCoinContract.methods
         .balanceOf(this.accountMapping.ethereum.local.toString())
         .call({
@@ -176,7 +176,8 @@ import {
     }
   
     async _getWithdrawalReceipt () {
-      const userLocalAddr = Address.fromString(this.accountMapping.loom.toString())
+      console.log(this.accountMapping.plasma.toString())
+      const userLocalAddr = Address.fromString(this.accountMapping.plasma.toString())
       const gatewayContract = this.loomGatewayContract
       const receipt = await gatewayContract.withdrawalReceiptAsync(userLocalAddr)
       return receipt

@@ -4,7 +4,7 @@ const Web3 = require("web3");
 
 module.exports = function (deployer, network) {
 
-  if (network === 'rinkeby' || network === "development" || network === 'rinkeby-fork') {
+  if (network === 'rinkeby') {
 
     // add initial supply to the constructor
     deployer.deploy(EthERC20Coin, 1000000000).then(() => {

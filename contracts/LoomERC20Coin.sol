@@ -6,8 +6,8 @@ contract LoomERC20Coin is ERC20 {
     // Transfer Gateway contract address
     address public gateway;
 
-    string public name = "MyLoomCoin";
-    string public symbol = "MLC";
+    string public name = "QuestionToken";
+    string public symbol = "QUESTION";
     uint8 public decimals = 18;
 
     constructor(address _gateway) public {

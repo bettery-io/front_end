@@ -321,14 +321,14 @@
     "absolutePath": "@openzeppelin/contracts/token/ERC20/ERC20Mintable.sol",
     "exportedSymbols": {
       "ERC20Mintable": [
-        2326
+        2334
       ]
     },
-    "id": 2327,
+    "id": 2335,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2300,
+        "id": 2308,
         "literals": [
           "solidity",
           "^",
@@ -341,10 +341,10 @@
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "file": "./ERC20.sol",
-        "id": 2301,
+        "id": 2309,
         "nodeType": "ImportDirective",
-        "scope": 2327,
-        "sourceUnit": 2299,
+        "scope": 2335,
+        "sourceUnit": 2307,
         "src": "25:21:11",
         "symbolAliases": [],
         "unitAlias": ""
@@ -352,10 +352,10 @@
       {
         "absolutePath": "@openzeppelin/contracts/access/roles/MinterRole.sol",
         "file": "../../access/roles/MinterRole.sol",
-        "id": 2302,
+        "id": 2310,
         "nodeType": "ImportDirective",
-        "scope": 2327,
-        "sourceUnit": 1707,
+        "scope": 2335,
+        "sourceUnit": 1715,
         "src": "47:43:11",
         "symbolAliases": [],
         "unitAlias": ""
@@ -366,17 +366,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 2303,
+              "id": 2311,
               "name": "ERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2298,
+              "referencedDeclaration": 2306,
               "src": "348:5:11",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC20_$2298",
+                "typeIdentifier": "t_contract$_ERC20_$2306",
                 "typeString": "contract ERC20"
               }
             },
-            "id": 2304,
+            "id": 2312,
             "nodeType": "InheritanceSpecifier",
             "src": "348:5:11"
           },
@@ -384,44 +384,44 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 2305,
+              "id": 2313,
               "name": "MinterRole",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1706,
+              "referencedDeclaration": 1714,
               "src": "355:10:11",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MinterRole_$1706",
+                "typeIdentifier": "t_contract$_MinterRole_$1714",
                 "typeString": "contract MinterRole"
               }
             },
-            "id": 2306,
+            "id": 2314,
             "nodeType": "InheritanceSpecifier",
             "src": "355:10:11"
           }
         ],
         "contractDependencies": [
-          1518,
-          1706,
-          2298,
-          2395
+          1526,
+          1714,
+          2306,
+          2403
         ],
         "contractKind": "contract",
         "documentation": "@dev Extension of {ERC20} that adds a set of accounts with the {MinterRole},\nwhich have permission to mint (create) new tokens as they see fit.\n * At construction, the deployer of the contract is the only minter.",
         "fullyImplemented": true,
-        "id": 2326,
+        "id": 2334,
         "linearizedBaseContracts": [
-          2326,
-          1706,
-          2298,
-          2395,
-          1518
+          2334,
+          1714,
+          2306,
+          2403,
+          1526
         ],
         "name": "ERC20Mintable",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 2324,
+              "id": 2332,
               "nodeType": "Block",
               "src": "582:60:11",
               "statements": [
@@ -431,11 +431,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2318,
+                        "id": 2326,
                         "name": "account",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2308,
+                        "referencedDeclaration": 2316,
                         "src": "598:7:11",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -444,11 +444,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 2319,
+                        "id": 2327,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2310,
+                        "referencedDeclaration": 2318,
                         "src": "607:6:11",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -467,18 +467,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 2317,
+                      "id": 2325,
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2182,
+                      "referencedDeclaration": 2190,
                       "src": "592:5:11",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 2320,
+                    "id": 2328,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -492,7 +492,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2321,
+                  "id": 2329,
                   "nodeType": "ExpressionStatement",
                   "src": "592:22:11"
                 },
@@ -500,7 +500,7 @@
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 2322,
+                    "id": 2330,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -515,28 +515,28 @@
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 2316,
-                  "id": 2323,
+                  "functionReturnParameters": 2324,
+                  "id": 2331,
                   "nodeType": "Return",
                   "src": "624:11:11"
                 }
               ]
             },
             "documentation": "@dev See {ERC20-_mint}.\n     * Requirements:\n     * - the caller must have the {MinterRole}.",
-            "id": 2325,
+            "id": 2333,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 2313,
+                "id": 2321,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 2312,
+                  "id": 2320,
                   "name": "onlyMinter",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1639,
+                  "referencedDeclaration": 1647,
                   "src": "556:10:11",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -550,15 +550,15 @@
             "name": "mint",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2311,
+              "id": 2319,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2308,
+                  "id": 2316,
                   "name": "account",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2325,
+                  "scope": 2333,
                   "src": "516:15:11",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -567,7 +567,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2307,
+                    "id": 2315,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "516:7:11",
@@ -582,10 +582,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2310,
+                  "id": 2318,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2325,
+                  "scope": 2333,
                   "src": "533:14:11",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -594,7 +594,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2309,
+                    "id": 2317,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "533:7:11",
@@ -610,15 +610,15 @@
               "src": "515:33:11"
             },
             "returnParameters": {
-              "id": 2316,
+              "id": 2324,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2315,
+                  "id": 2323,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2325,
+                  "scope": 2333,
                   "src": "576:4:11",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -627,7 +627,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2314,
+                    "id": 2322,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "576:4:11",
@@ -642,14 +642,14 @@
               ],
               "src": "575:6:11"
             },
-            "scope": 2326,
+            "scope": 2334,
             "src": "502:140:11",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2327,
+        "scope": 2335,
         "src": "322:322:11"
       }
     ],
@@ -659,14 +659,14 @@
     "absolutePath": "@openzeppelin/contracts/token/ERC20/ERC20Mintable.sol",
     "exportedSymbols": {
       "ERC20Mintable": [
-        2326
+        2334
       ]
     },
-    "id": 2327,
+    "id": 2335,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2300,
+        "id": 2308,
         "literals": [
           "solidity",
           "^",
@@ -679,10 +679,10 @@
       {
         "absolutePath": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "file": "./ERC20.sol",
-        "id": 2301,
+        "id": 2309,
         "nodeType": "ImportDirective",
-        "scope": 2327,
-        "sourceUnit": 2299,
+        "scope": 2335,
+        "sourceUnit": 2307,
         "src": "25:21:11",
         "symbolAliases": [],
         "unitAlias": ""
@@ -690,10 +690,10 @@
       {
         "absolutePath": "@openzeppelin/contracts/access/roles/MinterRole.sol",
         "file": "../../access/roles/MinterRole.sol",
-        "id": 2302,
+        "id": 2310,
         "nodeType": "ImportDirective",
-        "scope": 2327,
-        "sourceUnit": 1707,
+        "scope": 2335,
+        "sourceUnit": 1715,
         "src": "47:43:11",
         "symbolAliases": [],
         "unitAlias": ""
@@ -704,17 +704,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 2303,
+              "id": 2311,
               "name": "ERC20",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2298,
+              "referencedDeclaration": 2306,
               "src": "348:5:11",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC20_$2298",
+                "typeIdentifier": "t_contract$_ERC20_$2306",
                 "typeString": "contract ERC20"
               }
             },
-            "id": 2304,
+            "id": 2312,
             "nodeType": "InheritanceSpecifier",
             "src": "348:5:11"
           },
@@ -722,44 +722,44 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 2305,
+              "id": 2313,
               "name": "MinterRole",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1706,
+              "referencedDeclaration": 1714,
               "src": "355:10:11",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MinterRole_$1706",
+                "typeIdentifier": "t_contract$_MinterRole_$1714",
                 "typeString": "contract MinterRole"
               }
             },
-            "id": 2306,
+            "id": 2314,
             "nodeType": "InheritanceSpecifier",
             "src": "355:10:11"
           }
         ],
         "contractDependencies": [
-          1518,
-          1706,
-          2298,
-          2395
+          1526,
+          1714,
+          2306,
+          2403
         ],
         "contractKind": "contract",
         "documentation": "@dev Extension of {ERC20} that adds a set of accounts with the {MinterRole},\nwhich have permission to mint (create) new tokens as they see fit.\n * At construction, the deployer of the contract is the only minter.",
         "fullyImplemented": true,
-        "id": 2326,
+        "id": 2334,
         "linearizedBaseContracts": [
-          2326,
-          1706,
-          2298,
-          2395,
-          1518
+          2334,
+          1714,
+          2306,
+          2403,
+          1526
         ],
         "name": "ERC20Mintable",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 2324,
+              "id": 2332,
               "nodeType": "Block",
               "src": "582:60:11",
               "statements": [
@@ -769,11 +769,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2318,
+                        "id": 2326,
                         "name": "account",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2308,
+                        "referencedDeclaration": 2316,
                         "src": "598:7:11",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -782,11 +782,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 2319,
+                        "id": 2327,
                         "name": "amount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2310,
+                        "referencedDeclaration": 2318,
                         "src": "607:6:11",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -805,18 +805,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 2317,
+                      "id": 2325,
                       "name": "_mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2182,
+                      "referencedDeclaration": 2190,
                       "src": "592:5:11",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 2320,
+                    "id": 2328,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -830,7 +830,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2321,
+                  "id": 2329,
                   "nodeType": "ExpressionStatement",
                   "src": "592:22:11"
                 },
@@ -838,7 +838,7 @@
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 2322,
+                    "id": 2330,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -853,28 +853,28 @@
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 2316,
-                  "id": 2323,
+                  "functionReturnParameters": 2324,
+                  "id": 2331,
                   "nodeType": "Return",
                   "src": "624:11:11"
                 }
               ]
             },
             "documentation": "@dev See {ERC20-_mint}.\n     * Requirements:\n     * - the caller must have the {MinterRole}.",
-            "id": 2325,
+            "id": 2333,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 2313,
+                "id": 2321,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 2312,
+                  "id": 2320,
                   "name": "onlyMinter",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1639,
+                  "referencedDeclaration": 1647,
                   "src": "556:10:11",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -888,15 +888,15 @@
             "name": "mint",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2311,
+              "id": 2319,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2308,
+                  "id": 2316,
                   "name": "account",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2325,
+                  "scope": 2333,
                   "src": "516:15:11",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -905,7 +905,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2307,
+                    "id": 2315,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "516:7:11",
@@ -920,10 +920,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2310,
+                  "id": 2318,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2325,
+                  "scope": 2333,
                   "src": "533:14:11",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -932,7 +932,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2309,
+                    "id": 2317,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "533:7:11",
@@ -948,15 +948,15 @@
               "src": "515:33:11"
             },
             "returnParameters": {
-              "id": 2316,
+              "id": 2324,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2315,
+                  "id": 2323,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2325,
+                  "scope": 2333,
                   "src": "576:4:11",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -965,7 +965,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2314,
+                    "id": 2322,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "576:4:11",
@@ -980,14 +980,14 @@
               ],
               "src": "575:6:11"
             },
-            "scope": 2326,
+            "scope": 2334,
             "src": "502:140:11",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2327,
+        "scope": 2335,
         "src": "322:322:11"
       }
     ],
@@ -999,7 +999,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.19",
-  "updatedAt": "2020-03-20T11:40:42.114Z",
+  "updatedAt": "2020-03-27T15:57:33.579Z",
   "devdoc": {
     "details": "Extension of {ERC20} that adds a set of accounts with the {MinterRole}, which have permission to mint (create) new tokens as they see fit. * At construction, the deployer of the contract is the only minter.",
     "methods": {

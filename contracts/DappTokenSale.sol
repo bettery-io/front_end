@@ -21,16 +21,18 @@ contract DappTokenSale {
     }
 
     function buyTokens(uint256 _numberOfTokens) public payable {
-       // require(msg.value == multiply(_numberOfTokens, tokenPrice), "do not enought money");
+        uint256 numberOfTokens = _numberOfTokens / 1000000000000000000;
+        require(msg.value == multiply(numberOfTokens, tokenPrice), "do not enought money");
         require(tokenContract.balanceOf(address(this)) >= _numberOfTokens, 'do not enought tokens');
         require(tokenContract.transfer(msg.sender, _numberOfTokens), 'transfer error');
+        admin.transfer(msg.value);
         tokensSold += _numberOfTokens;
         emit Sell(msg.sender, _numberOfTokens);
     }
 
     function endSale() public{
-        require(msg.sender == admin);
-        require(tokenContract.transfer(admin, tokenContract.balanceOf(address(this))));
+        require(msg.sender == admin, "you are not a admin");
+        require(tokenContract.transfer(admin, tokenContract.balanceOf(address(this))), "can not transfer money");
         selfdestruct(admin);
     }
 }

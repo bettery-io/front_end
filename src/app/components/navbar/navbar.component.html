@@ -46,7 +46,7 @@
                 <div *ngIf="!amountSpinner">
                     <p [ngbPopover]="popContent" [popoverTitle]="popTitle" class="loom_balance">
                         Balance: {{coinInfo.loomBalance | number:'1.0-4'}} ETH / {{ERC20Coins?.loomBalance}} QUIZE</p>
-                    <p *ngIf="holdBalance !== 0" class="loom_hold_balance">Hold balance: {{holdBalance}}</p>
+                    <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} ETH</p>
                 </div>
             </li>
             <li *ngIf="!amountSpinner" class="nav-item">

@@ -360,12 +360,12 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let contract = new Contract()
     let contr = await contract.initContract()
 
-    let userBalance = web3.utils.toWei(this.coinInfo.loomBalance, 'ether');
+    let quizePrice = web3.utils.toWei(String(this.questionForm.value.amount), 'ether');
 
     let calcCoinsForHold = await contr.methods.moneyRetentionCalculate().call();
     this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
 
-    let amountGuard = Number(await contr.methods.amountGuard(userBalance).call());
+    let amountGuard = Number(await contr.methods.amountGuard().call());
     if (amountGuard !== 0) {
       this.spinner = false;
       this.holdMoneyError = true;
@@ -388,8 +388,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           percentValidator,
           questionQuantity,
           validatorsAmount,
-          userBalance,
-          calcCoinsForHold
+          quizePrice
         ).send({
           value: calcCoinsForHold
         });

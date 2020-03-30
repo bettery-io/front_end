@@ -370,7 +370,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       this.spinner = false;
       this.holdMoneyError = true;
       this.deleteEvent(id)
-
     } else {
       let startTime = this.getStartTime();
       let endTime = this.getEndTime();

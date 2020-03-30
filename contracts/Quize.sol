@@ -1,6 +1,7 @@
 pragma solidity ^0.5.2;
 
 import "./HoldMoney.sol";
+import "./LoomERC20Coin.sol";
 
 
 contract Quize is HoldMoney {
@@ -8,6 +9,7 @@ contract Quize is HoldMoney {
     uint256 public fullAmount;
     uint256 private sevenDaysTimeStamp = 604800;
     address payable companyAddress = 0x02810c3bc07De2ddAef89827b0dD6b223C7759d5;
+    LoomERC20Coin public tokenContract;
 
     event eventIsFinish(int256 question_id);
 
@@ -53,6 +55,10 @@ contract Quize is HoldMoney {
 
     mapping(int256 => Question) questions;
 
+    constructor(LoomERC20Coin _tokenContract) public {
+        tokenContract = _tokenContract;
+    }
+
     function startQestion(
         int256 _question_id,
         uint256 _startTime,
@@ -61,7 +67,8 @@ contract Quize is HoldMoney {
         uint8 _percentValidator,
         uint8 _questionQuantity,
         int256 _validatorsAmount,
-        uint256 _quizePrice
+        uint256 _quizePrice,
+        bool _pathHoldMoney
     ) public payable {
         questions[_question_id].question_id = _question_id;
         questions[_question_id].endTime = _endTime;
@@ -83,43 +90,36 @@ contract Quize is HoldMoney {
             questions[_question_id].percentValidator = _percentValidator;
         }
 
-      _setMoneyRetention(_question_id, _endTime);
+        _setMoneyRetention(_question_id, _endTime, _pathHoldMoney);
     }
 
-    function setAnswer(int256 _question_id, uint8 _whichAnswer)
-      public
-      payable
-    {
-      require(setTimeAnswer(_question_id) == 0, "Time is not valid");
-      require(msg.value == questions[_question_id].quizePrice, "Money do not enough");
+    function setAnswer(int256 _question_id, uint8 _whichAnswer) public payable {
+        require(setTimeAnswer(_question_id) == 0, "Time is not valid");
+        require(msg.value == questions[_question_id].quizePrice, "Money do not enough");
 
-      questions[_question_id].money += msg.value;
-      uint256 i = questions[_question_id].participant[_whichAnswer].index;
-      questions[_question_id].participant[_whichAnswer].participants[i].parts = msg.sender;
-      questions[_question_id].participant[_whichAnswer].index = i + 1;
-      questions[_question_id].allParticipant.push(msg.sender);
-      fullAmount += msg.value;
-
+        questions[_question_id].money += msg.value;
+        uint256 i = questions[_question_id].participant[_whichAnswer].index;
+        questions[_question_id].participant[_whichAnswer].participants[i].parts = msg.sender;
+        questions[_question_id].participant[_whichAnswer].index = i + 1;
+        questions[_question_id].allParticipant.push(msg.sender);
+        fullAmount += msg.value;
     }
 
-    function setValidator(int256 _question_id, uint8 _whichAnswer)
-        public
-        payable
-    {
-      require(setTimeValidator(_question_id) == 0, "Time is not valid");
-      uint256 i = questions[_question_id].validator[_whichAnswer].index;
-      questions[_question_id].validator[_whichAnswer].validators[i].valid = msg.sender;
-      questions[_question_id].validator[_whichAnswer].index = i + 1;
-      int256 active = questions[_question_id].activeValidators + 1;
-      if (active == questions[_question_id].validatorsAmount) {
-        questions[_question_id].activeValidators = active;
-        letsPayMoney(_question_id);
-      } else {
-        questions[_question_id].activeValidators = active;
-      }
+    function setValidator(int256 _question_id, uint8 _whichAnswer) public payable {
+        require(setTimeValidator(_question_id) == 0, "Time is not valid");
+        uint256 i = questions[_question_id].validator[_whichAnswer].index;
+        questions[_question_id].validator[_whichAnswer].validators[i].valid = msg.sender;
+        questions[_question_id].validator[_whichAnswer].index = i + 1;
+        int256 active = questions[_question_id].activeValidators + 1;
+        if (active == questions[_question_id].validatorsAmount) {
+            questions[_question_id].activeValidators = active;
+            letsFindCorrectAnswer(_question_id);
+        } else {
+            questions[_question_id].activeValidators = active;
+        }
     }
 
-    function letsPayMoney(int256 _question_id) private {
+    function letsFindCorrectAnswer(int256 _question_id) private {
         uint256 biggestValue = 0;
         uint256 correctAnswer;
         int256 questionQuantity = questions[_question_id].questionQuantity;
@@ -133,82 +133,69 @@ contract Quize is HoldMoney {
         }
 
         questions[_question_id].correctAnswer = correctAnswer;
+        letsPayCompanyFee(correctAnswer, _question_id);
+    }
 
+    function letsPayCompanyFee(uint256 correctAnswer, int256 _question_id) private {
         if (questions[_question_id].money > 0) {
             // pay fee for company
             uint256 persentFee = getPersent(
                 questions[_question_id].money,
                 percentQuiz
             );
-            questions[_question_id].money =
-                questions[_question_id].money -
-                persentFee;
+            questions[_question_id].money = questions[_question_id].money - persentFee;
             fullAmount = fullAmount - persentFee;
             companyAddress.transfer(persentFee);
-
             questions[_question_id].persentFeeCompany = persentFee;
 
-            // pay fee for host
-            uint256 persHostFee = getPersent(
-                questions[_question_id].money,
-                questions[_question_id].percentHost
-            );
-            questions[_question_id].money =
-                questions[_question_id].money -
-                persHostFee;
-            fullAmount = fullAmount - persHostFee;
-            questions[_question_id].hostWallet.transfer(persHostFee);
-
-            questions[_question_id].persentFeeHost = persHostFee;
-
-            // calculate percent for validator
-            uint256 persentForValidators = getPersent(
-                questions[_question_id].money,
-                questions[_question_id].percentValidator
-            );
-            uint256 persentForEachValidators = persentForValidators /
-                questions[_question_id].validator[correctAnswer].index;
-            fullAmount = fullAmount - persentForValidators;
-
-            questions[_question_id]
-                .persentForEachValidators = persentForEachValidators;
-
-            // pay for validatos
-            for (
-                uint8 i = 0;
-                i < questions[_question_id].validator[correctAnswer].index;
-                i++
-            ) {
-                address payable _validator = questions[_question_id]
-                    .validator[correctAnswer]
-                    .validators[i]
-                    .valid;
-                questions[_question_id].money =
-                    questions[_question_id].money -
-                    persentForEachValidators;
-                _validator.transfer(persentForEachValidators);
-            }
-
-            // Pay for participant
-            uint256 monayForParticipant = questions[_question_id].money /
-                questions[_question_id].participant[correctAnswer].index;
-            for (
-                uint8 i = 0;
-                i < questions[_question_id].participant[correctAnswer].index;
-                i++
-            ) {
-                address payable _participant = questions[_question_id]
-                    .participant[correctAnswer]
-                    .participants[i]
-                    .parts;
-                questions[_question_id].money =
-                    questions[_question_id].money -
-                    monayForParticipant;
-                _participant.transfer(monayForParticipant);
-            }
-
-            questions[_question_id].monayForParticipant = monayForParticipant;
+            letsPayHostFee(correctAnswer, _question_id);
         }
+    }
+
+    function letsPayHostFee(uint256 correctAnswer, int256 _question_id) private {
+        // pay fee for host
+        uint256 persHostFee = getPersent(
+            questions[_question_id].money,
+            questions[_question_id].percentHost
+        );
+        questions[_question_id].money = questions[_question_id].money - persHostFee;
+        fullAmount = fullAmount - persHostFee;
+        questions[_question_id].hostWallet.transfer(persHostFee);
+        questions[_question_id].persentFeeHost = persHostFee;
+
+        letsPayValidatorFee(correctAnswer, _question_id);
+    }
+
+    function letsPayValidatorFee(uint256 correctAnswer, int256 _question_id) private {
+        // calculate percent for validator
+        uint256 persentForValidators = getPersent(
+            questions[_question_id].money,
+            questions[_question_id].percentValidator
+        );
+        uint256 persentForEachValidators = persentForValidators / questions[_question_id].validator[correctAnswer].index;
+        fullAmount = fullAmount - persentForValidators;
+
+        questions[_question_id].persentForEachValidators = persentForEachValidators;
+
+        // pay for validatos
+        for (uint8 i = 0; i < questions[_question_id].validator[correctAnswer].index; i++ ) {
+            address payable _validator = questions[_question_id].validator[correctAnswer].validators[i].valid;
+            questions[_question_id].money = questions[_question_id].money - persentForEachValidators;
+            _validator.transfer(persentForEachValidators);
+        }
+        letsPayParticipantFee(correctAnswer, _question_id);
+    }
+
+    function letsPayParticipantFee(uint256 correctAnswer, int256 _question_id) private{
+         // Pay for participant
+        uint256 monayForParticipant = questions[_question_id].money / questions[_question_id].participant[correctAnswer].index;
+        for ( uint8 i = 0; i < questions[_question_id].participant[correctAnswer].index; i++) {
+            address payable _participant = questions[_question_id].participant[correctAnswer].participants[i].parts;
+            questions[_question_id].money = questions[_question_id].money - monayForParticipant;
+            _participant.transfer(monayForParticipant);
+        }
+
+        questions[_question_id].monayForParticipant = monayForParticipant;
 
         emit eventIsFinish(_question_id);
     }
@@ -246,8 +233,8 @@ contract Quize is HoldMoney {
     }
 
     function setTimeValidator(int256 _question_id) public view returns (int8) {
-        if (int256(now - questions[_question_id].endTime) >= 0) {
-            if (int256((questions[_question_id].endTime + sevenDaysTimeStamp) - now) >= 0) {
+        if (int256(now - questions[_question_id].endTime) >= 0){
+            if (int256((questions[_question_id].endTime + sevenDaysTimeStamp) - now) >= 0){
                 // if validator made activities like participants.
                 for (uint8 i = 0; i < questions[_question_id].allParticipant.length; i++) {
                     if (questions[_question_id].allParticipant[i] == msg.sender) {
@@ -301,11 +288,14 @@ contract Quize is HoldMoney {
     }
 
     function deleteEvent(int256 _question_id) public {
-      require(deleteEventValidator(_question_id) == 0, "Delete event is false");
+        require(
+            deleteEventValidator(_question_id) == 0,
+            "Delete event is false"
+        );
         delete questions[_question_id];
     }
 
-    function quizeBalance() public view returns (uint256){
+    function quizeBalance() public view returns (uint256) {
         return address(this).balance;
     }
 }

@@ -3,6 +3,7 @@ pragma solidity ^0.5.2;
 contract HoldMoney {
     //minimum wei for hold one event
     uint256 amountGuardWei = 1000000000000000000;
+    address public owner;
 
     struct quizeHolder {
         address payable hostWallet;
@@ -18,26 +19,55 @@ contract HoldMoney {
 
     mapping(address => quizeAmount) qAmount;
 
+    constructor() public {
+        owner = msg.sender;
+    }
+
     function _setMoneyRetention(
         int256 _question_id,
-        uint256 _endTime
+        uint256 _endTime,
+        bool _pathHoldMoney
     ) public payable {
+        if (_pathHoldMoney) {
+            setEth(
+               _question_id,
+               _endTime
+             );
+        } else {
+            setToken(
+                _question_id,
+               _endTime
+            );
+        }
+    }
+
+    function setEth(int256 _question_id, uint256 _endTime) private {
         require(msg.value == moneyRetentionCalculate(), "Do not enought money");
         holder[_question_id].hostWallet = msg.sender;
         holder[_question_id].money = msg.value;
         holder[_question_id].endTime = _endTime;
-        qAmount[msg.sender].amount ++;
+        qAmount[msg.sender].amount++;
+    }
+
+    function setToken(int256 _question_id, uint256 _endTime) private{
+        holder[_question_id].hostWallet = msg.sender;
+        holder[_question_id].endTime = _endTime;
     }
 
     function getMoneyRetention(int256 _question_id) public payable {
+        require(msg.sender == owner, "Only owner can execute this function");
         address payable host = holder[_question_id].hostWallet;
         uint256 money = holder[_question_id].money;
-        qAmount[host].amount --;
+        qAmount[host].amount--;
         host.transfer(money);
         delete holder[_question_id];
     }
 
-    function getHoldMoneyById(int256 _question_id) public view returns (uint256) {
+    function getHoldMoneyById(int256 _question_id)
+        public
+        view
+        returns (uint256)
+    {
         return holder[_question_id].money;
     }
 
@@ -79,7 +109,7 @@ contract HoldMoney {
         }
     }
 
-    function holdBalance() public view returns (uint256){
+    function holdBalance() public view returns (uint256) {
         return address(this).balance;
     }
 }

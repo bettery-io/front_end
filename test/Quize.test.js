@@ -12,7 +12,9 @@ contract('Quize', (accounts) => {
     let percentValidator = 0;
     let questionQuantity = 2;
     let validatorsAmount = 3;
+    let pathHoldMoney = true;
     let quizePrice = web3.utils.toWei("0.1", 'ether');
+    let whichAnswer = 0;
 
     beforeEach(async () => {
         quize = await Quize.deployed()
@@ -21,6 +23,10 @@ contract('Quize', (accounts) => {
     it('Should have an address for Quize', async () => {
         assert(quize.address)
     });
+
+    it("Owner must have a address", async () => {
+        assert(quize.owner)
+    })
 
     it("Should have 1 estimate Ether for hold money", async () => {
         let amount = await quize.moneyRetentionCalculate();
@@ -45,6 +51,7 @@ contract('Quize', (accounts) => {
             questionQuantity,
             validatorsAmount,
             quizePrice,
+            pathHoldMoney,
             {
                 from: accounts[0],
                 value: web3.utils.toWei("1", 'ether')
@@ -67,7 +74,7 @@ contract('Quize', (accounts) => {
         assert.equal(toEther, 1, "have no correct ether on hold contract by id");
     })
 
-    it('Trying to pass less amount of Ether that needed', async () => {
+    it('Let\'s send less amount of Ether for the second quiz on hold money contract', async () => {
 
         await quize.startQestion(
             (id + 1),
@@ -78,15 +85,29 @@ contract('Quize', (accounts) => {
             questionQuantity,
             validatorsAmount,
             quizePrice,
+            pathHoldMoney,
             {
                 from: accounts[0],
                 value: web3.utils.toWei("1", 'ether')
             }
-        ).catch((error)=>{
+        ).catch((error) => {
             assert(error.message.indexOf('revert') >= 0, 'error message must contain revert');
         })
     })
 
-    
+    it("Let's send less Ether that needed for participate", async () => {
+        let value = web3.utils.toWei("0.001", "ether")
+        await quize.setAnswer(
+            id,
+            whichAnswer,
+            {
+                from: accounts[1],
+                value: value
+            }
+        ).catch((error) => {
+            assert(error.message.indexOf('revert') >= 0, 'error message must contain revert');
+        })
+    })
+
 
 })

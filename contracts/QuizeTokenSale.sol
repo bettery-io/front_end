@@ -2,7 +2,7 @@ pragma solidity ^0.5.2;
 
 import "./EthERC20Coin.sol";
 
-contract DappTokenSale {
+contract QuizeTokenSale {
     address payable admin;
     EthERC20Coin public tokenContract;
     uint256 public tokenPrice;

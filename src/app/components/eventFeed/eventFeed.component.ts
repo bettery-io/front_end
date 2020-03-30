@@ -70,7 +70,6 @@ export class EventFeedComponent implements OnDestroy {
     this.getService.get("question/get_all_private").subscribe((x) => {
       this.myAnswers = [];
       let data = _.orderBy(x, ['endTime'], ['asc']);
-      console.log(data)
       this.allData = data
 
       this.questions = _.filter(data, (o) => { return o.finalAnswer === null })

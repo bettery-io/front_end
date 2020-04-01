@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
 import Web3 from 'web3';
-import TokenSaleJSON from '../../../../build/contracts/DappTokenSale.json';
-import TokenJSON from '../../../../build/contracts/EthERC20Coin.json';
+import TokenSaleJSON from '../../../../build/contracts/QuizeTokenSale.json';
+import TokenJSON from '../../../../build/contracts/EthERC20Coin.json'; 
 import networkConfigs from '../../../network-configs.json'
 
 
@@ -28,6 +28,7 @@ export class ErcCoinSaleComponent implements OnInit {
   spinner: boolean = true;
   userWallet = null;
   buyTokensMessage: boolean = false;
+  transferButton: boolean = false;
 
   constructor(config: NgbProgressbarConfig) {
     config.max = 100;
@@ -62,6 +63,7 @@ export class ErcCoinSaleComponent implements OnInit {
         return;
       } else {
         this.userWallet = coinbase;
+        this.transferButton = this.userWallet == "0x502D32820E26645D81b596Bc928ff8A3D2A84787".toLowerCase() ? true : false
         this.sellContract(coinbase);
         this.tokenContract(coinbase);
       }

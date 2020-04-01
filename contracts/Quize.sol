@@ -9,7 +9,6 @@ contract Quize is HoldMoney {
     uint256 public fullAmount;
     uint256 private sevenDaysTimeStamp = 604800;
     address payable companyAddress = 0x02810c3bc07De2ddAef89827b0dD6b223C7759d5;
-    LoomERC20Coin public tokenContract;
 
     event eventIsFinish(int256 question_id);
 
@@ -56,7 +55,7 @@ contract Quize is HoldMoney {
     mapping(int256 => Question) questions;
 
     constructor(LoomERC20Coin _tokenContract) public {
-        tokenContract = _tokenContract;
+        setLoomERC20Coin(_tokenContract);
     }
 
     function startQestion(

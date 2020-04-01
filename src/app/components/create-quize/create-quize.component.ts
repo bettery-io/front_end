@@ -178,6 +178,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       endTime: [{ hour: 0, minute: 0, second: 0 }, Validators.required],
       showDistribution: true,
       privateOrPublic: "public",
+      depositPath: "true",
       amountOfValidators: [3, [Validators.min(1), Validators.required]],
       amount: [0.1, [Validators.min(0.01), Validators.required]]
     });
@@ -362,10 +363,12 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
     let quizePrice = web3.utils.toWei(String(this.questionForm.value.amount), 'ether');
 
-    let calcCoinsForHold = await contr.methods.moneyRetentionCalculate().call();
+    let path = this.questionForm.value.depositPath === "true" ? true : false;
+
+    let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path).call();
     this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
 
-    let amountGuard = Number(await contr.methods.amountGuard().call());
+    let amountGuard = Number(await contr.methods.amountGuard(path).call());
     if (amountGuard !== 0) {
       this.spinner = false;
       this.holdMoneyError = true;
@@ -388,7 +391,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           questionQuantity,
           validatorsAmount,
           quizePrice,
-          true
+          path
         ).send({
           value: calcCoinsForHold
         });

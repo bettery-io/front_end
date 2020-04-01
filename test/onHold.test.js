@@ -120,4 +120,9 @@ contract('onHold', (accounts) => {
         assert(balance.toString() == "0", "Balance is not 0")
     })
 
+    it("Check guard of tokens", async () =>{
+        let data = await quize.amountGuard(false);
+        assert(data.toString() == "1", "Balance is not corect")
+    })
+
 })

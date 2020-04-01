@@ -40,6 +40,6 @@
             <div>
                 <p class="text-center">{{tokenSold}} tokens sold, {{tokensAvailable}} tokens avaliable</p>
             </div>
-            <button (click)="this.transferToken()">transfer Token</button>
+            <button *ngIf="transferButton" (click)="this.transferToken()">transfer Token</button>
         </div>
     </div>

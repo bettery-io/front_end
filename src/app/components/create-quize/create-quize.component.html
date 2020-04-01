@@ -186,8 +186,18 @@
 
         </div>
 
+        <!-- Where to get a deposit ? -->
+
+        <div class="from-group">
+            <label>Where to get a deposit ?</label><br>
+            <input formControlName="depositPath" name="depositPath" value="true" type="radio"
+                class="multy_choise">Ethereum balance<br>
+            <input formControlName="depositPath" name="depositPath" value="false" type="radio"
+                class="multy_choise">Token balance<br>
+        </div>
+
         <!-- Invite friends -->
-        <div class="form-group">
+        <div class="form-group" style="padding-top: 15px;">
             <label for="invite_participants">Invite participants <b style="font-size: 12px">*optional</b></label>
             <input id="invite_participants" (selectItem)="selectedParcipiant($event)" type="text" class="form-control"
                 [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]='false' />
@@ -246,9 +256,9 @@
         </div>
 
         <div class="form_container button_pos">
-            <div *ngIf="!spinner" >
+            <div *ngIf="!spinner">
                 <button *ngIf="!holdMoneyError" type="button" (click)="onSubmit()"
-                class="btn btn-success btn-lg btn-block">Create</button>
+                    class="btn btn-success btn-lg btn-block">Create</button>
                 <div *ngIf="holdMoneyError" class="quize_validation_error errorBalance">
                     <p>You don't have enough Ethereum for retention. Try to replenish balance!</p>
                     <p>Minimum balance is {{getCoinsForHold}} ETH</p>

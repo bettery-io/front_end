@@ -387,7 +387,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           percentValidator,
           questionQuantity,
           validatorsAmount,
-          quizePrice
+          quizePrice,
+          true
         ).send({
           value: calcCoinsForHold
         });

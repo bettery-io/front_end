@@ -90,7 +90,7 @@ contract Quize is HoldMoney {
             questions[_question_id].percentValidator = _percentValidator;
         }
 
-        _setMoneyRetention(_question_id, _endTime, _pathHoldMoney);
+        _setMoneyRetention(_endTime, _pathHoldMoney);
     }
 
     function setAnswer(int256 _question_id, uint8 _whichAnswer) public payable {

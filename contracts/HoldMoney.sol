@@ -81,14 +81,6 @@ contract HoldMoney {
         }
     }
 
-    function _getMoneyRetentionTest(address _host) public view returns(uint256, address, bool) {
-        uint256 index = qAmount[_host].amount;
-        address payable host = qAmount[_host].holder[index].hostWallet;
-        uint256 money = qAmount[_host].holder[index].money;
-        bool path = qAmount[_host].holder[index].token;
-        return (money, host, path);
-    }
-
     function moneyRetentionCalculate(bool _path) public view returns (uint256) {
         return moneyCalc(qAmount[msg.sender].amount + 1, _path);
     }

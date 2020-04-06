@@ -1,8 +1,10 @@
 
 import networkConfigs from '../../network-configs.json'
 import LoomEthCoin from './LoomEthCoin';
-import QuizeJSON from '../../../build/contracts/Quize.json'
-
+import ERC20 from './ERC20';
+import QuizeJSON from '../../../build/contracts/Quize.json';
+import LoomERC20Coin from '../../../build/contracts/LoomERC20Coin.json';
+import Web3 from 'web3';
 
 export default class Contract {
 
@@ -15,6 +17,17 @@ export default class Contract {
             QuizeJSON.networks[networkConfigs.networks.extdev.networkId].address,
             { from }
         )
+    }
+
+    async approve(address, amount) {
+        let web3 = new Web3(window.web3.currentProvider);
+        let ERC20Token = new ERC20();
+        await ERC20Token.load(web3);
+        return ERC20Token.approveToken(address, amount)
+    }
+
+    quizeAddress(){
+        return QuizeJSON.networks[networkConfigs.networks.extdev.networkId].address
     }
 
 

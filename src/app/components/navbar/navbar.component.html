@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light bg-light">
     <div class="logo">
-        <h3 style="padding-left: 20px; padding-top: 10px">Quize Logo</h3>
+        <h3 style="padding-left: 20px; padding-top: 10px">Logo</h3>
     </div>
     <div *ngIf="nickName === undefined">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
@@ -45,8 +45,8 @@
                 </div>
                 <div *ngIf="!amountSpinner">
                     <p [ngbPopover]="popContent" [popoverTitle]="popTitle" class="loom_balance">
-                        Balance: {{coinInfo.loomBalance | number:'1.0-4'}} ETH / {{ERC20Coins?.loomBalance}} QUIZE</p>
-                    <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} ETH</p>
+                        Balance: {{coinInfo.loomBalance | number:'1.0-4'}} ETH / {{ERC20Coins?.loomBalance | number:'1.0-4'}} QUIZE</p>
+                    <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} $</p>
                 </div>
             </li>
             <li *ngIf="!amountSpinner" class="nav-item">

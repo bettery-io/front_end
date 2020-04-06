@@ -12,5 +12,7 @@ module.exports = async (deployer, network) => {
     let web3 = new Web3();
     let tokenPrice = web3.utils.toWei("1", 'ether');
     return deployer.deploy(QuizeTokenSale, EthERC20Coin.address, tokenPrice);
+  } else {
+    return;
   }
 };

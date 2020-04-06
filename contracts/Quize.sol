@@ -8,7 +8,8 @@ contract Quize is HoldMoney {
     uint8 private percentQuiz = 2;
     uint256 public fullAmount;
     uint256 private sevenDaysTimeStamp = 604800;
-    address payable companyAddress = 0x02810c3bc07De2ddAef89827b0dD6b223C7759d5;
+    address payable companyAddress = 0x11e37CaA6100cbDaB76E84BC584Ca4DF77337e06; // 0x02810c3bc07De2ddAef89827b0dD6b223C7759d5;
+    LoomERC20Coin public tokenContract;
 
     event eventIsFinish(int256 question_id);
 
@@ -55,7 +56,7 @@ contract Quize is HoldMoney {
     mapping(int256 => Question) questions;
 
     constructor(LoomERC20Coin _tokenContract) public {
-        setLoomERC20Coin(_tokenContract);
+        tokenContract = _tokenContract;
     }
 
     function startQestion(
@@ -67,7 +68,7 @@ contract Quize is HoldMoney {
         uint8 _questionQuantity,
         int256 _validatorsAmount,
         uint256 _quizePrice,
-        bool _pathHoldMoney
+        bool  _pathHoldMoney
     ) public payable {
         questions[_question_id].question_id = _question_id;
         questions[_question_id].endTime = _endTime;
@@ -89,7 +90,11 @@ contract Quize is HoldMoney {
             questions[_question_id].percentValidator = _percentValidator;
         }
 
-        _setMoneyRetention(_endTime, _pathHoldMoney);
+         uint256 amount = _setMoneyRetention(_endTime, _pathHoldMoney);
+       if(!_pathHoldMoney){
+         require(tokenContract.allowance(msg.sender, address(this)) >= amount, "Do not enought money");
+         require(tokenContract.transferFrom(msg.sender, address(this), amount), "Transfer error");
+       }
     }
 
     function setAnswer(int256 _question_id, uint8 _whichAnswer) public payable {
@@ -297,4 +302,30 @@ contract Quize is HoldMoney {
     function quizeBalance() public view returns (uint256) {
         return address(this).balance;
     }
+
+    function getContractTokenBalance() public view returns (uint256) {
+        return tokenContract.balanceOf(address(this));
+    }
+
+    function getMoneyRetention(address payable _host) public payable {
+        (uint256 amount, address host, bool path) = _getMoneyRetention(_host);
+        if(!path){
+           require(tokenContract.transfer(host, amount), "Transfer ERC20 to host is error");
+        }
+    }
+
+    function getMoneyRetentionTest(address _host) public view returns(uint256 money, address host, bool path) {
+        return _getMoneyRetentionTest(_host);
+    }
+
+ function amountGuard(bool _path) public view returns (int8) {
+     uint256 balanceToken;
+     if(!_path){
+         balanceToken = tokenContract.balanceOf(address(msg.sender));
+     }
+
+     return _amountGuard(_path, balanceToken);
+ }
+
+
 }

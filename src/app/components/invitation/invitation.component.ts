@@ -13,6 +13,7 @@ import * as InvitesAction from '../../actions/invites.actions';
 import * as UserActions from '../../actions/user.actions';
 import { User } from '../../models/User.model';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import ERC20 from '../../services/ERC20'
 
 
 
@@ -59,7 +60,7 @@ export class InvitationComponent implements OnInit {
         this.coinInfo = x[0];
       }
     })
-   }
+  }
 
   ngOnInit() {
     if (this.userWallet != undefined) {
@@ -90,7 +91,7 @@ export class InvitationComponent implements OnInit {
           this.myAnswers.push(z);
         });
         console.log(this.myAnswers)
-        this.store.dispatch(new InvitesAction.UpdateInvites({amount: this.allData.length}));
+        this.store.dispatch(new InvitesAction.UpdateInvites({ amount: this.allData.length }));
         this.spinner = false;
       }, (err) => {
         console.log(err);
@@ -338,10 +339,15 @@ export class InvitationComponent implements OnInit {
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)
-
       this.coinInfo = await loomEthCoinData._updateBalances()
-      console.log(this.coinInfo)
-      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+      let ERC20Connection = new ERC20()
+      await ERC20Connection.load(web3)
+      let ERC20Coins = await ERC20Connection._updateBalances();
+      this.store.dispatch(new CoinsActios.UpdateCoins({
+        loomBalance: this.coinInfo.loomBalance,
+        mainNetBalance: this.coinInfo.mainNetBalance,
+        tokenBalance: ERC20Coins.loomBalance
+      }))
 
     },
       (err) => {
@@ -404,45 +410,50 @@ export class InvitationComponent implements OnInit {
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)
-
       this.coinInfo = await loomEthCoinData._updateBalances()
-      console.log(this.coinInfo)
-      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
-
+      let ERC20Connection = new ERC20()
+      await ERC20Connection.load(web3)
+      let ERC20Coins = await ERC20Connection._updateBalances();
+      this.store.dispatch(new CoinsActios.UpdateCoins({
+        loomBalance: this.coinInfo.loomBalance,
+        mainNetBalance: this.coinInfo.mainNetBalance,
+        tokenBalance: ERC20Coins.loomBalance
+      }))
     },
       (err) => {
         console.log(err)
       })
   }
 
-  updateUser(){
+  updateUser() {
     let data = {
       wallet: this.userWallet
     }
     this.postService.post("user/validate", data)
-        .subscribe(
-          (currentUser: User) => {
-            this.store.dispatch(new UserActions.UpdateUser({
-              _id: currentUser._id,
-              email: currentUser.email,
-              nickName: currentUser.nickName,
-              wallet: currentUser.wallet,
-              listHostEvents: currentUser.listHostEvents,
-              listParticipantEvents: currentUser.listParticipantEvents,
-              listValidatorEvents: currentUser.listValidatorEvents,
-              historyTransaction: currentUser.historyTransaction,
-              avatar: currentUser.avatar
-            }))
-          })
+      .subscribe(
+        (currentUser: User) => {
+          this.store.dispatch(new UserActions.UpdateUser({
+            _id: currentUser._id,
+            email: currentUser.email,
+            nickName: currentUser.nickName,
+            wallet: currentUser.wallet,
+            listHostEvents: currentUser.listHostEvents,
+            listParticipantEvents: currentUser.listParticipantEvents,
+            listValidatorEvents: currentUser.listValidatorEvents,
+            historyTransaction: currentUser.historyTransaction,
+            avatar: currentUser.avatar,
+            onlyRegistered: false
+          }))
+        })
   }
 
-  deleteInvitation(value){
+  deleteInvitation(value) {
     let data = {
       id: value.id
     }
     this.postService.post("invites/delete", data)
       .subscribe(async (x) => {
-         this.getDataFromDb()
+        this.getDataFromDb()
       })
   }
 

@@ -18,6 +18,7 @@ import * as CoinsActios from '../../actions/coins.actions';
 
 import Web3 from 'web3';
 import LoomEthCoin from '../../services/LoomEthCoin';
+import ERC20 from '../../services/ERC20';
 
 
 type Time = { name: string, date: any, value: number };
@@ -124,7 +125,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
               listParticipantEvents: currentUser.listParticipantEvents,
               listValidatorEvents: currentUser.listValidatorEvents,
               historyTransaction: currentUser.historyTransaction,
-              avatar: currentUser.avatar
+              avatar: currentUser.avatar,
+              onlyRegistered: false
             }))
           }
 
@@ -366,6 +368,11 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let path = this.questionForm.value.depositPath === "true" ? true : false;
 
     let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path).call();
+
+    if(!path){
+       await this.approveToken(calcCoinsForHold)
+    }
+
     this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
 
     let amountGuard = Number(await contr.methods.amountGuard(path).call());
@@ -393,7 +400,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           quizePrice,
           path
         ).send({
-          value: calcCoinsForHold
+          value: path ? calcCoinsForHold : 0 
         });
         if (sendToContract.transactionHash !== undefined) {
           this.setToDb(id, sendToContract.transactionHash, this.getCoinsForHold);
@@ -403,8 +410,12 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         this.deleteEvent(id)
       }
     }
+  }
 
-
+  async approveToken(amount){
+    let contract = new Contract();
+    let quizAddress = contract.quizeAddress();
+    return await contract.approve(quizAddress, amount);
   }
 
   deleteEvent(id) {
@@ -492,8 +503,15 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let web3 = new Web3(window.web3.currentProvider);
     let loomEthCoinData = new LoomEthCoin()
     await loomEthCoinData.load(web3)
+    let ERC20Connection = new ERC20()
+    await ERC20Connection.load(web3)
+    let ERC20Coins = await ERC20Connection._updateBalances();
     this.coinInfo = await loomEthCoinData._updateBalances();
-    this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+    this.store.dispatch(new CoinsActios.UpdateCoins({ 
+      loomBalance: this.coinInfo.loomBalance,
+      mainNetBalance: this.coinInfo.mainNetBalance,
+      tokenBalance: ERC20Coins.loomBalance
+      }))
   }
 
   ngOnDestroy() {

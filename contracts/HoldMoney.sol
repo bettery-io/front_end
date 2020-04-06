@@ -1,7 +1,5 @@
 pragma solidity ^0.5.2;
 
-import "./LoomERC20Coin.sol";
-
 
 contract HoldMoney {
     //minimum wei for hold one event
@@ -9,8 +7,6 @@ contract HoldMoney {
     address public owner;
     uint256 public priceEth;
     uint256 public priceToken;
-    LoomERC20Coin public tokenContract;
-    address holdMoneyContract;
 
     struct quizeHolder {
         address payable hostWallet;
@@ -33,55 +29,64 @@ contract HoldMoney {
     function _setMoneyRetention(uint256 _endTime, bool _pathHoldMoney)
         public
         payable
+        returns(uint256)
     {
         if (_pathHoldMoney) {
-            setEth(_endTime, _pathHoldMoney);
+            return setEth(_endTime, _pathHoldMoney);
         } else {
-            setToken(_endTime, _pathHoldMoney);
+            return setToken(_endTime, _pathHoldMoney);
         }
     }
 
-    function setEth(uint256 _endTime, bool _path) private {
+    function setEth(uint256 _endTime, bool _path) private returns(uint256) {
         require(msg.value == moneyRetentionCalculate(_path), "Do not enought money");
 
-        uint256 index = qAmount[msg.sender].amount++;
+        uint256 index = qAmount[msg.sender].amount + 1;
         qAmount[msg.sender].holder[index].hostWallet = msg.sender;
         qAmount[msg.sender].holder[index].money = msg.value;
         qAmount[msg.sender].holder[index].endTime = _endTime;
         qAmount[msg.sender].holder[index].token = _path;
+        qAmount[msg.sender].amount ++;
+        return 0;
     }
 
-    function setToken(uint256 _endTime, bool _path) private {
+    function setToken(uint256 _endTime, bool _path) private returns(uint256) {
         uint256 amount = moneyRetentionCalculate(_path);
-
-        require(tokenContract.balanceOf(address(msg.sender)) >= amount, "Do not enought money");
-        require(tokenContract.transferFrom(msg.sender, holdMoneyContract, amount), "Transfer error");
-
-        uint256 index = qAmount[msg.sender].amount++;
+        uint256 index = qAmount[msg.sender].amount + 1;
         qAmount[msg.sender].holder[index].hostWallet = msg.sender;
         qAmount[msg.sender].holder[index].money = amount;
         qAmount[msg.sender].holder[index].endTime = _endTime;
         qAmount[msg.sender].holder[index].token = _path;
+        qAmount[msg.sender].amount ++;
+        return amount;
     }
 
-    function getMoneyRetention(address payable _host) public payable {
+    function _getMoneyRetention(address payable _host) public payable returns(uint256, address, bool) {
         require(msg.sender == owner, "Only owner can execute this function");
         require(qAmount[_host].amount > 0, "Do not have coins on account");
 
-        uint256 index = qAmount[_host].amount - 1;
+        uint256 index = qAmount[_host].amount;
         address payable host = qAmount[_host].holder[index].hostWallet;
 
         require(host == _host, "Addresses not equal");
-        uint256 money = qAmount[msg.sender].holder[index].money;
+        uint256 money = qAmount[_host].holder[index].money;
         qAmount[host].amount--;
-        bool path = qAmount[msg.sender].holder[index].token;
+        bool path = qAmount[_host].holder[index].token;
+        delete qAmount[_host].holder[index];
         if (path) {
             host.transfer(money);
+            return (money, host, path);
         } else {
-            tokenContract.transferFrom(holdMoneyContract, host, money);
+            return (money, host, path);
         }
+    }
 
-        delete qAmount[msg.sender].holder[index];
+    function _getMoneyRetentionTest(address _host) public view returns(uint256, address, bool) {
+        uint256 index = qAmount[_host].amount;
+        address payable host = qAmount[_host].holder[index].hostWallet;
+        uint256 money = qAmount[_host].holder[index].money;
+        bool path = qAmount[_host].holder[index].token;
+        return (money, host, path);
     }
 
     function moneyRetentionCalculate(bool _path) public view returns (uint256) {
@@ -91,7 +96,7 @@ contract HoldMoney {
     function onHold() public view returns (uint256) {
         if (qAmount[msg.sender].amount >= 1) {
             uint256 value = 0;
-            for (uint8 i = 0; i <= qAmount[msg.sender].amount; i++) {
+            for (uint8 i = 1; i <= qAmount[msg.sender].amount; i++) {
                 bool path = qAmount[msg.sender].holder[i].token;
                 value = value + moneyCalc(i, path);
             }
@@ -121,12 +126,12 @@ contract HoldMoney {
         }
     }
 
-    function amountGuard(bool _path) public view returns (int8) {
+    function _amountGuard(bool _path, uint256 balanceToken) public view returns (int8) {
         uint256 balance;
         if (_path) {
             balance = address(msg.sender).balance;
         } else {
-            balance = tokenContract.balanceOf(address(msg.sender));
+            balance = balanceToken;
         }
         if (balance >= moneyRetentionCalculate(_path)) {
             // don't have any errors
@@ -141,15 +146,14 @@ contract HoldMoney {
         return address(this).balance;
     }
 
-    function setEthPrice(uint256 _priceEth, uint256 _priceToken, address _tokenAddress) public {
+    function setEthPrice(uint256 _priceEth, uint256 _priceToken) public {
         require(msg.sender == owner, "only owner can change price");
         priceEth = _priceEth / 1000000000000000000;
         priceToken = _priceToken / 1000000000000000000;
-        holdMoneyContract = _tokenAddress;
     }
 
-    function setLoomERC20Coin(LoomERC20Coin _tokenContract) public {
-        require(msg.sender == owner, "Only owner can execute this function");
-        tokenContract = _tokenContract;
+    function getHoldMoneyById() public view returns(uint256) {
+        uint256 index = qAmount[msg.sender].amount - 1;
+        return qAmount[msg.sender].holder[index].money;
     }
 }

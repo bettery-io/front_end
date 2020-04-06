@@ -87,7 +87,6 @@ import {
           from: this.accountMapping.ethereum.local.toString()
         })
       const balance = this.web3Ethereum.utils.fromWei(loomWei.toString(), 'ether')
-      console.log(balance)
       const limitDecimals = balance
       return limitDecimals
     }
@@ -197,6 +196,12 @@ import {
       if (receipt !== null) {
         await this._withdrawCoinsFromMainNetGateway(receipt)
       }
+    }
+
+    async approveToken (address, amount) {
+      return await this.loomCoinContract.methods
+      .approve(address.toString(), amount).send({from: this.accountMapping.ethereum.local.toString() })
+      
     }
   
     async _filterEvents () {

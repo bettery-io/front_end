@@ -14,6 +14,7 @@ const EthCoin = Contracts.EthCoin
 var web3LoomData = null
 var userAccount = null
 var ethCoin = null
+var clientLoom = null
 
 export default class LoomEthCoin extends UniversalSigning {
     _gas() {
@@ -33,6 +34,7 @@ export default class LoomEthCoin extends UniversalSigning {
         this.web3Loom = web3Loom
         web3LoomData = web3Loom;
         this.client = client
+        clientLoom = clientLoom;
         await this._getContracts(client, accountMapping)
       //  await this._updateBalances()
     }
@@ -188,7 +190,8 @@ export default class LoomEthCoin extends UniversalSigning {
         return {
             web3LoomData: web3LoomData,
             userAccount: userAccount,
-            ethCoin: ethCoin
+            ethCoin: ethCoin,
+            client: clientLoom
         }
     }
 }

@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Mintable.sol";
  * @title ERC20 example for token contracts to be deployed to Ethereum.
  */
 contract EthERC20Coin is ERC20Mintable {
-    string public name = "QuizToken";
-    string public symbol = "Quiz";
+    string public name = "MyNewTokenTest";
+    string public symbol = "MNTT";
     uint8 public decimals = 18;
 
     constructor(uint256 _initialSupplyCoins) public {

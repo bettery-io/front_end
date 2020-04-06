@@ -14,6 +14,7 @@ import LoomEthCoin from '../../services/LoomEthCoin';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import { User } from '../../models/User.model';
+import ERC20 from '../../services/ERC20';
 
 @Component({
   selector: 'question',
@@ -355,10 +356,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)
-
       this.coinInfo = await loomEthCoinData._updateBalances()
-      console.log(this.coinInfo)
-      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+      let ERC20Connection = new ERC20()
+      await ERC20Connection.load(web3)
+      let ERC20Coins = await ERC20Connection._updateBalances();
+      this.store.dispatch(new CoinsActios.UpdateCoins({
+        loomBalance: this.coinInfo.loomBalance,
+        mainNetBalance: this.coinInfo.mainNetBalance,
+        tokenBalance: ERC20Coins.loomBalance
+      }))
 
     },
       (err) => {
@@ -426,10 +432,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
       let web3 = new Web3(window.web3.currentProvider);
       let loomEthCoinData = new LoomEthCoin()
       await loomEthCoinData.load(web3)
-
       this.coinInfo = await loomEthCoinData._updateBalances()
-      console.log(this.coinInfo)
-      this.store.dispatch(new CoinsActios.UpdateCoins({ loomBalance: this.coinInfo.loomBalance, mainNetBalance: this.coinInfo.mainNetBalance }))
+      let ERC20Connection = new ERC20()
+      await ERC20Connection.load(web3)
+      let ERC20Coins = await ERC20Connection._updateBalances();
+      this.store.dispatch(new CoinsActios.UpdateCoins({
+        loomBalance: this.coinInfo.loomBalance,
+        mainNetBalance: this.coinInfo.mainNetBalance,
+        tokenBalance: ERC20Coins.loomBalance
+      }))
 
     },
       (err) => {
@@ -453,7 +464,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
             listParticipantEvents: currentUser.listParticipantEvents,
             listValidatorEvents: currentUser.listValidatorEvents,
             historyTransaction: currentUser.historyTransaction,
-            avatar: currentUser.avatar
+            avatar: currentUser.avatar,
+            onlyRegistered: false
           }))
         })
   }

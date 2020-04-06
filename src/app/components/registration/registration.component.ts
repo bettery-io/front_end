@@ -96,7 +96,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               this.userWallet = wallet;
               this.userWalletIsUndefinded = false
             } else {
-              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents, x.historyTransaction, x.avatar, x._id);
+              this.addUser(x.email, x.nickName, x.wallet, x.listHostEvents, x.listParticipantEvents, x.listValidatorEvents, x.historyTransaction, x.avatar, x._id, false);
               let getLocation = document.location.href
               let gurd = getLocation.search("question")
               if(gurd === -1){
@@ -150,7 +150,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       listParticipantEvents: [],
       listValidatorEvents: [],
       historyTransaction: [],
-      avatar: color
+      avatar: color,
+      onlyRegistered: true
     }
 
 
@@ -158,7 +159,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .subscribe(
         (x: any) => {
           console.log(x)
-          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], [], [], color, x._id);
+          this.addUser(this.registerForm.value.email, this.registerForm.value.nickName, this.userWallet, [], [], [], [], color, x._id, true);
           let getLocation = document.location.href
           let gurd = getLocation.search("question")
           if(gurd === -1){
@@ -170,7 +171,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         })
   }
 
-  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object, historyTransaction: Object, color: string, _id: number) {
+  addUser(email: string, nickName: string, wallet: string, listHostEvents: Object, listParticipantEvents: Object, listValidatorEvents: Object, historyTransaction: Object, color: string, _id: number, onlyRegistered: boolean) {
 
     this.store.dispatch(new UserActions.AddUser({ 
       _id: _id,
@@ -181,7 +182,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
-      avatar: color
+      avatar: color,
+      onlyRegistered: onlyRegistered
     }))
     this.onReset();
   }

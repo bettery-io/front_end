@@ -23,7 +23,10 @@
                     </div>
                     <div class="info">
                         <p>Status: {{question.private === true ? "Private" : "Public"}}</p>
-                        <p>Bet amount: {{question.money}} ETH</p>
+                        <p>Bet amount: {{question.money}}
+                            <span *ngIf="question.tokenPay == false">QUIZE</span>
+                                <span *ngIf="question.tokenPay == true">ETH</span>
+                        </p>
                         <p>Wins: 2%, 3%, 5%, 90%</p>
                     </div>
 
@@ -146,11 +149,26 @@
         </table>
 
         <div *ngIf="infoData !== undefined">
-            <p>Money on event - {{this.weiConvert(infoData.money)}} ETH</p>
-            <p>Money for company - {{this.weiConvert(infoData.persentFeeCompany)}} ETH</p>
-            <p>Money for host - {{this.weiConvert(infoData.persentFeeHost)}} ETH</p>
-            <p>Money for each validators - {{this.weiConvert(infoData.persentForEachValidators)}} ETH</p>
-            <p>Money for each participant - {{this.weiConvert(infoData.monayForParticipant)}} ETH</p>
+            <p>Money on event - {{this.weiConvert(infoData.money)}}
+                <span *ngIf="question.tokenPay == false">QUIZE</span>
+                <span *ngIf="question.tokenPay == true">ETH</span>
+            </p>
+            <p>Money for company - {{this.weiConvert(infoData.persentFeeCompany)}}
+                <span *ngIf="question.tokenPay == false">QUIZE</span>
+                <span *ngIf="question.tokenPay == true">ETH</span>
+            </p>
+            <p>Money for host - {{this.weiConvert(infoData.persentFeeHost)}}
+                <span *ngIf="question.tokenPay == false">QUIZE</span>
+                <span *ngIf="question.tokenPay == true">ETH</span>
+            </p>
+            <p>Money for each validators - {{this.weiConvert(infoData.persentForEachValidators)}} 
+                <span *ngIf="question.tokenPay == false">QUIZE</span>
+                <span *ngIf="question.tokenPay == true">ETH</span>
+            </p>
+            <p>Money for each participant - {{this.weiConvert(infoData.monayForParticipant)}} 
+                <span *ngIf="question.tokenPay == false">QUIZE</span>
+                <span *ngIf="question.tokenPay == true">ETH</span>
+            </p>
         </div>
     </div>
 </div>

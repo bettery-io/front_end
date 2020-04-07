@@ -63,7 +63,7 @@ export class ErcCoinSaleComponent implements OnInit {
         return;
       } else {
         this.userWallet = coinbase;
-        this.transferButton = this.userWallet == "0x539789073563445ff7F93e7DF6D066309a2CF08A".toLowerCase() ? true : false
+        this.transferButton = this.userWallet == "0xF02B362cBEFC2d5bD5f7C3dBdbD0DE84508525D5".toLowerCase() ? true : false
         this.sellContract(coinbase);
         this.tokenContract(coinbase);
       }

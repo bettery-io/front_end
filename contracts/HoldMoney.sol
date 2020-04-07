@@ -11,7 +11,6 @@ contract HoldMoney {
     struct quizeHolder {
         address payable hostWallet;
         uint256 money;
-        uint256 endTime;
         bool token;
     }
 
@@ -26,36 +25,34 @@ contract HoldMoney {
         owner = msg.sender;
     }
 
-    function _setMoneyRetention(uint256 _endTime, bool _pathHoldMoney)
+    function _setMoneyRetention(bool _pathHoldMoney)
         public
         payable
         returns(uint256)
     {
         if (_pathHoldMoney) {
-            return setEth(_endTime, _pathHoldMoney);
+            return setEth(_pathHoldMoney);
         } else {
-            return setToken(_endTime, _pathHoldMoney);
+            return setToken(_pathHoldMoney);
         }
     }
 
-    function setEth(uint256 _endTime, bool _path) private returns(uint256) {
+    function setEth(bool _path) private returns(uint256) {
         require(msg.value == moneyRetentionCalculate(_path), "Do not enought money");
 
         uint256 index = qAmount[msg.sender].amount + 1;
         qAmount[msg.sender].holder[index].hostWallet = msg.sender;
         qAmount[msg.sender].holder[index].money = msg.value;
-        qAmount[msg.sender].holder[index].endTime = _endTime;
         qAmount[msg.sender].holder[index].token = _path;
         qAmount[msg.sender].amount ++;
         return 0;
     }
 
-    function setToken(uint256 _endTime, bool _path) private returns(uint256) {
+    function setToken(bool _path) private returns(uint256) {
         uint256 amount = moneyRetentionCalculate(_path);
         uint256 index = qAmount[msg.sender].amount + 1;
         qAmount[msg.sender].holder[index].hostWallet = msg.sender;
         qAmount[msg.sender].holder[index].money = amount;
-        qAmount[msg.sender].holder[index].endTime = _endTime;
         qAmount[msg.sender].holder[index].token = _path;
         qAmount[msg.sender].amount ++;
         return amount;

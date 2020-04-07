@@ -368,10 +368,11 @@ export class MyActivitesComponent implements OnInit {
   }
 
   async setParticipiation(answer, dataAnswer) {
-    console.log("setParticipiation work")
-    if (Number(this.coinInfo.loomBalance) < dataAnswer.money) {
+    let balance = dataAnswer.tokenPay ? this.coinInfo.loomBalance : this.coinInfo.tokenBalance
+    if (Number(balance) < dataAnswer.money) {
       this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "Don't have enough money"
+      let currency = dataAnswer.tokenPay ? "Ether" : "Tokens."
+      this.errorValidator.message = "Don't have enough " + currency
     } else {
       let web3 = new Web3();
       let contract = new Contract();
@@ -383,8 +384,11 @@ export class MyActivitesComponent implements OnInit {
 
       switch (Number(validator)) {
         case 0:
+          if(!dataAnswer.tokenPay){
+            await this.approveToken(_money)
+         }
           let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
-            value: _money
+            value: dataAnswer.tokenPay ? _money : 0
           });
           if (sendToContract.transactionHash !== undefined) {
             this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
@@ -400,6 +404,12 @@ export class MyActivitesComponent implements OnInit {
           break;
       }
     }
+  }
+
+  async approveToken(amount){
+    let contract = new Contract();
+    let quizAddress = contract.quizeAddress();
+    return await contract.approve(quizAddress, amount);
   }
 
 

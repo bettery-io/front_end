@@ -38,7 +38,9 @@
                         </div>
                         <div class="info">
                             <p>Status: {{question.private === true ? "Private" : "Public"}}</p>
-                            <p>Bet amount: {{question.money}} ETH</p>
+                            <p>Bet amount: {{question.money}} 
+                                <span *ngIf="question.tokenPay == false">QUIZE</span>
+                                <span *ngIf="question.tokenPay == true">ETH</span></p>
                             <p>Wins: 2%, 3%, 5%, 90%</p>
                         </div>
                         <div class="answers_box">

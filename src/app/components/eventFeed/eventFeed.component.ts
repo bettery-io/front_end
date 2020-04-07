@@ -13,7 +13,7 @@ import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { User } from '../../models/User.model';
-import ERC20 from '../../services/ERC20'
+import ERC20 from '../../services/ERC20';
 
 
 @Component({
@@ -325,9 +325,11 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   async setToLoomNetwork(answer, dataAnswer) {
-    if (Number(this.coinInfo.loomBalance) < dataAnswer.money) {
+    let balance = dataAnswer.tokenPay ? this.coinInfo.loomBalance : this.coinInfo.tokenBalance
+    if (Number(balance) < dataAnswer.money) {
       this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "Don't have enough money"
+      let currency = dataAnswer.tokenPay ? "Ether" : "Tokens."
+      this.errorValidator.message = "Don't have enough " + currency
     } else {
       let web3 = new Web3();
       let contract = new Contract();
@@ -337,8 +339,11 @@ export class EventFeedComponent implements OnDestroy {
       let contr = await contract.initContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
+        if(!dataAnswer.tokenPay){
+           await this.approveToken(_money)
+        }
         let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
-          value: _money
+          value: dataAnswer.tokenPay ? _money : 0
         });
         if (sendToContract.transactionHash !== undefined) {
           this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
@@ -351,6 +356,12 @@ export class EventFeedComponent implements OnDestroy {
         this.errorValidator.message = "Already finished"
       }
     }
+  }
+
+  async approveToken(amount){
+    let contract = new Contract();
+    let quizAddress = contract.quizeAddress();
+    return await contract.approve(quizAddress, amount);
   }
 
 

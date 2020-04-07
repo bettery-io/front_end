@@ -69,7 +69,8 @@ contract Quize is HoldMoney {
         uint8 _questionQuantity,
         int256 _validatorsAmount,
         uint256 _quizePrice,
-        bool  _pathHoldMoney
+        bool _pathHoldMoney,
+        bool _payEther
     ) public payable {
         questions[_question_id].question_id = _question_id;
         questions[_question_id].endTime = _endTime;
@@ -78,7 +79,7 @@ contract Quize is HoldMoney {
         questions[_question_id].validatorsAmount = _validatorsAmount;
         questions[_question_id].hostWallet = msg.sender;
         questions[_question_id].quizePrice = _quizePrice;
-        questions[_question_id].payEther = _pathHoldMoney;
+        questions[_question_id].payEther = _payEther;
 
         if (_percentHost == 0) {
             questions[_question_id].percentHost = 3;
@@ -92,7 +93,7 @@ contract Quize is HoldMoney {
             questions[_question_id].percentValidator = _percentValidator;
         }
 
-         uint256 amount = _setMoneyRetention(_endTime, _pathHoldMoney);
+         uint256 amount = _setMoneyRetention(_pathHoldMoney);
        if(!_pathHoldMoney){
          require(tokenContract.allowance(msg.sender, address(this)) >= amount, "Do not enought ethers");
          require(tokenContract.transferFrom(msg.sender, address(this), amount), "Transfer error");
@@ -106,14 +107,20 @@ contract Quize is HoldMoney {
         if(payEther){require(msg.value == questions[_question_id].quizePrice, "Do not enought ethers");}
         else{require(tokenContract.allowance(msg.sender, address(this)) >= questions[_question_id].quizePrice, "Do not enought tokens");}
 
-        questions[_question_id].money += msg.value;
         uint256 i = questions[_question_id].participant[_whichAnswer].index;
         questions[_question_id].participant[_whichAnswer].participants[i].parts = msg.sender;
         questions[_question_id].participant[_whichAnswer].index = i + 1;
         questions[_question_id].allParticipant.push(msg.sender);
-        fullAmount += msg.value;
 
-        if(!payEther){require(tokenContract.transferFrom(msg.sender, address(this), amount), "Transfer error");}
+        if(payEther){
+            questions[_question_id].money += msg.value;
+            fullAmount += msg.value;
+        }else{
+            uint256 price = questions[_question_id].quizePrice;
+            questions[_question_id].money += price;
+            fullAmount += price;
+            require(tokenContract.transferFrom(msg.sender, address(this), price), "Transfer error");
+        }
     }
 
     function setValidator(int256 _question_id, uint8 _whichAnswer) public payable {
@@ -173,7 +180,7 @@ contract Quize is HoldMoney {
         );
         questions[_question_id].money = questions[_question_id].money - persHostFee;
         fullAmount = fullAmount - persHostFee;
-        address payable hostWallet = questions[_question_id].hostWallet
+        address payable hostWallet = questions[_question_id].hostWallet;
         if(payEther){hostWallet.transfer(persHostFee);}
         else{require(tokenContract.transfer(hostWallet, persHostFee), "Transfer ERC20 to host is error");}
         questions[_question_id].persentFeeHost = persHostFee;
@@ -197,7 +204,7 @@ contract Quize is HoldMoney {
             address payable _validator = questions[_question_id].validator[correctAnswer].validators[i].valid;
             questions[_question_id].money = questions[_question_id].money - persentForEachValidators;
              if(payEther){_validator.transfer(persentForEachValidators);}
-             else{require(tokenContract.transfer(_validator, persHostFee), "Transfer ERC20 to host is error");}
+             else{require(tokenContract.transfer(_validator, persentForEachValidators), "Transfer ERC20 to host is error");}
             
         }
         letsPayParticipantFee(correctAnswer, _question_id, payEther);
@@ -211,7 +218,6 @@ contract Quize is HoldMoney {
             questions[_question_id].money = questions[_question_id].money - monayForParticipant;
              if(payEther){_participant.transfer(monayForParticipant);}
              else{require(tokenContract.transfer(_participant, monayForParticipant), "Transfer ERC20 to host is error");}
-            
         }
 
         questions[_question_id].monayForParticipant = monayForParticipant;

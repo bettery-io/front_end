@@ -181,6 +181,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       showDistribution: true,
       privateOrPublic: "public",
       depositPath: "true",
+      eventPayment: "true",
       amountOfValidators: [3, [Validators.min(1), Validators.required]],
       amount: [0.1, [Validators.min(0.01), Validators.required]]
     });
@@ -366,6 +367,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let quizePrice = web3.utils.toWei(String(this.questionForm.value.amount), 'ether');
 
     let path = this.questionForm.value.depositPath === "true" ? true : false;
+    let tokenPay = this.questionForm.value.eventPayment === "true" ? true : false;
 
     let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path).call();
 
@@ -398,7 +400,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           questionQuantity,
           validatorsAmount,
           quizePrice,
-          path
+          path,
+          tokenPay
         ).send({
           value: path ? calcCoinsForHold : 0 
         });
@@ -469,7 +472,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       transactionHash: transactionHash,
       showDistribution: this.questionForm.value.showDistribution,
       hashtagsId: this.hashtagsId,
-      getCoinsForHold: Number(getCoinsForHold)
+      getCoinsForHold: Number(getCoinsForHold),
+      tokenPay: this.questionForm.value.eventPayment === "true" ? true : false
     }
 
     this.PostService.post("question/set", this.quizData)

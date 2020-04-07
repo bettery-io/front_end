@@ -185,15 +185,27 @@
             </div>
 
         </div>
+        <div>
+            <!-- Where to get a deposit ? -->
 
-        <!-- Where to get a deposit ? -->
+            <div class="from-group payment">
+                <label>Event payment</label><br>
+                <input formControlName="eventPayment" name="eventPayment" value="true" type="radio"
+                    class="multy_choise">Ethereum<br>
+                <input formControlName="eventPayment" name="eventPayment" value="false" type="radio"
+                    class="multy_choise">Token<br>
+            </div>
 
-        <div class="from-group">
-            <label>Where to get a deposit ?</label><br>
-            <input formControlName="depositPath" name="depositPath" value="true" type="radio"
-                class="multy_choise">Ethereum balance<br>
-            <input formControlName="depositPath" name="depositPath" value="false" type="radio"
-                class="multy_choise">Token balance<br>
+            <!-- Where to get a deposit ? -->
+
+            <div class="from-group payment">
+                <label>Where to get a deposit ?</label><br>
+                <input formControlName="depositPath" name="depositPath" value="true" type="radio"
+                    class="multy_choise">Ethereum balance<br>
+                <input formControlName="depositPath" name="depositPath" value="false" type="radio"
+                    class="multy_choise">Token balance<br>
+            </div>
+
         </div>
 
         <!-- Invite friends -->

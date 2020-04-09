@@ -11,7 +11,8 @@ contract Quize is HoldMoney {
     address payable companyAddress = 0x02810c3bc07De2ddAef89827b0dD6b223C7759d5;
     LoomERC20Coin public tokenContract;
 
-    event eventIsFinish(int256 question_id);
+    event eventIsFinish(int256 question_id, bool payEther);
+    event payEvent(string path, uint256 money, bool payEther, address wallet, string from, int256 question_id);
 
     struct Participant {
         mapping(uint256 => Part) participants;
@@ -47,7 +48,7 @@ contract Quize is HoldMoney {
         uint256 persentFeeCompany;
         uint256 persentFeeHost;
         uint256 persentForEachValidators;
-        uint256 monayForParticipant;
+        uint256 moneyForParticipant;
         uint256 correctAnswer;
         address[] allParticipant;
         uint256 quizePrice;
@@ -93,11 +94,12 @@ contract Quize is HoldMoney {
             questions[_question_id].percentValidator = _percentValidator;
         }
 
-         uint256 amount = _setMoneyRetention(_pathHoldMoney);
-       if(!_pathHoldMoney){
-         require(tokenContract.allowance(msg.sender, address(this)) >= amount, "Do not enought ethers");
-         require(tokenContract.transferFrom(msg.sender, address(this), amount), "Transfer error");
-       }
+        uint256 amount = _setMoneyRetention(_pathHoldMoney, _question_id);
+        if(!_pathHoldMoney){
+           require(tokenContract.allowance(msg.sender, address(this)) >= amount, "Do not enought ethers");
+           require(tokenContract.transferFrom(msg.sender, address(this), amount), "Transfer error");
+        }
+        emit payEvent("send", amount, _pathHoldMoney, msg.sender, "hold money", _question_id);
     }
 
     function setAnswer(int256 _question_id, uint8 _whichAnswer) public payable {
@@ -121,6 +123,9 @@ contract Quize is HoldMoney {
             fullAmount += price;
             require(tokenContract.transferFrom(msg.sender, address(this), price), "Transfer error");
         }
+
+        emit payEvent("send", questions[_question_id].quizePrice, payEther, msg.sender, "participant", _question_id);
+
     }
 
     function setValidator(int256 _question_id, uint8 _whichAnswer) public payable {
@@ -203,26 +208,30 @@ contract Quize is HoldMoney {
         for (uint8 i = 0; i < questions[_question_id].validator[correctAnswer].index; i++ ) {
             address payable _validator = questions[_question_id].validator[correctAnswer].validators[i].valid;
             questions[_question_id].money = questions[_question_id].money - persentForEachValidators;
-             if(payEther){_validator.transfer(persentForEachValidators);}
-             else{require(tokenContract.transfer(_validator, persentForEachValidators), "Transfer ERC20 to host is error");}
-            
+
+            if(payEther){_validator.transfer(persentForEachValidators);}
+            else{require(tokenContract.transfer(_validator, persentForEachValidators), "Transfer ERC20 to host is error");}
+
         }
+
         letsPayParticipantFee(correctAnswer, _question_id, payEther);
     }
 
     function letsPayParticipantFee(uint256 correctAnswer, int256 _question_id, bool payEther) private{
          // Pay for participant
-        uint256 monayForParticipant = questions[_question_id].money / questions[_question_id].participant[correctAnswer].index;
+        uint256 moneyForParticipant = questions[_question_id].money / questions[_question_id].participant[correctAnswer].index;
         for ( uint8 i = 0; i < questions[_question_id].participant[correctAnswer].index; i++) {
             address payable _participant = questions[_question_id].participant[correctAnswer].participants[i].parts;
-            questions[_question_id].money = questions[_question_id].money - monayForParticipant;
-             if(payEther){_participant.transfer(monayForParticipant);}
-             else{require(tokenContract.transfer(_participant, monayForParticipant), "Transfer ERC20 to host is error");}
+            questions[_question_id].money = questions[_question_id].money - moneyForParticipant;
+
+            if(payEther){_participant.transfer(moneyForParticipant);}
+            else{require(tokenContract.transfer(_participant, moneyForParticipant), "Transfer ERC20 to host is error");}
+
         }
 
-        questions[_question_id].monayForParticipant = monayForParticipant;
+        questions[_question_id].moneyForParticipant = moneyForParticipant;
 
-        emit eventIsFinish(_question_id);
+        emit eventIsFinish(_question_id, payEther);
     }
 
     function getPersent(uint256 _percent, uint256 _from)
@@ -240,7 +249,7 @@ contract Quize is HoldMoney {
             uint256 persentFeeCompany,
             uint256 persentForEachValidators,
             uint256 money,
-            uint256 monayForParticipant,
+            uint256 moneyForParticipant,
             uint8 questionQuantity,
             uint256 correctAnswer,
             uint256 persentFeeHost
@@ -250,7 +259,7 @@ contract Quize is HoldMoney {
             questions[_question_id].persentFeeCompany,
             questions[_question_id].persentForEachValidators,
             questions[_question_id].money,
-            questions[_question_id].monayForParticipant,
+            questions[_question_id].moneyForParticipant,
             questions[_question_id].questionQuantity,
             questions[_question_id].correctAnswer,
             questions[_question_id].persentFeeHost
@@ -329,10 +338,12 @@ contract Quize is HoldMoney {
     }
 
     function getMoneyRetention(address payable _host) public payable {
-        (uint256 amount, address host, bool path) = _getMoneyRetention(_host);
+        (uint256 amount, address host, bool path, int256 _question_id) = _getMoneyRetention(_host);
         if(!path){
            require(tokenContract.transfer(host, amount), "Transfer ERC20 to host is error");
         }
+
+        emit payEvent("receive", amount, path, host, "hold money", _question_id);
     }
 
  function amountGuard(bool _path) public view returns (int8) {

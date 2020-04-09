@@ -47,7 +47,8 @@ export class HistoryComponent implements OnInit {
                 amount: x.amount.toFixed(4),
                 paymentWay: x.paymentWay,
                 eventId: x.eventId,
-                role: x.role
+                role: x.role,
+                ether: x.ether
               }
             })
             this.historyData = z

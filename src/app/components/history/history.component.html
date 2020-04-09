@@ -21,7 +21,10 @@
                     <fa-icon *ngIf="history.paymentWay === 'send'" class="historyIconSend" [icon]="faReply"></fa-icon>
                     <fa-icon *ngIf="history.paymentWay === 'receive'" class="historyIconReceive" [icon]="faShare"></fa-icon>
                 </td>
-                <td>{{ history.amount }} ETH</td>
+                <td>{{ history.amount }} 
+                    <span *ngIf="history.ether === true" >ETH</span>
+                    <span *ngIf="history.ether === false" >QUIZE</span>
+                </td>
             </tr>
         </tbody>
     </table>

@@ -12,6 +12,7 @@ contract HoldMoney {
         address payable hostWallet;
         uint256 money;
         bool token;
+        int256 question_id;
     }
 
     struct quizeAmount {
@@ -25,40 +26,42 @@ contract HoldMoney {
         owner = msg.sender;
     }
 
-    function _setMoneyRetention(bool _pathHoldMoney)
+    function _setMoneyRetention(bool _pathHoldMoney, int256 question_id)
         public
         payable
         returns(uint256)
     {
         if (_pathHoldMoney) {
-            return setEth(_pathHoldMoney);
+            return setEth(_pathHoldMoney, question_id);
         } else {
-            return setToken(_pathHoldMoney);
+            return setToken(_pathHoldMoney, question_id);
         }
     }
 
-    function setEth(bool _path) private returns(uint256) {
+    function setEth(bool _path, int256 question_id) private returns(uint256) {
         require(msg.value == moneyRetentionCalculate(_path), "Do not enought money");
 
         uint256 index = qAmount[msg.sender].amount + 1;
         qAmount[msg.sender].holder[index].hostWallet = msg.sender;
         qAmount[msg.sender].holder[index].money = msg.value;
         qAmount[msg.sender].holder[index].token = _path;
+        qAmount[msg.sender].holder[index].question_id = question_id;
         qAmount[msg.sender].amount ++;
-        return 0;
+        return msg.value;
     }
 
-    function setToken(bool _path) private returns(uint256) {
+    function setToken(bool _path, int256 question_id) private returns(uint256) {
         uint256 amount = moneyRetentionCalculate(_path);
         uint256 index = qAmount[msg.sender].amount + 1;
         qAmount[msg.sender].holder[index].hostWallet = msg.sender;
         qAmount[msg.sender].holder[index].money = amount;
         qAmount[msg.sender].holder[index].token = _path;
+        qAmount[msg.sender].holder[index].question_id = question_id;
         qAmount[msg.sender].amount ++;
         return amount;
     }
 
-    function _getMoneyRetention(address payable _host) public payable returns(uint256, address, bool) {
+    function _getMoneyRetention(address payable _host) public payable returns(uint256, address, bool, int256) {
         require(msg.sender == owner, "Only owner can execute this function");
         require(qAmount[_host].amount > 0, "Do not have coins on account");
 
@@ -69,12 +72,13 @@ contract HoldMoney {
         uint256 money = qAmount[_host].holder[index].money;
         qAmount[host].amount--;
         bool path = qAmount[_host].holder[index].token;
+        int256 question_id = qAmount[_host].holder[index].question_id;
         delete qAmount[_host].holder[index];
         if (path) {
             host.transfer(money);
-            return (money, host, path);
+            return (money, host, path, question_id);
         } else {
-            return (money, host, path);
+            return (money, host, path, question_id);
         }
     }
 

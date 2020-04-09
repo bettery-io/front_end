@@ -153,7 +153,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.loomEthCoinData = new LoomEthCoin()
     await this.loomEthCoinData.load(this.web3)
     let loomAccount = this.loomEthCoinData.getWeb3Loom();
-    let loomAddress = loomAccount.userAccount.plasma.local.toString()
+    let loomAddress = loomAccount.userAccount.plasma.local.toString();
+   // let address = loomAddress.toUpperCase();
 
     if (this.onlyRegistered) {
       let data = {

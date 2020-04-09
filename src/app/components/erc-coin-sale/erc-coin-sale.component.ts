@@ -63,6 +63,7 @@ export class ErcCoinSaleComponent implements OnInit {
         return;
       } else {
         this.userWallet = coinbase;
+        // for testing! Need create better solition for detect owner of smart contract.
         this.transferButton = this.userWallet == "0xF02B362cBEFC2d5bD5f7C3dBdbD0DE84508525D5".toLowerCase() ? true : false
         this.sellContract(coinbase);
         this.tokenContract(coinbase);
@@ -138,6 +139,7 @@ export class ErcCoinSaleComponent implements OnInit {
     }
   }
 
+  // transfer tokens. Avaliable only for owners
   async transferToken(){
    let web3 = new Web3()
    let amount = web3.utils.toWei('750000000', 'ether');

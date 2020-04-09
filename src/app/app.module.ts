@@ -29,6 +29,7 @@ import { InvitationComponent } from './components/invitation/invitation.componen
 import { HistoryComponent } from './components/history/history.component';
 import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.component';
 import {NumericDirective} from './helpers/numeric';
+import { QuizTemplateComponent } from './components/quiz-template/quiz-template.component';
 
 
 
@@ -46,7 +47,8 @@ import {NumericDirective} from './helpers/numeric';
     InvitationComponent,
     HistoryComponent,
     ErcCoinSaleComponent,
-    NumericDirective
+    NumericDirective,
+    QuizTemplateComponent
   ],
   imports: [
     BrowserModule,

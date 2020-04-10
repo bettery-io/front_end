@@ -38,8 +38,10 @@ export class QuizTemplateComponent implements OnInit {
   @Input() userData: User;
   @Input() myAnswers: Answer;
   @Input() coinInfo: any;
+  @Input() fromComponent: string;
 
   @Output() callGetData = new EventEmitter();
+  @Output() deleteInvitationId = new EventEmitter<number>();
 
 
 
@@ -366,6 +368,19 @@ export class QuizTemplateComponent implements OnInit {
             onlyRegistered: false
           }))
         })
+  }
+
+  deleteInvitation(data){
+    let id = data.id
+    this.deleteInvitationId.next(id)
+  }
+
+  whichComponent(){
+     if(this.fromComponent === "invitation"){
+       return true
+     }else{
+       return false
+     }
   }
 
 }

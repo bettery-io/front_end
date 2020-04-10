@@ -25,6 +25,7 @@ export class EventFeedComponent implements OnDestroy {
   parcipiantFilter = true;
   validateFilter = true;
   historyFilter = false;
+  fromComponent = "eventFeed"
 
   constructor(
     private store: Store<AppState>,

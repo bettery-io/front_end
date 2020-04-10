@@ -27,7 +27,7 @@
         <div *ngIf='questions.length !== 0'>
             <div *ngFor="let question of questions; let index = index">
                 <quiz-template [coinInfo]="coinInfo" [myAnswers]="myAnswers[index]" [userData]="userData"
-                    [question]="question" (callGetData)="getData()"></quiz-template>
+                    [question]="question" [fromComponent]="fromComponent" (callGetData)="getData()"></quiz-template>
             </div>
         </div>
         <div class="dont_have_event" *ngIf='questions.length === 0'>

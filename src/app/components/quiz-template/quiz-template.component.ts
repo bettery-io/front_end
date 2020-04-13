@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import {User} from '../../models/User.model';
+import { User } from '../../models/User.model';
 import _ from 'lodash';
 import { Answer } from '../../models/Answer.model';
 import Web3 from 'web3';
@@ -28,10 +28,12 @@ export class QuizTemplateComponent implements OnInit {
     message: undefined
   }
 
+  registError = false;
+
   constructor(
     private postService: PostService,
     private store: Store<AppState>,
-    ){}
+  ) { }
 
 
   @Input() question: Object[];
@@ -109,7 +111,7 @@ export class QuizTemplateComponent implements OnInit {
     } else {
       if (this.myAnswers.answered === true) {
         return true
-      }  else {
+      } else {
         return false
       }
     }
@@ -174,26 +176,32 @@ export class QuizTemplateComponent implements OnInit {
 
   setAnswer(dataAnswer) {
     let answer = this.myAnswers;
-    if (answer.multy) {
-      if (answer.multyAnswer.length === 0) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Chose at leas one answer"
-      } else {
-        // multy answer
-        //  this.setToDB(answer, dataAnswer)
-      }
-    } else {
-      if (answer.answer === undefined) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Chose at leas one answer"
-      } else {
-        if (this.nameGuard(dataAnswer.endTime) === "Participate") {
-          this.setToLoomNetwork(answer, dataAnswer);
+    if (this.userWallet != undefined) {
+      this.registError = false;
+      if (answer.multy) {
+        if (answer.multyAnswer.length === 0) {
+          this.errorValidator.idError = dataAnswer.id
+          this.errorValidator.message = "Chose at leas one answer"
         } else {
-          this.setToLoomNetworkValidation(answer, dataAnswer)
+          // multy answer
+          //  this.setToDB(answer, dataAnswer)
+        }
+      } else {
+        if (answer.answer === undefined) {
+          this.errorValidator.idError = dataAnswer.id
+          this.errorValidator.message = "Chose at leas one answer"
+        } else {
+          if (this.nameGuard(dataAnswer.endTime) === "Participate") {
+            this.setToLoomNetwork(answer, dataAnswer);
+          } else {
+            this.setToLoomNetworkValidation(answer, dataAnswer)
+          }
         }
       }
+    } else {
+      this.registError = true;
     }
+
   }
 
   async setToLoomNetwork(answer, dataAnswer) {
@@ -211,8 +219,8 @@ export class QuizTemplateComponent implements OnInit {
       let contr = await contract.initContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
-        if(!dataAnswer.tokenPay){
-           await this.approveToken(_money)
+        if (!dataAnswer.tokenPay) {
+          await this.approveToken(_money)
         }
         let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
           value: dataAnswer.tokenPay ? _money : 0
@@ -230,7 +238,7 @@ export class QuizTemplateComponent implements OnInit {
     }
   }
 
-  async approveToken(amount){
+  async approveToken(amount) {
     let contract = new Contract();
     let quizAddress = contract.quizeAddress();
     return await contract.approve(quizAddress, amount);
@@ -370,17 +378,76 @@ export class QuizTemplateComponent implements OnInit {
         })
   }
 
-  deleteInvitation(data){
+  deleteInvitation(data) {
     let id = data.id
     this.deleteInvitationId.next(id)
   }
 
-  whichComponent(){
-     if(this.fromComponent === "invitation"){
-       return true
-     }else{
-       return false
-     }
+  whichComponent() {
+    if (this.fromComponent === "invitation") {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  validateDeleteButton(data) {
+    if (this.fromComponent === "myEvent") {
+      let result = this.getPosition(data);
+      let z = result.search("Host")
+      if (z !== -1) {
+        if (data.answerAmount >= 1) {
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return false
+      }
+    } else {
+      false
+    }
+  }
+
+  async deleteEvent(data) {
+    let id = data.id
+    let contract = new Contract();
+    let contr = await contract.initContract()
+    let deleteValidator = await contr.methods.deleteEventValidator(id).call();
+    if (Number(deleteValidator) === 0) {
+      this.letsDeleteEvent(id, contr);
+    } else if (Number(deleteValidator) === 1) {
+      this.errorValidator.idError = id
+      this.errorValidator.message = "You can't delete event because event has money on balance."
+    } else if (Number(deleteValidator) === 2) {
+      this.errorValidator.idError = id
+      this.errorValidator.message = "You are now a owner of event, only owner can delete event."
+    }
+
+  }
+
+  async letsDeleteEvent(id, contr) {
+    let deleteEvent = await contr.methods.deleteEvent(id).send();
+    if (deleteEvent.transactionHash !== undefined) {
+      this.deleteFromDb(id);
+    } else {
+      this.errorValidator.idError = id
+      this.errorValidator.message = "error from contract. Check console log."
+    }
+  }
+
+  deleteFromDb(id) {
+    let data = {
+      id: id
+    }
+    this.postService.post("delete_event", data)
+      .subscribe(() => {
+        this.callGetData.next()
+      },
+        (err) => {
+          console.log("from delete wallet")
+          console.log(err)
+        })
   }
 
 }

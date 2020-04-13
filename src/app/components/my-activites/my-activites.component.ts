@@ -3,18 +3,10 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Router } from "@angular/router"
 import { PostService } from '../../services/post.service';
-import * as moment from 'moment';
 import { Answer } from '../../models/Answer.model';
 import _ from 'lodash';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import Contract from '../../services/contract';
-import Web3 from 'web3';
-import LoomEthCoin from '../../services/LoomEthCoin';
-import * as CoinsActios from '../../actions/coins.actions';
 import { NgbTabsetConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import * as UserActions from '../../actions/user.actions';
-import { User } from '../../models/User.model';
-import ERC20 from '../../services/ERC20';
 
 
 
@@ -37,14 +29,11 @@ export class MyActivitesComponent implements OnInit {
   idErrorMoney: number = null;
   coinInfo = null;
   spinnerAnswer: number = 0;
-  errorValidator = {
-    idError: null,
-    message: undefined
-  }
   pathForApi = 'current';
   userData: any = [];
   UserSubscribe;
   CoinsSubscribe;
+  fromComponent = "myEvent";
 
   constructor(
     private store: Store<AppState>,
@@ -74,6 +63,10 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
+  getDataDbComponent(){
+    this.getDataFromDb(this.pathForApi);
+  }
+
   tabChange($event: NgbTabChangeEvent) {
     this.hostFilet = true;
     this.parcipiantFilter = true;
@@ -89,85 +82,6 @@ export class MyActivitesComponent implements OnInit {
         this.spinner = true;
         this.getDataFromDb("past");
         break;
-    }
-  }
-
-  getPosition(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
-    if (findParticipiant !== -1) {
-      if (data.host) {
-        return 'Host, Participiant'
-      } else {
-        return "Participiant"
-      }
-    } else {
-      let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
-      if (findValidator !== -1) {
-        if (data.host) {
-          return 'Host, Validator'
-        } else {
-          return "Validator"
-        }
-      } else {
-        let findInParticInvites = _.findIndex(this.userData.listParticipantEvents, { "event": data.id })
-        if (findInParticInvites !== -1) {
-          return "invited as participiant"
-        } else {
-          let findInValidatorInvites = _.findIndex(this.userData.listValidatorEvents, { "event": data.id })
-          if (findInValidatorInvites !== -1) {
-            return 'invited as validator'
-          } else {
-            if (data.host)  {
-              return 'Host'
-            } else {
-              return "Guest"
-            }
-          }
-        }
-      }
-    }
-  }
-
-  validateDeleteButton(data) {
-    let result = this.getPosition(data);
-    let z = result.search("Host")
-    if (z !== -1) {
-      if (data.answerAmount >= 1) {
-        return false
-      } else {
-        return true
-      }
-    } else {
-      return false
-    }
-  }
-
-  validatorGuard(data) {
-    if (data.finalAnswer !== null) {
-      return true
-    } else {
-      if (this.getPosition(data) === "Guest") {
-        return false
-      } else if (this.getPosition(data) === 'invited as validator') {
-        return false
-      } else {
-        return true
-      }
-    }
-  }
-
-  guardPath(data) {
-    let result = this.getPosition(data);
-    let searchHost = result.search("Host")
-    if (searchHost === -1) {
-      let searchValidator = result.search("articipiant")
-      if (searchValidator === -1) {
-        return false
-      } else {
-        return true
-      }
-    } else {
-      return true
     }
   }
 
@@ -196,18 +110,6 @@ export class MyActivitesComponent implements OnInit {
       }, (err) => {
         console.log(err);
       })
-  }
-
-  removeDuplicates(array, key) {
-    let lookup = {};
-    let result = [];
-    for (let i = 0; i < array.length; i++) {
-      if (!lookup[array[i][key]]) {
-        lookup[array[i][key]] = true;
-        result.push(array[i]);
-      }
-    }
-    return result;
   }
 
   findMultyAnswer(data) {
@@ -243,21 +145,6 @@ export class MyActivitesComponent implements OnInit {
     } else {
       return this.findAnswer(data) !== undefined ? true : false;
     }
-  }
-
-  timeGuard(data) {
-    let dateNow = Number((new Date().getTime() / 1000).toFixed(0));
-    if (data.endTime > dateNow) {
-      return true
-    } else {
-      return false;
-    }
-  }
-
-  getEndValidation(data) {
-    let date = new Date(data.endTime * 1000);
-    let x = date.setDate(date.getDate() + 7);
-    return Number((new Date(x).getTime() / 1000).toFixed(0));
   }
 
   filter() {
@@ -298,308 +185,7 @@ export class MyActivitesComponent implements OnInit {
     return data.length
   }
 
-  makeAnswer(data, i) {
-    let index = _.findIndex(this.myAnswers, { 'event_id': data.id, 'from': data.from });
-    this.myAnswers[index].answer = i;
-    this.errorValidator.idError = null;
-    this.errorValidator.message = undefined;
-  }
 
-  getParticipantsPercentage(answerIndex, questionIndex) {
-    if (this.allData[questionIndex].parcipiantAnswers !== undefined) {
-      let quantity = this.allData[questionIndex].parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.allData[questionIndex].answerAmount)) * 100).toFixed(0);
-    } else {
-      return 0
-    }
-  }
-
-  getValidatorsPercentage(answerIndex, questionIndex) {
-    if (this.allData[questionIndex].validatorsAnswers !== undefined) {
-      let quantity = this.allData[questionIndex].validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(this.allData[questionIndex].validated)) * 100).toFixed(0);
-    } else {
-      return 0
-    }
-  }
-
-  makeMultyAnswer(data, i, event) {
-    this.errorValidator.idError = null;
-    this.errorValidator.message = undefined;
-    if (event.path[0].checked) {
-      let findAnswer = _.findIndex(this.myAnswers, { 'event_id': data.id, 'from': data.from });
-      this.myAnswers[findAnswer].multyAnswer.push(i);
-    } else {
-      let findAnswer = _.findIndex(this.myAnswers, { 'event_id': data.id, 'from': data.from });
-      let index = this.myAnswers[findAnswer].multyAnswer.indexOf(i);
-      if (index !== -1) {
-        this.myAnswers[findAnswer].multyAnswer.splice(index, 1);
-      }
-    }
-  }
-
-  getMultyIcon(answers, i) {
-    let index = answers.indexOf(i);
-    return index !== -1 ? true : false
-  }
-
-  setAnswer(dataAnswer) {
-    let answer = _.find(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
-    if (answer.multy) {
-      if (answer.multyAnswer.length === 0) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Chose at leas one answer"
-      } else {
-        // multy answer
-        //  this.setToDB(answer, dataAnswer)
-      }
-    } else {
-      if (answer.answer === undefined) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Chose at leas one answer"
-      } else {
-        if (this.guardPath(dataAnswer)) {
-          this.setParticipiation(answer, dataAnswer);
-        } else {
-          this.setValidation(answer, dataAnswer)
-        }
-      }
-    }
-  }
-
-  async setParticipiation(answer, dataAnswer) {
-    let balance = dataAnswer.tokenPay ? this.coinInfo.loomBalance : this.coinInfo.tokenBalance
-    if (Number(balance) < dataAnswer.money) {
-      this.errorValidator.idError = dataAnswer.id
-      let currency = dataAnswer.tokenPay ? "Ether" : "Tokens."
-      this.errorValidator.message = "Don't have enough " + currency
-    } else {
-      let web3 = new Web3();
-      let contract = new Contract();
-      var _question_id = dataAnswer.id;
-      var _whichAnswer = answer.answer;
-      var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
-      let contr = await contract.initContract()
-      let validator = await contr.methods.setTimeAnswer(_question_id).call();
-
-      switch (Number(validator)) {
-        case 0:
-          if(!dataAnswer.tokenPay){
-            await this.approveToken(_money)
-         }
-          let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
-            value: dataAnswer.tokenPay ? _money : 0
-          });
-          if (sendToContract.transactionHash !== undefined) {
-            this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
-          }
-          break;
-        case 1:
-          this.errorValidator.idError = dataAnswer.id
-          this.errorValidator.message = "Event not started yeat."
-          break;
-        case 2:
-          this.errorValidator.idError = dataAnswer.id
-          this.errorValidator.message = "Already finished"
-          break;
-      }
-    }
-  }
-
-  async approveToken(amount){
-    let contract = new Contract();
-    let quizAddress = contract.quizeAddress();
-    return await contract.approve(quizAddress, amount);
-  }
-
-
-  setToDB(answer, dataAnswer, transactionHash) {
-    let data = {
-      multy: answer.multy,
-      event_id: answer.event_id,
-      date: new Date(),
-      answer: answer.answer,
-      multyAnswer: answer.multyAnswer,
-      transactionHash: transactionHash,
-      userId: this.userData._id,
-      from: "participant",
-      answerAmount: dataAnswer.answerAmount + 1,
-      money: dataAnswer.money
-    }
-    console.log(data);
-    this.postService.post("answer", data).subscribe(async () => {
-      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
-      this.myAnswers[index].answered = true;
-      this.errorValidator.idError = null;
-      this.errorValidator.message = undefined;
-
-      this.getDataFromDb(this.pathForApi);
-      let web3 = new Web3(window.web3.currentProvider);
-      let loomEthCoinData = new LoomEthCoin()
-      await loomEthCoinData.load(web3)
-      this.coinInfo = await loomEthCoinData._updateBalances()
-      let ERC20Connection = new ERC20()
-      await ERC20Connection.load(web3)
-      let ERC20Coins = await ERC20Connection._updateBalances();
-      this.store.dispatch(new CoinsActios.UpdateCoins({
-        loomBalance: this.coinInfo.loomBalance,
-        mainNetBalance: this.coinInfo.mainNetBalance,
-        tokenBalance: ERC20Coins.loomBalance
-      }))
-
-    },
-      (err) => {
-        console.log(err)
-      })
-  }
-
-  async setValidation(answer, dataAnswer) {
-    console.log("validation work")
-    let contract = new Contract();
-    var _question_id = dataAnswer.id;
-    var _whichAnswer = answer.answer;
-    let contr = await contract.initContract()
-    let validator = await contr.methods.setTimeValidator(_question_id).call();
-    console.log("validatin number: " + validator);
-
-    switch (Number(validator)) {
-      case 0:
-        let sendToContract = await contr.methods.setValidator(_question_id, _whichAnswer).send();
-        if (sendToContract.transactionHash !== undefined) {
-          this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash)
-        }
-        break;
-      case 1:
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event not started yeat."
-        break;
-      case 2:
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event is finished."
-        break;
-      case 3:
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "You have been like the participant in this event. The participant can't be the validator."
-        break;
-    }
-  }
-
-  setToDBValidation(answer, dataAnswer, transactionHash) {
-    let data = {
-      multy: answer.multy,
-      event_id: answer.event_id,
-      date: new Date(),
-      answer: answer.answer,
-      multyAnswer: answer.multyAnswer,
-      transactionHash: transactionHash,
-      userId: this.userData._id,
-      from: "validator",
-      validated: dataAnswer.validated + 1,
-      money: dataAnswer.money
-    }
-    console.log(data);
-    this.postService.post("answer", data).subscribe(async () => {
-      let index = _.findIndex(this.myAnswers, { 'event_id': dataAnswer.id, 'from': dataAnswer.from });
-      this.myAnswers[index].answered = true;
-      this.errorValidator.idError = null;
-      this.errorValidator.message = undefined;
-
-      this.getDataFromDb(this.pathForApi);
-      let web3 = new Web3(window.web3.currentProvider);
-      let loomEthCoinData = new LoomEthCoin()
-      await loomEthCoinData.load(web3)
-      this.coinInfo = await loomEthCoinData._updateBalances()
-      let ERC20Connection = new ERC20()
-      await ERC20Connection.load(web3)
-      let ERC20Coins = await ERC20Connection._updateBalances();
-      this.store.dispatch(new CoinsActios.UpdateCoins({
-        loomBalance: this.coinInfo.loomBalance,
-        mainNetBalance: this.coinInfo.mainNetBalance,
-        tokenBalance: ERC20Coins.loomBalance
-      }))
-
-    },
-      (err) => {
-        console.log(err)
-      })
-  }
-
-
-  async deleteEvent(data) {
-    let id = data.id
-    let contract = new Contract();
-    let contr = await contract.initContract()
-    let deleteValidator = await contr.methods.deleteEventValidator(id).call();
-    if (Number(deleteValidator) === 0) {
-      this.letsDeleteEvent(id, contr);
-    } else if (Number(deleteValidator) === 1) {
-      this.errorValidator.idError = id
-      this.errorValidator.message = "You can't delete event because event has money on balance."
-    } else if (Number(deleteValidator) === 2) {
-      this.errorValidator.idError = id
-      this.errorValidator.message = "You are now a owner of event, only owner can delete event."
-    }
-
-  }
-
-  async letsDeleteEvent(id, contr) {
-    let deleteEvent = await contr.methods.deleteEvent(id).send();
-    if (deleteEvent.transactionHash !== undefined) {
-      this.deleteFromDb(id);
-    } else {
-      this.errorValidator.idError = id
-      this.errorValidator.message = "error from contract. Check console log."
-    }
-  }
-
-
-  updateUser() {
-    let data = {
-      wallet: this.userWallet
-    }
-    this.postService.post("user/validate", data)
-      .subscribe(
-        (currentUser: User) => {
-          this.store.dispatch(new UserActions.UpdateUser({
-            _id: currentUser._id,
-            email: currentUser.email,
-            nickName: currentUser.nickName,
-            wallet: currentUser.wallet,
-            listHostEvents: currentUser.listHostEvents,
-            listParticipantEvents: currentUser.listParticipantEvents,
-            listValidatorEvents: currentUser.listValidatorEvents,
-            historyTransaction: currentUser.historyTransaction,
-            avatar: currentUser.avatar,
-            onlyRegistered: false
-          }))
-        })
-  }
-
-  participantGuard(data, i) {
-    if (data.showDistribution === true) {
-      return true
-    } else {
-      if (this.myAnswers[i].answered === true) {
-        return true
-      } else {
-        return false
-      }
-    }
-  }
-
-  deleteFromDb(id) {
-    let data = {
-      id: id
-    }
-    this.postService.post("delete_event", data)
-      .subscribe(() => {
-        this.getDataFromDb(this.pathForApi);
-      },
-        (err) => {
-          console.log("from delete wallet")
-          console.log(err)
-        })
-  }
 
   ngOnDestroy() {
     this.UserSubscribe.unsubscribe();

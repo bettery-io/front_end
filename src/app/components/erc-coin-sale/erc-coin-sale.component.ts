@@ -72,6 +72,7 @@ export class ErcCoinSaleComponent implements OnInit {
   }
 
   async sellContract(wallet) {
+    // better to move new this.web3.eth.Contract to contract folder
     let abiTokenSale: any = TokenSaleJSON.abi
     this.tokenSale = new this.web3.eth.Contract(abiTokenSale,
       TokenSaleJSON.networks[networkConfigs.networks.rinkeby.networkId].address)
@@ -100,6 +101,7 @@ export class ErcCoinSaleComponent implements OnInit {
   }
 
   async tokenContract(wallet) {
+    // better to move new this.web3.eth.Contract to contract folder
     let abiTokenSale: any = TokenJSON.abi
     this.token = new this.web3.eth.Contract(abiTokenSale,
       TokenJSON.networks[networkConfigs.networks.rinkeby.networkId].address)

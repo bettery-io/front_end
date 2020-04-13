@@ -1,4 +1,4 @@
-import GatewayJSON from '../contract/Gateway.json'
+import GatewayJSON from './Gateway.json'
 import {
     CryptoUtils,
     Address,

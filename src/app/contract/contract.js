@@ -3,7 +3,6 @@ import networkConfigs from '../../network-configs.json'
 import LoomEthCoin from './LoomEthCoin';
 import ERC20 from './ERC20';
 import QuizeJSON from '../../../build/contracts/Quize.json';
-import LoomERC20Coin from '../../../build/contracts/LoomERC20Coin.json';
 import Web3 from 'web3';
 
 export default class Contract {

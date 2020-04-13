@@ -11,14 +11,14 @@ import { PostService } from '../../services/post.service'
 import { User } from '../../models/User.model';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import Contract from '../../services/contract';
+import Contract from '../../contract/contract';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
 import * as CoinsActios from '../../actions/coins.actions';
 
 import Web3 from 'web3';
-import LoomEthCoin from '../../services/LoomEthCoin';
-import ERC20 from '../../services/ERC20';
+import LoomEthCoin from '../../contract/LoomEthCoin';
+import ERC20 from '../../contract/ERC20';
 
 
 type Time = { name: string, date: any, value: number };

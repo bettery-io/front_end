@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../services/post.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
-import Contract from '../../services/contract';
+import Contract from '../../contract/contract';
 import { Answer } from 'src/app/models/Answer.model';
 import _ from 'lodash';
 import Web3 from 'web3';

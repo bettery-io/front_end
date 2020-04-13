@@ -6,8 +6,8 @@ import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
 
-import LoomEthCoin from '../../services/LoomEthCoin';
-import ERC20 from '../../services/ERC20';
+import LoomEthCoin from '../../contract/LoomEthCoin';
+import ERC20 from '../../contract/ERC20';
 
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,7 @@ import { PostService } from '../../services/post.service';
 import { GetService } from '../../services/get.service';
 import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
-import Contract from '../../services/contract';
+import Contract from '../../contract/contract';
 
 
 

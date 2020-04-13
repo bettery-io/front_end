@@ -71,7 +71,8 @@ export class EventFeedComponent implements OnDestroy {
           multyAnswer: this.findMultyAnswer(data)
         }
       });
-      console.log( this.myAnswers);
+      console.log(this.myAnswers);
+      console.log(this.allData)
 
       this.spinner = false;
     })

@@ -95,8 +95,8 @@
 
         <div class="button_box" *ngIf="question.finalAnswer === null">
             <div *ngIf="myAnswers.answered === false">
-                <button (click)="this.deleteEvent(active)" type="button" class="btn btn-danger delete_button"
-                    *ngIf="this.validateDeleteButton(active)">Delete
+                <button (click)="this.deleteEvent(question)" type="button" class="btn btn-danger delete_button"
+                    *ngIf="this.validateDeleteButton(question)">Delete
                     Event</button>
                 <button type="button" *ngIf="!this.timeGuard(question)" class="btn btn-primary"
                     (click)="this.setAnswer(question)">{{this.nameGuard(question.endTime)}}</button>
@@ -105,7 +105,7 @@
                         [timer]="question.startTime"></time></button>
             </div>
             <div *ngIf="errorValidator.idError === question.id">
-                <p>{{errorValidator.message}}</p>
+                <p class="error_answer">{{errorValidator.message}}</p>
             </div>
             <div *ngIf="registError">
                 <p class="error_answer">You must login first</p>

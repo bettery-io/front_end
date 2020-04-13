@@ -54,7 +54,7 @@ export class QuizTemplateComponent implements OnInit {
   getPosition(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
     if (findParticipiant !== -1) {
-      if (data.host == this.userWallet) {
+      if (data.host == this.userWallet || data.host == true) {
         return 'Host, Participiant'
       } else {
         return "Participiant"
@@ -76,7 +76,7 @@ export class QuizTemplateComponent implements OnInit {
           if (findInValidatorInvites !== -1) {
             return 'invited as validator'
           } else {
-            if (data.host == this.userWallet) {
+            if (data.host == this.userWallet || data.host == true) {
               return 'Host'
             } else {
               return "Guest"

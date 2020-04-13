@@ -5,7 +5,6 @@ import { Router } from "@angular/router"
 import { PostService } from '../../services/post.service';
 import { Answer } from '../../models/Answer.model';
 import _ from 'lodash';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { NgbTabsetConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -17,7 +16,6 @@ import { NgbTabsetConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
   providers: [NgbTabsetConfig]
 })
 export class MyActivitesComponent implements OnInit {
-  faCheck = faCheck;
   userWallet: string = undefined;
   allData: any = [];
   myActivites: any = [];
@@ -26,7 +24,6 @@ export class MyActivitesComponent implements OnInit {
   parcipiantFilter: boolean = true;
   validateFilter: boolean = true;
   myAnswers: Answer[] = [];
-  idErrorMoney: number = null;
   coinInfo = null;
   spinnerAnswer: number = 0;
   pathForApi = 'current';
@@ -94,6 +91,7 @@ export class MyActivitesComponent implements OnInit {
         this.myAnswers = [];
         this.myActivites = x
         this.allData = x;
+        console.log(this.allData);
         this.allData.forEach((data, i) => {
           let z = {
             event_id: data.id,
@@ -106,6 +104,7 @@ export class MyActivitesComponent implements OnInit {
 
           this.myAnswers.push(z);
         });
+        console.log(this.myAnswers);
         this.spinner = false;
       }, (err) => {
         console.log(err);

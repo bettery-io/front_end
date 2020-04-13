@@ -42,7 +42,7 @@
 
         <div *ngIf="myActivites.length !== 0" class="question_cards">
             <div *ngFor="let active of myActivites; let index = index">
-                <quiz-template [coinInfo]="coinInfo" [myAnswers]="myAnswers" [userData]="userData"
+                <quiz-template [coinInfo]="coinInfo" [myAnswers]="myAnswers[index]" [userData]="userData"
                 [question]="active" [fromComponent]="fromComponent" (callGetData)="getDataDbComponent()"></quiz-template>
             </div>
         </div>

@@ -415,7 +415,7 @@ export class QuizTemplateComponent implements OnInit {
     let contr = await contract.initContract()
     let deleteValidator = await contr.methods.deleteEventValidator(id).call();
     if (Number(deleteValidator) === 0) {
-      this.letsDeleteEvent(id, contr);
+    this.letsDeleteEvent(id, contr);
     } else if (Number(deleteValidator) === 1) {
       this.errorValidator.idError = id
       this.errorValidator.message = "You can't delete event because event has money on balance."

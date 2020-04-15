@@ -436,6 +436,15 @@ export class QuizTemplateComponent implements OnInit {
     }
   }
 
+
+  finalAnswerGuard(question) {
+    if(question.finalAnswer === null || question.reverted === false){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   deleteFromDb(id) {
     let data = {
       id: id

@@ -37,7 +37,7 @@
             </div>
             <div class="answers">
                 <p>Answers</p>
-                <div *ngIf="question.finalAnswer !== null">
+                <div *ngIf="finalAnswerGuard(question)">
                     <div>
                         <div class="answered_Box" *ngFor="let answer of question.answers; let i = index">
                             <fa-icon class="iconCheck" *ngIf="myAnswers.answer === i" [icon]="faCheck"></fa-icon>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="question.finalAnswer === null">
+                <div *ngIf="!finalAnswerGuard(question)">
                     <div *ngIf="question.multiChoise === true">
                         <div *ngIf="myAnswers.answered === false">
                             <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
@@ -84,7 +84,7 @@
                 </div>
 
             </div>
-            <div *ngIf="question.finalAnswer === null" class="time">
+            <div *ngIf="finalAnswerGuard(question)" class="time">
                 <p style="height: 25px"> </p>
                 <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
                 <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>
@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <div class="button_box" *ngIf="question.finalAnswer === null">
+        <div class="button_box" *ngIf="finalAnswerGuard(question)">
             <div *ngIf="myAnswers.answered === false">
                 <button (click)="this.deleteEvent(question)" type="button" class="btn btn-danger delete_button"
                     *ngIf="this.validateDeleteButton(question)">Delete
@@ -112,7 +112,10 @@
             </div>
         </div>
         <div class="button_box" *ngIf="question.finalAnswer !== null">
-            <p class="text-success event_is_finish">Event is finish!!!</p>
+            <p class="text-success event_is_finish">Event is finish.</p>
+        </div>
+        <div class="button_box" *ngIf="question.reverted">
+            <p class="text-danger event_is_finish">Event is revered.</p>
         </div>
     </div>
 </div>

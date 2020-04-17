@@ -84,7 +84,7 @@
                 </div>
 
             </div>
-            <div *ngIf="finalAnswerGuard(question)" class="time">
+            <div *ngIf="!finalAnswerGuard(question)" class="time">
                 <p style="height: 25px"> </p>
                 <p style="display: flex">Participation <time [timer]="question.startTime"></time></p>
                 <p style="display: flex">Validation <time [timer]="question.endTime"></time></p>
@@ -93,16 +93,13 @@
             </div>
         </div>
 
-        <div class="button_box" *ngIf="finalAnswerGuard(question)">
+        <div class="button_box" *ngIf="!finalAnswerGuard(question)">
             <div *ngIf="myAnswers.answered === false">
                 <button (click)="this.deleteEvent(question)" type="button" class="btn btn-danger delete_button"
                     *ngIf="this.validateDeleteButton(question)">Delete
                     Event</button>
-                <button type="button" *ngIf="!this.timeGuard(question)" class="btn btn-primary"
-                    (click)="this.setAnswer(question)">{{this.nameGuard(question.endTime)}}</button>
-                <button class="btn btn-danger" *ngIf="this.timeGuard(question)"
-                    (click)="this.setAnswer(question)">Start<time style="display:inline-block"
-                        [timer]="question.startTime"></time></button>
+                <button type="button" *ngIf="this.timeGuard(question)" class="btn btn-primary"
+                    (click)="this.setAnswer(question)">{{this.nameGuard(question)}}</button>
             </div>
             <div *ngIf="errorValidator.idError === question.id">
                 <p class="error_answer">{{errorValidator.message}}</p>

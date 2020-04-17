@@ -145,17 +145,21 @@ export class QuizTemplateComponent implements OnInit {
   }
 
   timeGuard(data) {
-    let dateNow = Number((new Date().getTime() / 1000).toFixed(0));
-    if (data.startTime > dateNow) {
-      return true
+    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+    if (data.endTime >= timeNow) {
+      return true;
     } else {
-      return false;
+      if(this.getPosition(data).search('Host') === -1){
+        return true;
+      }else{
+        return false;
+      }
     }
   }
 
   nameGuard(data) {
     let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-    if (data >= timeNow) {
+    if (data.endTime >= timeNow) {
       return "Participate"
     } else {
       return "Validate"
@@ -438,10 +442,10 @@ export class QuizTemplateComponent implements OnInit {
 
 
   finalAnswerGuard(question) {
-    if(question.finalAnswer === null || question.reverted === false){
-      return false;
-    }else{
+    if(question.finalAnswer !== null || question.reverted){
       return true;
+    }else{
+      return false;
     }
   }
 

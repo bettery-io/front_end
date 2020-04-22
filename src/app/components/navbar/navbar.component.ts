@@ -28,6 +28,7 @@ import Contract from '../../contract/contract';
 export class NavbarComponent implements OnInit, OnDestroy {
 
   nickName: string = undefined;
+  fakeCoins: number;
   regisModal: boolean = false
   loomEthCoinData = null;
   web3: Web3 | undefined = null;
@@ -72,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.userWallet = x[0].wallet;
         this.avatar = x[0].avatar;
         this.userId = x[0]._id;
+        this.fakeCoins = x[0].fakeCoins;
         this.onlyRegistered = x[0].onlyRegistered;
         this.activeTab = "eventFeed"
 
@@ -154,7 +156,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     await this.loomEthCoinData.load(this.web3)
     let loomAccount = this.loomEthCoinData.getWeb3Loom();
     let loomAddress = loomAccount.userAccount.plasma.local.toString();
-   // let address = loomAddress.toUpperCase();
 
     if (this.onlyRegistered) {
       let data = {

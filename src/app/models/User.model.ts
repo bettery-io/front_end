@@ -8,5 +8,6 @@ export interface User {
     listValidatorEvents: Object;
     historyTransaction: Object;
     avatar: string,
-    onlyRegistered: boolean
+    onlyRegistered: boolean,
+    fakeCoins: number;
 }

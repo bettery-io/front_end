@@ -1,7 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
-import { Router } from "@angular/router";
 import { GetService } from '../../services/get.service';
 import { Answer } from '../../models/Answer.model';
 import _ from 'lodash';
@@ -16,7 +15,7 @@ export class EventFeedComponent implements OnDestroy {
   private spinner: boolean = true;
   private questions: any;
   myAnswers: Answer[] = [];
-  userWallet: any;
+  userWallet: any = undefined;
   coinInfo = null;
   userData: any = [];
   storeUserSubscribe;
@@ -29,15 +28,13 @@ export class EventFeedComponent implements OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private router: Router,
     private getService: GetService,
   ) {
     this.storeUserSubscribe = this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
-        this.router.navigate(['~ki339203/home'])
+        this.getData();
       } else {
         this.userWallet = x[0].wallet;
-        console.log(this.userWallet)
         this.userData = x[0];
         this.getData();
       }

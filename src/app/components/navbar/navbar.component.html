@@ -5,6 +5,14 @@
     <div *ngIf="nickName === undefined">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
             <li class="nav-item">
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}"
+                    routerLink="~ki339203/create-quize" (click)="setActiveTab('add')">Add new Quize</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}"
+                    routerLink="~ki339203/eventFeed" (click)="setActiveTab('eventFeed')">Event Feed</a>
+            </li>
+            <li class="nav-item">
                 <div class="registration">
                     <button type="button" class="btn btn-success" (click)="registrationModal()">Login /
                         Registration</button>
@@ -47,6 +55,7 @@
                     <p [ngbPopover]="popContent" [popoverTitle]="popTitle" class="loom_balance">
                         Balance: {{coinInfo.loomBalance | number:'1.0-4'}} ETH / {{ERC20Coins?.loomBalance | number:'1.0-4'}} QUIZE</p>
                     <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} $</p>
+                    <p class="loom_balance">Fake coins: {{fakeCoins | number:'1.0-4'}}</p>
                 </div>
             </li>
             <li *ngIf="!amountSpinner" class="nav-item">

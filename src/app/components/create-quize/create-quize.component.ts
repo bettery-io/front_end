@@ -91,7 +91,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     // if no -> regirect to home page
     this.UserSubscribe = this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
-        this.router.navigate(['~ki339203/home'])
+        this.getAllUsers(false);
+        this.getHashtags();
       } else {
         this.host = x;
         this.getAllUsers(false);
@@ -126,7 +127,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
               listValidatorEvents: currentUser.listValidatorEvents,
               historyTransaction: currentUser.historyTransaction,
               avatar: currentUser.avatar,
-              onlyRegistered: false
+              onlyRegistered: false,
+              fakeCoins: currentUser.fakeCoins
             }))
           }
 

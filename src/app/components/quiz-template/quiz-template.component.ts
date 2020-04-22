@@ -131,18 +131,18 @@ export class QuizTemplateComponent implements OnInit {
     }
   }
 
-  validationGuard(data) {
-    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-    if (data.finalAnswer === null) {
-      if (data.endTime <= timeNow && data.hostWallet === this.userWallet) {
-        return false
-      } else {
-        return true
-      }
-    } else {
-      return true
-    }
-  }
+  // validationGuard(data) {
+  //   let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+  //   if (data.finalAnswer === null) {
+  //     if (data.endTime <= timeNow && data.hostWallet === this.userWallet) {
+  //       return false
+  //     } else {
+  //       return true
+  //     }
+  //   } else {
+  //     return true
+  //   }
+  // }
 
   timeGuard(data) {
     let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
@@ -377,7 +377,8 @@ export class QuizTemplateComponent implements OnInit {
             listValidatorEvents: currentUser.listValidatorEvents,
             historyTransaction: currentUser.historyTransaction,
             avatar: currentUser.avatar,
-            onlyRegistered: false
+            onlyRegistered: false,
+            fakeCoins: currentUser.fakeCoins
           }))
         })
   }

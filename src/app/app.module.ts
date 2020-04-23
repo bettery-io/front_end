@@ -31,6 +31,24 @@ import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.c
 import {NumericDirective} from './helpers/numeric';
 import { QuizTemplateComponent } from './components/quiz-template/quiz-template.component';
 
+import { GoogleLoginProvider, FacebookLoginProvider, SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+
+
+let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("105180513890-6vnos5q8fbqtjigjddqbihv4oq83mhia.apps.googleusercontent.com")
+  },
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider("526106101628272")
+  }
+]);
+
+export function provideConfig() {
+  return config;
+}
+
 
 
 @NgModule({
@@ -56,6 +74,7 @@ import { QuizTemplateComponent } from './components/quiz-template/quiz-template.
     AppRoutingModule,
     FontAwesomeModule,
     ReactiveFormsModule,
+    SocialLoginModule,
     StoreModule.forRoot({
       user: userReducer,
       coins: coinsReducer,
@@ -66,7 +85,11 @@ import { QuizTemplateComponent } from './components/quiz-template/quiz-template.
   ],
   providers: [
     PostService,
-    GetService
+    GetService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    }
   ],
   bootstrap: [
     AppComponent

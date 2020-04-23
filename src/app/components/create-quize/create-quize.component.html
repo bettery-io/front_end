@@ -341,5 +341,6 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>

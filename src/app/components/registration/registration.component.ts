@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faGoogle, faFacebook } from '@fortawesome/fontawesome-free-brands'
 import { Store } from '@ngrx/store';
 import { User } from '../../models/User.model';
 import { AppState } from '../../app.state';
@@ -8,6 +9,7 @@ import * as UserActions from '../../actions/user.actions';
 import { PostService } from '../../services/post.service';
 import Web3 from 'web3';
 import { Router } from "@angular/router";
+import { FacebookLoginProvider, GoogleLoginProvider, AuthService, SocialUser } from "angularx-social-login";
 
 
 @Component({
@@ -24,9 +26,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   web3: Web3 | undefined = null;
   metamaskError: string = undefined;
   userWallet: string = undefined;
-  userWalletIsUndefinded: boolean = true;
+  userWalletIsUndefinded: boolean = false;
   networkEror: boolean = false;
   validateSubscribe;
+  loginWithMetamsk = false;
+  faGoogle = faGoogle;
+  faFacebook = faFacebook;
 
 
   @Output() regisModalEvent = new EventEmitter<boolean>();
@@ -36,19 +41,31 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
     private http: PostService,
-    private router: Router
-  ) {
-    this.getUseWalletInMetamask();
-  }
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       nickName: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', Validators.email]
     });
+    
+    this.authService.authState.subscribe((user) => {
+      console.log(user);
+    });
   }
 
-  async getUseWalletInMetamask() {
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+ 
+  signInWithFB(): void {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  } 
+
+  async loginMetamask() {
+    this.loginWithMetamsk = true;
     // Check if MetaMask is installed
     if (!(window as any).ethereum) {
       this.metamaskError = "For registration you must have Metamask installed.";
@@ -108,11 +125,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
                 x._id, 
                 false,
                 x.fakeCoins);
-              let getLocation = document.location.href
-              let gurd = getLocation.search("question")
-              if(gurd === -1){
-                this.router.navigate(['~ki339203/eventFeed'])
-              }
+              // let getLocation = document.location.href
+              // let gurd = getLocation.search("question")
+              // if(gurd === -1){
+              //   this.router.navigate(['~ki339203/eventFeed'])
+              // }
             }
           },
           (err) => {

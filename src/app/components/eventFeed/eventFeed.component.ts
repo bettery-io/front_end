@@ -57,7 +57,7 @@ export class EventFeedComponent implements OnDestroy {
       let data = _.orderBy(x, ['endTime'], ['asc']);
       this.allData = data;
 
-      this.questions = _.filter(data, (o) => { return o.finalAnswer === null })
+      this.questions = _.filter(data, (o) => { return o.finalAnswer === null && !o.reverted })
       this.myAnswers = this.questions.map((data) => {
         return {
           event_id: data.id,
@@ -117,11 +117,17 @@ export class EventFeedComponent implements OnDestroy {
       return _.filter(this.allData, (o) => { return o.endTime >= timeNow }).length
     } else if (from === "validator") {
       let z = this.allData.filter((data) => {
-        return data.endTime <= timeNow && data.hostWallet !== this.userWallet
+        if(this.userWallet !== undefined){
+          return data.endTime <= timeNow && data.hostWallet !== this.userWallet;
+        }else{
+          return data.endTime <= timeNow;
+        }
       })
       return z.filter((data) => { return data.finalAnswer === null }).length
     } else if (from === "history") {
-      return _.filter(this.allData, (o) => { return o.finalAnswer !== null }).length
+      return _.filter(this.allData, (o) => { 
+        return o.finalAnswer !== null || o.reverted
+      }).length
     }
   }
 
@@ -136,14 +142,14 @@ export class EventFeedComponent implements OnDestroy {
         z = []
       } else if (!this.parcipiantFilter && this.validateFilter && this.historyFilter) {
         let x = _.filter(this.allData, (o) => { return o.endTime <= timeNow })
-        let y = _.filter(this.allData, (o) => { return o.finalAnswer !== null })
+        let y = _.filter(this.allData, (o) => { return o.finalAnswer !== null || o.reverted })
         y.forEach((e) => {
           x.push(e)
         })
         z = _.orderBy(x, ['endTime'], ['asc']);
       } else if (this.parcipiantFilter && !this.validateFilter && this.historyFilter) {
         let x = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
-        let y = _.filter(this.allData, (o) => { return o.finalAnswer !== null })
+        let y = _.filter(this.allData, (o) => { return o.finalAnswer !== null || o.reverted })
 
         y.forEach((e) => {
           x.push(e)
@@ -154,9 +160,9 @@ export class EventFeedComponent implements OnDestroy {
       } else if (this.parcipiantFilter && !this.validateFilter && !this.historyFilter) {
         z = _.filter(this.allData, (o) => { return o.endTime >= timeNow })
       } else if (this.parcipiantFilter && this.validateFilter && !this.historyFilter) {
-        z = _.filter(this.allData, (o) => { return o.finalAnswer === null })
+        z = _.filter(this.allData, (o) => { return o.finalAnswer === null && !o.reverted })
       } else if (!this.parcipiantFilter && !this.validateFilter && this.historyFilter) {
-        z = _.filter(this.allData, (o) => { return o.finalAnswer !== null })
+        z = _.filter(this.allData, (o) => { return o.finalAnswer !== null || o.reverted })
       }
 
       this.myAnswers = z.map((data, i) => {

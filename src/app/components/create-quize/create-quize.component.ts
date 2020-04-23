@@ -76,6 +76,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   UserCoinSubscribe;
   holdMoneyError = false;
   getCoinsForHold;
+  regisModal: boolean = false
 
 
 
@@ -137,6 +138,11 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         (err) => {
           console.log("get Users error: " + err)
         })
+  }
+
+
+  receiveRegistState($event) {
+    this.regisModal = $event;
   }
 
   getHashtags() {
@@ -328,11 +334,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-
   onSubmit() {
-
     let promise = new Promise((resolve) => {
       if (this.exactEndTime === false) {
         this.questionForm.controls.calendarEndDate.setValue({ year: 2019, month: 12, day: 18 });
@@ -348,15 +350,19 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       if (this.questionForm.invalid) {
         return;
       }
-      let id = this.generateID()
-      id.subscribe((x: any) => {
-        console.log(x._id)
-        this.sendToContract(x._id);
+      if (this.host.length == 0) {
+        this.regisModal = true;
+      } else {
+        let id = this.generateID()
+        id.subscribe((x: any) => {
+          console.log(x._id)
+          this.sendToContract(x._id);
 
-      }, (err) => {
-        console.log(err)
-        console.log("error from generate id")
-      })
+        }, (err) => {
+          console.log(err)
+          console.log("error from generate id")
+        })
+      }
     })
   }
 
@@ -373,8 +379,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
     let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path).call();
 
-    if(!path){
-       await this.approveToken(calcCoinsForHold)
+    if (!path) {
+      await this.approveToken(calcCoinsForHold)
     }
 
     this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
@@ -405,7 +411,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           path,
           tokenPay
         ).send({
-          value: path ? calcCoinsForHold : 0 
+          value: path ? calcCoinsForHold : 0
         });
         if (sendToContract.transactionHash !== undefined) {
           this.setToDb(id, sendToContract.transactionHash, this.getCoinsForHold);
@@ -417,7 +423,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     }
   }
 
-  async approveToken(amount){
+  async approveToken(amount) {
     let contract = new Contract();
     let quizAddress = contract.quizeAddress();
     return await contract.approve(quizAddress, amount);
@@ -505,7 +511,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       })
   }
 
-  async updateBalance(){
+  async updateBalance() {
     let web3 = new Web3(window.web3.currentProvider);
     let loomEthCoinData = new LoomEthCoin()
     await loomEthCoinData.load(web3)
@@ -513,16 +519,16 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     await ERC20Connection.load(web3)
     let ERC20Coins = await ERC20Connection._updateBalances();
     this.coinInfo = await loomEthCoinData._updateBalances();
-    this.store.dispatch(new CoinsActios.UpdateCoins({ 
+    this.store.dispatch(new CoinsActios.UpdateCoins({
       loomBalance: this.coinInfo.loomBalance,
       mainNetBalance: this.coinInfo.mainNetBalance,
       tokenBalance: ERC20Coins.loomBalance
-      }))
+    }))
   }
 
   ngOnDestroy() {
-    this.UserSubscribe.unsubscribe();
-    this.UserCoinSubscribe.unsubscribe();
+  //  this.UserSubscribe.unsubscribe();
+  //  this.UserCoinSubscribe.unsubscribe();
   }
 
 }

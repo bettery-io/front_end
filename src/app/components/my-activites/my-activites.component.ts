@@ -4,6 +4,7 @@ import { AppState } from '../../app.state';
 import { Router } from "@angular/router"
 import { PostService } from '../../services/post.service';
 import { Answer } from '../../models/Answer.model';
+import { User } from '../../models/User.model';
 import _ from 'lodash';
 import { NgbTabsetConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
@@ -16,7 +17,7 @@ import { NgbTabsetConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
   providers: [NgbTabsetConfig]
 })
 export class MyActivitesComponent implements OnInit {
-  userWallet: string = undefined;
+  userData: User;
   allData: any = [];
   myActivites: any = [];
   spinner: boolean = true;
@@ -27,7 +28,7 @@ export class MyActivitesComponent implements OnInit {
   coinInfo = null;
   spinnerAnswer: number = 0;
   pathForApi = 'current';
-  userData: any = [];
+  userId: number = null;
   UserSubscribe;
   CoinsSubscribe;
   fromComponent = "myEvent";
@@ -39,12 +40,12 @@ export class MyActivitesComponent implements OnInit {
     tabs: NgbTabsetConfig
   ) {
     tabs.justify = 'center';
-    this.UserSubscribe = this.store.select("user").subscribe((x) => {
+    this.UserSubscribe = this.store.select("user").subscribe((x: User[]) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
       } else {
-        this.userWallet = x[0].wallet
         this.userData = x[0];
+        this.userId = x[0]._id;
       }
     });
     this.CoinsSubscribe = this.store.select("coins").subscribe((x) => {
@@ -55,7 +56,7 @@ export class MyActivitesComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userWallet != undefined) {
+    if (this.userId != null) {
       this.getDataFromDb(this.pathForApi);
     }
   }
@@ -84,7 +85,7 @@ export class MyActivitesComponent implements OnInit {
 
   getDataFromDb(from) {
     let data = {
-      id: this.userData._id
+      id: this.userId
     }
     this.postService.post("my_activites/" + from, data)
       .subscribe(async (x) => {
@@ -113,12 +114,12 @@ export class MyActivitesComponent implements OnInit {
 
   findMultyAnswer(data) {
     let z = []
-    let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
+    let part = _.filter(data.parcipiantAnswers, { 'id': this.userId });
     part.forEach((x) => {
       z.push(x.answer)
     })
     if (z.length === 0) {
-      let part = _.filter(data.validatorsAnswers, { 'wallet': this.userWallet });
+      let part = _.filter(data.validatorsAnswers, { 'id': this.userId });
       part.forEach((x) => {
         z.push(x.answer)
       })
@@ -129,9 +130,9 @@ export class MyActivitesComponent implements OnInit {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "id": this.userId })
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      let findValidators = _.findIndex(data.validatorsAnswers, { "id": this.userId })
       return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
     } else {
       return data.parcipiantAnswers[findParticipiant].answer

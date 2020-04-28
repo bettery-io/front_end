@@ -121,7 +121,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.allUsers = data;
           this.users = data;
           if (update === true) {
-            let currentUser = data.find((x) => x.wallet === this.host[0].wallet);
+            let currentUser = data.find((x) => x._id === this.host[0]._id);
             this.store.dispatch(new UserActions.UpdateUser({
               _id: currentUser._id,
               email: currentUser.email,
@@ -503,7 +503,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.getAllUsers(true);
           this.generatedLink = id;
           this.spinner = false;
-          this.updateInvites(this.host[0].wallet);
+          this.updateInvites(this.host[0]._id);
           if(!this.socialRegist){
             this.updateBalance();
           }
@@ -515,9 +515,9 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         })
   }
 
-  updateInvites(wallet) {
+  updateInvites(id) {
     let data = {
-      wallet: wallet
+      id: id
     }
     this.PostService.post("my_activites/invites", data)
       .subscribe(async (x: any) => {

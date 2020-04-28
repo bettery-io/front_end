@@ -136,7 +136,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   getInvitation() {
     let data = {
-      wallet: this.userWallet
+      id: this.userId
     }
     this.postService.post("my_activites/invites", data)
       .subscribe(async (x: any) => {

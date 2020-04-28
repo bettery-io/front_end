@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { GetService } from '../../services/get.service';
 import { Answer } from '../../models/Answer.model';
+import { User } from '../../models/User.model';
 import _ from 'lodash';
 
 
@@ -15,7 +16,7 @@ export class EventFeedComponent implements OnDestroy {
   private spinner: boolean = true;
   private questions: any;
   myAnswers: Answer[] = [];
-  userWallet: any = undefined;
+  userId: number = null ;
   coinInfo = null;
   userData: any = [];
   storeUserSubscribe;
@@ -30,12 +31,11 @@ export class EventFeedComponent implements OnDestroy {
     private store: Store<AppState>,
     private getService: GetService,
   ) {
-    this.storeUserSubscribe = this.store.select("user").subscribe((x) => {
-      console.log(x);
+    this.storeUserSubscribe = this.store.select("user").subscribe((x: User[]) => {
       if (x.length === 0) {
         this.getData();
       } else {
-        this.userWallet = x[0].wallet;
+        this.userData = x[0]._id;
         this.userData = x[0];
         this.getData();
       }
@@ -78,12 +78,12 @@ export class EventFeedComponent implements OnDestroy {
 
   findMultyAnswer(data) {
     let z = []
-    let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
+    let part = _.filter(data.parcipiantAnswers, { 'id': this.userId });
     part.forEach((x) => {
       z.push(x.answer)
     })
     if (z.length === 0) {
-      let part = _.filter(data.validatorsAnswers, { 'wallet': this.userWallet });
+      let part = _.filter(data.validatorsAnswers, { 'id': this.userId });
       part.forEach((x) => {
         z.push(x.answer)
       })
@@ -94,9 +94,9 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "id": this.userId })
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      let findValidators = _.findIndex(data.validatorsAnswers, { "id": this.userId })
       return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
     } else {
       return data.parcipiantAnswers[findParticipiant].answer
@@ -118,8 +118,8 @@ export class EventFeedComponent implements OnDestroy {
       return _.filter(this.allData, (o) => { return o.endTime >= timeNow }).length
     } else if (from === "validator") {
       let z = this.allData.filter((data) => {
-        if(this.userWallet !== undefined){
-          return data.endTime <= timeNow && data.hostWallet !== this.userWallet;
+        if(this.userId !== null){
+          return data.endTime <= timeNow && data.host !== this.userId;
         }else{
           return data.endTime <= timeNow;
         }

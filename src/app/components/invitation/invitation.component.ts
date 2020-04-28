@@ -7,6 +7,7 @@ import { Answer } from '../../models/Answer.model';
 import _ from 'lodash';
 import * as InvitesAction from '../../actions/invites.actions';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { User } from '../../models/User.model';
 
 
 
@@ -18,7 +19,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 export class InvitationComponent implements OnInit {
   UserSubscribe
   CoinsSubscribe
-  userWallet: string = undefined;
+  userId: number;
   userData: any = [];
   coinInfo = null;
   spinner: boolean = true;
@@ -40,11 +41,11 @@ export class InvitationComponent implements OnInit {
     private router: Router,
     private postService: PostService
   ) {
-    this.UserSubscribe = this.store.select("user").subscribe((x) => {
+    this.UserSubscribe = this.store.select("user").subscribe((x: User[]) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
       } else {
-        this.userWallet = x[0].wallet
+        this.userId = x[0]._id
         this.userData = x[0];
       }
     });
@@ -56,14 +57,14 @@ export class InvitationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userWallet != undefined) {
+    if (this.userId != undefined) {
       this.getData();
     }
   }
 
   getData() {
     let data = {
-      wallet: this.userWallet
+      id: this.userId
     }
     this.postService.post("my_activites/invites", data)
       .subscribe(async (x) => {
@@ -90,9 +91,9 @@ export class InvitationComponent implements OnInit {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "id": this.userId })
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      let findValidators = _.findIndex(data.validatorsAnswers, { "id": this.userId })
       return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
     } else {
       return data.parcipiantAnswers[findParticipiant].answer
@@ -110,12 +111,12 @@ export class InvitationComponent implements OnInit {
 
   findMultyAnswer(data) {
     let z = []
-    let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
+    let part = _.filter(data.parcipiantAnswers, { 'id': this.userId });
     part.forEach((x) => {
       z.push(x.answer)
     })
     if (z.length === 0) {
-      let part = _.filter(data.validatorsAnswers, { 'wallet': this.userWallet });
+      let part = _.filter(data.validatorsAnswers, { 'id': this.userId });
       part.forEach((x) => {
         z.push(x.answer)
       })

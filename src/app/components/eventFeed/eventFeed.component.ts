@@ -31,6 +31,7 @@ export class EventFeedComponent implements OnDestroy {
     private getService: GetService,
   ) {
     this.storeUserSubscribe = this.store.select("user").subscribe((x) => {
+      console.log(x);
       if (x.length === 0) {
         this.getData();
       } else {
@@ -68,8 +69,8 @@ export class EventFeedComponent implements OnDestroy {
           multyAnswer: this.findMultyAnswer(data)
         }
       });
-      console.log(this.myAnswers);
-      console.log(this.allData)
+      // console.log(this.myAnswers);
+      // console.log(this.allData)
 
       this.spinner = false;
     })

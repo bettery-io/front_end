@@ -17,6 +17,9 @@ import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
 import Contract from '../../contract/contract';
 
+import {AuthService } from "angularx-social-login";
+
+
 
 
 
@@ -53,6 +56,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   faShare = faShare
   loadMore = false
   avatar;
+  socialRegistration: boolean;
   holdBalance: any = 0;
   ERC20Connection: any = null;
   ERC20Coins: any = null;
@@ -65,8 +69,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private modalService: NgbModal,
     private postService: PostService,
-    private getService: GetService
+    private getService: GetService,
+    private authService: AuthService
   ) {
+
     this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
@@ -75,23 +81,28 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.userId = x[0]._id;
         this.fakeCoins = x[0].fakeCoins;
         this.onlyRegistered = x[0].onlyRegistered;
+        this.socialRegistration = x[0].socialRegistration;
         this.activeTab = "eventFeed"
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
         this.getHistoryUsers(historyData)
         this.getInvitation()
-        if (this.connectToLoomGuard) {
+        if (this.connectToLoomGuard && !this.socialRegistration) {
           this.amountSpinner = true;
           this.connectToLoom()
+        }else{
+          this.amountSpinner = false;
         }
       }
     });
+
     this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
         this.getMoneyHolder();
       }
     })
+
     this.store.select("invites").subscribe((x) => {
       if (x.length !== 0) {
         this.invitationQuantity = x[0].amount
@@ -138,7 +149,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let interval = setInterval(async () => {
       if (this.userWallet !== undefined) {
         let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
-        if (checkSelectedAddress !== this.userWallet) {
+        if (checkSelectedAddress !== this.userWallet && !this.socialRegistration) {
           this.connectToLoomGuard = true;
           this.store.dispatch(new UserActions.RemoveUser(0));
           this.nickName = undefined;
@@ -147,6 +158,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     }, 500)
 
+  }
+
+  depositGuard() {
+    if(!this.amountSpinner && !this.socialRegistration){
+      return true
+    }else{
+      return false
+    }
+  }
+
+  logOut(){
+    this.authService.signOut();
+    this.store.dispatch(new UserActions.RemoveUser(0));
+    this.nickName = undefined;
   }
 
   async connectToLoom() {

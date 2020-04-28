@@ -378,7 +378,8 @@ export class QuizTemplateComponent implements OnInit {
             historyTransaction: currentUser.historyTransaction,
             avatar: currentUser.avatar,
             onlyRegistered: false,
-            fakeCoins: currentUser.fakeCoins
+            fakeCoins: currentUser.fakeCoins,
+            socialRegistration: currentUser.socialRegistration
           }))
         })
   }

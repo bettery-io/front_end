@@ -129,7 +129,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
               historyTransaction: currentUser.historyTransaction,
               avatar: currentUser.avatar,
               onlyRegistered: false,
-              fakeCoins: currentUser.fakeCoins
+              fakeCoins: currentUser.fakeCoins,
+              socialRegistration: currentUser.socialRegistration
             }))
           }
 

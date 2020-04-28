@@ -10,4 +10,5 @@ export interface User {
     avatar: string,
     onlyRegistered: boolean,
     fakeCoins: number;
+    socialRegistration: boolean
 }

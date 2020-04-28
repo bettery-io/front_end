@@ -43,26 +43,30 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private http: PostService,
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) {
+    // social login
+    this.authService.authState.subscribe((user) => {
+      if(user !== null){
+        console.log(user);
+        this.socialRegistration(user);
+      }
+    });
+  }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       nickName: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', Validators.email]
     });
-    
-    this.authService.authState.subscribe((user) => {
-      console.log(user);
-    });
   }
 
   signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
- 
+
   signInWithFB(): void {
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-  } 
+  }
 
   async loginMetamask() {
     this.loginWithMetamsk = true;
@@ -98,10 +102,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   async detectWalletInDB(wallet: string, web3) {
     let checkNetwork = await web3._provider.networkVersion
-    if(checkNetwork !== '4'){
-     this.userWalletIsUndefinded = false;
-     this.networkEror = true;
-    }else{
+    if (checkNetwork !== '4') {
+      this.userWalletIsUndefinded = false;
+      this.networkEror = true;
+    } else {
       let data = {
         wallet: wallet
       }
@@ -114,22 +118,18 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               this.userWalletIsUndefinded = false
             } else {
               this.addUser(
-                x.email, 
-                x.nickName, 
-                x.wallet, 
-                x.listHostEvents, 
-                x.listParticipantEvents, 
-                x.listValidatorEvents, 
-                x.historyTransaction, 
-                x.avatar, 
-                x._id, 
+                x.email,
+                x.nickName,
+                x.wallet,
+                x.listHostEvents,
+                x.listParticipantEvents,
+                x.listValidatorEvents,
+                x.historyTransaction,
+                x.avatar,
+                x._id,
                 false,
-                x.fakeCoins);
-              // let getLocation = document.location.href
-              // let gurd = getLocation.search("question")
-              // if(gurd === -1){
-              //   this.router.navigate(['~ki339203/eventFeed'])
-              // }
+                x.fakeCoins,
+                x.socialRegistration);
             }
           },
           (err) => {
@@ -160,6 +160,53 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     return color;
   }
 
+  socialRegistration(user) {
+    let color = this.getRandomColor()
+
+    let data: User = {
+      _id: null,
+      nickName: user.name,
+      email: user.email,
+      wallet: "null",
+      listHostEvents: [],
+      listParticipantEvents: [],
+      listValidatorEvents: [],
+      historyTransaction: [],
+      avatar: color,
+      onlyRegistered: true,
+      socialRegistration: true,
+      fakeCoins: 100
+    }
+
+    this.http.post("user/socialRegistration", data)
+      .subscribe(
+        (x: any) => {
+          console.log("test");
+          this.addUser(
+            data.email,
+            data.nickName,
+            null,
+            [],
+            [],
+            [],
+            [],
+            color,
+            x._id,
+            true,
+            100,
+            true
+          );
+          let getLocation = document.location.href
+          let gurd = getLocation.search("question")
+          if (gurd === -1) {
+            this.router.navigate(['~ki339203/eventFeed'])
+          }
+        },
+        (err) => {
+          this.registerError = err.error;
+        })
+  }
+
 
   onSubmit() {
     this.submitted = true;
@@ -180,6 +227,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       historyTransaction: [],
       avatar: color,
       onlyRegistered: true,
+      socialRegistration: false,
       fakeCoins: 100
     }
 
@@ -188,21 +236,22 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .subscribe(
         (x: any) => {
           this.addUser(
-            this.registerForm.value.email, 
-            this.registerForm.value.nickName, 
-            this.userWallet, 
-            [], 
-            [], 
-            [], 
-            [], 
-            color, 
-            x._id, 
+            this.registerForm.value.email,
+            this.registerForm.value.nickName,
+            this.userWallet,
+            [],
+            [],
+            [],
+            [],
+            color,
+            x._id,
             true,
-            100
-            );
+            100,
+            false
+          );
           let getLocation = document.location.href
           let gurd = getLocation.search("question")
-          if(gurd === -1){
+          if (gurd === -1) {
             this.router.navigate(['~ki339203/eventFeed'])
           }
         },
@@ -212,31 +261,33 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   addUser(
-    email: string, 
-    nickName: string, 
-    wallet: string, 
-    listHostEvents: Object, 
-    listParticipantEvents: Object, 
-    listValidatorEvents: Object, 
-    historyTransaction: Object, 
-    color: string, 
-    _id: number, 
+    email: string,
+    nickName: string,
+    wallet: string,
+    listHostEvents: Object,
+    listParticipantEvents: Object,
+    listValidatorEvents: Object,
+    historyTransaction: Object,
+    color: string,
+    _id: number,
     onlyRegistered: boolean,
-    fakeCoins: number
-    ) {
+    fakeCoins: number,
+    socialRegistration: boolean
+  ) {
 
-    this.store.dispatch(new UserActions.AddUser({ 
+    this.store.dispatch(new UserActions.AddUser({
       _id: _id,
-      email: email, 
-      nickName: nickName, 
-      wallet: wallet, 
+      email: email,
+      nickName: nickName,
+      wallet: wallet,
       listHostEvents: listHostEvents,
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
       avatar: color,
       onlyRegistered: onlyRegistered,
-      fakeCoins: fakeCoins
+      fakeCoins: fakeCoins,
+      socialRegistration: socialRegistration
     }))
     this.onReset();
   }
@@ -248,8 +299,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.registrationModal();
   }
 
-  ngOnDestroy(){
-    this.validateSubscribe.unsubscribe();
+  ngOnDestroy() {
+ //   this.validateSubscribe.unsubscribe();
   }
 
 }

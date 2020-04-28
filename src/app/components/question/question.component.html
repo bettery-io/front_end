@@ -35,24 +35,19 @@
 
         <div *ngIf="infoData !== undefined">
             <p>Money on event - {{this.weiConvert(infoData.money)}}
-                <span *ngIf="question.tokenPay == false">QUIZE</span>
-                <span *ngIf="question.tokenPay == true">ETH</span>
+                <span >{{question.currencyType}}</span>
             </p>
             <p>Money for company - {{this.weiConvert(infoData.persentFeeCompany)}}
-                <span *ngIf="question.tokenPay == false">QUIZE</span>
-                <span *ngIf="question.tokenPay == true">ETH</span>
+                <span >{{question.currencyType}}</span>
             </p>
             <p>Money for host - {{this.weiConvert(infoData.persentFeeHost)}}
-                <span *ngIf="question.tokenPay == false">QUIZE</span>
-                <span *ngIf="question.tokenPay == true">ETH</span>
+                <span >{{question.currencyType}}</span>
             </p>
             <p>Money for each validators - {{this.weiConvert(infoData.persentForEachValidators)}} 
-                <span *ngIf="question.tokenPay == false">QUIZE</span>
-                <span *ngIf="question.tokenPay == true">ETH</span>
+                <span >{{question.currencyType}}</span>
             </p>
             <p>Money for each participant - {{this.weiConvert(infoData.moneyForParticipant)}} 
-                <span *ngIf="question.tokenPay == false">QUIZE</span>
-                <span *ngIf="question.tokenPay == true">ETH</span>
+                <span >{{question.currencyType}}</span>
             </p>
         </div>
     </div>

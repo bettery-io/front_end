@@ -20,6 +20,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./quiz-template.component.sass']
 })
 export class QuizTemplateComponent implements OnInit {
+  userId: number;
   userWallet: string;
   faCheck = faCheck;
 
@@ -48,21 +49,22 @@ export class QuizTemplateComponent implements OnInit {
 
 
   ngOnInit() {
-    this.userWallet = this.userData.wallet;
+    this.userId = this.userData._id;
+    this.userWallet = this.userData.wallet
   }
 
   getPosition(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "id": this.userId })
     if (findParticipiant !== -1) {
-      if (data.host == this.userWallet || data.host == true) {
+      if (data.host == this.userId || data.host == true) {
         return 'Host, Participiant'
       } else {
         return "Participiant"
       }
     } else {
-      let findValidator = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      let findValidator = _.findIndex(data.validatorsAnswers, { "id": this.userId })
       if (findValidator !== -1) {
-        if (data.host == this.userWallet) {
+        if (data.host == this.userId) {
           return 'Host, Validator'
         } else {
           return "Validator"
@@ -76,7 +78,7 @@ export class QuizTemplateComponent implements OnInit {
           if (findInValidatorInvites !== -1) {
             return 'invited as validator'
           } else {
-            if (data.host == this.userWallet || data.host == true) {
+            if (data.host == this.userId || data.host == true) {
               return 'Host'
             } else {
               return "Guest"
@@ -180,7 +182,7 @@ export class QuizTemplateComponent implements OnInit {
 
   setAnswer(dataAnswer) {
     let answer = this.myAnswers;
-    if (this.userWallet != undefined) {
+    if (this.userId != undefined) {
       this.registError = false;
       if (answer.multy) {
         if (answer.multyAnswer.length === 0) {
@@ -208,6 +210,7 @@ export class QuizTemplateComponent implements OnInit {
 
   }
 
+  // !!!!!! chage tokenPay
   async setToLoomNetwork(answer, dataAnswer) {
     let balance = dataAnswer.tokenPay ? this.coinInfo.loomBalance : this.coinInfo.tokenBalance
     if (Number(balance) < dataAnswer.money) {

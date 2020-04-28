@@ -19,6 +19,8 @@ import * as CoinsActios from '../../actions/coins.actions';
 import Web3 from 'web3';
 import LoomEthCoin from '../../contract/LoomEthCoin';
 import ERC20 from '../../contract/ERC20';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
 
 
 type Time = { name: string, date: any, value: number };
@@ -77,6 +79,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   holdMoneyError = false;
   getCoinsForHold;
   regisModal: boolean = false
+  socialRegist: boolean;
 
 
 
@@ -86,7 +89,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private getSevice: GetService,
     private PostService: PostService,
-
+    private modalService: NgbModal
   ) {
     // check if user registerd
     // if no -> regirect to home page
@@ -96,6 +99,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         this.getHashtags();
       } else {
         this.host = x;
+        this.socialRegist = x[0].socialRegistration;
         this.getAllUsers(false);
         this.getHashtags();
       }
@@ -190,7 +194,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       showDistribution: true,
       privateOrPublic: "public",
       depositPath: "true",
-      eventPayment: "true",
+      eventPayment: "ether",
       amountOfValidators: [3, [Validators.min(1), Validators.required]],
       amount: [0.1, [Validators.min(0.01), Validators.required]]
     });
@@ -335,7 +339,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmit() {
+  onSubmit(content) {
     let promise = new Promise((resolve) => {
       if (this.exactEndTime === false) {
         this.questionForm.controls.calendarEndDate.setValue({ year: 2019, month: 12, day: 18 });
@@ -351,18 +355,26 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       if (this.questionForm.invalid) {
         return;
       }
+      // check registration
       if (this.host.length == 0) {
         this.regisModal = true;
       } else {
-        let id = this.generateID()
-        id.subscribe((x: any) => {
-          console.log(x._id)
-          this.sendToContract(x._id);
-
-        }, (err) => {
-          console.log(err)
-          console.log("error from generate id")
-        })
+        if(this.socialRegist && this.questionForm.value.eventPayment !== "demo"){
+          this.modalService.open(content, {ariaLabelledBy: 'modal-metamask-registration'})
+        }else{
+          let id = this.generateID()
+          id.subscribe((x: any) => {
+            if(this.questionForm.value.eventPayment === "demo"){
+              this.setToDb(x._id, "non-exist", 0);
+            }else{
+              this.sendToContract(x._id);
+            }
+  
+          }, (err) => {
+            console.log(err)
+            console.log("error from generate id")
+          })
+        }
       }
     })
   }
@@ -376,7 +388,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let quizePrice = web3.utils.toWei(String(this.questionForm.value.amount), 'ether');
 
     let path = this.questionForm.value.depositPath === "true" ? true : false;
-    let tokenPay = this.questionForm.value.eventPayment === "true" ? true : false;
+    let tokenPay = this.questionForm.value.eventPayment === "ether" ? true : false;
 
     let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path).call();
 
@@ -482,7 +494,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       showDistribution: this.questionForm.value.showDistribution,
       hashtagsId: this.hashtagsId,
       getCoinsForHold: Number(getCoinsForHold),
-      tokenPay: this.questionForm.value.eventPayment === "true" ? true : false
+      currencyType: this.questionForm.value.eventPayment
     }
 
     this.PostService.post("question/set", this.quizData)
@@ -492,7 +504,9 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.generatedLink = id;
           this.spinner = false;
           this.updateInvites(this.host[0].wallet);
-          this.updateBalance();
+          if(!this.socialRegist){
+            this.updateBalance();
+          }
           console.log("set to db DONE")
         },
         (err) => {

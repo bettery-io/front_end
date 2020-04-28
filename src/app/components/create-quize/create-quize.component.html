@@ -186,19 +186,21 @@
 
         </div>
         <div>
-            <!-- Where to get a deposit ? -->
+            <!-- Event payment -->
 
             <div class="from-group payment">
                 <label>Event payment</label><br>
-                <input formControlName="eventPayment" name="eventPayment" value="true" type="radio"
+                <input formControlName="eventPayment" name="eventPayment" value="ether" type="radio"
                     class="multy_choise">Ethereum<br>
-                <input formControlName="eventPayment" name="eventPayment" value="false" type="radio"
+                <input formControlName="eventPayment" name="eventPayment" value="token" type="radio"
                     class="multy_choise">Token<br>
+                <input formControlName="eventPayment" name="eventPayment" value="demo" type="radio"
+                    class="multy_choise">Demo coins<br>
             </div>
 
             <!-- Where to get a deposit ? -->
 
-            <div class="from-group payment">
+            <div class="from-group payment" *ngIf="questionForm.value.eventPayment !== 'demo'">
                 <label>Where to get a deposit ?</label><br>
                 <input formControlName="depositPath" name="depositPath" value="true" type="radio"
                     class="multy_choise">Ethereum balance<br>
@@ -269,7 +271,7 @@
 
         <div class="form_container button_pos">
             <div *ngIf="!spinner">
-                <button *ngIf="!holdMoneyError" type="button" (click)="onSubmit()"
+                <button *ngIf="!holdMoneyError" type="button" (click)="onSubmit(content)"
                     class="btn btn-success btn-lg btn-block">Create</button>
                 <div *ngIf="holdMoneyError" class="quize_validation_error errorBalance">
                     <p>You don't have enough Ethereum for retention. Try to replenish balance!</p>
@@ -344,3 +346,15 @@
 </div>
 
 <registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-metamask-registration">Please log in with Metamask</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+       <p>You must log in with Metamask for using this functionality.</p>
+    </div>
+</ng-template>

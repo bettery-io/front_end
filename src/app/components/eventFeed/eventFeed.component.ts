@@ -70,7 +70,7 @@ export class EventFeedComponent implements OnDestroy {
         }
       });
       // console.log(this.myAnswers);
-      // console.log(this.allData)
+       console.log(this.allData)
 
       this.spinner = false;
     })

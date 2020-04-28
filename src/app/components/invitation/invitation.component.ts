@@ -83,6 +83,7 @@ export class InvitationComponent implements OnInit {
 
           this.myAnswers.push(z);
         });
+        console.log(this.allData)
         this.store.dispatch(new InvitesAction.UpdateInvites({ amount: this.allData.length }));
         this.spinner = false;
       }, (err) => {
@@ -91,9 +92,9 @@ export class InvitationComponent implements OnInit {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "id": this.userId })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "userId": this.userId })
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { "id": this.userId })
+      let findValidators = _.findIndex(data.validatorsAnswers, { "userId": this.userId })
       return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
     } else {
       return data.parcipiantAnswers[findParticipiant].answer
@@ -111,12 +112,12 @@ export class InvitationComponent implements OnInit {
 
   findMultyAnswer(data) {
     let z = []
-    let part = _.filter(data.parcipiantAnswers, { 'id': this.userId });
+    let part = _.filter(data.parcipiantAnswers, { 'userId': this.userId });
     part.forEach((x) => {
       z.push(x.answer)
     })
     if (z.length === 0) {
-      let part = _.filter(data.validatorsAnswers, { 'id': this.userId });
+      let part = _.filter(data.validatorsAnswers, { 'userId': this.userId });
       part.forEach((x) => {
         z.push(x.answer)
       })

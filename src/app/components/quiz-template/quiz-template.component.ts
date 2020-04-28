@@ -133,40 +133,37 @@ export class QuizTemplateComponent implements OnInit {
     }
   }
 
-  // validationGuard(data) {
-  //   let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-  //   if (data.finalAnswer === null) {
-  //     if (data.endTime <= timeNow && data.hostWallet === this.userWallet) {
-  //       return false
-  //     } else {
-  //       return true
-  //     }
-  //   } else {
-  //     return true
-  //   }
-  // }
+  particCryptoGuard(data) {
+    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+    if (data.endTime >= timeNow && data.currencyType !== "demo") {
+      return true
+    } else {
+      return false
+    }
+  }
 
-  timeGuard(data) {
+  validGuard(data) {
     let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
     if (data.endTime >= timeNow) {
-      return true;
+      return false;
     } else {
-      if(this.getPosition(data).search('Host') === -1){
+      if (this.getPosition(data).search('Host') === -1) {
         return true;
-      }else{
+      } else {
         return false;
       }
     }
   }
 
-  nameGuard(data) {
+  particDemoGuard(data) {
     let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-    if (data.endTime >= timeNow) {
-      return "Participate"
+    if (data.endTime >= timeNow && data.currencyType === "demo") {
+      return true
     } else {
-      return "Validate"
+      return false
     }
   }
+
 
   getEndValidation(data) {
     let date = new Date(data.endTime * 1000);
@@ -180,7 +177,7 @@ export class QuizTemplateComponent implements OnInit {
     this.errorValidator.message = undefined;
   }
 
-  setAnswer(dataAnswer) {
+  setAnswer(dataAnswer, from) {
     let answer = this.myAnswers;
     if (this.userId != undefined) {
       this.registError = false;
@@ -197,26 +194,32 @@ export class QuizTemplateComponent implements OnInit {
           this.errorValidator.idError = dataAnswer.id
           this.errorValidator.message = "Chose at leas one answer"
         } else {
-          if (this.nameGuard(dataAnswer.endTime) === "Participate") {
-            this.setToLoomNetwork(answer, dataAnswer);
-          } else {
+          if (from === "validate") {
             this.setToLoomNetworkValidation(answer, dataAnswer)
+          } else if (from === "demo") {
+            this.setToDB(answer, dataAnswer, "not-exist");
+          } else {
+            this.setToLoomNetwork(answer, dataAnswer);
           }
         }
       }
     } else {
       this.registError = true;
     }
-
   }
 
-  // !!!!!! chage tokenPay
   async setToLoomNetwork(answer, dataAnswer) {
-    let balance = dataAnswer.tokenPay ? this.coinInfo.loomBalance : this.coinInfo.tokenBalance
+    let balance;
+
+    if (dataAnswer.currencyType === "ether") {
+      balance = this.coinInfo.loomBalance
+    } else {
+      balance = this.coinInfo.tokenBalance
+    }
+
     if (Number(balance) < dataAnswer.money) {
       this.errorValidator.idError = dataAnswer.id
-      let currency = dataAnswer.tokenPay ? "Ether" : "Tokens."
-      this.errorValidator.message = "Don't have enough " + currency
+      this.errorValidator.message = "Don't have enough " + dataAnswer.currencyType
     } else {
       let web3 = new Web3();
       let contract = new Contract();
@@ -226,11 +229,11 @@ export class QuizTemplateComponent implements OnInit {
       let contr = await contract.initContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
-        if (!dataAnswer.tokenPay) {
+        if (dataAnswer.currencyType === "token") {
           await this.approveToken(_money)
         }
         let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
-          value: dataAnswer.tokenPay ? _money : 0
+          value: dataAnswer.currencyType === "ether" ? _money : 0
         });
         if (sendToContract.transactionHash !== undefined) {
           this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
@@ -262,6 +265,7 @@ export class QuizTemplateComponent implements OnInit {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "participant",
+      currencyType: dataAnswer.currencyType,
       answerAmount: dataAnswer.answerAmount + 1,
       money: dataAnswer.money
     }
@@ -273,19 +277,26 @@ export class QuizTemplateComponent implements OnInit {
       this.updateUser();
       this.callGetData.next();
 
-      let web3 = new Web3(window.web3.currentProvider);
-      let loomEthCoinData = new LoomEthCoin()
-      await loomEthCoinData.load(web3)
+      console.log(dataAnswer.currencyType)
 
-      this.coinInfo = await loomEthCoinData._updateBalances()
-      let ERC20Connection = new ERC20()
-      await ERC20Connection.load(web3)
-      let ERC20Coins = await ERC20Connection._updateBalances();
-      this.store.dispatch(new CoinsActios.UpdateCoins({
-        loomBalance: this.coinInfo.loomBalance,
-        mainNetBalance: this.coinInfo.mainNetBalance,
-        tokenBalance: ERC20Coins.loomBalance
-      }))
+      if (dataAnswer.currencyType !== 'demo') {
+        console.log("work")
+        let web3 = new Web3(window.web3.currentProvider);
+
+        let loomEthCoinData = new LoomEthCoin()
+        await loomEthCoinData.load(web3)
+        this.coinInfo = await loomEthCoinData._updateBalances()
+
+        let ERC20Connection = new ERC20()
+        await ERC20Connection.load(web3)
+        let ERC20Coins = await ERC20Connection._updateBalances();
+
+        this.store.dispatch(new CoinsActios.UpdateCoins({
+          loomBalance: this.coinInfo.loomBalance,
+          mainNetBalance: this.coinInfo.mainNetBalance,
+          tokenBalance: ERC20Coins.loomBalance
+        }))
+      }
 
     },
       (err) => {
@@ -424,7 +435,7 @@ export class QuizTemplateComponent implements OnInit {
     let contr = await contract.initContract()
     let deleteValidator = await contr.methods.deleteEventValidator(id).call();
     if (Number(deleteValidator) === 0) {
-    this.letsDeleteEvent(id, contr);
+      this.letsDeleteEvent(id, contr);
     } else if (Number(deleteValidator) === 1) {
       this.errorValidator.idError = id
       this.errorValidator.message = "You can't delete event because event has money on balance."
@@ -447,9 +458,9 @@ export class QuizTemplateComponent implements OnInit {
 
 
   finalAnswerGuard(question) {
-    if(question.finalAnswer !== null || question.reverted){
+    if (question.finalAnswer !== null || question.reverted) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }

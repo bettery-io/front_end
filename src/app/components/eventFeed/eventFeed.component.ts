@@ -35,7 +35,7 @@ export class EventFeedComponent implements OnDestroy {
       if (x.length === 0) {
         this.getData();
       } else {
-        this.userData = x[0]._id;
+        this.userId = x[0]._id;
         this.userData = x[0];
         this.getData();
       }
@@ -69,7 +69,7 @@ export class EventFeedComponent implements OnDestroy {
           multyAnswer: this.findMultyAnswer(data)
         }
       });
-      // console.log(this.myAnswers);
+       console.log(this.myAnswers);
        console.log(this.allData)
 
       this.spinner = false;
@@ -78,12 +78,12 @@ export class EventFeedComponent implements OnDestroy {
 
   findMultyAnswer(data) {
     let z = []
-    let part = _.filter(data.parcipiantAnswers, { 'id': this.userId });
+    let part = _.filter(data.parcipiantAnswers, { 'userId': this.userId });
     part.forEach((x) => {
       z.push(x.answer)
     })
     if (z.length === 0) {
-      let part = _.filter(data.validatorsAnswers, { 'id': this.userId });
+      let part = _.filter(data.validatorsAnswers, { 'userId': this.userId });
       part.forEach((x) => {
         z.push(x.answer)
       })
@@ -94,9 +94,9 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "id": this.userId })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "userId": this.userId })
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { "id": this.userId })
+      let findValidators = _.findIndex(data.validatorsAnswers, { "userId": this.userId })
       return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
     } else {
       return data.parcipiantAnswers[findParticipiant].answer

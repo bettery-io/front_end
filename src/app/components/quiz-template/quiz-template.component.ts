@@ -195,7 +195,11 @@ export class QuizTemplateComponent implements OnInit {
           this.errorValidator.message = "Chose at leas one answer"
         } else {
           if (from === "validate") {
-            this.setToLoomNetworkValidation(answer, dataAnswer)
+            if(dataAnswer.currencyType !== "demo"){
+              this.setToLoomNetworkValidation(answer, dataAnswer);
+            }else{
+              this.setToDBValidation(answer,dataAnswer, "not-exist");
+            }
           } else if (from === "demo") {
             this.setToDB(answer, dataAnswer, "not-exist");
           } else {
@@ -277,8 +281,6 @@ export class QuizTemplateComponent implements OnInit {
       this.updateUser();
       this.callGetData.next();
 
-      console.log(dataAnswer.currencyType)
-
       if (dataAnswer.currencyType !== 'demo') {
         console.log("work")
         let web3 = new Web3(window.web3.currentProvider);
@@ -344,10 +346,10 @@ export class QuizTemplateComponent implements OnInit {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "validator",
+      currencyType: dataAnswer.currencyType,
       validated: dataAnswer.validated + 1,
       money: dataAnswer.money
     }
-    console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
       this.myAnswers.answered = true;
       this.errorValidator.idError = null;
@@ -355,18 +357,23 @@ export class QuizTemplateComponent implements OnInit {
 
       this.callGetData.next();
 
-      let web3 = new Web3(window.web3.currentProvider);
-      let loomEthCoinData = new LoomEthCoin()
-      await loomEthCoinData.load(web3)
-      this.coinInfo = await loomEthCoinData._updateBalances()
-      let ERC20Connection = new ERC20()
-      await ERC20Connection.load(web3)
-      let ERC20Coins = await ERC20Connection._updateBalances();
-      this.store.dispatch(new CoinsActios.UpdateCoins({
-        loomBalance: this.coinInfo.loomBalance,
-        mainNetBalance: this.coinInfo.mainNetBalance,
-        tokenBalance: ERC20Coins.loomBalance
-      }))
+      if (dataAnswer.currencyType !== 'demo') {
+        let web3 = new Web3(window.web3.currentProvider);
+
+        let loomEthCoinData = new LoomEthCoin()
+        await loomEthCoinData.load(web3)
+        this.coinInfo = await loomEthCoinData._updateBalances()
+
+        let ERC20Connection = new ERC20()
+        await ERC20Connection.load(web3)
+        let ERC20Coins = await ERC20Connection._updateBalances();
+
+        this.store.dispatch(new CoinsActios.UpdateCoins({
+          loomBalance: this.coinInfo.loomBalance,
+          mainNetBalance: this.coinInfo.mainNetBalance,
+          tokenBalance: ERC20Coins.loomBalance
+        }))
+    }
 
     },
       (err) => {

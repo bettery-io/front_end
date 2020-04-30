@@ -155,6 +155,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.connectToLoomGuard = true;
           this.store.dispatch(new UserActions.RemoveUser(0));
           this.nickName = undefined;
+          this.userWallet = undefined;
           clearImmediate(interval);
         }
       }

@@ -23,20 +23,20 @@ export class HistoryComponent implements OnInit {
     private router: Router,
     private http: PostService
   ) {
-    this.store.select("user").subscribe((x) => {
+    this.store.select("user").subscribe((x:User[]) => {
       if (x.length === 0) {
         this.router.navigate(['~ki339203/home'])
       } else {
-        this.getUserData(x[0].wallet)
+        this.getUserData(x[0]._id)
       }
     });
   }
 
-  getUserData(wallet) {
+  getUserData(id) {
     let data = {
-      wallet: wallet
+      id: id
     }
-    this.http.post("user/validate", data)
+    this.http.post("user/getUserById", data)
       .subscribe(
         (x: User) => {
           if (x.wallet !== undefined) {
@@ -48,7 +48,7 @@ export class HistoryComponent implements OnInit {
                 paymentWay: x.paymentWay,
                 eventId: x.eventId,
                 role: x.role,
-                ether: x.ether
+                currencyType: x.currencyType
               }
             })
             this.historyData = z

@@ -383,9 +383,9 @@ export class QuizTemplateComponent implements OnInit {
 
   updateUser() {
     let data = {
-      wallet: this.userWallet
+      id: this.userId
     }
-    this.postService.post("user/validate", data)
+    this.postService.post("user/getUserById", data)
       .subscribe(
         (currentUser: User) => {
           this.store.dispatch(new UserActions.UpdateUser({

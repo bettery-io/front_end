@@ -14,16 +14,16 @@
                 <td>{{history.date | date:'short'}}</td>
                 <td>{{ history.role}}</td>
                 <td>
-                    <a *ngIf="history.eventId !== 'Deleted'" [routerLink]="['/~ki339203/question', history.eventId]">{{ history.eventId}}</a>
+                    <a *ngIf="history.eventId !== 'Deleted'"
+                        [routerLink]="['/~ki339203/question', history.eventId]">{{ history.eventId}}</a>
                     <p style="margin-bottom: 0;" *ngIf="history.eventId === 'Deleted'">{{ history.eventId}}</p>
                 </td>
                 <td>{{history.paymentWay}}
                     <fa-icon *ngIf="history.paymentWay === 'send'" class="historyIconSend" [icon]="faReply"></fa-icon>
-                    <fa-icon *ngIf="history.paymentWay === 'receive'" class="historyIconReceive" [icon]="faShare"></fa-icon>
+                    <fa-icon *ngIf="history.paymentWay === 'receive'" class="historyIconReceive" [icon]="faShare">
+                    </fa-icon>
                 </td>
-                <td>{{ history.amount }} 
-                    <span *ngIf="history.ether === true" >ETH</span>
-                    <span *ngIf="history.ether === false" >QUIZE</span>
+                <td>{{ history.amount }}<span>{{history.currencyType}}</span>
                 </td>
             </tr>
         </tbody>

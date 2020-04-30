@@ -180,20 +180,19 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     this.http.post("user/socialRegistration", data)
       .subscribe(
-        (x: any) => {
-          console.log("test");
+        (x: User) => {
           this.addUser(
-            data.email,
-            data.nickName,
-            null,
-            [],
-            [],
-            [],
-            [],
-            color,
+            x.email,
+            x.nickName,
+            x.wallet,
+            x.listHostEvents,
+            x.listParticipantEvents,
+            x.listValidatorEvents,
+            x.historyTransaction,
+            x.avatar,
             x._id,
             true,
-            100,
+            x.fakeCoins,
             true
           );
           let getLocation = document.location.href

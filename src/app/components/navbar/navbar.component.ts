@@ -85,6 +85,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.activeTab = "eventFeed"
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
+        console.log(historyData)
         this.getHistoryUsers(historyData)
         this.getInvitation()
         if (this.connectToLoomGuard && !this.socialRegistration) {
@@ -119,6 +120,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         return {
           date: Number((new Date(x.date).getTime() * 1000).toFixed(0)),
           amount: x.amount.toFixed(4),
+          currencyType: x.currencyType,
           paymentWay: x.paymentWay,
           eventId: x.eventId,
           role: x.role

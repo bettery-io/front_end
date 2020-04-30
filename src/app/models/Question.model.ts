@@ -1,5 +1,5 @@
 export interface Question {
-    _id: number;
+    id: number;
     status: string;
     host: number;
     question: string;
@@ -18,4 +18,5 @@ export interface Question {
     answerAmount: number;
     validated: number;
     showDistribution: boolean;
+    currencyType: string;
 }

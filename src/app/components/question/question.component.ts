@@ -4,7 +4,9 @@ import { PostService } from '../../services/post.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import Contract from '../../contract/contract';
-import { Answer } from 'src/app/models/Answer.model';
+import { Answer } from '../../models/Answer.model';
+import { User } from '../../models/User.model';
+import { Question } from '../../models/Question.model';
 import _ from 'lodash';
 import Web3 from 'web3';
 
@@ -19,7 +21,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   private registError: boolean = false;
   private question: any;
   myAnswers: Answer;
-  userWallet: any = undefined;
+  userId: any = undefined;
   infoData: any = undefined;
   coinInfo: any;
   userData: any = [];
@@ -50,15 +52,12 @@ export class QuestionComponent implements OnInit, OnDestroy {
         }
         this.questionId = Number(question.id);
 
-        this.UserSubscribe = this.store.select("user").subscribe((x) => {
+        this.UserSubscribe = this.store.select("user").subscribe((x: User[]) => {
           if (x.length !== 0) {
-            this.userWallet = x[0].wallet
+            this.userId = x[0]._id
             this.userData = x[0]
             this.getDatafromDb(data);
             this.getHistoryById(data)
-            setTimeout(() => {
-              this.info(question.id)
-            }, 3000)
           } else {
             this.getDatafromDb(data);
             this.getHistoryById(data);
@@ -74,14 +73,12 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
     this.getDatafromDb(data);
     this.getHistoryById(data)
-    this.info(data.id)
-
   }
 
 
   getDatafromDb(data) {
     this.postService.post("question/get_by_id", data)
-      .subscribe((x: any) => {
+      .subscribe((x: Question) => {
         console.log(x)
         if (x.id === undefined) {
           this.empty = true
@@ -98,6 +95,11 @@ export class QuestionComponent implements OnInit, OnDestroy {
           }
           this.myAnswers = z;
           this.spinner = false;
+          if(this.question.currencyType !== "demo"){
+            setTimeout(() => {
+              this.info(this.question.id)
+            }, 3000)
+          }
         }
       })
   }
@@ -113,12 +115,12 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   findMultyAnswer(data) {
     let z = []
-    let part = _.filter(data.parcipiantAnswers, { 'wallet': this.userWallet });
+    let part = _.filter(data.parcipiantAnswers, { 'userId': this.userId });
     part.forEach((x) => {
       z.push(x.answer)
     })
     if (z.length === 0) {
-      let part = _.filter(data.validatorsAnswers, { 'wallet': this.userWallet });
+      let part = _.filter(data.validatorsAnswers, { 'userId': this.userId });
       part.forEach((x) => {
         z.push(x.answer)
       })
@@ -129,9 +131,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "wallet": this.userWallet })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "userId": this.userId })
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { "wallet": this.userWallet })
+      let findValidators = _.findIndex(data.validatorsAnswers, { "userId": this.userId })
       return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
     } else {
       return data.parcipiantAnswers[findParticipiant].answer

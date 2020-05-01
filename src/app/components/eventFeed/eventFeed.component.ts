@@ -33,6 +33,8 @@ export class EventFeedComponent implements OnDestroy {
   ) {
     this.storeUserSubscribe = this.store.select("user").subscribe((x: User[]) => {
       if (x.length === 0) {
+        this.userId = null;
+        this.userData = [];
         this.getData();
       } else {
         this.userId = x[0]._id;

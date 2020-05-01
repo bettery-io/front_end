@@ -43,6 +43,8 @@ export class InvitationComponent implements OnInit {
   ) {
     this.UserSubscribe = this.store.select("user").subscribe((x: User[]) => {
       if (x.length === 0) {
+        this.userId = null;
+        this.userData = [];
         this.router.navigate(['~ki339203/home'])
       } else {
         this.userId = x[0]._id

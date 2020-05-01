@@ -42,6 +42,8 @@ export class MyActivitesComponent implements OnInit {
     tabs.justify = 'center';
     this.UserSubscribe = this.store.select("user").subscribe((x: User[]) => {
       if (x.length === 0) {
+        this.userId = null;
+        this.userData = undefined;
         this.router.navigate(['~ki339203/home'])
       } else {
         this.userData = x[0];
@@ -92,7 +94,7 @@ export class MyActivitesComponent implements OnInit {
         this.myAnswers = [];
         this.myActivites = x
         this.allData = x;
-        console.log(this.allData);
+        console.log(this.myActivites);
         this.allData.forEach((data, i) => {
           let z = {
             event_id: data.id,

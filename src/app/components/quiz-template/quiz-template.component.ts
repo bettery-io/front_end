@@ -54,7 +54,7 @@ export class QuizTemplateComponent implements OnInit {
   }
 
   getPosition(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "id": this.userId })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "userId": this.userId })
     if (findParticipiant !== -1) {
       if (data.host == this.userId || data.host == true) {
         return 'Host, Participiant'
@@ -62,7 +62,7 @@ export class QuizTemplateComponent implements OnInit {
         return "Participiant"
       }
     } else {
-      let findValidator = _.findIndex(data.validatorsAnswers, { "id": this.userId })
+      let findValidator = _.findIndex(data.validatorsAnswers, { "userId": this.userId })
       if (findValidator !== -1) {
         if (data.host == this.userId) {
           return 'Host, Validator'

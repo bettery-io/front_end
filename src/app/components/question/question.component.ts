@@ -59,6 +59,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
             this.getDatafromDb(data);
             this.getHistoryById(data)
           } else {
+            this.userId = null;
+            this.userData = [];
             this.getDatafromDb(data);
             this.getHistoryById(data);
           }

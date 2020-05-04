@@ -206,7 +206,7 @@ export class QuizTemplateComponent implements OnInit {
               }
             }
           } else if (from === "demo") {
-            this.setToDB(answer, dataAnswer, "not-exist");
+            this.setToDB(answer, dataAnswer, "not-exist", "demo");
           } else {
             this.setToLoomNetwork(answer, dataAnswer);
           }
@@ -245,7 +245,7 @@ export class QuizTemplateComponent implements OnInit {
           value: dataAnswer.currencyType === "ether" ? _money : 0
         });
         if (sendToContract.transactionHash !== undefined) {
-          this.setToDB(answer, dataAnswer, sendToContract.transactionHash)
+          this.setToDB(answer, dataAnswer, sendToContract.transactionHash, dataAnswer.currencyType)
         }
       } else if (Number(validator) === 1) {
         this.errorValidator.idError = dataAnswer.id
@@ -264,7 +264,7 @@ export class QuizTemplateComponent implements OnInit {
   }
 
 
-  setToDB(answer, dataAnswer, transactionHash) {
+  setToDB(answer, dataAnswer, transactionHash, currencyType) {
     let data = {
       multy: answer.multy,
       event_id: answer.event_id,
@@ -274,7 +274,7 @@ export class QuizTemplateComponent implements OnInit {
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: "participant",
-      currencyType: dataAnswer.currencyType,
+      currencyType: currencyType,
       answerAmount: dataAnswer.answerAmount + 1,
       money: dataAnswer.money
     }

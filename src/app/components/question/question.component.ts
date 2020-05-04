@@ -97,7 +97,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
           }
           this.myAnswers = z;
           this.spinner = false;
-          if(this.question.currencyType !== "demo"){
+          if(this.question.currencyType !== "demo" && this.userId !== null){
             setTimeout(() => {
               this.info(this.question.id)
             }, 3000)

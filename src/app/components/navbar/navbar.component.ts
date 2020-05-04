@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Coins } from '../../models/Coins.model';
@@ -357,6 +357,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.UserSubscribe.unsubscribe();
     this.CoinsSubscribe.unsubscribe();
+  }
+
+  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+    if(this.socialRegistration){
+      this.authService.signOut();
+    }
   }
 
 

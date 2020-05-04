@@ -195,10 +195,15 @@ export class QuizTemplateComponent implements OnInit {
           this.errorValidator.message = "Chose at leas one answer"
         } else {
           if (from === "validate") {
-            if(dataAnswer.currencyType !== "demo"){
-              this.setToLoomNetworkValidation(answer, dataAnswer);
-            }else{
+            if(dataAnswer.currencyType === "demo"){
               this.setToDBValidation(answer,dataAnswer, "not-exist");
+            }else{
+              if(this.userData.wallet === "null"){
+                this.errorValidator.idError = dataAnswer.id
+                this.errorValidator.message = "You must connect metamask"
+              }else{
+                this.setToLoomNetworkValidation(answer, dataAnswer);
+              }
             }
           } else if (from === "demo") {
             this.setToDB(answer, dataAnswer, "not-exist");

@@ -203,8 +203,6 @@
     </ngb-tabset>
 </ng-template>
 
-<registration *ngIf="regisModal" (regisModalEvent)="receiveRegistState($event)"></registration>
-
 <ng-template #popTitle>History transaction in LOOM </ng-template>
 <ng-template #popContent>
     <div *ngIf="userHistory.length !== 0">

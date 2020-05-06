@@ -20,6 +20,7 @@ import Web3 from 'web3';
 import LoomEthCoin from '../../contract/LoomEthCoin';
 import ERC20 from '../../contract/ERC20';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RegistrationComponent} from '../registration/registration.component';
 
 
 
@@ -78,7 +79,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   UserCoinSubscribe;
   holdMoneyError = false;
   getCoinsForHold;
-  regisModal: boolean = false
   socialRegist: boolean;
 
 
@@ -143,11 +143,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         (err) => {
           console.log("get Users error: " + err)
         })
-  }
-
-
-  receiveRegistState($event) {
-    this.regisModal = $event;
   }
 
   getHashtags() {
@@ -339,6 +334,10 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     }
   }
 
+  registrationModal() {
+    this.modalService.open(RegistrationComponent);
+  }
+
   onSubmit(content) {
     let promise = new Promise((resolve) => {
       if (this.exactEndTime === false) {
@@ -357,7 +356,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       }
       // check registration
       if (this.host.length == 0) {
-        this.regisModal = true;
+        this.registrationModal()
       } else {
         if(this.socialRegist && this.questionForm.value.eventPayment !== "demo"){
           this.modalService.open(content, {ariaLabelledBy: 'modal-metamask-registration'})

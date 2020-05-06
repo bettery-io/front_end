@@ -5,6 +5,7 @@ import { Coins } from '../../models/Coins.model';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
+import {RegistrationComponent} from '../registration/registration.component';
 
 import LoomEthCoin from '../../contract/LoomEthCoin';
 import ERC20 from '../../contract/ERC20';
@@ -17,7 +18,7 @@ import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
 import Contract from '../../contract/contract';
 
-import {AuthService } from "angularx-social-login";
+import { AuthService } from "angularx-social-login";
 
 
 
@@ -32,7 +33,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   nickName: string = undefined;
   fakeCoins: number;
-  regisModal: boolean = false
   loomEthCoinData = null;
   web3: Web3 | undefined = null;
   coinInfo: Coins = null;
@@ -91,7 +91,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         if (this.connectToLoomGuard && !this.socialRegistration) {
           this.amountSpinner = true;
           this.connectToLoom()
-        }else{
+        } else {
           this.amountSpinner = false;
         }
       }
@@ -164,14 +164,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   depositGuard() {
-    if(!this.amountSpinner && !this.socialRegistration){
+    if (!this.amountSpinner && !this.socialRegistration) {
       return true
-    }else{
+    } else {
       return false
     }
   }
 
-  logOut(){
+  logOut() {
     this.authService.signOut();
     this.store.dispatch(new UserActions.RemoveUser(0));
     this.nickName = undefined;
@@ -215,8 +215,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.coinInfo = await this.loomEthCoinData._updateBalances();
     this.ERC20Coins = await this.ERC20Connection._updateBalances();
     console.log(this.ERC20Coins);
-    this.store.dispatch(new CoinsActios.UpdateCoins({ 
-      loomBalance: this.coinInfo.loomBalance, 
+    this.store.dispatch(new CoinsActios.UpdateCoins({
+      loomBalance: this.coinInfo.loomBalance,
       mainNetBalance: this.coinInfo.mainNetBalance,
       tokenBalance: this.ERC20Coins.loomBalance
     }))
@@ -246,11 +246,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
 
   registrationModal() {
-    this.regisModal = !this.regisModal;
-  }
-
-  receiveRegistState($event) {
-    this.regisModal = $event;
+    this.modalService.open(RegistrationComponent);
   }
 
   open(content) {
@@ -360,7 +356,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-    if(this.socialRegistration){
+    if (this.socialRegistration) {
       this.authService.signOut();
     }
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle, faFacebook } from '@fortawesome/fontawesome-free-brands'
@@ -10,6 +10,8 @@ import { PostService } from '../../services/post.service';
 import Web3 from 'web3';
 import { Router } from "@angular/router";
 import { FacebookLoginProvider, GoogleLoginProvider, AuthService, SocialUser } from "angularx-social-login";
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @Component({
@@ -17,7 +19,7 @@ import { FacebookLoginProvider, GoogleLoginProvider, AuthService, SocialUser } f
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.sass']
 })
-export class RegistrationComponent implements OnInit, OnDestroy {
+export class RegistrationComponent implements OnInit, OnDestroy{
 
   registerForm: FormGroup;
   submitted: boolean = false;
@@ -26,23 +28,20 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   web3: Web3 | undefined = null;
   metamaskError: string = undefined;
   userWallet: string = undefined;
-  userWalletIsUndefinded: boolean = false;
   networkEror: boolean = false;
   validateSubscribe;
   loginWithMetamsk = false;
   faGoogle = faGoogle;
   faFacebook = faFacebook;
-
-
-  @Output() regisModalEvent = new EventEmitter<boolean>();
-
+  spinner = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
     private http: PostService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    public activeModal: NgbActiveModal
   ) {
     // social login
     this.authService.authState.subscribe((user) => {
@@ -72,8 +71,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.loginWithMetamsk = true;
     // Check if MetaMask is installed
     if (!(window as any).ethereum) {
+      this.spinner = false;
       this.metamaskError = "For registration you must have Metamask installed.";
-      this.userWalletIsUndefinded = false
     } else {
 
       if (!this.web3) {
@@ -82,7 +81,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
           window.web3 = new Web3(window.web3.currentProvider);
           this.web3 = new Web3(window.web3.currentProvider);
         } catch (error) {
-          this.registrationModal()
+          this.spinner = false;
+          this.closeModal()
           window.alert('You need to allow MetaMask.');
           return;
         }
@@ -90,12 +90,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
       const coinbase = await this.web3.eth.getCoinbase();
       if (!coinbase) {
-        this.registrationModal()
+        this.spinner = false;
+        this.closeModal()
         window.alert('Please activate MetaMask first.');
         return;
       } else {
         this.detectWalletInDB(coinbase, this.web3)
-
       }
     }
   }
@@ -103,7 +103,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   async detectWalletInDB(wallet: string, web3) {
     let checkNetwork = await web3._provider.networkVersion
     if (checkNetwork !== '4') {
-      this.userWalletIsUndefinded = false;
+      this.spinner = false;
       this.networkEror = true;
     } else {
       let data = {
@@ -112,10 +112,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       this.validateSubscribe = this.http.post("user/validate", data)
         .subscribe(
           (x: User) => {
+            this.spinner = false;
             console.log(x);
             if (x.wallet === undefined) {
               this.userWallet = wallet;
-              this.userWalletIsUndefinded = false
             } else {
               this.addUser(
                 x.email,
@@ -139,14 +139,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     }
   }
 
-  registrationModal() {
-    this.regisModalEvent.emit(false);
-  }
-
-  closeOutSide(event) {
-    if (event.target.id === "close") {
-      this.registrationModal();
-    };
+  closeModal() {
+    this.activeModal.dismiss('Cross click')
   }
 
   get f() { return this.registerForm.controls; }
@@ -295,7 +289,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   onReset() {
     this.submitted = false;
     this.registerForm.reset();
-    this.registrationModal();
+    this.closeModal();
   }
 
   ngOnDestroy() {

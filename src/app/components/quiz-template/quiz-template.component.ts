@@ -13,6 +13,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import {RegistrationComponent} from '../registration/registration.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'quiz-template',
@@ -29,11 +31,10 @@ export class QuizTemplateComponent implements OnInit {
     message: undefined
   }
 
-  registError = false;
-
   constructor(
     private postService: PostService,
     private store: Store<AppState>,
+    private modalService: NgbModal
   ) { }
 
 
@@ -180,7 +181,7 @@ export class QuizTemplateComponent implements OnInit {
   setAnswer(dataAnswer, from) {
     let answer = this.myAnswers;
     if (this.userId != undefined) {
-      this.registError = false;
+      this.openRegistModal()
       if (answer.multy) {
         if (answer.multyAnswer.length === 0) {
           this.errorValidator.idError = dataAnswer.id
@@ -213,8 +214,12 @@ export class QuizTemplateComponent implements OnInit {
         }
       }
     } else {
-      this.registError = true;
+      this.openRegistModal()
     }
+  }
+
+  openRegistModal(){
+    this.modalService.open(RegistrationComponent);
   }
 
   async setToLoomNetwork(answer, dataAnswer) {

@@ -24,6 +24,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class QuizTemplateComponent implements OnInit, OnChanges {
   userId: number;
   userWallet: string;
+  demoCoins: number;
   faCheck = faCheck;
 
   errorValidator = {
@@ -49,7 +50,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.userId = this.userData._id;
-    this.userWallet = this.userData.wallet
+    this.userWallet = this.userData.wallet;
+    this.demoCoins = this.userData.fakeCoins;
   }
 
   ngOnChanges(changes) {
@@ -58,6 +60,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       if (currentValue._id !== this.userId) {
         this.userId = currentValue._id;
         this.userWallet = currentValue._id;
+        this.demoCoins = currentValue.fakeCoins;
         console.log("work ngOnChanges")
       }
     }
@@ -216,7 +219,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
               }
             }
           } else if (from === "demo") {
-            this.setToDB(answer, dataAnswer, "not-exist", "demo");
+            this.partWithDemoCoins(answer, dataAnswer);
           } else {
             this.setToLoomNetwork(answer, dataAnswer);
           }
@@ -224,6 +227,16 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       }
     } else {
       this.openRegistModal()
+    }
+  }
+
+  partWithDemoCoins(answer, dataAnswer){
+    console.log(this.demoCoins);
+    if(dataAnswer.money > this.demoCoins ){
+      this.errorValidator.idError = dataAnswer.id
+      this.errorValidator.message = "You don't have enough demo coins."
+    }else{
+      this.setToDB(answer, dataAnswer, "not-exist", "demo");
     }
   }
 

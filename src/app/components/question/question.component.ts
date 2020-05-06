@@ -53,6 +53,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.questionId = Number(question.id);
 
         this.UserSubscribe = this.store.select("user").subscribe((x: User[]) => {
+          console.log("test")
           if (x.length !== 0) {
             this.userId = x[0]._id
             this.userData = x[0]

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { User } from '../../models/User.model';
 import _ from 'lodash';
 import { Answer } from '../../models/Answer.model';
@@ -13,15 +13,15 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import {RegistrationComponent} from '../registration/registration.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { RegistrationComponent } from '../registration/registration.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'quiz-template',
   templateUrl: './quiz-template.component.html',
   styleUrls: ['./quiz-template.component.sass']
 })
-export class QuizTemplateComponent implements OnInit {
+export class QuizTemplateComponent implements OnInit, OnChanges {
   userId: number;
   userWallet: string;
   faCheck = faCheck;
@@ -39,7 +39,7 @@ export class QuizTemplateComponent implements OnInit {
 
 
   @Input() question: Object[];
-  @Input() userData: User;
+  @Input("userData") userData: User;
   @Input() myAnswers: Answer;
   @Input() coinInfo: any;
   @Input() fromComponent: string;
@@ -47,12 +47,22 @@ export class QuizTemplateComponent implements OnInit {
   @Output() callGetData = new EventEmitter();
   @Output() deleteInvitationId = new EventEmitter<number>();
 
-
-
   ngOnInit() {
     this.userId = this.userData._id;
     this.userWallet = this.userData.wallet
   }
+
+  ngOnChanges(changes) {
+    if (changes['userData'] !== undefined) {
+      let currentValue = changes['userData'].currentValue;
+      if (currentValue._id !== this.userId) {
+        this.userId = currentValue._id;
+        this.userWallet = currentValue._id;
+        console.log("work ngOnChanges")
+      }
+    }
+  }
+
 
   getPosition(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { "userId": this.userId })
@@ -181,7 +191,6 @@ export class QuizTemplateComponent implements OnInit {
   setAnswer(dataAnswer, from) {
     let answer = this.myAnswers;
     if (this.userId != undefined) {
-      this.openRegistModal()
       if (answer.multy) {
         if (answer.multyAnswer.length === 0) {
           this.errorValidator.idError = dataAnswer.id
@@ -196,13 +205,13 @@ export class QuizTemplateComponent implements OnInit {
           this.errorValidator.message = "Chose at leas one answer"
         } else {
           if (from === "validate") {
-            if(dataAnswer.currencyType === "demo"){
-              this.setToDBValidation(answer,dataAnswer, "not-exist");
-            }else{
-              if(this.userData.wallet === "null"){
+            if (dataAnswer.currencyType === "demo") {
+              this.setToDBValidation(answer, dataAnswer, "not-exist");
+            } else {
+              if (this.userData.wallet === "null") {
                 this.errorValidator.idError = dataAnswer.id
                 this.errorValidator.message = "You must connect metamask"
-              }else{
+              } else {
                 this.setToLoomNetworkValidation(answer, dataAnswer);
               }
             }
@@ -218,7 +227,7 @@ export class QuizTemplateComponent implements OnInit {
     }
   }
 
-  openRegistModal(){
+  openRegistModal() {
     this.modalService.open(RegistrationComponent);
   }
 
@@ -383,7 +392,7 @@ export class QuizTemplateComponent implements OnInit {
           mainNetBalance: this.coinInfo.mainNetBalance,
           tokenBalance: ERC20Coins.loomBalance
         }))
-    }
+      }
 
     },
       (err) => {

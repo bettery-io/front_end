@@ -28,7 +28,6 @@ export class RegistrationComponent implements OnInit, OnDestroy{
   web3: Web3 | undefined = null;
   metamaskError: string = undefined;
   userWallet: string = undefined;
-  networkEror: boolean = false;
   validateSubscribe;
   loginWithMetamsk = false;
   faGoogle = faGoogle;
@@ -82,17 +81,14 @@ export class RegistrationComponent implements OnInit, OnDestroy{
           this.web3 = new Web3(window.web3.currentProvider);
         } catch (error) {
           this.spinner = false;
-          this.closeModal()
-          window.alert('You need to allow MetaMask.');
-          return;
+          this.metamaskError = "You need to allow MetaMask.";
         }
       }
 
       const coinbase = await this.web3.eth.getCoinbase();
       if (!coinbase) {
         this.spinner = false;
-        this.closeModal()
-        window.alert('Please activate MetaMask first.');
+        this.metamaskError = "Please activate MetaMask first.";
         return;
       } else {
         this.detectWalletInDB(coinbase, this.web3)
@@ -104,7 +100,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
     let checkNetwork = await web3._provider.networkVersion
     if (checkNetwork !== '4') {
       this.spinner = false;
-      this.networkEror = true;
+      this.metamaskError = "Plaese switch your network in MetaMask to the Rinkeby network."
     } else {
       let data = {
         wallet: wallet

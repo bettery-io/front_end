@@ -23,10 +23,7 @@
         </div>
     </div>
     <div *ngIf="!spinner">
-        <div *ngIf="networkEror">
-            <p class="networkError">Plaese switch your network in MetaMask to the Rinkeby network.</p>
-        </div>
-        <div *ngIf="!networkEror">
+        <div>
             <div>
                 <h4 class="registration_title">Registration</h4>
                 <fa-icon (click)="closeModal()" class="modal_close" [icon]="faTimes"></fa-icon>

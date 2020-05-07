@@ -73,8 +73,8 @@ export class InvitationComponent implements OnInit {
         this.myAnswers = [];
         this.myActivites = x;
         this.allData = x;
-        this.allData.forEach((data, i) => {
-          let z = {
+        this.myAnswers = this.allData.map((data, i) => {
+          return {
             event_id: data.event.id,
             answer: this.findAnswer(data.event),
             from: data.role,
@@ -82,8 +82,6 @@ export class InvitationComponent implements OnInit {
             answered: this.findAnswered(data.event),
             multyAnswer: this.findMultyAnswer(data.event)
           }
-
-          this.myAnswers.push(z);
         });
         console.log(this.allData)
         this.store.dispatch(new InvitesAction.UpdateInvites({ amount: this.allData.length }));

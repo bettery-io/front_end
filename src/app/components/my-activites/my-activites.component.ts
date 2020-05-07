@@ -63,7 +63,7 @@ export class MyActivitesComponent implements OnInit {
     }
   }
 
-  getDataDbComponent(){
+  getDataDbComponent() {
     this.getDataFromDb(this.pathForApi);
   }
 
@@ -92,11 +92,12 @@ export class MyActivitesComponent implements OnInit {
     this.postService.post("my_activites/" + from, data)
       .subscribe(async (x) => {
         this.myAnswers = [];
-        this.myActivites = x
         this.allData = x;
-        console.log(this.myActivites);
-        this.allData.forEach((data, i) => {
-          let z = {
+        let unique = _.uniqBy(x, 'id'); 
+        this.myActivites = unique;
+
+        this.myAnswers = unique.map((data, i) => {
+          return {
             event_id: data.id,
             answer: this.findAnswer(data),
             from: data.from,
@@ -104,9 +105,9 @@ export class MyActivitesComponent implements OnInit {
             answered: this.findAnswered(data),
             multyAnswer: this.findMultyAnswer(data)
           }
-
-          this.myAnswers.push(z);
         });
+
+        console.log(this.myActivites);
         console.log(this.myAnswers);
         this.spinner = false;
       }, (err) => {
@@ -162,7 +163,9 @@ export class MyActivitesComponent implements OnInit {
         data = data.filter((x) => x.from !== "validator");
       }
 
-      this.myAnswers = data.map((data, i) => {
+      let unique = _.uniqBy(data, 'id'); 
+
+      this.myAnswers = unique.map((data, i) => {
         return {
           event_id: data.id,
           answer: this.findAnswer(data),
@@ -173,7 +176,7 @@ export class MyActivitesComponent implements OnInit {
         }
       })
 
-      this.myActivites = data;
+      this.myActivites = unique;
     }, 100)
   }
 

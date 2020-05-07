@@ -8,6 +8,7 @@ import _ from 'lodash';
 import * as InvitesAction from '../../actions/invites.actions';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { User } from '../../models/User.model';
+import * as UserActions from '../../actions/user.actions';
 
 
 
@@ -170,8 +171,34 @@ export class InvitationComponent implements OnInit {
     }
     this.postService.post("invites/delete", data)
       .subscribe(async (x) => {
+        this.updateUser();
         this.getData();
       })
+  }
+
+  updateUser() {
+    let data = {
+      id: this.userData._id
+    }
+    this.postService.post("user/getUserById", data)
+      .subscribe(
+        (currentUser: User) => {
+          this.store.dispatch(new UserActions.UpdateUser({
+            _id: currentUser._id,
+            email: currentUser.email,
+            nickName: currentUser.nickName,
+            wallet: currentUser.wallet,
+            listHostEvents: currentUser.listHostEvents,
+            listParticipantEvents: currentUser.listParticipantEvents,
+            listValidatorEvents: currentUser.listValidatorEvents,
+            historyTransaction: currentUser.historyTransaction,
+            invitationList: currentUser.invitationList,
+            avatar: currentUser.avatar,
+            onlyRegistered: false,
+            fakeCoins: currentUser.fakeCoins,
+            socialRegistration: currentUser.socialRegistration
+          }))
+        })
   }
 
 

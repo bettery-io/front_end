@@ -22,10 +22,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./quiz-template.component.sass']
 })
 export class QuizTemplateComponent implements OnInit, OnChanges {
-  userId: number;
-  userWallet: string;
-  demoCoins: number;
   faCheck = faCheck;
+  allUserData: User;
 
   errorValidator = {
     idError: null,
@@ -49,18 +47,14 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   @Output() deleteInvitationId = new EventEmitter<number>();
 
   ngOnInit() {
-    this.userId = this.userData._id;
-    this.userWallet = this.userData.wallet;
-    this.demoCoins = this.userData.fakeCoins;
+    this.allUserData = this.userData;
   }
 
   ngOnChanges(changes) {
     if (changes['userData'] !== undefined) {
       let currentValue = changes['userData'].currentValue;
-      if (currentValue._id !== this.userId) {
-        this.userId = currentValue._id;
-        this.userWallet = currentValue._id;
-        this.demoCoins = currentValue.fakeCoins;
+      if (this.allUserData === undefined || currentValue._id !== this.allUserData._id) {
+        this.allUserData = this.userData;
         console.log("work ngOnChanges")
       }
     }
@@ -68,35 +62,30 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
 
   getPosition(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "userId": this.userId })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "userId": this.allUserData._id })
     if (findParticipiant !== -1) {
-      if (data.host == this.userId || data.host == true) {
+      if (data.host == this.allUserData._id || data.host == true) {
         return 'Host, Participiant'
       } else {
         return "Participiant"
       }
     } else {
-      let findValidator = _.findIndex(data.validatorsAnswers, { "userId": this.userId })
+      let findValidator = _.findIndex(data.validatorsAnswers, { "userId": this.allUserData._id })
       if (findValidator !== -1) {
-        if (data.host == this.userId) {
+        if (data.host == this.allUserData._id) {
           return 'Host, Validator'
         } else {
           return "Validator"
         }
       } else {
-        let findInParticInvites = _.findIndex(this.userData.listParticipantEvents, { "event": data.id })
+        let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
         if (findInParticInvites !== -1) {
-          return "invited as participiant"
+          return this.allUserData.invitationList[findInParticInvites].role === "Validate" ? "invited as validator" : "invited as participiant";
         } else {
-          let findInValidatorInvites = _.findIndex(this.userData.listValidatorEvents, { "event": data.id })
-          if (findInValidatorInvites !== -1) {
-            return 'invited as validator'
+          if (data.host == this.allUserData._id || data.host == true) {
+            return 'Host'
           } else {
-            if (data.host == this.userId || data.host == true) {
-              return 'Host'
-            } else {
-              return "Guest"
-            }
+            return "Guest"
           }
         }
       }
@@ -148,33 +137,48 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   }
 
   particCryptoGuard(data) {
-    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-    if (data.endTime >= timeNow && data.currencyType !== "demo") {
-      return true
+    let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
+    if (findInParticInvites === -1) {
+      let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+      if (data.endTime >= timeNow && data.currencyType !== "demo") {
+        return true
+      } else {
+        return false
+      }
     } else {
-      return false
+      return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
     }
   }
 
   validGuard(data) {
-    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-    if (data.endTime >= timeNow) {
-      return false;
-    } else {
-      if (this.getPosition(data).search('Host') === -1) {
-        return true;
-      } else {
+    let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
+    if (findInParticInvites === -1) {
+      let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+      if (data.endTime >= timeNow) {
         return false;
+      } else {
+        if (this.getPosition(data).search('Host') === -1) {
+          return true;
+        } else {
+          return false;
+        }
       }
+    } else {
+      return this.allUserData.invitationList[findInParticInvites].role === "Validate" ? true : false
     }
   }
 
   particDemoGuard(data) {
-    let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-    if (data.endTime >= timeNow && data.currencyType === "demo") {
-      return true
+    let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
+    if (findInParticInvites === -1) {
+      let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+      if (data.endTime >= timeNow && data.currencyType === "demo") {
+        return true
+      } else {
+        return false
+      }
     } else {
-      return false
+      return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
     }
   }
 
@@ -193,7 +197,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
   setAnswer(dataAnswer, from) {
     let answer = this.myAnswers;
-    if (this.userId != undefined) {
+    if (this.allUserData._id != undefined) {
       if (answer.multy) {
         if (answer.multyAnswer.length === 0) {
           this.errorValidator.idError = dataAnswer.id
@@ -230,12 +234,11 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     }
   }
 
-  partWithDemoCoins(answer, dataAnswer){
-    console.log(this.demoCoins);
-    if(dataAnswer.money > this.demoCoins ){
+  partWithDemoCoins(answer, dataAnswer) {
+    if (dataAnswer.money > this.allUserData.fakeCoins) {
       this.errorValidator.idError = dataAnswer.id
       this.errorValidator.message = "You don't have enough demo coins."
-    }else{
+    } else {
       this.setToDB(answer, dataAnswer, "not-exist", "demo");
     }
   }
@@ -415,7 +418,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
   updateUser() {
     let data = {
-      id: this.userId
+      id: this.allUserData._id
     }
     this.postService.post("user/getUserById", data)
       .subscribe(
@@ -429,6 +432,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
             listParticipantEvents: currentUser.listParticipantEvents,
             listValidatorEvents: currentUser.listValidatorEvents,
             historyTransaction: currentUser.historyTransaction,
+            invitationList: currentUser.invitationList,
             avatar: currentUser.avatar,
             onlyRegistered: false,
             fakeCoins: currentUser.fakeCoins,
@@ -438,7 +442,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   }
 
   deleteInvitation(data) {
-    let id = data.id
+    let id = data.id;
     this.deleteInvitationId.next(id)
   }
 

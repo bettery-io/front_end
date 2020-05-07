@@ -7,6 +7,7 @@ export interface User {
     listParticipantEvents: Object;
     listValidatorEvents: Object;
     historyTransaction: Object;
+    invitationList: Object;
     avatar: string,
     onlyRegistered: boolean,
     fakeCoins: number;

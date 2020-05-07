@@ -108,6 +108,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
       this.validateSubscribe = this.http.post("user/validate", data)
         .subscribe(
           (x: User) => {
+            console.log(x);
             this.spinner = false;
             console.log(x);
             if (x.wallet === undefined) {
@@ -121,6 +122,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
                 x.listParticipantEvents,
                 x.listValidatorEvents,
                 x.historyTransaction,
+                x.invitationList,
                 x.avatar,
                 x._id,
                 false,
@@ -162,6 +164,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
       listParticipantEvents: [],
       listValidatorEvents: [],
       historyTransaction: [],
+      invitationList: [],
       avatar: color,
       onlyRegistered: true,
       socialRegistration: true,
@@ -179,6 +182,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
             x.listParticipantEvents,
             x.listValidatorEvents,
             x.historyTransaction,
+            x.invitationList,
             x.avatar,
             x._id,
             true,
@@ -214,6 +218,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
       listParticipantEvents: [],
       listValidatorEvents: [],
       historyTransaction: [],
+      invitationList: [],
       avatar: color,
       onlyRegistered: true,
       socialRegistration: false,
@@ -228,6 +233,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
             this.registerForm.value.email,
             this.registerForm.value.nickName,
             this.userWallet,
+            [],
             [],
             [],
             [],
@@ -257,6 +263,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
     listParticipantEvents: Object,
     listValidatorEvents: Object,
     historyTransaction: Object,
+    invitationList: Object,
     color: string,
     _id: number,
     onlyRegistered: boolean,
@@ -273,6 +280,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
+      invitationList: invitationList,
       avatar: color,
       onlyRegistered: onlyRegistered,
       fakeCoins: fakeCoins,

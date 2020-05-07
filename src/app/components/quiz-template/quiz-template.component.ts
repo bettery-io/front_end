@@ -146,7 +146,11 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         return false
       }
     } else {
-      return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
+      if (data.currencyType !== "demo") {
+        return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
+      } else {
+        return false
+      }
     }
   }
 
@@ -178,7 +182,11 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         return false
       }
     } else {
-      return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
+      if (data.currencyType === "demo") {
+        return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
+      } else {
+        return false
+      }
     }
   }
 
@@ -213,7 +221,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         } else {
           if (from === "validate") {
             if (dataAnswer.currencyType === "demo") {
-              this.setToDBValidation(answer, dataAnswer, "not-exist");
+                this.validateWithDemoCoins(answer, dataAnswer);
             } else {
               if (this.userData.wallet === "null") {
                 this.errorValidator.idError = dataAnswer.id
@@ -235,11 +243,34 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   }
 
   partWithDemoCoins(answer, dataAnswer) {
+    let dateNow = Math.round(new Date().getTime() / 1000);
     if (dataAnswer.money > this.allUserData.fakeCoins) {
       this.errorValidator.idError = dataAnswer.id
       this.errorValidator.message = "You don't have enough demo coins."
     } else {
-      this.setToDB(answer, dataAnswer, "not-exist", "demo");
+      if (dataAnswer.startTime > dateNow) {
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Event not started yeat."
+      } else if (dateNow > dataAnswer.endTime) {
+        this.errorValidator.idError = dataAnswer.id
+        this.errorValidator.message = "Already finished"
+      } else {
+       this.setToDB(answer, dataAnswer, "not-exist", "demo");
+      }
+    }
+  }
+
+  validateWithDemoCoins(answer, dataAnswer) {
+    let dateNow = Math.round(new Date().getTime() / 1000);
+    let finishEvent = Math.round(new Date().setHours(new Date().getHours() + 168) / 1000);
+    if(dataAnswer.endTime > dateNow){
+      this.errorValidator.idError = dataAnswer.id
+      this.errorValidator.message = "Event not started yeat."
+    }else if(dateNow > finishEvent){
+      this.errorValidator.idError = dataAnswer.id
+      this.errorValidator.message = "Already finished"
+    }else{
+      this.setToDBValidation(answer, dataAnswer, "not-exist");
     }
   }
 

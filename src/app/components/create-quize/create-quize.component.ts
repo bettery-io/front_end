@@ -19,8 +19,8 @@ import * as CoinsActios from '../../actions/coins.actions';
 import Web3 from 'web3';
 import LoomEthCoin from '../../contract/LoomEthCoin';
 import ERC20 from '../../contract/ERC20';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {RegistrationComponent} from '../registration/registration.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RegistrationComponent } from '../registration/registration.component';
 
 
 
@@ -359,17 +359,17 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       if (this.host.length == 0) {
         this.registrationModal()
       } else {
-        if(this.socialRegist && this.questionForm.value.eventPayment !== "demo"){
-          this.modalService.open(content, {ariaLabelledBy: 'modal-metamask-registration'})
-        }else{
+        if (this.socialRegist && this.questionForm.value.eventPayment !== "demo") {
+          this.modalService.open(content, { ariaLabelledBy: 'modal-metamask-registration' })
+        } else {
           let id = this.generateID()
           id.subscribe((x: any) => {
-            if(this.questionForm.value.eventPayment === "demo"){
+            if (this.questionForm.value.eventPayment === "demo") {
               this.setToDb(x._id, "non-exist", 0);
-            }else{
+            } else {
               this.sendToContract(x._id);
             }
-  
+
           }, (err) => {
             console.log(err)
             console.log("error from generate id")
@@ -392,10 +392,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
     let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path).call();
 
-    if (!path) {
-      await this.approveToken(calcCoinsForHold)
-    }
-
     this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
 
     let amountGuard = Number(await contr.methods.amountGuard(path).call());
@@ -404,6 +400,11 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       this.holdMoneyError = true;
       this.deleteEvent(id)
     } else {
+
+      if (!path) {
+        await this.approveToken(calcCoinsForHold)
+      }
+
       let startTime = this.getStartTime();
       let endTime = this.getEndTime();
       let percentHost = 0;
@@ -446,7 +447,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let data = {
       id: id
     }
-    this.PostService.post("delete_event", data)
+    this.PostService.post("delete_event_id", data)
       .subscribe(() => {
         this.spinner = false;
       },
@@ -504,7 +505,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.generatedLink = id;
           this.spinner = false;
           this.updateInvites(this.host[0]._id);
-          if(!this.socialRegist){
+          if (!this.socialRegist) {
             this.updateBalance();
           }
           console.log("set to db DONE")
@@ -542,8 +543,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  //  this.UserSubscribe.unsubscribe();
-  //  this.UserCoinSubscribe.unsubscribe();
+    //  this.UserSubscribe.unsubscribe();
+    //  this.UserCoinSubscribe.unsubscribe();
   }
 
 }

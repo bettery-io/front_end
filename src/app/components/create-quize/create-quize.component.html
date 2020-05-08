@@ -263,9 +263,9 @@
                 formControlName="amount" placeholder="Enter your amount">
             <div *ngIf="submitted && f.amount.errors">
                 <small *ngIf="f.amount.errors.min" class="form-text quize_validation_error">Minimum amount is
-                    0.01 Etherium</small>
+                    0.01 {{questionForm.value.depositPath  === "true" ? "ETH" : "QUIZE"}}</small>
                 <small *ngIf="f.amount.errors.required" class="form-text quize_validation_error">Minimum amount is
-                    0.01 Etherium</small>
+                    0.01 {{questionForm.value.depositPath  === "true" ? "ETH" : "QUIZE"}}</small>
             </div>
         </div>
 
@@ -275,7 +275,7 @@
                     class="btn btn-success btn-lg btn-block">Create</button>
                 <div *ngIf="holdMoneyError" class="quize_validation_error errorBalance">
                     <p>You don't have enough Ethereum for retention. Try to replenish balance!</p>
-                    <p>Minimum balance is {{getCoinsForHold}} ETH</p>
+                    <p>Minimum balance is {{getCoinsForHold}} {{questionForm.value.depositPath  === "true" ? "ETH" : "QUIZE"}}</p>
                 </div>
             </div>
 

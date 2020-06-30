@@ -196,7 +196,6 @@ export class InvitationComponent implements OnInit {
             avatar: currentUser.avatar,
             onlyRegistered: false,
             fakeCoins: currentUser.fakeCoins,
-            socialRegistration: currentUser.socialRegistration
           }))
         })
   }

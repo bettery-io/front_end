@@ -9,8 +9,8 @@ import * as UserActions from '../../actions/user.actions';
 import { PostService } from '../../services/post.service';
 import Web3 from 'web3';
 import { Router } from "@angular/router";
-import { FacebookLoginProvider, GoogleLoginProvider, AuthService, SocialUser } from "angularx-social-login";
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import web3Obj from '../../helpers/torus'
 
 
 
@@ -19,7 +19,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.sass']
 })
-export class RegistrationComponent implements OnInit, OnDestroy{
+export class RegistrationComponent implements OnInit, OnDestroy {
 
   registerForm: FormGroup;
   submitted: boolean = false;
@@ -30,8 +30,6 @@ export class RegistrationComponent implements OnInit, OnDestroy{
   userWallet: string = undefined;
   validateSubscribe;
   loginWithMetamsk = false;
-  faGoogle = faGoogle;
-  faFacebook = faFacebook;
   spinner = true;
 
   constructor(
@@ -39,17 +37,8 @@ export class RegistrationComponent implements OnInit, OnDestroy{
     private store: Store<AppState>,
     private http: PostService,
     private router: Router,
-    private authService: AuthService,
     public activeModal: NgbActiveModal
-  ) {
-    // social login
-    this.authService.authState.subscribe((user) => {
-      if(user !== null){
-        console.log(user);
-        this.socialRegistration(user);
-      }
-    });
-  }
+  ) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -58,12 +47,20 @@ export class RegistrationComponent implements OnInit, OnDestroy{
     });
   }
 
-  signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  async loginWithTorus() {
+    try {
+      await web3Obj.initialize()
+      this.setStateInfo()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  signInWithFB(): void {
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  async setStateInfo() {
+    this.userWallet = (await web3Obj.web3.eth.getAccounts())[0]
+    let balance = web3Obj.web3.utils.fromWei(await web3Obj.web3.eth.getBalance(this.userWallet), 'ether')
+    console.log("balance: " + balance)
+    console.log("userWallet: " + this.userWallet)
   }
 
   async loginMetamask() {
@@ -98,9 +95,9 @@ export class RegistrationComponent implements OnInit, OnDestroy{
 
   async detectWalletInDB(wallet: string, web3) {
     let checkNetwork = await web3._provider.networkVersion
-    if (checkNetwork !== '4') {
+    if (checkNetwork !== '5') {
       this.spinner = false;
-      this.metamaskError = "Plaese switch your network in MetaMask to the Rinkeby network."
+      this.metamaskError = "Plaese switch your network in MetaMask to the Goerli network."
     } else {
       let data = {
         wallet: wallet
@@ -126,8 +123,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
                 x.avatar,
                 x._id,
                 false,
-                x.fakeCoins,
-                x.socialRegistration);
+                x.fakeCoins);
             }
           },
           (err) => {
@@ -152,54 +148,6 @@ export class RegistrationComponent implements OnInit, OnDestroy{
     return color;
   }
 
-  socialRegistration(user) {
-    let color = this.getRandomColor()
-
-    let data: User = {
-      _id: null,
-      nickName: user.name,
-      email: user.email,
-      wallet: "null",
-      listHostEvents: [],
-      listParticipantEvents: [],
-      listValidatorEvents: [],
-      historyTransaction: [],
-      invitationList: [],
-      avatar: color,
-      onlyRegistered: true,
-      socialRegistration: true,
-      fakeCoins: 100
-    }
-
-    this.http.post("user/socialRegistration", data)
-      .subscribe(
-        (x: User) => {
-          this.addUser(
-            x.email,
-            x.nickName,
-            x.wallet,
-            x.listHostEvents,
-            x.listParticipantEvents,
-            x.listValidatorEvents,
-            x.historyTransaction,
-            x.invitationList,
-            x.avatar,
-            x._id,
-            true,
-            x.fakeCoins,
-            true
-          );
-          let getLocation = document.location.href
-          let gurd = getLocation.search("question")
-          if (gurd === -1) {
-            this.router.navigate(['~ki339203/eventFeed'])
-          }
-        },
-        (err) => {
-          this.registerError = err.error;
-        })
-  }
-
 
   onSubmit() {
     this.submitted = true;
@@ -221,7 +169,6 @@ export class RegistrationComponent implements OnInit, OnDestroy{
       invitationList: [],
       avatar: color,
       onlyRegistered: true,
-      socialRegistration: false,
       fakeCoins: 100
     }
 
@@ -241,8 +188,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
             color,
             x._id,
             true,
-            100,
-            false
+            100
           );
           let getLocation = document.location.href
           let gurd = getLocation.search("question")
@@ -268,7 +214,6 @@ export class RegistrationComponent implements OnInit, OnDestroy{
     _id: number,
     onlyRegistered: boolean,
     fakeCoins: number,
-    socialRegistration: boolean
   ) {
 
     this.store.dispatch(new UserActions.AddUser({
@@ -283,8 +228,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
       invitationList: invitationList,
       avatar: color,
       onlyRegistered: onlyRegistered,
-      fakeCoins: fakeCoins,
-      socialRegistration: socialRegistration
+      fakeCoins: fakeCoins
     }))
     this.onReset();
   }
@@ -297,7 +241,7 @@ export class RegistrationComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy() {
- //   this.validateSubscribe.unsubscribe();
+    //   this.validateSubscribe.unsubscribe();
   }
 
 }

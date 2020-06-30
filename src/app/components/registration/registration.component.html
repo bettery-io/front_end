@@ -7,12 +7,7 @@
         <button class="btn btn-primary" (click)="loginMetamask()">Login with Metamask</button>
     </div>
     <div class="login_button">
-        <button class="btn btn-danger googleLogin" (click)="signInWithGoogle()">
-            <fa-icon [icon]="faGoogle"></fa-icon>
-        </button>
-        <button class="btn btn-primary" (click)="signInWithFB()">
-            <fa-icon [icon]="faFacebook"></fa-icon>
-        </button>
+        <button class="btn btn-primary" (click)="loginWithTorus()">Login with Torus</button>
     </div>
 </div>
 <div *ngIf="loginWithMetamsk">

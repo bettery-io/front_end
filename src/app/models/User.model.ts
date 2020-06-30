@@ -1,5 +1,5 @@
 export interface User {
-    _id: number,
+    _id: number;
     nickName: string;
     email: string;
     wallet: string;
@@ -8,8 +8,7 @@ export interface User {
     listValidatorEvents: Object;
     historyTransaction: Object;
     invitationList: Object;
-    avatar: string,
-    onlyRegistered: boolean,
+    avatar: string;
+    onlyRegistered: boolean;
     fakeCoins: number;
-    socialRegistration: boolean
 }

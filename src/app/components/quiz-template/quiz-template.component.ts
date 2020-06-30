@@ -467,7 +467,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
             avatar: currentUser.avatar,
             onlyRegistered: false,
             fakeCoins: currentUser.fakeCoins,
-            socialRegistration: currentUser.socialRegistration
           }))
         })
   }

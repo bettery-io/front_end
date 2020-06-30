@@ -79,7 +79,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   UserCoinSubscribe;
   holdMoneyError = false;
   getCoinsForHold;
-  socialRegist: boolean;
 
 
 
@@ -99,7 +98,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         this.getHashtags();
       } else {
         this.host = x;
-        this.socialRegist = x[0].socialRegistration;
         this.getAllUsers(false);
         this.getHashtags();
       }
@@ -134,8 +132,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
               invitationList: currentUser.invitationList,
               avatar: currentUser.avatar,
               onlyRegistered: false,
-              fakeCoins: currentUser.fakeCoins,
-              socialRegistration: currentUser.socialRegistration
+              fakeCoins: currentUser.fakeCoins
             }))
           }
 
@@ -359,7 +356,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       if (this.host.length == 0) {
         this.registrationModal()
       } else {
-        if (this.socialRegist && this.questionForm.value.eventPayment !== "demo") {
+        if (this.questionForm.value.eventPayment !== "demo") {
           this.modalService.open(content, { ariaLabelledBy: 'modal-metamask-registration' })
         } else {
           let id = this.generateID()
@@ -505,9 +502,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
           this.generatedLink = id;
           this.spinner = false;
           this.updateInvites(this.host[0]._id);
-          if (!this.socialRegist) {
-            this.updateBalance();
-          }
+          this.updateBalance();
           console.log("set to db DONE")
         },
         (err) => {

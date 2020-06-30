@@ -18,9 +18,6 @@ import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
 import Contract from '../../contract/contract';
 
-import { AuthService } from "angularx-social-login";
-
-
 
 
 
@@ -56,7 +53,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   faShare = faShare
   loadMore = false
   avatar;
-  socialRegistration: boolean;
   holdBalance: any = 0;
   ERC20Connection: any = null;
   ERC20Coins: any = null;
@@ -69,8 +65,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private modalService: NgbModal,
     private postService: PostService,
-    private getService: GetService,
-    private authService: AuthService
+    private getService: GetService
   ) {
 
     this.store.select("user").subscribe((x) => {
@@ -81,14 +76,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.userId = x[0]._id;
         this.fakeCoins = x[0].fakeCoins;
         this.onlyRegistered = x[0].onlyRegistered;
-        this.socialRegistration = x[0].socialRegistration;
         this.activeTab = "eventFeed"
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
         console.log(historyData)
         this.getHistoryUsers(historyData)
         this.getInvitation()
-        if (this.connectToLoomGuard && !this.socialRegistration) {
+        if (this.connectToLoomGuard) {
           this.amountSpinner = true;
           this.connectToLoom()
         } else {
@@ -151,7 +145,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let interval = setInterval(async () => {
       if (this.userWallet !== undefined) {
         let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
-        if (checkSelectedAddress !== this.userWallet && !this.socialRegistration) {
+        if (checkSelectedAddress !== this.userWallet) {
           this.connectToLoomGuard = true;
           this.store.dispatch(new UserActions.RemoveUser(0));
           this.nickName = undefined;
@@ -164,7 +158,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   depositGuard() {
-    if (!this.amountSpinner && !this.socialRegistration) {
+    if (!this.amountSpinner) {
       return true
     } else {
       return false
@@ -172,7 +166,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    this.authService.signOut();
     this.store.dispatch(new UserActions.RemoveUser(0));
     this.nickName = undefined;
   }
@@ -355,11 +348,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.CoinsSubscribe.unsubscribe();
   }
 
-  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-    if (this.socialRegistration) {
-      this.authService.signOut();
-    }
-  }
+  // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+  //   if (this.socialRegistration) {
+  //     this.authService.signOut();
+  //   }
+  // }
 
 
 }

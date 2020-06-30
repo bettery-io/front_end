@@ -75,6 +75,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.http.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
+          console.log(x);
           this.addUser(
             x.email,
             x.nickName,
@@ -92,10 +93,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         }, (err) => {
           console.log(err)
         })
-  }
-
-  async logout() {
-    await web3Obj.torus.cleanUp()
   }
 
   async loginMetamask() {

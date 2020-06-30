@@ -17,6 +17,7 @@ import { GetService } from '../../services/get.service';
 import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
 import Contract from '../../contract/contract';
+import web3Obj from '../../helpers/torus'
 
 
 
@@ -72,11 +73,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet;
+        this.verifier = x[0].verifier
         this.avatar = x[0].avatar;
         this.userId = x[0]._id;
         this.fakeCoins = x[0].fakeCoins;
         this.activeTab = "eventFeed"
-        this.verifier = x[0].verifier
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
         console.log(historyData)
@@ -165,13 +166,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  logOut() {
-    this.store.dispatch(new UserActions.RemoveUser(0));
-    this.nickName = undefined;
-  }
-
   async connectToLoom() {
-    console.log("problem is here")
     this.connectToLoomGuard = false;
     this.web3 = new Web3(window.web3.currentProvider);
     this.loomEthCoinData = new LoomEthCoin()
@@ -329,11 +324,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.CoinsSubscribe.unsubscribe();
   }
 
-  // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-  //   if (this.socialRegistration) {
-  //     this.authService.signOut();
-  //   }
-  // }
+  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+    console.log("TEST")
 
+    this.logOut()
+  }
+
+  async logOut() {
+    if (this.userWallet !== undefined && this.verifier !== "metamask") {
+      await web3Obj.torus.cleanUp()
+    }
+    this.store.dispatch(new UserActions.RemoveUser(0));
+    this.nickName = undefined;
+  }
 
 }

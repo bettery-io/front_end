@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faGoogle, faFacebook } from '@fortawesome/fontawesome-free-brands'
 import { Store } from '@ngrx/store';
 import { User } from '../../models/User.model';
 import { AppState } from '../../app.state';
@@ -42,25 +41,61 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      nickName: ['', [Validators.required, Validators.minLength(6)]],
-      email: ['', Validators.email]
+      nickName: ['', Validators.minLength(6)],
+      email: ['', [Validators.email, Validators.required]]
     });
   }
 
   async loginWithTorus() {
+    this.activeModal.dismiss('Cross click')
     try {
       await web3Obj.initialize()
-      this.setStateInfo()
+      this.setTorusInfoToDB()
     } catch (error) {
       console.error(error)
     }
   }
 
-  async setStateInfo() {
-    this.userWallet = (await web3Obj.web3.eth.getAccounts())[0]
-    let balance = web3Obj.web3.utils.fromWei(await web3Obj.web3.eth.getBalance(this.userWallet), 'ether')
-    console.log("balance: " + balance)
-    console.log("userWallet: " + this.userWallet)
+  async setTorusInfoToDB() {
+    let userInfo = await web3Obj.torus.getUserInfo("")
+    let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
+
+    console.log(userInfo)
+    console.log(userWallet)
+
+    let data: Object = {
+      _id: null,
+      wallet: userWallet,
+      nickName: userInfo.name,
+      email: userInfo.email,
+      avatar: userInfo.profileImage,
+      verifier: userInfo.verifier,
+      verifierId: userInfo.verifierId,
+    }
+    this.http.post("user/torus_regist", data)
+      .subscribe(
+        (x: any) => {
+          this.addUser(
+            x.email,
+            x.nickName,
+            x.wallet,
+            x.listHostEvents,
+            x.listParticipantEvents,
+            x.listValidatorEvents,
+            x.historyTransaction,
+            x.invitationList,
+            x.avatar,
+            x._id,
+            x.fakeCoins,
+            x.verifier
+          );
+        }, (err) => {
+          console.log(err)
+        })
+  }
+
+  async logout() {
+    await web3Obj.torus.cleanUp()
   }
 
   async loginMetamask() {
@@ -122,8 +157,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
                 x.invitationList,
                 x.avatar,
                 x._id,
-                false,
-                x.fakeCoins);
+                x.fakeCoins,
+                x.verifier);
             }
           },
           (err) => {
@@ -157,19 +192,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let data: User = {
+    let data: Object = {
       _id: null,
       nickName: this.registerForm.value.nickName,
       email: this.registerForm.value.email,
       wallet: this.userWallet,
-      listHostEvents: [],
-      listParticipantEvents: [],
-      listValidatorEvents: [],
-      historyTransaction: [],
-      invitationList: [],
       avatar: color,
-      onlyRegistered: true,
-      fakeCoins: 100
     }
 
 
@@ -187,8 +215,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             [],
             color,
             x._id,
-            true,
-            100
+            x.fakeCoins,
+            x.verifier
           );
           let getLocation = document.location.href
           let gurd = getLocation.search("question")
@@ -212,8 +240,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     invitationList: Object,
     color: string,
     _id: number,
-    onlyRegistered: boolean,
     fakeCoins: number,
+    verifier: string
   ) {
 
     this.store.dispatch(new UserActions.AddUser({
@@ -227,8 +255,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       historyTransaction: historyTransaction,
       invitationList: invitationList,
       avatar: color,
-      onlyRegistered: onlyRegistered,
-      fakeCoins: fakeCoins
+      fakeCoins: fakeCoins,
+      verifier: verifier
     }))
     this.onReset();
   }

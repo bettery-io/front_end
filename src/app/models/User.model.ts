@@ -9,6 +9,6 @@ export interface User {
     historyTransaction: Object;
     invitationList: Object;
     avatar: string;
-    onlyRegistered: boolean;
     fakeCoins: number;
+    verifier: string;
 }

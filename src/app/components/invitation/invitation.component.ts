@@ -194,8 +194,8 @@ export class InvitationComponent implements OnInit {
             historyTransaction: currentUser.historyTransaction,
             invitationList: currentUser.invitationList,
             avatar: currentUser.avatar,
-            onlyRegistered: false,
             fakeCoins: currentUser.fakeCoins,
+            verifier: currentUser.verifier
           }))
         })
   }

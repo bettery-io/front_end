@@ -5,7 +5,7 @@ import { Coins } from '../../models/Coins.model';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
-import {RegistrationComponent} from '../registration/registration.component';
+import { RegistrationComponent } from '../registration/registration.component';
 
 import LoomEthCoin from '../../contract/LoomEthCoin';
 import ERC20 from '../../contract/ERC20';
@@ -43,7 +43,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   activeTab: string = undefined;
   userWallet: string = undefined;
   userId: number;
-  onlyRegistered: boolean = true;
   UserSubscribe;
   CoinsSubscribe;
   connectToLoomGuard = true;
@@ -60,6 +59,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ERC20depositAmount: number = 0;
   ERC20withdrawalError: string = undefined;
   ERC20withdrawalAmount: number = 0;
+  verifier: string = undefined;
 
   constructor(
     private store: Store<AppState>,
@@ -75,8 +75,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.avatar = x[0].avatar;
         this.userId = x[0]._id;
         this.fakeCoins = x[0].fakeCoins;
-        this.onlyRegistered = x[0].onlyRegistered;
         this.activeTab = "eventFeed"
+        this.verifier = x[0].verifier
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
         console.log(historyData)
@@ -143,7 +143,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     let interval = setInterval(async () => {
-      if (this.userWallet !== undefined) {
+      if (this.userWallet !== undefined && this.verifier === "metamask") {
         let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
         if (checkSelectedAddress !== this.userWallet) {
           this.connectToLoomGuard = true;
@@ -176,28 +176,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.web3 = new Web3(window.web3.currentProvider);
     this.loomEthCoinData = new LoomEthCoin()
     await this.loomEthCoinData.load(this.web3)
-    let loomAccount = this.loomEthCoinData.getWeb3Loom();
-    let loomAddress = loomAccount.userAccount.plasma.local.toString();
-
-    if (this.onlyRegistered) {
-      let data = {
-        id: this.userId,
-        loomWallet: loomAddress
-      }
-
-      // update user loom wallet by id
-      this.postService.post('user/loomWallet', data).subscribe(async () => {
-        this.ERC20Connection = new ERC20()
-        await this.ERC20Connection.load(this.web3)
-        this.updateBalance()
-      })
-    } else {
-      this.ERC20Connection = new ERC20()
-      await this.ERC20Connection.load(this.web3)
-      this.updateBalance()
-    }
-
-
+    this.ERC20Connection = new ERC20()
+    await this.ERC20Connection.load(this.web3)
+    this.updateBalance()
   }
 
   setActiveTab(data) {

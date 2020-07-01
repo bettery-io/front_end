@@ -1,12 +1,19 @@
+import MaticMTX from '../../../build/contracts/ChildERC20.json';
+import web3Obj from '../helpers/torus';
+import Web3 from 'web3';
+import MaticConfig from '../config/matic.json';
 
+
+// OLD CODE
 import networkConfigs from '../../network-configs.json'
 import LoomEthCoin from './LoomEthCoin';
 import ERC20 from './ERC20';
 import QuizeJSON from '../../../build/contracts/Quize.json';
-import Web3 from 'web3';
+
 
 export default class Contract {
 
+    // OLD CODE
     async initContract() {
         let contract = new LoomEthCoin();
         let web3Loom = contract.getWeb3Loom().web3LoomData
@@ -25,7 +32,7 @@ export default class Contract {
         return ERC20Token.approveToken(address, amount)
     }
 
-    quizeAddress(){
+    quizeAddress() {
         return QuizeJSON.networks[networkConfigs.networks.extdev.networkId].address
     }
 

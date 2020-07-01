@@ -6,9 +6,11 @@ import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
 import { RegistrationComponent } from '../registration/registration.component';
+import maticInit from '../../contract/maticInit.js'
+import { goerliProvider, maticTestnetProvider } from "../../helpers/metamaskProvider";
 
-import LoomEthCoin from '../../contract/LoomEthCoin';
-import ERC20 from '../../contract/ERC20';
+// import LoomEthCoin from '../../contract/LoomEthCoin';
+// import ERC20 from '../../contract/ERC20';
 
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -46,7 +48,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userId: number;
   UserSubscribe;
   CoinsSubscribe;
-  connectToLoomGuard = true;
   invitationQuantity = null;
   userHistory: any = []
   faReply = faReply
@@ -83,19 +84,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
         console.log(historyData)
         this.getHistoryUsers(historyData)
         this.getInvitation()
-        if (this.connectToLoomGuard) {
-          this.amountSpinner = true;
-          this.connectToLoom()
-        } else {
-          this.amountSpinner = false;
-        }
+        this.updateBalance()
       }
     });
 
     this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
-        this.getMoneyHolder();
+        //  this.getMoneyHolder();
+        // get ERC20Coins balance !!!!!!
+        this.ERC20Coins = x[0];
       }
     })
 
@@ -147,7 +145,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (this.userWallet !== undefined && this.verifier === "metamask") {
         let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
         if (checkSelectedAddress !== this.userWallet) {
-          this.connectToLoomGuard = true;
           this.store.dispatch(new UserActions.RemoveUser(0));
           this.nickName = undefined;
           this.userWallet = undefined;
@@ -166,29 +163,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  async connectToLoom() {
-    this.connectToLoomGuard = false;
-    this.web3 = new Web3(window.web3.currentProvider);
-    this.loomEthCoinData = new LoomEthCoin()
-    await this.loomEthCoinData.load(this.web3)
-    this.ERC20Connection = new ERC20()
-    await this.ERC20Connection.load(this.web3)
-    this.updateBalance()
-  }
-
   setActiveTab(data) {
     this.activeTab = data;
   }
 
   async updateBalance() {
-    this.coinInfo = await this.loomEthCoinData._updateBalances();
-    this.ERC20Coins = await this.ERC20Connection._updateBalances();
-    console.log(this.ERC20Coins);
+    let gorliProvider = new Web3(this.verifier === "metamask" ? goerliProvider : web3Obj.torus.provider);
+    let mainBalance = await gorliProvider.eth.getBalance(this.userWallet);
+    let matic = new maticInit(this.verifier);
+    let MTXToken = await matic.getMTXBalance();
+
+    let web3 = new Web3();
+    let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
+    let mainEther = web3.utils.fromWei(mainBalance, "ether")
+
+    // get Token balance !!!!!!
     this.store.dispatch(new CoinsActios.UpdateCoins({
-      loomBalance: this.coinInfo.loomBalance,
-      mainNetBalance: this.coinInfo.mainNetBalance,
-      tokenBalance: this.ERC20Coins.loomBalance
+      loomBalance: maticTokenBalanceToEth,
+      mainNetBalance: mainEther,
+      tokenBalance: "0.00"
     }))
+    this.amountSpinner = false;
   }
 
   async getMoneyHolder() {
@@ -325,8 +320,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-    console.log("TEST")
-
     this.logOut()
   }
 

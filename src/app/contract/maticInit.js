@@ -85,7 +85,7 @@ export default class maticInit {
                     from: this.from
                 })
             console.log("Deposit on Ropsten:" + logsForDeposit.transactionHash);
-            return;
+            return null;
         } catch (err) {
             return err
         }

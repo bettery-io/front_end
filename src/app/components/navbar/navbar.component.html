@@ -89,8 +89,8 @@
                 <div class="modal-body">
                     <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
                     <hr />
-                    <p>ETH Balance (ETH Mainnet): {{coinInfo.mainNetBalance | number:'1.0-4'}}</p>
-                    <p>ETH Balance (Loom Sidechain): {{coinInfo.loomBalance | number:'1.0-4'}}</p>
+                    <p>ETH Balance (ETH Mainnet): {{coinInfo?.mainNetBalance | number:'1.0-4'}}</p>
+                    <p>ETH Balance (Matic Sidechain): {{coinInfo?.loomBalance | number:'1.0-4'}}</p>
                     <div>
                         <div class="form-group">
                             <div class="input-group">
@@ -113,8 +113,8 @@
                     </div>
 
                     <hr />
-                    <p>QUIZE Balance (ETH Mainnet): {{ERC20Coins.mainNetBalance | number:'1.0-4'}}</p>
-                    <p>QUIZE Balance (Loom Sidechain): {{ERC20Coins.loomBalance | number:'1.0-4'}}</p>
+                    <p>QUIZE Balance (ETH Mainnet): {{ERC20Coins?.mainNetBalance | number:'1.0-4'}}</p>
+                    <p>QUIZE Balance (Matic Sidechain): {{ERC20Coins?.loomBalance | number:'1.0-4'}}</p>
 
                     <div>
                         <div class="form-group">
@@ -144,8 +144,8 @@
                 <div class="modal-body">
                     <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
                     <hr />
-                    <p>ETH Balance (ETH Mainnet): {{coinInfo.mainNetBalance | number:'1.0-4'}}</p>
-                    <p>ETH Balance (Loom Sidechain): {{coinInfo.loomBalance | number:'1.0-4'}}</p>
+                    <p>ETH Balance (ETH Mainnet): {{coinInfo?.mainNetBalance | number:'1.0-4'}}</p>
+                    <p>ETH Balance (Matic Sidechain): {{coinInfo?.loomBalance | number:'1.0-4'}}</p>
                     <div>
                         <div class="form-group">
                             <div class="input-group">
@@ -167,8 +167,8 @@
                         <p *ngIf="withdrawalError !== undefined" class="deposit_error">{{withdrawalError}}</p>
                     </div>
                     <hr />
-                    <p>QUIZE Balance (ETH Mainnet): {{ERC20Coins.mainNetBalance | number:'1.0-4'}}</p>
-                    <p>QUIZE Balance (Loom Sidechain): {{ERC20Coins.loomBalance | number:'1.0-4'}}</p>
+                    <p>QUIZE Balance (ETH Mainnet): {{ERC20Coins?.mainNetBalance | number:'1.0-4'}}</p>
+                    <p>QUIZE Balance (Matic Sidechain): {{ERC20Coins?.loomBalance | number:'1.0-4'}}</p>
                     <div>
                         <div class="form-group">
                             <div class="input-group">
@@ -196,7 +196,7 @@
     </ngb-tabset>
 </ng-template>
 
-<ng-template #popTitle>History transaction in LOOM </ng-template>
+<ng-template #popTitle>History transaction in Matic </ng-template>
 <ng-template #popContent>
     <div *ngIf="userHistory.length !== 0">
         <div *ngFor="let history of userHistory; let i = index">
@@ -224,6 +224,6 @@
         </div>
     </div>
     <div *ngIf="userHistory.length === 0">
-        <p class="noneHistory">Do not have any transaction in LOOM network.</p>
+        <p class="noneHistory">Do not have any transaction in Matic network.</p>
     </div>
 </ng-template>

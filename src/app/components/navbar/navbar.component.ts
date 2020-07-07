@@ -9,9 +9,6 @@ import { RegistrationComponent } from '../registration/registration.component';
 import maticInit from '../../contract/maticInit.js'
 import { goerliProvider, maticTestnetProvider } from "../../helpers/metamaskProvider";
 
-// import LoomEthCoin from '../../contract/LoomEthCoin';
-// import ERC20 from '../../contract/ERC20';
-
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../services/post.service';
@@ -33,7 +30,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   nickName: string = undefined;
   fakeCoins: number;
-  loomEthCoinData = null;
   web3: Web3 | undefined = null;
   coinInfo: Coins = null;
   depositAmount: number = 0;
@@ -55,8 +51,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   loadMore = false
   avatar;
   holdBalance: any = 0;
-  ERC20Connection: any = null;
-  ERC20Coins: any = null;
+  ERC20Coins: any = [];
   ERC20depositError: string = undefined;
   ERC20depositAmount: number = 0;
   ERC20withdrawalError: string = undefined;
@@ -92,8 +87,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (x.length !== 0) {
         this.coinInfo = x[0];
         //  this.getMoneyHolder();
-        // get ERC20Coins balance !!!!!!
-        this.ERC20Coins = x[0];
       }
     })
 
@@ -170,14 +163,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async updateBalance() {
     let gorliProvider = new Web3(this.verifier === "metamask" ? goerliProvider : web3Obj.torus.provider);
     let mainBalance = await gorliProvider.eth.getBalance(this.userWallet);
+
     let matic = new maticInit(this.verifier);
     let MTXToken = await matic.getMTXBalance();
     let TokenBalance = await matic.getERC20Balance();
+
+    let contract = new Contract();
+    let token = await contract.tokenContractMainETH(this.verifier)
+    let avaliableTokens = await token.methods.balanceOf(this.userWallet).call();
 
     let web3 = new Web3();
     let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
     let mainEther = web3.utils.fromWei(mainBalance, "ether")
     let tokBal = web3.utils.fromWei(TokenBalance, "ether")
+    let avalTok = web3.utils.fromWei(avaliableTokens, "ether")
+
+    this.ERC20Coins.mainNetBalance = avalTok;
+    this.ERC20Coins.loomBalance = tokBal
 
     this.store.dispatch(new CoinsActios.UpdateCoins({
       loomBalance: maticTokenBalanceToEth,
@@ -258,16 +260,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (Number(this.withdrawalAmount) > Number(this.coinInfo.loomBalance)) {
         this.withdrawalError = "You don't have enough money in Loom network"
       } else {
-        var value = this.web3.utils.toWei(this.withdrawalAmount.toString(), 'ether')
-        let response = await this.loomEthCoinData.withdrawEth(value)
-        if (response === undefined) {
-          this.modalService.dismissAll()
-          this.withdrawalSpinner = false;
-        } else {
-          this.withdrawalSpinner = false;
-          this.withdrawalError = response.message
-        }
-        console.log(response);
+        // var value = this.web3.utils.toWei(this.withdrawalAmount.toString(), 'ether')
+        // let response = await this.loomEthCoinData.withdrawEth(value)
+        // if (response === undefined) {
+        //   this.modalService.dismissAll()
+        //   this.withdrawalSpinner = false;
+        // } else {
+        //   this.withdrawalSpinner = false;
+        //   this.withdrawalError = response.message
+        // }
+        // console.log(response);
       }
     } else {
       this.withdrawalError = "Must be more than zero"
@@ -280,8 +282,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.ERC20depositError = "You don't have enough tokens in Ethereum network"
       } else {
         this.depositSpinner = true;
-        let response = await this.ERC20Connection.depositERC20(Number(this.ERC20depositAmount));
-        if (response === undefined) {
+        let web3 = new Web3()
+        var value = web3.utils.toWei(this.ERC20depositAmount.toString(), 'ether')
+        let matic = new maticInit(this.verifier);
+        let response = await matic.depositERC20Token(value)
+        if (response === null) {
           this.modalService.dismissAll()
           this.depositSpinner = false;
         } else {
@@ -300,17 +305,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (Number(this.ERC20withdrawalAmount) > Number(this.ERC20Coins.loomBalance)) {
         this.ERC20withdrawalError = "You don't have enough tokens in Ethereum network"
       } else {
-        this.withdrawalSpinner = true;
-        await this.loomEthCoinData.approveFee();
-        let response = await this.ERC20Connection.withdrawERC20(Number(this.ERC20withdrawalAmount));
-        if (response === undefined) {
-          this.modalService.dismissAll()
-          this.withdrawalSpinner = false;
-        } else {
-          this.withdrawalSpinner = false;
-          this.ERC20withdrawalError = response.message
-        }
-        console.log(response);
+        // this.withdrawalSpinner = true;
+        // await this.loomEthCoinData.approveFee();
+        // let response = await this.ERC20Connection.withdrawERC20(Number(this.ERC20withdrawalAmount));
+        // if (response === undefined) {
+        //   this.modalService.dismissAll()
+        //   this.withdrawalSpinner = false;
+        // } else {
+        //   this.withdrawalSpinner = false;
+        //   this.ERC20withdrawalError = response.message
+        // }
+        // console.log(response);
       }
     } else {
       this.ERC20withdrawalError = "Value must be more that 0"

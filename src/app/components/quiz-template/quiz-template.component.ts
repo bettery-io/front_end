@@ -4,10 +4,8 @@ import _ from 'lodash';
 import { Answer } from '../../models/Answer.model';
 import Web3 from 'web3';
 import Contract from '../../contract/contract';
-import LoomEthCoin from '../../contract/LoomEthCoin';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
-import ERC20 from '../../contract/ERC20';
 import { PostService } from '../../services/post.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
@@ -15,6 +13,9 @@ import { AppState } from '../../app.state';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { RegistrationComponent } from '../registration/registration.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import web3Obj from '../../helpers/torus'
+import { goerliProvider, maticTestnetProvider } from "../../helpers/metamaskProvider";
+import maticInit from '../../contract/maticInit.js'
 
 @Component({
   selector: 'quiz-template',
@@ -221,7 +222,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         } else {
           if (from === "validate") {
             if (dataAnswer.currencyType === "demo") {
-                this.validateWithDemoCoins(answer, dataAnswer);
+              this.validateWithDemoCoins(answer, dataAnswer);
             } else {
               if (this.userData.wallet === "null") {
                 this.errorValidator.idError = dataAnswer.id
@@ -255,7 +256,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         this.errorValidator.idError = dataAnswer.id
         this.errorValidator.message = "Already finished"
       } else {
-       this.setToDB(answer, dataAnswer, "not-exist", "demo");
+        this.setToDB(answer, dataAnswer, "not-exist", "demo");
       }
     }
   }
@@ -263,13 +264,13 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   validateWithDemoCoins(answer, dataAnswer) {
     let dateNow = Math.round(new Date().getTime() / 1000);
     let finishEvent = Math.round(new Date().setHours(new Date().getHours() + 168) / 1000);
-    if(dataAnswer.endTime > dateNow){
+    if (dataAnswer.endTime > dateNow) {
       this.errorValidator.idError = dataAnswer.id
       this.errorValidator.message = "Event not started yeat."
-    }else if(dateNow > finishEvent){
+    } else if (dateNow > finishEvent) {
       this.errorValidator.idError = dataAnswer.id
       this.errorValidator.message = "Already finished"
-    }else{
+    } else {
       this.setToDBValidation(answer, dataAnswer, "not-exist");
     }
   }
@@ -348,22 +349,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       this.callGetData.next();
 
       if (dataAnswer.currencyType !== 'demo') {
-        console.log("work")
-        let web3 = new Web3(window.web3.currentProvider);
-
-        let loomEthCoinData = new LoomEthCoin()
-        await loomEthCoinData.load(web3)
-        this.coinInfo = await loomEthCoinData._updateBalances()
-
-        let ERC20Connection = new ERC20()
-        await ERC20Connection.load(web3)
-        let ERC20Coins = await ERC20Connection._updateBalances();
-
-        this.store.dispatch(new CoinsActios.UpdateCoins({
-          loomBalance: this.coinInfo.loomBalance,
-          mainNetBalance: this.coinInfo.mainNetBalance,
-          tokenBalance: ERC20Coins.loomBalance
-        }))
+        this.updateBalance();
       }
 
     },
@@ -424,27 +410,35 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       this.callGetData.next();
 
       if (dataAnswer.currencyType !== 'demo') {
-        let web3 = new Web3(window.web3.currentProvider);
-
-        let loomEthCoinData = new LoomEthCoin()
-        await loomEthCoinData.load(web3)
-        this.coinInfo = await loomEthCoinData._updateBalances()
-
-        let ERC20Connection = new ERC20()
-        await ERC20Connection.load(web3)
-        let ERC20Coins = await ERC20Connection._updateBalances();
-
-        this.store.dispatch(new CoinsActios.UpdateCoins({
-          loomBalance: this.coinInfo.loomBalance,
-          mainNetBalance: this.coinInfo.mainNetBalance,
-          tokenBalance: ERC20Coins.loomBalance
-        }))
+        this.updateBalance();
       }
 
     },
       (err) => {
         console.log(err)
       })
+  }
+
+  async updateBalance() {
+    let gorliProvider = new Web3(this.allUserData.verifier === "metamask" ? goerliProvider : web3Obj.torus.provider);
+    let mainBalance = await gorliProvider.eth.getBalance(this.userData.wallet);
+
+    let matic = new maticInit(this.allUserData.verifier);
+    let MTXToken = await matic.getMTXBalance();
+    let TokenBalance = await matic.getERC20Balance();
+
+    let web3 = new Web3();
+    let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
+    let mainEther = web3.utils.fromWei(mainBalance, "ether")
+    let tokBal = web3.utils.fromWei(TokenBalance, "ether")
+
+    this.store.dispatch(new CoinsActios.UpdateCoins({
+      loomBalance: maticTokenBalanceToEth,
+      mainNetBalance: mainEther,
+      tokenBalance: tokBal
+    }))
+    this.coinInfo.loomBalance = maticTokenBalanceToEth;
+    this.coinInfo.tokenBalance = tokBal;
   }
 
   updateUser() {

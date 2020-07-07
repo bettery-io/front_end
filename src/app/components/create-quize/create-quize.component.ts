@@ -17,10 +17,11 @@ import * as InvitesAction from '../../actions/invites.actions';
 import * as CoinsActios from '../../actions/coins.actions';
 
 import Web3 from 'web3';
-import LoomEthCoin from '../../contract/LoomEthCoin';
-import ERC20 from '../../contract/ERC20';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RegistrationComponent } from '../registration/registration.component';
+import web3Obj from '../../helpers/torus'
+import { goerliProvider, maticTestnetProvider } from "../../helpers/metamaskProvider";
+import maticInit from '../../contract/maticInit.js'
 
 
 
@@ -523,18 +524,25 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   }
 
   async updateBalance() {
-    let web3 = new Web3(window.web3.currentProvider);
-    let loomEthCoinData = new LoomEthCoin()
-    await loomEthCoinData.load(web3)
-    let ERC20Connection = new ERC20()
-    await ERC20Connection.load(web3)
-    let ERC20Coins = await ERC20Connection._updateBalances();
-    this.coinInfo = await loomEthCoinData._updateBalances();
+    let gorliProvider = new Web3(this.host[0].verifier === "metamask" ? goerliProvider : web3Obj.torus.provider);
+    let mainBalance = await gorliProvider.eth.getBalance(this.host[0].wallet);
+
+    let matic = new maticInit(this.host[0].verifier);
+    let MTXToken = await matic.getMTXBalance();
+    let TokenBalance = await matic.getERC20Balance();
+
+    let web3 = new Web3();
+    let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
+    let mainEther = web3.utils.fromWei(mainBalance, "ether")
+    let tokBal = web3.utils.fromWei(TokenBalance, "ether")
+
     this.store.dispatch(new CoinsActios.UpdateCoins({
-      loomBalance: this.coinInfo.loomBalance,
-      mainNetBalance: this.coinInfo.mainNetBalance,
-      tokenBalance: ERC20Coins.loomBalance
+      loomBalance: maticTokenBalanceToEth,
+      mainNetBalance: mainEther,
+      tokenBalance: tokBal
     }))
+    this.coinInfo.loomBalance = maticTokenBalanceToEth;
+    this.coinInfo.tokenBalance = tokBal;
   }
 
   ngOnDestroy() {

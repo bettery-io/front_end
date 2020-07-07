@@ -172,16 +172,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let mainBalance = await gorliProvider.eth.getBalance(this.userWallet);
     let matic = new maticInit(this.verifier);
     let MTXToken = await matic.getMTXBalance();
+    let TokenBalance = await matic.getERC20Balance();
 
     let web3 = new Web3();
     let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
     let mainEther = web3.utils.fromWei(mainBalance, "ether")
+    let tokBal = web3.utils.fromWei(TokenBalance, "ether")
 
-    // get Token balance !!!!!!
     this.store.dispatch(new CoinsActios.UpdateCoins({
       loomBalance: maticTokenBalanceToEth,
       mainNetBalance: mainEther,
-      tokenBalance: "0.00"
+      tokenBalance: tokBal
     }))
     this.amountSpinner = false;
   }

@@ -3,6 +3,8 @@ import { goerliProvider, maticTestnetProvider } from "../helpers/metamaskProvide
 import maticJSON from "../config/matic.json";
 import Web3 from "web3";
 import web3Obj from '../helpers/torus'
+import ERC20 from '../../../build/contracts/EthERC20Coin.json';
+import networkConfiguration from '../config/network.json';
 
 export default class maticInit {
 
@@ -15,7 +17,7 @@ export default class maticInit {
 
         this.Ropsten_WEthAddress = network.Main.Contracts.tokens.MaticWeth;
         this.Matic_WEthAddress = network.Matic.Contracts.tokens.MaticWeth;
-        this.Ropsten_Erc20Address = "0xE4d9ddE203E0CBB4fCca00d155DFeD151CF35CfC";
+        this.Ropsten_Erc20Address = ERC20.networks[networkConfiguration.goerli].address;
         this.Matic_Erc20Address = "0xC9E7549BC058610CFFEB0d52718af519d7cd81aD";
 
         const MainNetwork = network.Main;
@@ -41,6 +43,11 @@ export default class maticInit {
     async getMTXBalance() {
         await this.init();
         return await this.matic.balanceOfERC20(this.from, this.Matic_WEthAddress, { parent: false })
+    }
+
+    async getERC20Balance() {
+        await this.init();
+        return await this.matic.balanceOfERC20(this.from, this.Matic_Erc20Address, { parent: false })
     }
 
     async depositEth(amount) {

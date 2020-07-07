@@ -2,6 +2,10 @@ import MaticMTX from '../../../build/contracts/ChildERC20.json';
 import web3Obj from '../helpers/torus';
 import Web3 from 'web3';
 import MaticConfig from '../config/matic.json';
+import TokenSaleJSON from '../../../build/contracts/QuizeTokenSale.json';
+import TokenJSON from '../../../build/contracts/EthERC20Coin.json';
+import networkConfiguration from '../config/network.json'
+// import { goerliProvider, maticTestnetProvider } from "../helpers/metamaskProvider";
 
 
 // OLD CODE
@@ -12,6 +16,25 @@ import QuizeJSON from '../../../build/contracts/Quize.json';
 
 
 export default class Contract {
+
+    async tokenSaleMainETH(from) {
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider)
+        let abiTokenSale = TokenSaleJSON.abi
+        return new web3.eth.Contract(abiTokenSale,
+            TokenSaleJSON.networks[networkConfiguration.goerli].address)
+    }
+
+    async tokenContractMainETH(from) {
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider)
+        let abiTokenSale = TokenJSON.abi
+        return new web3.eth.Contract(abiTokenSale,
+            TokenJSON.networks[networkConfiguration.goerli].address)
+    }
+
+    tokenContractAddressMainETH(){
+        return TokenSaleJSON.networks[networkConfiguration.goerli].address
+    }
+
 
     // OLD CODE
     async initContract() {

@@ -13,7 +13,8 @@ const web3Obj = {
             showTorusButton: true,
             buildEnv: 'production',
             network: {
-                host: 'goerli'
+                host: 'goerli',
+                chainId: 5
             }
         })
         await web3Obj.torus.login({})

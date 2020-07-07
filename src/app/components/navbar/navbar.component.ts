@@ -235,9 +235,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.depositError = "You don't have enough money"
       } else {
         this.depositSpinner = true;
-        var value = this.web3.utils.toWei(this.depositAmount.toString(), 'ether')
-        let response = await this.loomEthCoinData.depositEth(value);
-        if (response === undefined) {
+        let web3 = new Web3()
+        var value = web3.utils.toWei(this.depositAmount.toString(), 'ether')
+        let matic = new maticInit(this.verifier);
+        let response = await matic.depositEth(value);
+        if (response.message === undefined) {
           this.modalService.dismissAll()
           this.depositSpinner = false;
         } else {

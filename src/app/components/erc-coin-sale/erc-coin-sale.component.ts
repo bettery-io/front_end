@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.state';
 import Web3 from 'web3';
-import TokenSaleJSON from '../../../../build/contracts/QuizeTokenSale.json';
-import TokenJSON from '../../../../build/contracts/EthERC20Coin.json'; 
-import networkConfigs from '../../../network-configs.json'
+import Contract from '../../contract/contract.js'
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -11,7 +12,7 @@ import networkConfigs from '../../../network-configs.json'
   templateUrl: './erc-coin-sale.component.html',
   styleUrls: ['./erc-coin-sale.component.sass']
 })
-export class ErcCoinSaleComponent implements OnInit {
+export class ErcCoinSaleComponent {
   private tokenPricePrivate: number = 0;
 
   tokenPrice: number = 0.001;
@@ -19,7 +20,6 @@ export class ErcCoinSaleComponent implements OnInit {
   progressToken: number = 0
   tokenSold: number = 0;
   metamaskError: string = undefined
-  web3: Web3 | undefined = null;
   token: any = null;
   tokensAvailable: number = 750000000;
   tokenSale: any = null;
@@ -29,54 +29,31 @@ export class ErcCoinSaleComponent implements OnInit {
   userWallet = null;
   buyTokensMessage: boolean = false;
   transferButton: boolean = false;
+  verifier: string = undefined;
 
-  constructor(config: NgbProgressbarConfig) {
+  constructor(
+    config: NgbProgressbarConfig,
+    private store: Store<AppState>,
+    private router: Router
+  ) {
     config.max = 100;
     config.striped = true;
     config.animated = true;
-  }
-
-  ngOnInit() {
-    this.initMetamask()
-  }
-
-  async initMetamask() {
-    if (!(window as any).ethereum) {
-      this.metamaskError = "For buy coins you must have Metamask installed.";
-      this.spinner = false;
-    } else {
-      if (!this.web3) {
-        try {
-          await (window as any).ethereum.enable();
-          window.web3 = new Web3(window.web3.currentProvider);
-          this.web3 = new Web3(window.web3.currentProvider);
-        } catch (error) {
-          this.metamaskError = 'You need to allow MetaMask.';
-          this.spinner = false;
-          return;
-        }
-      }
-      const coinbase = await this.web3.eth.getCoinbase();
-      if (!coinbase) {
-        this.metamaskError = 'Please activate MetaMask first.'
-        this.spinner = false;
-        return;
+    this.store.select("user").subscribe((x) => {
+      if (x.length === 0) {
+        this.router.navigate(['~ki339203/home'])
       } else {
-        this.userWallet = coinbase;
-        // for testing! Need create better solition for detect owner of smart contract.
-        this.transferButton = this.userWallet == "0xF02B362cBEFC2d5bD5f7C3dBdbD0DE84508525D5".toLowerCase() ? true : false
-        this.sellContract(coinbase);
-        this.tokenContract(coinbase);
+        this.userWallet = x[0].wallet;
+        this.verifier = x[0].verifier;
+        this.sellContract(this.userWallet);
+        this.tokenContract(this.userWallet);
       }
-    }
+    })
   }
 
   async sellContract(wallet) {
-    // better to move new this.web3.eth.Contract to contract folder
-    let abiTokenSale: any = TokenSaleJSON.abi
-    this.tokenSale = new this.web3.eth.Contract(abiTokenSale,
-      TokenSaleJSON.networks[networkConfigs.networks.rinkeby.networkId].address)
-
+    let contract = new Contract();
+    this.tokenSale = await contract.tokenSaleMainETH(this.verifier)
     let tokenSold = await this.tokenSale.methods.tokensSold().call();
     let web3 = new Web3();
     this.tokenSold = Number(web3.utils.fromWei(tokenSold, 'ether'));
@@ -86,7 +63,7 @@ export class ErcCoinSaleComponent implements OnInit {
     let price = await this.tokenSale.methods.tokenPrice().call();
     this.tokenPricePrivate = Number(price);
     console.log(this.tokenPricePrivate)
-    this.tokenPrice = Number(this.web3.utils.fromWei(price, "ether"));
+    this.tokenPrice = Number(web3.utils.fromWei(price, "ether"));
 
     // Detect Sell event
     this.tokenSale.events.Sell(async (err, event) => {
@@ -101,14 +78,12 @@ export class ErcCoinSaleComponent implements OnInit {
   }
 
   async tokenContract(wallet) {
-    // better to move new this.web3.eth.Contract to contract folder
-    let abiTokenSale: any = TokenJSON.abi
-    this.token = new this.web3.eth.Contract(abiTokenSale,
-      TokenJSON.networks[networkConfigs.networks.rinkeby.networkId].address)
-
+    let web3 = new Web3();
+    let contract = new Contract();
+    this.token = await contract.tokenContractMainETH(this.verifier)
     let avaliableTokens = await this.token.methods.balanceOf(wallet).call();
     console.log(avaliableTokens);
-    let tokens = this.web3.utils.fromWei(avaliableTokens, 'ether'); 
+    let tokens = web3.utils.fromWei(avaliableTokens, 'ether');
     this.tokenOwner = tokens;
     this.spinner = false;
     this.buyTokensMessage = false;
@@ -142,14 +117,15 @@ export class ErcCoinSaleComponent implements OnInit {
   }
 
   // transfer tokens. Avaliable only for owners
-  async transferToken(){
-   let web3 = new Web3()
-   let amount = web3.utils.toWei('750000000', 'ether');
-   let address = TokenSaleJSON.networks[networkConfigs.networks.rinkeby.networkId].address
-   let test = await this.token.methods.transfer(address, amount).send({
-     from: this.userWallet,
-   })
-   console.log(test);
+  async transferToken() {
+    let web3 = new Web3()
+    let amount = web3.utils.toWei('750000000', 'ether');
+    let contract = new Contract();
+    let address = contract.tokenContractAddressMainETH()
+    let test = await this.token.methods.transfer(address, amount).send({
+      from: this.userWallet,
+    })
+    console.log(test);
   }
 
 }

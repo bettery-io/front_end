@@ -7,7 +7,6 @@ import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
 import { RegistrationComponent } from '../registration/registration.component';
 import maticInit from '../../contract/maticInit.js'
-import { goerliProvider, maticTestnetProvider } from "../../helpers/metamaskProvider";
 
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -86,7 +85,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
-        //  this.getMoneyHolder();
+        this.getMoneyHolder();
       }
     })
 
@@ -161,7 +160,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async updateBalance() {
-    let gorliProvider = new Web3(this.verifier === "metamask" ? goerliProvider : web3Obj.torus.provider);
+    let gorliProvider = new Web3(this.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
     let mainBalance = await gorliProvider.eth.getBalance(this.userWallet);
 
     let matic = new maticInit(this.verifier);
@@ -191,7 +190,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   async getMoneyHolder() {
     let contract = new Contract()
-    let contr = await contract.initContract();
+    let contr = await contract.quizContract(this.verifier);
     let holdBalance = Number(await contr.methods.onHold().call());
     if (holdBalance > 0) {
       let web3 = new Web3();

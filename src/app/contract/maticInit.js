@@ -1,5 +1,4 @@
 import Matic from "@maticnetwork/maticjs";
-import { goerliProvider, maticTestnetProvider } from "../helpers/metamaskProvider";
 import maticJSON from "../config/matic.json";
 import Web3 from "web3";
 import web3Obj from '../helpers/torus'
@@ -24,7 +23,7 @@ export default class maticInit {
 
         this.matic = new Matic({
             maticProvider: new Web3("https://rpc-mumbai.matic.today"),
-            parentProvider: new Web3(this.whichProvider === "metamask" ? goerliProvider : web3Obj.torus.provider),
+            parentProvider: new Web3(this.whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider),
             rootChain: MainNetwork.Contracts.RootChain,
             withdrawManager: MainNetwork.Contracts.WithdrawManagerProxy,
             depositManager: MainNetwork.Contracts.DepositManagerProxy,
@@ -32,7 +31,7 @@ export default class maticInit {
         });
 
         // init account
-        let goerli = new Web3(this.whichProvider === "metamask" ? goerliProvider : web3Obj.torus.provider)
+        let goerli = new Web3(this.whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider)
         let accounts = await goerli.eth.getAccounts();
         this.from = accounts[0];
         console.log(this.from)

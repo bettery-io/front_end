@@ -1,11 +1,9 @@
-import MaticMTX from '../../../build/contracts/ChildERC20.json';
 import web3Obj from '../helpers/torus';
 import Web3 from 'web3';
 import MaticConfig from '../config/matic.json';
 import TokenSaleJSON from '../../../build/contracts/QuizeTokenSale.json';
 import TokenJSON from '../../../build/contracts/EthERC20Coin.json';
 import networkConfiguration from '../config/network.json'
-// import { goerliProvider, maticTestnetProvider } from "../helpers/metamaskProvider";
 
 
 // OLD CODE
@@ -31,8 +29,16 @@ export default class Contract {
             TokenJSON.networks[networkConfiguration.goerli].address)
     }
 
-    tokenContractAddressMainETH(){
+    tokenContractAddressMainETH() {
         return TokenSaleJSON.networks[networkConfiguration.goerli].address
+    }
+
+   // need check web3 provider
+    async quizContract(from) {
+        let web3 = new Web3(from === "metamask" ? "https://rpc-mumbai.matic.today" : web3Obj.web3.currentProvider)
+        let abiQuiz = QuizeJSON.abi
+        return new web3.eth.Contract(abiQuiz,
+            QuizeJSON.networks[80001].address)
     }
 
 

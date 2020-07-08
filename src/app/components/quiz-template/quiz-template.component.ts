@@ -14,7 +14,6 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { RegistrationComponent } from '../registration/registration.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import web3Obj from '../../helpers/torus'
-import { goerliProvider, maticTestnetProvider } from "../../helpers/metamaskProvider";
 import maticInit from '../../contract/maticInit.js'
 
 @Component({
@@ -420,7 +419,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   }
 
   async updateBalance() {
-    let gorliProvider = new Web3(this.allUserData.verifier === "metamask" ? goerliProvider : web3Obj.torus.provider);
+    let gorliProvider = new Web3(this.allUserData.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
     let mainBalance = await gorliProvider.eth.getBalance(this.userData.wallet);
 
     let matic = new maticInit(this.allUserData.verifier);

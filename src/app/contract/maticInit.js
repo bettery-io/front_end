@@ -4,15 +4,23 @@ import Web3 from "web3";
 import web3Obj from '../helpers/torus'
 import ERC20 from '../../../build/contracts/EthERC20Coin.json';
 import networkConfiguration from '../config/network.json';
+import { goerliProvider, maticTestnetProvider } from '../helpers/metamaskProvider';
+import Biconomy from "@biconomy/mexa";
 
 export default class maticInit {
 
     constructor(provider) {
-        this.whichProvider = provider
+        this.whichProvider = provider;
     }
 
     async init() {
-        const network = maticJSON["Mumbai"]
+        const network = maticJSON["Mumbai"];
+        const biconomy = new Biconomy(maticTestnetProvider,
+            {
+                apiKey: "iwIgyW3sM.12ac582c-bd06-4289-8d48-47ef552af03f",
+                debug: true,
+                strictMode: true
+            });
 
         this.Ropsten_WEthAddress = network.Main.Contracts.tokens.MaticWeth;
         this.Matic_WEthAddress = network.Matic.Contracts.tokens.MaticWeth;
@@ -20,9 +28,19 @@ export default class maticInit {
         this.Matic_Erc20Address = "0xC9E7549BC058610CFFEB0d52718af519d7cd81aD";
 
         const MainNetwork = network.Main;
+        let test = biconomy
+            .onEvent(biconomy.READY, () => {
+                return true
+            })
+            .onEvent(biconomy.ERROR, (error, message) => {
+                console.error(error);
+                return false
+            });
+
+            console.log(test);
 
         this.matic = new Matic({
-            maticProvider: new Web3("https://rpc-mumbai.matic.today"),
+            maticProvider: new Web3(maticTestnetProvider),
             parentProvider: new Web3(this.whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider),
             rootChain: MainNetwork.Contracts.RootChain,
             withdrawManager: MainNetwork.Contracts.WithdrawManagerProxy,
@@ -90,48 +108,20 @@ export default class maticInit {
         }
     }
 
-    // async withdrawalERC20Token(amount) {
-    //     await this.init();
-    //     let from = this.from;
-    //     let token = this.Matic_Erc20Address;
-
-    //     console.log("*****Withdraw ERC20***");
-    //     this.matic
-    //         .startWithdraw(token, amount, {
-    //             from
-    //         })
-    //         .then(async logs => {
-    //             console.log(
-    //                 "Start Withdraw on Matic:" + logs.transactionHash
-    //             );
-    //             console.log("Now waiting for 6 mins for the checkpoint");
-    //             const hash = logs.transactionHash;
-    //             console.log(hash)
-    //             await this.PromiseTimeout(360000);
-    //             //Wait for 6 mins till the checkpoint is submitted, then run the confirm withdraw
-    //             this.matic
-    //                 .withdraw(hash, {
-    //                     from
-    //                 })
-    //                 .then(async logs => {
-    //                     console.log("Withdraw on Ropsten" + logs.transactionHash);
-    //                     // action on Transaction success
-    //                     // Withdraw process is completed, funds will be transfer to your account after challege period is over.
-    //                     await this.PromiseTimeout(10000);
-    //                     token = this.Ropsten_Erc20Address;
-    //                     this.matic
-    //                         .processExits(token, {
-    //                             from
-    //                         })
-    //                         .then(logs => {
-    //                             console.log(
-    //                                 "Process Exit on Ropsten:" + logs.transactionHash
-    //                             )
-    //                             return;
-    //                         });
-    //                 });
-    //         });
-    // }
+    async withdrawalERC20Token(amount, tokenPath) {
+        await this.init();
+        let token = tokenPath ? this.Matic_WEthAddress : this.Matic_Erc20Address;
+        console.log("*****Withdraw ERC20***");
+        try {
+            let logs = await this.matic
+                .startWithdraw(token, amount, {
+                    from: this.from
+                })
+            return logs;
+        } catch (err) {
+            return err
+        }
+    }
 
 
     // async test() {

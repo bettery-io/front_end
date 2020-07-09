@@ -259,16 +259,31 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (Number(this.withdrawalAmount) > Number(this.coinInfo.loomBalance)) {
         this.withdrawalError = "You don't have enough money in Loom network"
       } else {
-        // var value = this.web3.utils.toWei(this.withdrawalAmount.toString(), 'ether')
-        // let response = await this.loomEthCoinData.withdrawEth(value)
-        // if (response === undefined) {
-        //   this.modalService.dismissAll()
-        //   this.withdrawalSpinner = false;
-        // } else {
-        //   this.withdrawalSpinner = false;
-        //   this.withdrawalError = response.message
-        // }
-        // console.log(response);
+        this.withdrawalSpinner = true;
+        let web3 = new Web3()
+        var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
+        let matic = new maticInit(this.verifier);
+        let withdrawal = await matic.withdrawalERC20Token(value, true)
+        if (withdrawal.transactionHash !== undefined) {
+          let data = {
+            userId: this.userId,
+            transactionHash: withdrawal.transactionHash,
+            amount: value,
+            coinType: "ether"
+          }
+          this.postService.post("withdrawal/init", data)
+            .subscribe(async (x: any) => {
+              this.modalService.dismissAll()
+              this.withdrawalSpinner = false;
+            }, (err) => {
+              console.log(err);
+              this.withdrawalSpinner = false;
+              this.withdrawalError = err
+            })
+        } else {
+          this.withdrawalSpinner = false;
+          this.withdrawalError = withdrawal.message
+        }
       }
     } else {
       this.withdrawalError = "Must be more than zero"
@@ -304,22 +319,37 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (Number(this.ERC20withdrawalAmount) > Number(this.ERC20Coins.loomBalance)) {
         this.ERC20withdrawalError = "You don't have enough tokens in Ethereum network"
       } else {
-        // this.withdrawalSpinner = true;
-        // await this.loomEthCoinData.approveFee();
-        // let response = await this.ERC20Connection.withdrawERC20(Number(this.ERC20withdrawalAmount));
-        // if (response === undefined) {
-        //   this.modalService.dismissAll()
-        //   this.withdrawalSpinner = false;
-        // } else {
-        //   this.withdrawalSpinner = false;
-        //   this.ERC20withdrawalError = response.message
-        // }
-        // console.log(response);
+        this.withdrawalSpinner = true;
+        let web3 = new Web3()
+        var value = web3.utils.toWei(this.ERC20withdrawalAmount.toString(), 'ether');
+        let matic = new maticInit(this.verifier);
+        let withdrawal = await matic.withdrawalERC20Token(value, false)
+        if (withdrawal.transactionHash !== undefined) {
+          let data = {
+            userId: this.userId,
+            transactionHash: withdrawal.transactionHash,
+            amount: value,
+            coinType: "token"
+          }
+          this.postService.post("withdrawal/init", data)
+            .subscribe(async (x: any) => {
+              this.modalService.dismissAll()
+              this.withdrawalSpinner = false;
+            }, (err) => {
+              console.log(err);
+              this.withdrawalSpinner = false;
+              this.ERC20withdrawalError = err
+            })
+        } else {
+          this.withdrawalSpinner = false;
+          this.ERC20withdrawalError = withdrawal.message
+        }
       }
     } else {
       this.ERC20withdrawalError = "Value must be more that 0"
     }
   }
+
 
   ngOnDestroy() {
     this.UserSubscribe.unsubscribe();

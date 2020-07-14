@@ -6,41 +6,32 @@ import ERC20 from '../../../build/contracts/EthERC20Coin.json';
 import networkConfiguration from '../config/network.json';
 import { goerliProvider, maticTestnetProvider } from '../helpers/metamaskProvider';
 import Biconomy from "@biconomy/mexa";
+import ChildERC20 from '../../../build/contracts/ChildERC20.json';
 
 export default class maticInit {
 
     constructor(provider) {
         this.whichProvider = provider;
+        const network = maticJSON["Mumbai"];
+        this.Ropsten_WEthAddress = network.Main.Contracts.tokens.MaticWeth;
+        this.Matic_WEthAddress = network.Matic.Contracts.tokens.MaticWeth;
+        this.Ropsten_Erc20Address = ERC20.networks[networkConfiguration.goerli].address;
+        this.Matic_Erc20Address = "0xC9E7549BC058610CFFEB0d52718af519d7cd81aD";
     }
 
     async init() {
         const network = maticJSON["Mumbai"];
-        const biconomy = new Biconomy(maticTestnetProvider,
+        const MainNetwork = network.Main;
+        let biconomy = new Biconomy(maticTestnetProvider,
             {
                 apiKey: "iwIgyW3sM.12ac582c-bd06-4289-8d48-47ef552af03f",
                 debug: true,
                 strictMode: true
             });
-
-        this.Ropsten_WEthAddress = network.Main.Contracts.tokens.MaticWeth;
-        this.Matic_WEthAddress = network.Matic.Contracts.tokens.MaticWeth;
-        this.Ropsten_Erc20Address = ERC20.networks[networkConfiguration.goerli].address;
-        this.Matic_Erc20Address = "0xC9E7549BC058610CFFEB0d52718af519d7cd81aD";
-
-        const MainNetwork = network.Main;
-        let test = biconomy
-            .onEvent(biconomy.READY, () => {
-                return true
-            })
-            .onEvent(biconomy.ERROR, (error, message) => {
-                console.error(error);
-                return false
-            });
-
-            console.log(test);
+        await this.BicomyReady(biconomy);
 
         this.matic = new Matic({
-            maticProvider: new Web3(maticTestnetProvider),
+            maticProvider: new Web3(biconomy),
             parentProvider: new Web3(this.whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider),
             rootChain: MainNetwork.Contracts.RootChain,
             withdrawManager: MainNetwork.Contracts.WithdrawManagerProxy,
@@ -121,6 +112,18 @@ export default class maticInit {
         } catch (err) {
             return err
         }
+    }
+
+    async BicomyReady(biconomy) {
+        return new Promise(function (resolve, reject) {
+            return biconomy
+                .onEvent(biconomy.READY, async () => {
+                    resolve()
+                })
+                .onEvent(biconomy.ERROR, (error, message) => {
+                    reject(error);
+                });
+        });
     }
 
 

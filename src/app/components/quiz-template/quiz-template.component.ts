@@ -296,7 +296,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       var _question_id = dataAnswer.id;
       var _whichAnswer = answer.answer;
       var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
-      let contr = await contract.initContract()
+      let contr = await contract.quizContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
         if (dataAnswer.currencyType === "token") {
@@ -362,7 +362,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let contract = new Contract();
     var _question_id = dataAnswer.id;
     var _whichAnswer = answer.answer;
-    let contr = await contract.initContract()
+    let contr = await contract.quizContract()
     let validator = await contr.methods.setTimeValidator(_question_id).call();
 
     switch (Number(validator)) {
@@ -423,7 +423,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let mainBalance = await gorliProvider.eth.getBalance(this.userData.wallet);
 
     let matic = new maticInit(this.allUserData.verifier);
-    let MTXToken = await matic.getMTXBalancePOS();
+    let MTXToken = await matic.getMTXBalance();
     let TokenBalance = await matic.getERC20Balance();
 
     let web3 = new Web3();
@@ -498,7 +498,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   async deleteEvent(data) {
     let id = data.id
     let contract = new Contract();
-    let contr = await contract.initContract()
+    let contr = await contract.quizContract()
     let deleteValidator = await contr.methods.deleteEventValidator(id).call();
     if (Number(deleteValidator) === 0) {
       this.letsDeleteEvent(id, contr);

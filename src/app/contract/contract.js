@@ -5,10 +5,8 @@ import TokenJSON from '../../../build/contracts/EthERC20Coin.json';
 import networkConfiguration from '../config/network.json'
 import configFile from '../config/config.json';
 import MaticWETH from '../config/abi/MaticWETH.json'
+import ERC20 from '../config/abi/childERC20.json'
 import biconomyInit from "./biconomy";
-
-
-// OLD CODE
 import QuizeJSON from '../../../build/contracts/Quize.json';
 
 
@@ -38,27 +36,24 @@ export default class Contract {
         return new web3.eth.Contract(MaticWETH.abi, configFile.child.MaticWETH);
     }
 
-    // need check web3 provider
-    async quizContract(from) {
-        let web3 = new Web3(from === "metamask" ? "https://rpc-mumbai.matic.today" : web3Obj.web3.currentProvider)
+    async getERC20ContractOnMaticChain() {
+        let biconomy = await biconomyInit();
+        let web3 = new Web3(biconomy);
+        return new web3.eth.Contract(ERC20.abi, configFile.child.BetteryToken);
+    }
+
+    async quizContract() {
+        let biconomy = await biconomyInit();
+        let web3 = new Web3(biconomy)
         let abiQuiz = QuizeJSON.abi
         return new web3.eth.Contract(abiQuiz,
-            QuizeJSON.networks[80001].address)
+            QuizeJSON.networks[networkConfiguration.maticMumbai].address)
     }
 
-
-    // OLD CODE
-    async initContract() {
-        // TO DO
-        // let contract = new LoomEthCoin();
-        // let web3Loom = contract.getWeb3Loom().web3LoomData
-        // let from = contract.getWeb3Loom().userAccount.ethereum.local.toString()
-        // return new web3Loom.eth.Contract(
-        //     QuizeJSON.abi,
-        //     QuizeJSON.networks[networkConfigs.networks.extdev.networkId].address,
-        //     { from }
-        // )
+    quizeAddress() {
+        return QuizeJSON.networks[networkConfiguration.maticMumbai].address
     }
+
 
     async approve(address, amount) {
         // TO DO
@@ -68,15 +63,4 @@ export default class Contract {
         // return ERC20Token.approveToken(address, amount)
     }
 
-    quizeAddress() {
-        //TO DO
-        // return QuizeJSON.networks[networkConfigs.networks.extdev.networkId].address
-    }
-
-
-    getUserAccount() {
-        //TO DO
-        // let contract = new LoomEthCoin();
-        // return contract.getWeb3Loom().userAccount;
-    }
 } 

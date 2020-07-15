@@ -164,7 +164,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let mainBalance = await gorliProvider.eth.getBalance(this.userWallet);
 
     let matic = new maticInit(this.verifier);
-    let MTXToken = await matic.getMTXBalancePOS();
+    let MTXToken = await matic.getMTXBalance();
     let TokenBalance = await matic.getERC20Balance();
 
     let contract = new Contract();
@@ -190,7 +190,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   async getMoneyHolder() {
     let contract = new Contract()
-    let contr = await contract.quizContract(this.verifier);
+    let contr = await contract.quizContract();
     let holdBalance = Number(await contr.methods.onHold().call());
     if (holdBalance > 0) {
       let web3 = new Web3();
@@ -240,7 +240,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         let web3 = new Web3()
         var value = web3.utils.toWei(this.depositAmount.toString(), 'ether')
         let matic = new maticInit(this.verifier);
-        let response = await matic.depositPOSEth(value);
+        let response = await matic.depositEth(value);
         console.log(response);
         if (response.message === undefined) {
           this.modalService.dismissAll()
@@ -264,7 +264,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         let web3 = new Web3()
         var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
         let matic = new maticInit(this.verifier);
-        let withdrawal = await matic.withdrawETH(value, true)
+        let withdrawal = await matic.withdraw(value, true)
         console.log(withdrawal);
         if (withdrawal.transactionHash !== undefined) {
           let data = {
@@ -325,7 +325,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         let web3 = new Web3()
         var value = web3.utils.toWei(this.ERC20withdrawalAmount.toString(), 'ether');
         let matic = new maticInit(this.verifier);
-        let withdrawal = await matic.withdrawalERC20Token(value, false)
+        let withdrawal = await matic.withdraw(value, false)
         if (withdrawal.transactionHash !== undefined) {
           let data = {
             userId: this.userId,

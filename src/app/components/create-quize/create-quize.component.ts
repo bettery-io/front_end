@@ -380,7 +380,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     this.spinner = true;
     let web3 = new Web3();
     let contract = new Contract()
-    let contr = await contract.initContract()
+    let contr = await contract.quizContract() 
 
     let quizePrice = web3.utils.toWei(String(this.questionForm.value.amount), 'ether');
 
@@ -527,7 +527,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let mainBalance = await gorliProvider.eth.getBalance(this.host[0].wallet);
 
     let matic = new maticInit(this.host[0].verifier);
-    let MTXToken = await matic.getMTXBalancePOS();
+    let MTXToken = await matic.getMTXBalance();
     let TokenBalance = await matic.getERC20Balance();
 
     let web3 = new Web3();

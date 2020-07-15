@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import Web3 from 'web3';
 import Contract from '../../contract/contract.js'
 import { Router } from "@angular/router";
+import maticInit from '../../contract/maticInit'
 
 
 @Component({
@@ -12,7 +13,7 @@ import { Router } from "@angular/router";
   templateUrl: './erc-coin-sale.component.html',
   styleUrls: ['./erc-coin-sale.component.sass']
 })
-export class ErcCoinSaleComponent {
+export class ErcCoinSaleComponent implements OnInit {
   private tokenPricePrivate: number = 0;
 
   tokenPrice: number = 0.001;
@@ -49,6 +50,12 @@ export class ErcCoinSaleComponent {
         this.tokenContract(this.userWallet);
       }
     })
+  }
+
+  async ngOnInit() {
+    let matic = new maticInit(this.verifier);
+    let account = await matic.getUserAccount();
+    this.transferButton = account === "0xF02B362cBEFC2d5bD5f7C3dBdbD0DE84508525D5";
   }
 
   async sellContract(wallet) {

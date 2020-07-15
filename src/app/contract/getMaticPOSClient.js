@@ -11,7 +11,7 @@ const getMaticPOSClient = async (whichProvider) => {
 
     let goerli = new Web3(whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider)
     let accounts = await goerli.eth.getAccounts();
-    let MaticPOSClient = matic.MaticPOSClient();
+    let MaticPOSClient = matic.MaticPOSClient;
     return new MaticPOSClient({
         network: 'testnet', // optional, default is testnet
         version: 'mumbai', // optional, default is mumbai

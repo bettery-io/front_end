@@ -164,7 +164,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let mainBalance = await gorliProvider.eth.getBalance(this.userWallet);
 
     let matic = new maticInit(this.verifier);
-    let MTXToken = await matic.getMTXBalance();
+    let MTXToken = await matic.getMTXBalancePOS();
     let TokenBalance = await matic.getERC20Balance();
 
     let contract = new Contract();
@@ -240,7 +240,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         let web3 = new Web3()
         var value = web3.utils.toWei(this.depositAmount.toString(), 'ether')
         let matic = new maticInit(this.verifier);
-        let response = await matic.depositEth(value);
+        let response = await matic.depositPOSEth(value);
+        console.log(response);
         if (response.message === undefined) {
           this.modalService.dismissAll()
           this.depositSpinner = false;
@@ -263,7 +264,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         let web3 = new Web3()
         var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
         let matic = new maticInit(this.verifier);
-        let withdrawal = await matic.withdrawalERC20Token(value, true)
+        let withdrawal = await matic.withdrawETH(value, true)
+        console.log(withdrawal);
         if (withdrawal.transactionHash !== undefined) {
           let data = {
             userId: this.userId,

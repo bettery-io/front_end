@@ -527,7 +527,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let mainBalance = await gorliProvider.eth.getBalance(this.host[0].wallet);
 
     let matic = new maticInit(this.host[0].verifier);
-    let MTXToken = await matic.getMTXBalance();
+    let MTXToken = await matic.getMTXBalancePOS();
     let TokenBalance = await matic.getERC20Balance();
 
     let web3 = new Web3();

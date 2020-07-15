@@ -423,7 +423,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let mainBalance = await gorliProvider.eth.getBalance(this.userData.wallet);
 
     let matic = new maticInit(this.allUserData.verifier);
-    let MTXToken = await matic.getMTXBalance();
+    let MTXToken = await matic.getMTXBalancePOS();
     let TokenBalance = await matic.getERC20Balance();
 
     let web3 = new Web3();

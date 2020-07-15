@@ -6,11 +6,16 @@ import ERC20 from '../../../build/contracts/EthERC20Coin.json';
 import networkConfiguration from '../config/network.json';
 import { goerliProvider, maticTestnetProvider } from '../helpers/metamaskProvider';
 import Biconomy from "@biconomy/mexa";
-import ChildERC20 from '../../../build/contracts/ChildERC20.json';
+import getMaticPOSClient from './getMaticPOSClient';
+import configFile from '../config/config.json';
+import Contract from "./contract";
+
 
 export default class maticInit {
 
     constructor(provider) {
+        this.Matic_WETH = configFile.child.MaticWETH
+        //// OLD CODE
         this.whichProvider = provider;
         const network = maticJSON["Mumbai"];
         this.Ropsten_WEthAddress = network.Main.Contracts.tokens.MaticWeth;
@@ -18,6 +23,44 @@ export default class maticInit {
         this.Ropsten_Erc20Address = ERC20.networks[networkConfiguration.goerli].address;
         this.Matic_Erc20Address = "0xC9E7549BC058610CFFEB0d52718af519d7cd81aD";
     }
+
+    async getUserAccount() {
+        let goerli = new Web3(this.whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider)
+        let accounts = await goerli.eth.getAccounts();
+        return accounts[0];
+    }
+
+    async depositPOSEth(amount) {
+        let from = await this.getUserAccount();
+        try {
+            let maticPOS = await getMaticPOSClient(this.whichProvider);
+            return await maticPOS.depositEtherForUser(from, amount, { from, gasPrice: '10000000000' })
+        } catch (e) {
+            return e
+        }
+    }
+
+    async getMTXBalancePOS() {
+        let from = await this.getUserAccount();
+
+        let contr = new Contract();
+        let contract = await contr.getWETHContract();
+        return await contract.methods.balanceOf(from).call();
+    }
+
+    async withdrawETH(amount, tokenPath) {
+        let from = await this.getUserAccount();
+        /// NEED ADD ERC-20 address
+        let token = tokenPath ? this.Matic_WETH : this.Matic_Erc20Address;
+        try {
+            let maticPOS = await getMaticPOSClient(this.whichProvider);
+            return await maticPOS.burnERC20(configFile.child.MaticWETH, amount, { from })
+        } catch (e) {
+            return e
+        }
+    }
+
+    /// OLD code
 
     async init() {
         const network = maticJSON["Mumbai"];
@@ -39,7 +82,6 @@ export default class maticInit {
             registry: MainNetwork.Contracts.Registry
         });
 
-        // init account
         let goerli = new Web3(this.whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider)
         let accounts = await goerli.eth.getAccounts();
         this.from = accounts[0];

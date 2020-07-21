@@ -1,7 +1,9 @@
 import Biconomy from "@biconomy/mexa";
-import Web3 from 'web3';
 
 const biconomyInit = async () => {
+    window.ethereum.enable().catch((error) => {
+        console.log(error);
+    });
     let biconomy = new Biconomy("https://rpc-mumbai.matic.today",
         {
             apiKey: "iwIgyW3sM.12ac582c-bd06-4289-8d48-47ef552af03f",

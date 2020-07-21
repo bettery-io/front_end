@@ -299,12 +299,12 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       let contr = await contract.quizContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
-        if (dataAnswer.currencyType === "token") {
-          await this.approveToken(_money)
+        if (dataAnswer.currencyType === "ether") {
+          await contract.approveWETHToken(this.allUserData.wallet, _money, this.allUserData.verifier)
+        } else {
+          // TO DO for Bettery token
         }
-        let sendToContract = await contr.methods.setAnswer(_question_id, _whichAnswer).send({
-          value: dataAnswer.currencyType === "ether" ? _money : 0
-        });
+        let sendToContract = await contract.participate(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
         if (sendToContract.transactionHash !== undefined) {
           this.setToDB(answer, dataAnswer, sendToContract.transactionHash, dataAnswer.currencyType)
         }
@@ -317,13 +317,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       }
     }
   }
-
-  async approveToken(amount) {
-    let contract = new Contract();
-    let quizAddress = contract.quizeAddress();
-    return await contract.approve(quizAddress, amount);
-  }
-
 
   setToDB(answer, dataAnswer, transactionHash, currencyType) {
     let data = {
@@ -367,7 +360,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
     switch (Number(validator)) {
       case 0:
-        let sendToContract = await contr.methods.setValidator(_question_id, _whichAnswer).send();
+        let sendToContract = await contract.validate(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
+        console.log(sendToContract)
         if (sendToContract.transactionHash !== undefined) {
           this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash)
         }

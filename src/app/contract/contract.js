@@ -8,7 +8,6 @@ import MaticWETH from '../config/abi/MaticWETH.json'
 import ERC20 from '../config/abi/childERC20.json'
 import biconomyInit from "./biconomy";
 import QuizeJSON from '../../../build/contracts/Quize.json';
-import getGSNProvider from './GSNProvider';
 var sigUtil = require('eth-sig-util')
 
 
@@ -72,23 +71,35 @@ export default class Contract {
     }
 
     async createQuize(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, from) {
-        window.ethereum.enable().catch((error) => {
-            console.log(error);
-          });
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
         let bettery = await this.quizContract()
-        console.log(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay)
         let functionSignature = await bettery.methods.startQestion(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay).encodeABI();
-        // let estimate = await bettery.methods.startQestion(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay).estimateGas({ from: userWallet });
-        // console.log(estimate);
         let nonce = await bettery.methods.getNonce(userWallet).call();
-        console.log(nonce);
         let tokenName = "Bettery";
         let betteryAddress = this.quizeAddress()
-        console.log(betteryAddress)
-        console.log(functionSignature)
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
-        console.log(dataToSign)
+        return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
+    }
+
+    async participate(id, answer, userWallet, from) {
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
+        let bettery = await this.quizContract()
+        let functionSignature = await bettery.methods.setAnswer(id, answer).encodeABI();
+        let nonce = await bettery.methods.getNonce(userWallet).call();
+        let tokenName = "Bettery";
+        let betteryAddress = this.quizeAddress()
+        let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
+        return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
+    }
+
+    async validate(id, answer, userWallet, from){
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
+        let bettery = await this.quizContract()
+        let functionSignature = await bettery.methods.setValidator(id, answer).encodeABI();
+        let nonce = await bettery.methods.getNonce(userWallet).call();
+        let tokenName = "Bettery";
+        let betteryAddress = this.quizeAddress()
+        let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
     }
 

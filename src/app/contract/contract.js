@@ -8,9 +8,26 @@ import MaticWETH from '../config/abi/MaticWETH.json'
 import ERC20 from '../config/abi/childERC20.json'
 import biconomyInit from "./biconomy";
 import QuizeJSON from '../../../build/contracts/Quize.json';
+import getGSNProvider from './GSNProvider';
+var sigUtil = require('eth-sig-util')
 
 
 export default class Contract {
+    constructor() {
+        this.domainType = [
+            { name: "name", type: "string" },
+            { name: "version", type: "string" },
+            { name: "chainId", type: "uint256" },
+            { name: "verifyingContract", type: "address" },
+        ];
+
+        this.metaTransactionType = [
+            { name: "nonce", type: "uint256" },
+            { name: "from", type: "address" },
+            { name: "functionSignature", type: "bytes" },
+        ];
+    }
+
 
     async tokenSaleMainETH(from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider)
@@ -43,10 +60,10 @@ export default class Contract {
     }
 
     async quizContract() {
+        // let { gsnWeb3 } = await getGSNProvider();
         let biconomy = await biconomyInit();
-        let web3 = new Web3(biconomy)
-        let abiQuiz = QuizeJSON.abi
-        return new web3.eth.Contract(abiQuiz,
+        let web3 = new Web3(biconomy);
+        return new web3.eth.Contract(QuizeJSON.abi,
             QuizeJSON.networks[networkConfiguration.maticMumbai].address)
     }
 
@@ -54,13 +71,115 @@ export default class Contract {
         return QuizeJSON.networks[networkConfiguration.maticMumbai].address
     }
 
-
-    async approve(address, amount) {
-        // TO DO
-        // let web3 = new Web3(window.web3.currentProvider);
-        // let ERC20Token = new ERC20();
-        // await ERC20Token.load(web3);
-        // return ERC20Token.approveToken(address, amount)
+    async createQuize(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, from) {
+        window.ethereum.enable().catch((error) => {
+            console.log(error);
+          });
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
+        let bettery = await this.quizContract()
+        console.log(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay)
+        let functionSignature = await bettery.methods.startQestion(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay).encodeABI();
+        // let estimate = await bettery.methods.startQestion(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay).estimateGas({ from: userWallet });
+        // console.log(estimate);
+        let nonce = await bettery.methods.getNonce(userWallet).call();
+        console.log(nonce);
+        let tokenName = "Bettery";
+        let betteryAddress = this.quizeAddress()
+        console.log(betteryAddress)
+        console.log(functionSignature)
+        let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
+        console.log(dataToSign)
+        return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
     }
+
+
+    async approveWETHToken(userWallet, amount, from) {
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
+        let WETHToken = await this.getWETHContract();
+        let functionSignature = await WETHToken.methods.approve(this.quizeAddress(), amount).encodeABI();
+        let nonce = await WETHToken.methods.getNonce(userWallet).call();
+        const tokenName = await WETHToken.methods.name().call();
+        console.log(tokenName);
+        let dataToSign = this.dataToSignFunc(tokenName, configFile.child.MaticWETH, nonce, userWallet, functionSignature)
+        return await this.setSignPromise(userWallet, dataToSign, web3, WETHToken, functionSignature)
+    }
+
+    setSignPromise(userWallet, dataToSign, web3, whichContract, functionSignature) {
+        return new Promise((resolve, reject) => {
+            web3.eth.currentProvider.send(
+                {
+                    jsonrpc: "2.0",
+                    id: 999999999999,
+                    method: "eth_signTypedData_v4",
+                    params: [userWallet, dataToSign],
+                },
+                async (error, response) => {
+                    if (error) {
+                        console.log(error)
+                        return reject(error)
+                    }
+
+                    let { r, s, v } = this.getSignatureParameters(response.result, web3);
+
+                    const recovered = sigUtil.recoverTypedSignature_v4({
+                        data: JSON.parse(dataToSign),
+                        sig: response.result,
+                    });
+                    console.log(`Recovered ${recovered}`);
+                    let executeMetaTransaction = await whichContract.methods
+                        .executeMetaTransaction(userWallet, functionSignature, r, s, v)
+                        .send({
+                            from: userWallet
+                        });
+
+                    return resolve(executeMetaTransaction);
+                }
+            );
+        })
+    }
+
+    dataToSignFunc(tokenName, contractAddress, nonce, userWallet, functionSignature) {
+        let domainData = {
+            name: tokenName,
+            version: "1",
+            chainId: "5",
+            verifyingContract: contractAddress,
+        };
+
+        let message = {};
+        message.nonce = parseInt(nonce);
+        message.from = userWallet;
+        message.functionSignature = functionSignature;
+        message.network = "Interact with Matic Network";
+
+        return JSON.stringify({
+            types: {
+                EIP712Domain: this.domainType,
+                MetaTransaction: this.metaTransactionType,
+            },
+            domain: domainData,
+            primaryType: "MetaTransaction",
+            message: message,
+        });
+    }
+
+
+    getSignatureParameters(signature, web3) {
+        if (!web3.utils.isHexStrict(signature)) {
+            throw new Error(
+                'Given value "'.concat(signature, '" is not a valid hex string.')
+            );
+        }
+        var r = signature.slice(0, 66);
+        var s = "0x".concat(signature.slice(66, 130));
+        var v = "0x".concat(signature.slice(130, 132));
+        v = web3.utils.hexToNumber(v);
+        if (![27, 28].includes(v)) v += 27;
+        return {
+            r: r,
+            s: s,
+            v: v,
+        };
+    };
 
 } 

@@ -336,7 +336,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     this.modalService.open(RegistrationComponent);
   }
 
-  onSubmit(content) {
+  onSubmit() {
     let promise = new Promise((resolve) => {
       if (this.exactEndTime === false) {
         this.questionForm.controls.calendarEndDate.setValue({ year: 2019, month: 12, day: 18 });
@@ -356,31 +356,27 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       if (this.host.length == 0) {
         this.registrationModal()
       } else {
-        if (this.questionForm.value.eventPayment !== "demo") {
-          this.modalService.open(content, { ariaLabelledBy: 'modal-metamask-registration' })
-        } else {
-          let id = this.generateID()
-          id.subscribe((x: any) => {
-            if (this.questionForm.value.eventPayment === "demo") {
-              this.setToDb(x._id, "non-exist", 0);
-            } else {
-              this.sendToContract(x._id);
-            }
+        let id = this.generateID()
+        id.subscribe((x: any) => {
+          if (this.questionForm.value.eventPayment === "demo") {
+            this.setToDb(x._id, "non-exist", 0);
+          } else {
+            this.sendToContract(x._id);
+          }
 
-          }, (err) => {
-            console.log(err)
-            console.log("error from generate id")
-          })
-        }
+        }, (err) => {
+          console.log(err)
+          console.log("error from generate id")
+        })
       }
     })
   }
 
   async sendToContract(id) {
     this.spinner = true;
-    let web3 = new Web3();
+    let web3 = new Web3(window.web3.currentProvider);
     let contract = new Contract()
-    let contr = await contract.quizContract() 
+    let contr = await contract.quizContract()
 
     let quizePrice = web3.utils.toWei(String(this.questionForm.value.amount), 'ether');
 
@@ -398,9 +394,16 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       this.deleteEvent(id)
     } else {
 
-      if (!path) {
-        await this.approveToken(calcCoinsForHold)
+      let matic = new maticInit(this.host[0].verifier);
+      let userWallet = await matic.getUserAccount()
+
+      if (path) {
+        let approve = await contract.approveWETHToken(userWallet, calcCoinsForHold, this.host[0].verifier)
+        console.log(approve);
+      } else {
+        // TO DO Bettery token
       }
+
 
       let startTime = this.getStartTime();
       let endTime = this.getEndTime();
@@ -410,34 +413,19 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       let validatorsAmount = this.questionForm.value.amountOfValidators;
 
       try {
-        let sendToContract = await contr.methods.startQestion(
-          id,
-          startTime,
-          endTime,
-          percentHost,
-          percentValidator,
-          questionQuantity,
-          validatorsAmount,
-          quizePrice,
-          path,
-          tokenPay
-        ).send({
-          value: path ? calcCoinsForHold : 0
-        });
+        let sendToContract = await contract.createQuize(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, this.host[0].verifier)
+        console.log(sendToContract);
+
         if (sendToContract.transactionHash !== undefined) {
+          console.log("TEST")
           this.setToDb(id, sendToContract.transactionHash, this.getCoinsForHold);
         }
       } catch (error) {
         console.log(error);
         this.deleteEvent(id)
       }
-    }
-  }
 
-  async approveToken(amount) {
-    let contract = new Contract();
-    let quizAddress = contract.quizeAddress();
-    return await contract.approve(quizAddress, amount);
+    }
   }
 
   deleteEvent(id) {

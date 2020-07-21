@@ -1,8 +1,8 @@
 import Biconomy from "@biconomy/mexa";
-import { goerliProvider, maticTestnetProvider } from '../helpers/metamaskProvider';
+import Web3 from 'web3';
 
 const biconomyInit = async () => {
-    let biconomy = new Biconomy(maticTestnetProvider,
+    let biconomy = new Biconomy("https://rpc-mumbai.matic.today",
         {
             apiKey: "iwIgyW3sM.12ac582c-bd06-4289-8d48-47ef552af03f",
             debug: true,

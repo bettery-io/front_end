@@ -271,7 +271,7 @@
 
         <div class="form_container button_pos">
             <div *ngIf="!spinner">
-                <button *ngIf="!holdMoneyError" type="button" (click)="onSubmit(content)"
+                <button *ngIf="!holdMoneyError" type="button" (click)="onSubmit()"
                     class="btn btn-success btn-lg btn-block">Create</button>
                 <div *ngIf="holdMoneyError" class="quize_validation_error errorBalance">
                     <p>You don't have enough Ethereum for retention. Try to replenish balance!</p>
@@ -344,15 +344,3 @@
         </div>
     </div>
 </div>
-
-<ng-template #content let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-metamask-registration">Please log in with Metamask</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-       <p>You must log in with Metamask for using this functionality.</p>
-    </div>
-</ng-template>

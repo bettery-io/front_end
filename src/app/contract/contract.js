@@ -59,7 +59,6 @@ export default class Contract {
     }
 
     async quizContract() {
-        // let { gsnWeb3 } = await getGSNProvider();
         let biconomy = await biconomyInit();
         let web3 = new Web3(biconomy);
         return new web3.eth.Contract(QuizeJSON.abi,

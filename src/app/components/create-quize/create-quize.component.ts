@@ -374,6 +374,8 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
   async sendToContract(id) {
     this.spinner = true;
+    let matic = new maticInit(this.host[0].verifier);
+    let userWallet = await matic.getUserAccount()
     let web3 = new Web3(window.web3.currentProvider);
     let contract = new Contract()
     let contr = await contract.quizContract()
@@ -383,19 +385,18 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let path = this.questionForm.value.depositPath === "true" ? true : false;
     let tokenPay = this.questionForm.value.eventPayment === "ether" ? true : false;
 
-    let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path).call();
+    let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path, userWallet).call();
+    console.log(calcCoinsForHold);
 
     this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
 
-    let amountGuard = Number(await contr.methods.amountGuard(path).call());
+    let amountGuard = Number(await contr.methods.amountGuard(path, userWallet).call());
+    console.log(path);
     if (amountGuard !== 0) {
       this.spinner = false;
       this.holdMoneyError = true;
       this.deleteEvent(id)
     } else {
-
-      let matic = new maticInit(this.host[0].verifier);
-      let userWallet = await matic.getUserAccount()
 
       if (path) {
         let approve = await contract.approveWETHToken(userWallet, calcCoinsForHold, this.host[0].verifier)

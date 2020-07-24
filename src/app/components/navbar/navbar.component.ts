@@ -189,9 +189,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async getMoneyHolder() {
+    let matic = new maticInit(this.verifier);
+    let userWallet = await matic.getUserAccount()
+
     let contract = new Contract()
     let contr = await contract.quizContract();
-    let holdBalance = Number(await contr.methods.onHold().call());
+    let holdBalance = Number(await contr.methods.onHold(userWallet).call());
     if (holdBalance > 0) {
       let web3 = new Web3();
       this.holdBalance = Number(web3.utils.fromWei(String(holdBalance), 'ether')).toFixed(4);

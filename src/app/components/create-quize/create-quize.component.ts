@@ -391,7 +391,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
 
     let amountGuard = Number(await contr.methods.amountGuard(path, userWallet).call());
-    console.log(path);
     if (amountGuard !== 0) {
       this.spinner = false;
       this.holdMoneyError = true;
@@ -399,10 +398,9 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     } else {
 
       if (path) {
-        let approve = await contract.approveWETHToken(userWallet, calcCoinsForHold, this.host[0].verifier)
-        console.log(approve);
+        await contract.approveWETHToken(userWallet, calcCoinsForHold, this.host[0].verifier)
       } else {
-        // TO DO Bettery token
+        await contract.approveBETToken(userWallet, calcCoinsForHold, this.host[0].verifier)
       }
 
 

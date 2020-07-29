@@ -302,7 +302,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         if (dataAnswer.currencyType === "ether") {
           await contract.approveWETHToken(this.allUserData.wallet, _money, this.allUserData.verifier)
         } else {
-          // TO DO for Bettery token
+          await contract.approveBETToken(this.allUserData.wallet, _money, this.allUserData.verifier)
         }
         let sendToContract = await contract.participate(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
         if (sendToContract.transactionHash !== undefined) {

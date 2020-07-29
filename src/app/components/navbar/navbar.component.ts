@@ -266,8 +266,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.withdrawalSpinner = true;
         let web3 = new Web3()
         var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
-        let matic = new maticInit(this.verifier);
-        let withdrawal = await matic.withdraw(value, true)
+        let contract = new Contract()
+        let withdrawal = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier) 
         console.log(withdrawal);
         if (withdrawal.transactionHash !== undefined) {
           let data = {
@@ -305,14 +305,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
         var value = web3.utils.toWei(this.ERC20depositAmount.toString(), 'ether')
         let matic = new maticInit(this.verifier);
         let response = await matic.depositERC20Token(value)
-        if (response === null) {
+        if (response.message === undefined) {
           this.modalService.dismissAll()
           this.depositSpinner = false;
         } else {
           this.depositSpinner = false;
           this.ERC20depositError = response.message
         }
-        console.log(response);
       }
     } else {
       this.ERC20depositError = "Value must be more that 0"

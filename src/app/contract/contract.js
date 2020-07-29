@@ -91,7 +91,7 @@ export default class Contract {
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
     }
 
-    async validate(id, answer, userWallet, from){
+    async validate(id, answer, userWallet, from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
         let bettery = await this.quizContract()
         let functionSignature = await bettery.methods.setValidator(id, answer).encodeABI();
@@ -109,7 +109,28 @@ export default class Contract {
         let functionSignature = await WETHToken.methods.approve(this.quizeAddress(), amount).encodeABI();
         let nonce = await WETHToken.methods.getNonce(userWallet).call();
         const tokenName = await WETHToken.methods.name().call();
+        let dataToSign = this.dataToSignFunc(tokenName, configFile.child.MaticWETH, nonce, userWallet, functionSignature)
+        return await this.setSignPromise(userWallet, dataToSign, web3, WETHToken, functionSignature)
+    }
+
+    async approveBETToken(userWallet, amount, from) {
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
+        let BETToken = await this.getERC20ContractOnMaticChain();
+        let functionSignature = await BETToken.methods.approve(this.quizeAddress(), amount).encodeABI();
+        let nonce = await BETToken.methods.getNonce(userWallet).call();
+        const tokenName = await BETToken.methods.name().call();
         console.log(tokenName);
+        let dataToSign = this.dataToSignFunc(tokenName, configFile.child.BetteryToken, nonce, userWallet, functionSignature)
+        return await this.setSignPromise(userWallet, dataToSign, web3, BETToken, functionSignature)
+    }
+
+    async withdrawalWETHToken(userWallet, amount, from) {
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
+        let WETHToken = await this.getWETHContract();
+        let functionSignature = await WETHToken.methods.withdraw(amount).encodeABI();
+        console.log(functionSignature)
+        let nonce = await WETHToken.methods.getNonce(userWallet).call();
+        const tokenName = await WETHToken.methods.name().call();
         let dataToSign = this.dataToSignFunc(tokenName, configFile.child.MaticWETH, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, WETHToken, functionSignature)
     }

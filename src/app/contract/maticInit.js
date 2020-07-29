@@ -57,17 +57,16 @@ export default class maticInit {
         } catch (e) {
             return e
         }
-
     }
 
-    async withdraw(amount, tokenPath) {
-        let from = await this.getUserAccount();
-        let token = tokenPath ? this.Matic_WETH : this.Matic_Erc20Address;
-        try {
-            let maticPOS = await getMaticPOSClient(this.whichProvider);
-            return await maticPOS.burnERC20(token, amount, { from })
-        } catch (e) {
-            return e
-        }
-    }
+    // async withdraw(amount, tokenPath) {
+    //     let from = await this.getUserAccount();
+    //     let token = tokenPath ? this.Matic_WETH : this.Matic_Erc20Address;
+    //     try {
+    //         let maticPOS = await getMaticPOSClient(this.whichProvider);
+    //         return await maticPOS.burnERC20(token, amount, { from })
+    //     } catch (e) {
+    //         return e
+    //     }
+    // }
 }

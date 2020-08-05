@@ -90,8 +90,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     private PostService: PostService,
     private modalService: NgbModal
   ) {
-    // check if user registerd
-    // if no -> regirect to home page
     this.UserSubscribe = this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
         this.getAllUsers(false);
@@ -376,7 +374,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     this.spinner = true;
     let matic = new maticInit(this.host[0].verifier);
     let userWallet = await matic.getUserAccount()
-    let web3 = new Web3(window.web3.currentProvider);
+    let web3 = new Web3();
     let contract = new Contract()
     let contr = await contract.quizContract()
 
@@ -510,14 +508,13 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
   }
 
   async updateBalance() {
-    let gorliProvider = new Web3(this.host[0].verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
-    let mainBalance = await gorliProvider.eth.getBalance(this.host[0].wallet);
+    let web3 = new Web3(this.host[0].verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
+    let mainBalance = await web3.eth.getBalance(this.host[0].wallet);
 
     let matic = new maticInit(this.host[0].verifier);
     let MTXToken = await matic.getMTXBalance();
     let TokenBalance = await matic.getERC20Balance();
-
-    let web3 = new Web3();
+    
     let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
     let mainEther = web3.utils.fromWei(mainBalance, "ether")
     let tokBal = web3.utils.fromWei(TokenBalance, "ether")

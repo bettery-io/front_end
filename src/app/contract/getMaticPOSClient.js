@@ -5,7 +5,6 @@ import web3Obj from '../helpers/torus';
 import biconomyInit from "./biconomy";
 
 
-
 const getMaticPOSClient = async (whichProvider) => {
     let biconomy = await biconomyInit();
 

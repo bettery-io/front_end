@@ -413,14 +413,13 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   }
 
   async updateBalance() {
-    let gorliProvider = new Web3(this.allUserData.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
-    let mainBalance = await gorliProvider.eth.getBalance(this.userData.wallet);
+    let web3 = new Web3(this.allUserData.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
+    let mainBalance = await web3.eth.getBalance(this.userData.wallet);
 
     let matic = new maticInit(this.allUserData.verifier);
     let MTXToken = await matic.getMTXBalance();
     let TokenBalance = await matic.getERC20Balance();
 
-    let web3 = new Web3();
     let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
     let mainEther = web3.utils.fromWei(mainBalance, "ether")
     let tokBal = web3.utils.fromWei(TokenBalance, "ether")

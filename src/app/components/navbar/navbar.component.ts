@@ -160,8 +160,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async updateBalance() {
-    let gorliProvider = new Web3(this.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
-    let mainBalance = await gorliProvider.eth.getBalance(this.userWallet);
+    let web3 = new Web3(this.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
+    let mainBalance = await web3.eth.getBalance(this.userWallet);
 
     let matic = new maticInit(this.verifier);
     let MTXToken = await matic.getMTXBalance();
@@ -171,7 +171,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let token = await contract.tokenContractMainETH(this.verifier)
     let avaliableTokens = await token.methods.balanceOf(this.userWallet).call();
 
-    let web3 = new Web3();
     let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
     let mainEther = web3.utils.fromWei(mainBalance, "ether")
     let tokBal = web3.utils.fromWei(TokenBalance, "ether")
@@ -267,14 +266,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
         let web3 = new Web3()
         var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
         let contract = new Contract()
-        let withdrawal = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier) 
+        let { withdrawal, sign } = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier)
         console.log(withdrawal);
         if (withdrawal.transactionHash !== undefined) {
           let data = {
             userId: this.userId,
             transactionHash: withdrawal.transactionHash,
             amount: value,
-            coinType: "ether"
+            coinType: "ether",
+            sign: sign
           }
           this.postService.post("withdrawal/init", data)
             .subscribe(async (x: any) => {

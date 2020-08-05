@@ -9,6 +9,9 @@ import ERC20 from '../config/abi/childERC20.json'
 import biconomyInit from "./biconomy";
 import QuizeJSON from '../../../build/contracts/Quize.json';
 var sigUtil = require('eth-sig-util')
+import getMaticPOSClient from './getMaticPOSClient';
+import buildPayloadForExit from './withdrawal';
+import RootChainManagerJSON from '../config/abi/RootChainManager.json'
 
 
 export default class Contract {
@@ -25,6 +28,12 @@ export default class Contract {
             { name: "from", type: "address" },
             { name: "functionSignature", type: "bytes" },
         ];
+    }
+
+    async RootChainManagerContract(from) {
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider)
+        let abi = RootChainManagerJSON.abi
+        return new web3.eth.Contract(abi, "0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74")
     }
 
 
@@ -132,7 +141,16 @@ export default class Contract {
         let nonce = await WETHToken.methods.getNonce(userWallet).call();
         const tokenName = await WETHToken.methods.name().call();
         let dataToSign = this.dataToSignFunc(tokenName, configFile.child.MaticWETH, nonce, userWallet, functionSignature)
-        return await this.setSignPromise(userWallet, dataToSign, web3, WETHToken, functionSignature)
+        let burnTxHash = await this.setSignPromise(userWallet, dataToSign, web3, WETHToken, functionSignature);
+        console.log(burnTxHash);
+        let burnTx = burnTxHash.transactionHash;
+        let getSing = await buildPayloadForExit(String(burnTx), from, web3);
+        let rootContract = await this.RootChainManagerContract(from)
+        let message = await rootContract.methods.exit(getSing).encodeABI();
+        console.log(message)
+        var signature = await web3.eth.personal.sign(message, userWallet);
+        console.log(signature);
+        return { withdrawal: burnTxHash, sign: signature }
     }
 
     setSignPromise(userWallet, dataToSign, web3, whichContract, functionSignature) {
@@ -173,7 +191,7 @@ export default class Contract {
         let domainData = {
             name: tokenName,
             version: "1",
-            chainId: "5",
+            chainId: 5,
             verifyingContract: contractAddress,
         };
 

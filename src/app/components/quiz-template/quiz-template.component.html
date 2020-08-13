@@ -96,14 +96,9 @@
                 <button (click)="this.deleteEvent(question)" type="button" class="btn btn-danger delete_button"
                     *ngIf="this.validateDeleteButton(question)">Delete
                     Event</button>
-                <div ngbDropdown class="d-inline-block" *ngIf="this.particCryptoGuard(question)">
-                    <button class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle>Participate</button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                        <button (click)="this.setAnswer(question, 'demo')" ngbDropdownItem>Demo coins</button>
-                        <button (click)="this.setAnswer(question, 'crypto')" ngbDropdownItem>Crypto coins</button>
-                    </div>
+                <div class="d-inline-block" *ngIf="this.particCryptoGuard(question)">
+                    <button type="button" class="btn btn-primary" (click)="this.setAnswer(question, 'crypto')">Participate</button>
                 </div>
-                <button type="button" class="btn btn-primary" (click)="this.setAnswer(question, 'demo')" *ngIf="this.particDemoGuard(question)">Participate with Demo coins</button>
                 <button type="button" class="btn btn-success" *ngIf="this.validGuard(question)" (click)="this.setAnswer(question, 'validate')">Validate</button>
             </div>
             <div *ngIf="errorValidator.idError === question.id">

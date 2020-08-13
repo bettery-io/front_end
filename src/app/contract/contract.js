@@ -1,15 +1,14 @@
 import web3Obj from '../helpers/torus';
 import Web3 from 'web3';
 import TokenSaleJSON from '../../../build/contracts/QuizeTokenSale.json';
+import BetteryToken from '../../../build/contracts/BetteryToken.json'
 import TokenJSON from '../../../build/contracts/EthERC20Coin.json';
 import networkConfiguration from '../config/network.json'
 import configFile from '../config/config.json';
 import MaticWETH from '../config/abi/MaticWETH.json'
-import ERC20 from '../config/abi/childERC20.json'
 import biconomyInit from "./biconomy";
 import QuizeJSON from '../../../build/contracts/Quize.json';
 var sigUtil = require('eth-sig-util')
-import getMaticPOSClient from './getMaticPOSClient';
 import buildPayloadForExit from './withdrawal';
 import RootChainManagerJSON from '../config/abi/RootChainManager.json'
 
@@ -64,7 +63,7 @@ export default class Contract {
     async getERC20ContractOnMaticChain() {
         let biconomy = await biconomyInit();
         let web3 = new Web3(biconomy);
-        return new web3.eth.Contract(ERC20.abi, configFile.child.BetteryToken);
+        return new web3.eth.Contract(BetteryToken.abi, BetteryToken.networks[networkConfiguration.maticMumbai].address);
     }
 
     async quizContract() {
@@ -128,8 +127,7 @@ export default class Contract {
         let functionSignature = await BETToken.methods.approve(this.quizeAddress(), amount).encodeABI();
         let nonce = await BETToken.methods.getNonce(userWallet).call();
         const tokenName = await BETToken.methods.name().call();
-        console.log(tokenName);
-        let dataToSign = this.dataToSignFunc(tokenName, configFile.child.BetteryToken, nonce, userWallet, functionSignature)
+        let dataToSign = this.dataToSignFunc(tokenName, BetteryToken.networks[networkConfiguration.maticMumbai].address, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, BETToken, functionSignature)
     }
 

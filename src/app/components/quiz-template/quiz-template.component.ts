@@ -140,17 +140,13 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
     if (findInParticInvites === -1) {
       let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-      if (data.endTime >= timeNow && data.currencyType !== "demo") {
+      if (data.endTime >= timeNow) {
         return true
       } else {
         return false
       }
     } else {
-      if (data.currencyType !== "demo") {
-        return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
-      } else {
-        return false
-      }
+      return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
     }
   }
 
@@ -169,24 +165,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       }
     } else {
       return this.allUserData.invitationList[findInParticInvites].role === "Validate" ? true : false
-    }
-  }
-
-  particDemoGuard(data) {
-    let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
-    if (findInParticInvites === -1) {
-      let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
-      if (data.endTime >= timeNow && data.currencyType === "demo") {
-        return true
-      } else {
-        return false
-      }
-    } else {
-      if (data.currencyType === "demo") {
-        return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
-      } else {
-        return false
-      }
     }
   }
 
@@ -220,18 +198,12 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
           this.errorValidator.message = "Chose at leas one answer"
         } else {
           if (from === "validate") {
-            if (dataAnswer.currencyType === "demo") {
-              this.validateWithDemoCoins(answer, dataAnswer);
+            if (this.userData.wallet === "null") {
+              this.errorValidator.idError = dataAnswer.id
+              this.errorValidator.message = "You must connect metamask"
             } else {
-              if (this.userData.wallet === "null") {
-                this.errorValidator.idError = dataAnswer.id
-                this.errorValidator.message = "You must connect metamask"
-              } else {
-                this.setToLoomNetworkValidation(answer, dataAnswer);
-              }
+              this.setToLoomNetworkValidation(answer, dataAnswer);
             }
-          } else if (from === "demo") {
-          //  this.partWithDemoCoins(answer, dataAnswer);
           } else {
             this.setToLoomNetwork(answer, dataAnswer);
           }
@@ -239,39 +211,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       }
     } else {
       this.openRegistModal()
-    }
-  }
-
-  // TO DO
-//  partWithDemoCoins(answer, dataAnswer) {
-    // let dateNow = Math.round(new Date().getTime() / 1000);
-    // if (dataAnswer.money > this.allUserData.fakeCoins) {
-    //   this.errorValidator.idError = dataAnswer.id
-    //   this.errorValidator.message = "You don't have enough demo coins."
-    // } else {
-    //   if (dataAnswer.startTime > dateNow) {
-    //     this.errorValidator.idError = dataAnswer.id
-    //     this.errorValidator.message = "Event not started yeat."
-    //   } else if (dateNow > dataAnswer.endTime) {
-    //     this.errorValidator.idError = dataAnswer.id
-    //     this.errorValidator.message = "Already finished"
-    //   } else {
-    //     this.setToDB(answer, dataAnswer, "not-exist", "demo");
-    //   }
-    // }
-//  }
-
-  validateWithDemoCoins(answer, dataAnswer) {
-    let dateNow = Math.round(new Date().getTime() / 1000);
-    let finishEvent = Math.round(new Date().setHours(new Date().getHours() + 168) / 1000);
-    if (dataAnswer.endTime > dateNow) {
-      this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "Event not started yeat."
-    } else if (dateNow > finishEvent) {
-      this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "Already finished"
-    } else {
-      this.setToDBValidation(answer, dataAnswer, "not-exist");
     }
   }
 
@@ -340,10 +279,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
       this.updateUser();
       this.callGetData.next();
+      this.updateBalance();
 
-      if (dataAnswer.currencyType !== 'demo') {
-        this.updateBalance();
-      }
 
     },
       (err) => {
@@ -403,9 +340,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
       this.callGetData.next();
 
-      if (dataAnswer.currencyType !== 'demo') {
-        this.updateBalance();
-      }
+      this.updateBalance();
+
 
     },
       (err) => {

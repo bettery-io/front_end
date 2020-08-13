@@ -1,6 +1,7 @@
 import Web3 from "web3";
 import web3Obj from '../helpers/torus'
 import ERC20 from '../../../build/contracts/EthERC20Coin.json';
+import BetteryToken from '../../../build/contracts/BetteryToken.json'
 import networkConfiguration from '../config/network.json';
 import getMaticPOSClient from './getMaticPOSClient';
 import configFile from '../config/config.json';
@@ -13,7 +14,7 @@ export default class maticInit {
         this.Matic_WETH = configFile.child.MaticWETH
         this.whichProvider = provider;
         this.Ropsten_Erc20Address = ERC20.networks[networkConfiguration.goerli].address;
-        this.Matic_Erc20Address = configFile.child.BetteryToken;
+        this.Matic_Erc20Address = BetteryToken.networks[networkConfiguration.maticMumbai].address;
     }
 
     async getUserAccount() {

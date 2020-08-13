@@ -9,6 +9,5 @@ export interface User {
     historyTransaction: Object;
     invitationList: Object;
     avatar: string;
-    fakeCoins: number;
     verifier: string;
 }

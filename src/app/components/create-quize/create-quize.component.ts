@@ -129,7 +129,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
               historyTransaction: currentUser.historyTransaction,
               invitationList: currentUser.invitationList,
               avatar: currentUser.avatar,
-              fakeCoins: currentUser.fakeCoins,
               verifier: currentUser.verifier
             }))
           }
@@ -356,12 +355,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       } else {
         let id = this.generateID()
         id.subscribe((x: any) => {
-          if (this.questionForm.value.eventPayment === "demo") {
-            this.setToDb(x._id, "non-exist", 0);
-          } else {
-            this.sendToContract(x._id);
-          }
-
+          this.sendToContract(x._id);
         }, (err) => {
           console.log(err)
           console.log("error from generate id")
@@ -384,8 +378,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let tokenPay = this.questionForm.value.eventPayment === "ether" ? true : false;
 
     let calcCoinsForHold = await contr.methods.moneyRetentionCalculate(path, userWallet).call();
-    console.log(calcCoinsForHold);
-
     this.getCoinsForHold = web3.utils.fromWei(calcCoinsForHold, 'ether');
 
     let amountGuard = Number(await contr.methods.amountGuard(path, userWallet).call());
@@ -401,7 +393,6 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
         await contract.approveBETToken(userWallet, calcCoinsForHold, this.host[0].verifier)
       }
 
-
       let startTime = this.getStartTime();
       let endTime = this.getEndTime();
       let percentHost = 0;
@@ -411,10 +402,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
 
       try {
         let sendToContract = await contract.createQuize(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, this.host[0].verifier)
-        console.log(sendToContract);
-
         if (sendToContract.transactionHash !== undefined) {
-          console.log("TEST")
           this.setToDb(id, sendToContract.transactionHash, this.getCoinsForHold);
         }
       } catch (error) {
@@ -514,10 +502,10 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let matic = new maticInit(this.host[0].verifier);
     let MTXToken = await matic.getMTXBalance();
     let TokenBalance = await matic.getERC20Balance();
-    
+
     let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
-    let mainEther = web3.utils.fromWei(mainBalance, "ether")
-    let tokBal = web3.utils.fromWei(TokenBalance, "ether")
+    let mainEther = web3.utils.fromWei(mainBalance, "ether");
+    let tokBal = web3.utils.fromWei(TokenBalance, "ether");
 
     this.store.dispatch(new CoinsActios.UpdateCoins({
       loomBalance: maticTokenBalanceToEth,

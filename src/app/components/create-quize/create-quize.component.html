@@ -194,13 +194,11 @@
                     class="multy_choise">Ethereum<br>
                 <input formControlName="eventPayment" name="eventPayment" value="token" type="radio"
                     class="multy_choise">Token<br>
-                <input formControlName="eventPayment" name="eventPayment" value="demo" type="radio"
-                    class="multy_choise">Demo coins<br>
             </div>
 
             <!-- Where to get a deposit ? -->
 
-            <div class="from-group payment" *ngIf="questionForm.value.eventPayment !== 'demo'">
+            <div class="from-group payment">
                 <label>Where to get a deposit ?</label><br>
                 <input formControlName="depositPath" name="depositPath" value="true" type="radio"
                     class="multy_choise">Ethereum balance<br>

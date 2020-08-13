@@ -55,8 +55,7 @@
                     <div>
                         <p [ngbPopover]="popContent" [popoverTitle]="popTitle" class="loom_balance">
                             Balance: {{coinInfo.loomBalance | number:'1.0-2'}} ETH /
-                            {{ERC20Coins?.loomBalance | number:'1.0-2'}} BET / 
-                            {{fakeCoins | number:'1.0-2'}} Demo</p>
+                            {{ERC20Coins?.loomBalance | number:'1.0-2'}} BET
                         <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} $</p>
                     </div>
                 </div>

@@ -87,7 +87,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             x.invitationList,
             x.avatar,
             x._id,
-            x.fakeCoins,
             x.verifier
           );
         }, (err) => {
@@ -154,7 +153,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
                 x.invitationList,
                 x.avatar,
                 x._id,
-                x.fakeCoins,
                 x.verifier);
             }
           },
@@ -212,7 +210,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             [],
             color,
             x._id,
-            x.fakeCoins,
             x.verifier
           );
           let getLocation = document.location.href
@@ -237,7 +234,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     invitationList: Object,
     color: string,
     _id: number,
-    fakeCoins: number,
     verifier: string
   ) {
 
@@ -252,7 +248,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       historyTransaction: historyTransaction,
       invitationList: invitationList,
       avatar: color,
-      fakeCoins: fakeCoins,
       verifier: verifier
     }))
     this.onReset();

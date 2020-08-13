@@ -28,7 +28,6 @@ import web3Obj from '../../helpers/torus'
 export class NavbarComponent implements OnInit, OnDestroy {
 
   nickName: string = undefined;
-  fakeCoins: number;
   web3: Web3 | undefined = null;
   coinInfo: Coins = null;
   depositAmount: number = 0;
@@ -71,7 +70,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.verifier = x[0].verifier
         this.avatar = x[0].avatar;
         this.userId = x[0]._id;
-        this.fakeCoins = x[0].fakeCoins;
         this.activeTab = "eventFeed"
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);

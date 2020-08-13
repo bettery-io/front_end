@@ -231,7 +231,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
               }
             }
           } else if (from === "demo") {
-            this.partWithDemoCoins(answer, dataAnswer);
+          //  this.partWithDemoCoins(answer, dataAnswer);
           } else {
             this.setToLoomNetwork(answer, dataAnswer);
           }
@@ -242,23 +242,24 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     }
   }
 
-  partWithDemoCoins(answer, dataAnswer) {
-    let dateNow = Math.round(new Date().getTime() / 1000);
-    if (dataAnswer.money > this.allUserData.fakeCoins) {
-      this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "You don't have enough demo coins."
-    } else {
-      if (dataAnswer.startTime > dateNow) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event not started yeat."
-      } else if (dateNow > dataAnswer.endTime) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Already finished"
-      } else {
-        this.setToDB(answer, dataAnswer, "not-exist", "demo");
-      }
-    }
-  }
+  // TO DO
+//  partWithDemoCoins(answer, dataAnswer) {
+    // let dateNow = Math.round(new Date().getTime() / 1000);
+    // if (dataAnswer.money > this.allUserData.fakeCoins) {
+    //   this.errorValidator.idError = dataAnswer.id
+    //   this.errorValidator.message = "You don't have enough demo coins."
+    // } else {
+    //   if (dataAnswer.startTime > dateNow) {
+    //     this.errorValidator.idError = dataAnswer.id
+    //     this.errorValidator.message = "Event not started yeat."
+    //   } else if (dateNow > dataAnswer.endTime) {
+    //     this.errorValidator.idError = dataAnswer.id
+    //     this.errorValidator.message = "Already finished"
+    //   } else {
+    //     this.setToDB(answer, dataAnswer, "not-exist", "demo");
+    //   }
+    // }
+//  }
 
   validateWithDemoCoins(answer, dataAnswer) {
     let dateNow = Math.round(new Date().getTime() / 1000);
@@ -451,7 +452,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
             historyTransaction: currentUser.historyTransaction,
             invitationList: currentUser.invitationList,
             avatar: currentUser.avatar,
-            fakeCoins: currentUser.fakeCoins,
             verifier: currentUser.verifier
           }))
         })

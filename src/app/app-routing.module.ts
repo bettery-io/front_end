@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CreateQuizeComponent } from './components/create-quize/create-quize.component';
+import { PublicEventFormComponent } from './components/public-event-form/public-event-form.component';
+import { PrivateEventFormComponent } from './components/private-event-form/private-event-form.component';
+import { EventsTemplatesComponent } from './components/events-templates/events-templates.component';
 import { HomeComponent } from './components/home/home.component';
 import { EventFeedComponent } from './components/eventFeed/eventFeed.component';
 import { MyActivitesComponent } from './components/my-activites/my-activites.component';
@@ -15,7 +17,9 @@ const routes: Routes = [
   // remove before deploy to production
   { path: "~ki339203/home", component: HomeComponent },
   { path: "~ki339203", redirectTo: "~ki339203/home", pathMatch: "full" },
-  { path: "~ki339203/create-quize", component: CreateQuizeComponent },
+  { path: "~ki339203/choose-event", component: EventsTemplatesComponent },
+  { path: "~ki339203/public-event", component: PublicEventFormComponent },
+  { path: "~ki339203/private-event", component: PrivateEventFormComponent },
   { path: "~ki339203/eventFeed", component: EventFeedComponent },
   { path: "~ki339203/my-activites", component: MyActivitesComponent },
   { path: '~ki339203/question/:id', component: QuestionComponent },

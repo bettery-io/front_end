@@ -17,7 +17,8 @@ import { RegistrationComponent } from './components/registration/registration.co
 
 import { PostService } from './services/post.service';
 import { GetService } from './services/get.service';
-import { CreateQuizeComponent } from './components/create-quize/create-quize.component';
+import { PublicEventFormComponent } from './components/public-event-form/public-event-form.component';
+import { PrivateEventFormComponent } from './components/private-event-form/private-event-form.component';
 import { HomeComponent } from './components/home/home.component';
 import { EventFeedComponent } from './components/eventFeed/eventFeed.component';
 import { MyActivitesComponent } from './components/my-activites/my-activites.component';
@@ -30,6 +31,7 @@ import { HistoryComponent } from './components/history/history.component';
 import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.component';
 import {NumericDirective} from './helpers/numeric';
 import { QuizTemplateComponent } from './components/quiz-template/quiz-template.component';
+import { EventsTemplatesComponent } from './components/events-templates/events-templates.component';
 
 
 @NgModule({
@@ -37,7 +39,7 @@ import { QuizTemplateComponent } from './components/quiz-template/quiz-template.
     AppComponent,
     NavbarComponent,
     RegistrationComponent,
-    CreateQuizeComponent,
+    PublicEventFormComponent,
     HomeComponent,
     EventFeedComponent,
     MyActivitesComponent,
@@ -47,7 +49,9 @@ import { QuizTemplateComponent } from './components/quiz-template/quiz-template.
     HistoryComponent,
     ErcCoinSaleComponent,
     NumericDirective,
-    QuizTemplateComponent
+    QuizTemplateComponent,
+    EventsTemplatesComponent,
+    PrivateEventFormComponent
   ],
   imports: [
     BrowserModule,

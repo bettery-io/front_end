@@ -236,7 +236,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       var _question_id = dataAnswer.id;
       var _whichAnswer = answer.answer;
       var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
-      let contr = await contract.quizContract()
+      let contr = await contract.publicEventContract()
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
         if (dataAnswer.currencyType === "ether") {
@@ -244,7 +244,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         } else {
           await contract.approveBETToken(this.allUserData.wallet, _money, this.allUserData.verifier)
         }
-        let sendToContract = await contract.participate(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
+        let sendToContract = await contract.participateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
         if (sendToContract.transactionHash !== undefined) {
           this.setToDB(answer, dataAnswer, sendToContract.transactionHash, dataAnswer.currencyType)
         }
@@ -293,12 +293,12 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let contract = new Contract();
     var _question_id = dataAnswer.id;
     var _whichAnswer = answer.answer;
-    let contr = await contract.quizContract()
+    let contr = await contract.publicEventContract()
     let validator = await contr.methods.setTimeValidator(_question_id).call();
 
     switch (Number(validator)) {
       case 0:
-        let sendToContract = await contract.validate(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
+        let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
         console.log(sendToContract)
         if (sendToContract.transactionHash !== undefined) {
           this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash)
@@ -427,7 +427,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   async deleteEvent(data) {
     let id = data.id
     let contract = new Contract();
-    let contr = await contract.quizContract()
+    let contr = await contract.publicEventContract()
     let deleteValidator = await contr.methods.deleteEventValidator(id).call();
     if (Number(deleteValidator) === 0) {
       this.letsDeleteEvent(id, contr);

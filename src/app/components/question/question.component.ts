@@ -154,7 +154,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   async info(id) {
     let contract = new Contract();
-    let contr = await contract.quizContract()
+    let contr = await contract.publicEventContract()
     this.infoData = await contr.methods.getQuestion(id).call();
     this.spinner = false
   }

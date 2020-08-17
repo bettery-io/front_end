@@ -7,7 +7,8 @@ import networkConfiguration from '../config/network.json'
 import configFile from '../config/config.json';
 import MaticWETH from '../config/abi/MaticWETH.json'
 import biconomyInit from "./biconomy";
-import QuizeJSON from '../../../build/contracts/Quize.json';
+import PublicEventJSON from '../../../build/contracts/PublicEvent.json';
+import PrivateEventJSON from '../../../build/contracts/PrivateEvent.json';
 var sigUtil = require('eth-sig-util')
 import buildPayloadForExit from './withdrawal';
 import RootChainManagerJSON from '../config/abi/RootChainManager.json'
@@ -66,46 +67,73 @@ export default class Contract {
         return new web3.eth.Contract(BetteryToken.abi, BetteryToken.networks[networkConfiguration.maticMumbai].address);
     }
 
-    async quizContract() {
+    // PrivateEvent
+
+    async privateEventContract() {
         let biconomy = await biconomyInit();
         let web3 = new Web3(biconomy);
-        return new web3.eth.Contract(QuizeJSON.abi,
-            QuizeJSON.networks[networkConfiguration.maticMumbai].address)
+        return new web3.eth.Contract(PrivateEventJSON.abi,
+            this.privateEventAddress());
     }
 
-    quizeAddress() {
-        return QuizeJSON.networks[networkConfiguration.maticMumbai].address
+    privateEventAddress() {
+        return PrivateEventJSON.network[networkConfiguration.maticMumbai].address;
     }
 
-    async createQuize(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, from) {
+    async createPrivateEvent(id, startTime, endTime, winner, looser, questionQuantity, correctAnswerSetter, userWallet, from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
-        let bettery = await this.quizContract()
+        let privateEvent = await this.privateEventContract();
+        let functionSignature = await privateEvent.methods.createEvent(id, startTime, endTime, winner, looser, questionQuantity, correctAnswerSetter).encodeABI();
+        let nonce = await privateEvent.methods.getNonce(userWallet).call();
+        let tokenName = "PrivateEvent";
+        let betteryAddress = this.privateEventAddress()
+        let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
+        return await this.setSignPromise(userWallet, dataToSign, web3, privateEvent, functionSignature)
+    }
+
+    // PublicEvent
+
+
+    async publicEventContract() {
+        let biconomy = await biconomyInit();
+        let web3 = new Web3(biconomy);
+        return new web3.eth.Contract(PublicEventJSON.abi,
+            this.publicEventAddress())
+    }
+
+    publicEventAddress() {
+        return PublicEventJSON.networks[networkConfiguration.maticMumbai].address;
+    }
+
+    async createPublicEvent(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, from) {
+        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
+        let bettery = await this.publicEventContract()
         let functionSignature = await bettery.methods.startQestion(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay).encodeABI();
         let nonce = await bettery.methods.getNonce(userWallet).call();
         let tokenName = "Bettery";
-        let betteryAddress = this.quizeAddress()
+        let betteryAddress = this.publicEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
     }
 
-    async participate(id, answer, userWallet, from) {
+    async participateOnPublicEvent(id, answer, userWallet, from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
-        let bettery = await this.quizContract()
+        let bettery = await this.publicEventContract()
         let functionSignature = await bettery.methods.setAnswer(id, answer).encodeABI();
         let nonce = await bettery.methods.getNonce(userWallet).call();
         let tokenName = "Bettery";
-        let betteryAddress = this.quizeAddress()
+        let betteryAddress = this.publicEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
     }
 
-    async validate(id, answer, userWallet, from) {
+    async validateOnPublicEvent(id, answer, userWallet, from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
-        let bettery = await this.quizContract()
+        let bettery = await this.publicEventContract()
         let functionSignature = await bettery.methods.setValidator(id, answer).encodeABI();
         let nonce = await bettery.methods.getNonce(userWallet).call();
         let tokenName = "Bettery";
-        let betteryAddress = this.quizeAddress()
+        let betteryAddress = this.publicEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
     }
@@ -114,7 +142,7 @@ export default class Contract {
     async approveWETHToken(userWallet, amount, from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
         let WETHToken = await this.getWETHContract();
-        let functionSignature = await WETHToken.methods.approve(this.quizeAddress(), amount).encodeABI();
+        let functionSignature = await WETHToken.methods.approve(this.publicEventAddress(), amount).encodeABI();
         let nonce = await WETHToken.methods.getNonce(userWallet).call();
         const tokenName = await WETHToken.methods.name().call();
         let dataToSign = this.dataToSignFunc(tokenName, configFile.child.MaticWETH, nonce, userWallet, functionSignature)
@@ -124,7 +152,7 @@ export default class Contract {
     async approveBETToken(userWallet, amount, from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
         let BETToken = await this.getERC20ContractOnMaticChain();
-        let functionSignature = await BETToken.methods.approve(this.quizeAddress(), amount).encodeABI();
+        let functionSignature = await BETToken.methods.approve(this.publicEventAddress(), amount).encodeABI();
         let nonce = await BETToken.methods.getNonce(userWallet).call();
         const tokenName = await BETToken.methods.name().call();
         let dataToSign = this.dataToSignFunc(tokenName, BetteryToken.networks[networkConfiguration.maticMumbai].address, nonce, userWallet, functionSignature)

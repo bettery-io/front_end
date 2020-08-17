@@ -1,0 +1,183 @@
+<div class="container">
+    <form [formGroup]="questionForm">
+        <!-- Question -->
+
+        <div class="form-group">
+            <label for="Question">Question <b style="font-size: 12px">*required</b></label>
+            <input type="text" formControlName="question" class="form-control" id="Question"
+                placeholder="Enter your question" [ngClass]="{ 'is_invalid': submitted && f.question.errors }">
+            <div *ngIf="submitted && f.question.errors">
+                <small *ngIf="f.question.errors.required" class="form-text quize_validation_error">Question is
+                    required</small>
+            </div>
+        </div>
+
+        <!-- Answers -->
+
+        <div class="form-group">
+            <div>
+                <label class="answer_label">Answers <b style="font-size: 12px">*required</b></label>
+                <div style="float: right; padding-bottom: 10px">
+                    <button type="button" (click)="oneMoreAnswer()" class="btn btn-success btn-sm">
+                        <fa-icon [icon]="faPlus"></fa-icon>
+                    </button>
+                </div>
+            </div>
+            <div *ngFor="let answer of t.controls; let i = index">
+                <div [formGroup]="answer" class="input-group mb-3">
+                    <input [ngClass]="{ 'is_invalid': submitted && answer.controls.name.errors }" type="text"
+                        formControlName="name" class="form-control" id="Question {{i}}" placeholder="{{answer.name}}">
+                    <div *ngIf='answesQuantity >= 3' class="input-group-prepend">
+                        <button (click)="deleteAnswer(i)" class="btn btn-danger" type="button">
+                            <fa-icon [icon]="faTimesCircle"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="submitted && answer.controls.name.errors">
+                    <small style="padding-bottom: 10px" *ngIf="answer.controls.name.errors.required"
+                        class="form-text quize_validation_error">Answers
+                        is required</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time -->
+
+        <div class="form-group time_all">
+            <div class="time_box">
+                <label class="start_label">Start time <b style="font-size: 12px">*required</b></label>
+                <button (click)="switchTimeMethods('exactStartTime')" type="button"
+                    class="btn btn-secondary btn-sm button_swith_time_pos">Switch
+                    end time methods</button>
+                <div *ngIf="!exactStartTime">
+                    <div ngbDropdown class="d-inline-block">
+                        <button [ngClass]="{ 'is_invalid': submitted && f.startDate.errors }" type="button"
+                            class="btn btn-outline-primary" id="startTime" ngbDropdownToggle>{{startTimeValue}}</button>
+                        <div ngbDropdownMenu aria-labelledby="startTime">
+                            <div *ngFor="let time of times">
+                                <button (click)="choseStartTime(time)" type="button"
+                                    ngbDropdownItem>{{time.name}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="submitted && f.startDate.errors">
+                        <small *ngIf="f.startDate.errors.required" class="form-text quize_validation_error">Start date
+                            is required</small>
+                    </div>
+                </div>
+                <div *ngIf="exactStartTime">
+                    <div style="display: flex">
+                        <div class="calendar_box">
+                            <input [minDate]="startCaledarMeasure" class="form-control" placeholder="yyyy-mm-dd"
+                                name="dp" formControlName="calendarStartDate" ngbDatepicker #z="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="z.toggle()" type="button">
+                                    <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <ngb-timepicker formControlName="startTime"></ngb-timepicker>
+                        </div>
+                    </div>
+                    <div *ngIf="submitted && f.startTime.errors">
+                        <small *ngIf="f.startTime.errors.required" class="form-text quize_validation_error">Calendar
+                            picker is required</small>
+                    </div>
+                    <div *ngIf="submitted && f.calendarStartDate.errors">
+                        <small *ngIf="f.calendarStartDate.errors.required"
+                            class="form-text quize_validation_error">Start
+                            time is required</small>
+                    </div>
+                </div>
+            </div>
+            <div class="time_box">
+                <div>
+                    <label class="start_label">End time <b style="font-size: 12px">*required</b></label>
+                    <button (click)="switchTimeMethods('exactEndTime')" type="button"
+                        class="btn btn-secondary btn-sm button_swith_time_pos">Switch
+                        start time methods</button>
+                </div>
+                <div *ngIf="!exactEndTime">
+                    <div ngbDropdown class="d-inline-block">
+                        <button [ngClass]="{ 'is_invalid': submitted && f.endDate.errors }" type="button"
+                            class="btn btn-outline-primary" id="endTime" ngbDropdownToggle>{{endTimeValue}}</button>
+                        <div ngbDropdownMenu aria-labelledby="endTime">
+                            <div *ngFor="let time of times">
+                                <button *ngIf="time.name !== 'Now'" (click)="choseEndTime(time)" type="button"
+                                    ngbDropdownItem>{{time.name}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="submitted && f.endDate.errors">
+                        <small *ngIf="f.endDate.errors.required" class="form-text quize_validation_error">End date is
+                            required</small>
+                    </div>
+                </div>
+                <div *ngIf="exactEndTime">
+                    <div style="display: flex">
+                        <div class="calendar_box">
+                            <input [minDate]="f.calendarStartDate.value" class="form-control" placeholder="yyyy-mm-dd"
+                                name="dp" formControlName="calendarEndDate" ngbDatepicker #d="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                                    <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <ngb-timepicker formControlName="endTime"></ngb-timepicker>
+                        </div>
+                    </div>
+                    <div *ngIf="submitted && f.endTime.errors">
+                        <small *ngIf="f.endTime.errors.required" class="form-text quize_validation_error">Calendar
+                            picker is required</small>
+                    </div>
+                    <div *ngIf="submitted && f.calendarEndDate.errors">
+                        <small *ngIf="f.calendarEndDate.errors.required" class="form-text quize_validation_error">Start
+                            time is required</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Winner -->
+
+        <div class="form-group">
+            <label for="Winner">Winner <b style="font-size: 12px">*required</b></label>
+            <input type="text" formControlName="winner" class="form-control" id="Winner"
+                placeholder="Enter your winner" [ngClass]="{ 'is_invalid': submitted && f.winner.errors }">
+            <div *ngIf="submitted && f.winner.errors">
+                <small *ngIf="f.winner.errors.required" class="form-text quize_validation_error">winner is
+                    required</small>
+            </div>
+        </div>
+
+        <!-- Loser -->
+
+        <div class="form-group">
+            <label for="Loser">Loser <b style="font-size: 12px">*required</b></label>
+            <input type="text" formControlName="loser" class="form-control" id="Loser"
+                placeholder="Enter your loser" [ngClass]="{ 'is_invalid': submitted && f.loser.errors }">
+            <div *ngIf="submitted && f.loser.errors">
+                <small *ngIf="f.loser.errors.required" class="form-text quize_validation_error">Loser is
+                    required</small>
+            </div>
+        </div>
+
+        <div class="form_container button_pos">
+            <div *ngIf="!spinner">
+                <button type="button" (click)="onSubmit()"
+                    class="btn btn-success btn-lg btn-block">Create</button>
+            </div>
+
+            <div *ngIf="spinner">
+                <div class="lds-ripple-small">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

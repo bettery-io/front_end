@@ -190,7 +190,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let userWallet = await matic.getUserAccount()
 
     let contract = new Contract()
-    let contr = await contract.quizContract();
+    let contr = await contract.publicEventContract();
     let holdBalance = Number(await contr.methods.onHold(userWallet).call());
     if (holdBalance > 0) {
       let web3 = new Web3();

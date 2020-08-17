@@ -6,7 +6,7 @@
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
             <li class="nav-item">
                 <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}"
-                    routerLink="~ki339203/create-quize" (click)="setActiveTab('add')">Add new Quize</a>
+                    routerLink="~ki339203/choose-event" (click)="setActiveTab('add')">Create event</a>
             </li>
             <li class="nav-item">
                 <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}"
@@ -24,7 +24,7 @@
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
             <li class="nav-item">
                 <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}"
-                    routerLink="~ki339203/create-quize" (click)="setActiveTab('add')">Add new Quize</a>
+                    routerLink="~ki339203/choose-event" (click)="setActiveTab('add')">Create event</a>
             </li>
             <li class="nav-item">
                 <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}"
@@ -56,7 +56,7 @@
                         <p [ngbPopover]="popContent" [popoverTitle]="popTitle" class="loom_balance">
                             Balance: {{coinInfo.loomBalance | number:'1.0-2'}} ETH /
                             {{ERC20Coins?.loomBalance | number:'1.0-2'}} BET
-                        <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} $</p>
+                            <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} $</p>
                     </div>
                 </div>
             </li>

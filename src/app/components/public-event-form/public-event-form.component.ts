@@ -40,11 +40,11 @@ const times: Time[] = [
 ]
 
 @Component({
-  selector: 'create-quize',
-  templateUrl: './create-quize.component.html',
-  styleUrls: ['./create-quize.component.sass']
+  selector: 'public-even-form',
+  templateUrl: './public-event-form.component.html',
+  styleUrls: ['./public-event-form.component.sass']
 })
-export class CreateQuizeComponent implements OnInit, OnDestroy {
+export class PublicEventFormComponent implements OnInit, OnDestroy {
 
   submitted: boolean = false;
   questionForm: FormGroup;
@@ -370,7 +370,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
     let userWallet = await matic.getUserAccount()
     let web3 = new Web3();
     let contract = new Contract()
-    let contr = await contract.quizContract()
+    let contr = await contract.publicEventContract()
 
     let quizePrice = web3.utils.toWei(String(this.questionForm.value.amount), 'ether');
 
@@ -401,7 +401,7 @@ export class CreateQuizeComponent implements OnInit, OnDestroy {
       let validatorsAmount = this.questionForm.value.amountOfValidators;
 
       try {
-        let sendToContract = await contract.createQuize(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, this.host[0].verifier)
+        let sendToContract = await contract.createPublicEvent(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, this.host[0].verifier)
         if (sendToContract.transactionHash !== undefined) {
           this.setToDb(id, sendToContract.transactionHash, this.getCoinsForHold);
         }

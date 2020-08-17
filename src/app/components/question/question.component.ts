@@ -80,7 +80,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
 
   getDatafromDb(data) {
-    this.postService.post("question/get_by_id", data)
+    this.postService.post("publicEvents/get_by_id", data)
       .subscribe((x: Question) => {
         console.log(x)
         if (x.id === undefined) {

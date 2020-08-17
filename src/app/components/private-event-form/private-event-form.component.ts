@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { faTimesCircle, faPlus, faCalendarAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { GetService } from '../../services/get.service';
+import { PostService } from '../../services/post.service';
+import { User } from '../../models/User.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.state';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RegistrationComponent } from '../registration/registration.component';
+import maticInit from '../../contract/maticInit.js';
+import Contract from '../../contract/contract';
 
 type Time = { name: string, date: any, value: number };
 
@@ -36,12 +45,24 @@ export class PrivateEventFormComponent implements OnInit {
   endTimeValue: string = "5 minutes";
   exactEndTime = false;
   startCaledarMeasure = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
+  host: User[] = [];
+  spinner: boolean = false;
 
 
 
   constructor(
-    private formBuilder: FormBuilder
-  ) { }
+    private formBuilder: FormBuilder,
+    private getSevice: GetService,
+    private postService: PostService,
+    private store: Store<AppState>,
+    private modalService: NgbModal
+  ) {
+    this.store.select("user").subscribe((x) => {
+      if (x.length != 0) {
+        this.host = x;
+      }
+    });
+   }
 
   ngOnInit(): void {
     this.questionForm = this.formBuilder.group({
@@ -98,6 +119,51 @@ export class PrivateEventFormComponent implements OnInit {
     this.questionForm.controls.endDate.setValue(value.value);
   }
 
+  generateID() {
+    return this.getSevice.get("privateEvents/createId")
+  }
+
+
+  getTimeStamp(strDate) {
+    return Number((new Date(strDate).getTime() / 1000).toFixed(0));
+  }
+
+  getStartTime() {
+    if (this.exactStartTime === false) {
+      return Number((this.questionForm.value.startDate / 1000).toFixed(0));
+    } else {
+      let day = this.questionForm.value.calendarStartDate.day;
+      let month = this.questionForm.value.calendarStartDate.month;
+      let year = this.questionForm.value.calendarStartDate.year;
+      let hour = this.questionForm.value.startTime.hour;
+      let minute = this.questionForm.value.startTime.minute;
+      let second = this.questionForm.value.startTime.second;
+      return this.getTimeStamp(`${month}/${day}/${year} ${hour}:${minute}:${second}`)
+    }
+  }
+
+  getEndTime() {
+    if (this.exactEndTime === false) {
+      if (this.questionForm.value.endDate < 1) {
+        return Number(((new Date(this.getStartTime() * 1000).setMinutes(new Date(this.getStartTime() * 1000).getMinutes() + 5)) / 1000).toFixed(0));
+      } else {
+        return Number(((new Date(this.getStartTime() * 1000).setHours(new Date(this.getStartTime() * 1000).getHours() + this.questionForm.value.endDate)) / 1000).toFixed(0));
+      }
+    } else {
+      let day = this.questionForm.value.calendarEndDate.day;
+      let month = this.questionForm.value.calendarEndDate.month;
+      let year = this.questionForm.value.calendarEndDate.year;
+      let hour = this.questionForm.value.endTime.hour;
+      let minute = this.questionForm.value.endTime.minute;
+      let second = this.questionForm.value.endTime.second;
+      return this.getTimeStamp(`${month}/${day}/${year} ${hour}:${minute}:${second}`)
+    }
+  }
+
+  registrationModal() {
+    this.modalService.open(RegistrationComponent);
+  }
+
   onSubmit() {
     let promise = new Promise((resolve) => {
       if (this.exactEndTime === false) {
@@ -114,8 +180,86 @@ export class PrivateEventFormComponent implements OnInit {
       if (this.questionForm.invalid) {
         return;
       }
-     console.log("WORK")
+      // check registration
+      if (this.host.length == 0) {
+        this.registrationModal()
+      } else {
+        let id = this.generateID()
+        id.subscribe((x: any) => {
+          this.sendToContract(x._id);
+        }, (err) => {
+          console.log(err)
+          console.log("error from generate id")
+        })
+      }
     })
+  }
+
+  async sendToContract(id) {
+    this.spinner = true;
+    let matic = new maticInit(this.host[0].verifier);
+    let userWallet = await matic.getUserAccount()
+    let startTime = this.getStartTime();
+    let endTime = this.getEndTime();
+    let winner = this.questionForm.value.winner;
+    let loser = this.questionForm.value.loser;
+    let questionQuantity = this.answesQuantity;
+    // TO DO
+    let correctAnswerSetter = userWallet
+
+    try{
+      let contract = new Contract()
+      let sendToContract = await contract.createPrivateEvent(id, startTime, endTime, winner, loser, questionQuantity, correctAnswerSetter, userWallet, this.host[0].verifier);
+      if (sendToContract.transactionHash !== undefined) {
+        this.setToDb(id, sendToContract.transactionHash);
+      }
+
+    }catch(err){
+      console.log(err);
+      this.deleteEvent(id);
+    }
+  }
+
+  deleteEvent(id) {
+    let data = {
+      id: id
+    }
+    this.postService.post("delete_event_id", data)
+      .subscribe(() => {
+        this.spinner = false;
+      },
+        (err) => {
+          console.log("from delete wallet")
+          console.log(err)
+        })
+  }
+
+  setToDb(id, transactionHash) {
+
+    let eventData = {
+      _id: id,
+      host: this.host[0]._id,
+      status: "deployed",
+      answers: this.questionForm.value.answers.map((x) => {
+        return x.name
+      }),
+      question: this.questionForm.value.question,
+      startTime: this.getStartTime(),
+      endTime: this.getEndTime(),
+      transactionHash: transactionHash,
+      winner: this.questionForm.value.winner,
+      loser: this.questionForm.value.loser
+    }
+
+    this.postService.post("privateEvents/createEvent", eventData)
+      .subscribe(
+        () => {
+          this.spinner = false;
+        },
+        (err) => {
+          console.log("set qestion error");
+          console.log(err);
+        })
   }
 
 }

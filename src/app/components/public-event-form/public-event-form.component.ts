@@ -289,7 +289,7 @@ export class PublicEventFormComponent implements OnInit, OnDestroy {
   }
 
   generateID() {
-    return this.getSevice.get("question/createId")
+    return this.getSevice.get("publicEvents/createId")
   }
 
 
@@ -468,7 +468,7 @@ export class PublicEventFormComponent implements OnInit, OnDestroy {
       currencyType: this.questionForm.value.eventPayment
     }
 
-    this.PostService.post("question/set", this.quizData)
+    this.PostService.post("publicEvents/set", this.quizData)
       .subscribe(
         () => {
           this.getAllUsers(true);

@@ -77,7 +77,7 @@ export default class Contract {
     }
 
     privateEventAddress() {
-        return PrivateEventJSON.network[networkConfiguration.maticMumbai].address;
+        return PrivateEventJSON.networks[networkConfiguration.maticMumbai].address;
     }
 
     async createPrivateEvent(id, startTime, endTime, winner, looser, questionQuantity, correctAnswerSetter, userWallet, from) {

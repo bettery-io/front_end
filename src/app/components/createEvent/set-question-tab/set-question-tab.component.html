@@ -1,0 +1,61 @@
+<div>
+    <form [formGroup]="questionForm">
+        <div class="box">
+            <label for="Question" class="name">
+                <img class="img" src="../../../../assets/yourTopic.png" />
+                <span class="text">YOUR TOPIC</span></label>
+            <textarea type="text" formControlName="question" class="question" id="Question"
+                placeholder="Enter the question..."
+                [ngClass]="{ 'is_invalid': submitted && f.question.errors }"></textarea>
+            <div *ngIf="submitted && f.question.errors">
+                <small *ngIf="f.question.errors.required" class="form-text quize_validation_error">Please enter the
+                    question</small>
+            </div>
+            <button class="topicIdeas">Get topic ideas from Advisors</button>
+        </div>
+
+        <div class="box" style="margin-top:25px;">
+            <label class="name">
+                <img class="img" src="../../../../assets/Answers.png" />
+                <span class="text">POSSIBLE OUTCOMES</span>
+            </label>
+            <div *ngFor="let answer of t.controls; let i = index" style="margin-bottom: 8px;">
+                <div [formGroup]="answer" class="input-group inputBox">
+                    <input [ngClass]="{ 'is_invalid': submitted && answer.controls.name.errors }" type="text"
+                        formControlName="name" class="answer" id="Question {{i}}"
+                        placeholder="Outcome that may happen...">
+                    <div *ngIf='answesQuantity >= 3' class="deleteButtonPos">
+                        <button (click)="deleteAnswer(i)" class="deleteButton" type="button">
+                            <img class="trashImg" src="../../../../assets/Trash.png">
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="submitted && answer.controls.name.errors">
+                    <small style="padding-bottom: 10px" *ngIf="answer.controls.name.errors.required"
+                        class="form-text quize_validation_error">Please enter the outcomes</small>
+                </div>
+            </div>
+            <div>
+                <button type="button" (click)="oneMoreAnswer()" class="add">
+                    <div class="iconBox">
+                        <fa-icon size="xs" [icon]="faPlus" class="iconPlus"></fa-icon>
+                    </div>
+                    <span class="addText">Add possible outcome</span>
+                </button>
+            </div>
+        </div>
+        <div class="border"></div>
+        <div class="box">
+            <label for="Question" class="name" style="margin-top: 24px">
+                <img class="img" src="../../../../assets/light.png" />
+                <span class="text">RESOLUTION DETAILS <span class="optional">(optional)</span></span></label>
+            <input type="text" formControlName="details" class="answer" id="detalis"
+                placeholder="Where to validate final outcome...">
+            <div class="info">When result is announced on Bettery, this is where to verify it.</div>
+        </div>
+        <div class="buttonBox">
+            <button type="button" class="cancel">CANCEL</button>
+            <button type="button" class="next" (click)="onSubmit()">NEXT</button>
+        </div>
+    </form>
+</div>

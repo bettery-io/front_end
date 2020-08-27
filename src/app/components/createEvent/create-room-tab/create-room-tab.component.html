@@ -1,0 +1,83 @@
+<div class="box">
+    <form [formGroup]="createRoomForm">
+        <div class="checkBoxPos">
+            <div class="pretty p-default p-round inline">
+                <input type="radio" value="exist" formControlName="createNewRoom">
+                <div class="state p-warning-o checkPos">
+                    <label> </label>
+                </div>
+                <div class="tab" [ngClass]="{ 'tab_active': r.createNewRoom.value == 'exist' }">Existing room</div>
+            </div>
+
+            <div class="pretty p-default p-round inline">
+                <input type="radio" value="new" formControlName="createNewRoom" checked>
+                <div class="state p-warning-o checkPos">
+                    <label> </label>
+                </div>
+                <div class="tab" [ngClass]="{ 'tab_active': r.createNewRoom.value == 'new' }">New room</div>
+            </div>
+        </div>
+    </form>
+    <div class="borderLine"></div>
+
+    <div *ngIf="r.createNewRoom.value == 'exist'">
+        <p class="name">CHOOSE A ROOM</p>
+        <div ngbDropdown class="d-inline-block dropWidth">
+            <button class="btn btn-outline-primary dropWidth" id="dropdownBasic1" ngbDropdownToggle>Tony’s room</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button ngbDropdownItem class="dropDownTab">In progress</button>
+            </div>
+        </div>
+        <div class="buttonBox">
+            <button type="button" class="cancel" (click)="cancel()">BACK</button>
+            <button type="button" class="next" (click)="chooseRoom()">NEXT</button>
+        </div>
+    </div>
+    <div *ngIf="r.createNewRoom.value == 'new'">
+        <p class="name">ROOM NAME AND COLOR</p>
+        <form [formGroup]="roomForm">
+            <div class="form-group">
+                <input type="text" formControlName="roomName" class="answer" id="roomName"
+                    placeholder="Curious Tony’s Room" [ngClass]="{ 'is_invalid': submitted && f.roomName.errors }">
+                <div *ngIf="submitted && f.roomName.errors">
+                    <small *ngIf="f.roomName.errors.required" class="form-text quize_validation_error">Room name is
+                        required</small>
+                </div>
+            </div>
+            <div>
+                <div class="gradientPicker" [ngStyle]="{'background': f.roomColor.value}">
+                    <img class="reloadImg" (click)="generateGradient()" src="../../../../assets/Reload.png">
+                </div>
+                <p class="gradientText">This color is shown on your room list and event invitation</p>
+            </div>
+            <div>
+                <p class="name paddingName">WHO IS THIS ROOM FOR?</p>
+                <div class="checkBoxPos tabPos2">
+                    <div class="pretty p-default p-round inline">
+                        <input formControlName="eventType" type="radio" value="private" checked>
+                        <div class="state p-warning-o checkPos">
+                            <label> </label>
+                        </div>
+                        <div class="tab" [ngClass]="{ 'tab_active': f.eventType.value == 'private' }">Friends</div>
+                    </div>
+
+                    <div class="pretty p-default p-round inline">
+                        <input formControlName="eventType" type="radio" value="public">
+                        <div class="state p-warning-o checkPos">
+                            <label> </label>
+                        </div>
+                        <div class="tab" [ngClass]="{ 'tab_active': f.eventType.value == 'public' }">Social Media</div>
+                    </div>
+                </div>
+            </div>
+            <div class="infoPos">
+                <p class="infoText">Bet with anything among friends: free ride, dinner, money, etc.</p>
+                <p class="infoText">Bet with real money or Bettery coins.</p>
+            </div>
+
+            <div class="buttonBox">
+                <button type="button" class="cancel" (click)="cancel()">BACK</button>
+                <button type="button" class="next" (click)="createRoom()">NEXT</button>
+            </div>
+        </form>
+    </div>

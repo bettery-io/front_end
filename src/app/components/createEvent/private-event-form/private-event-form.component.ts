@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { faTimesCircle, faPlus, faCalendarAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { GetService } from '../../services/get.service';
-import { PostService } from '../../services/post.service';
-import { User } from '../../models/User.model';
+import { GetService } from '../../../services/get.service';
+import { PostService } from '../../../services/post.service';
+import { User } from '../../../models/User.model';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
+import { AppState } from '../../../app.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RegistrationComponent } from '../registration/registration.component';
-import maticInit from '../../contract/maticInit.js';
-import Contract from '../../contract/contract';
+import { RegistrationComponent } from '../../registration/registration.component';
+import maticInit from '../../../contract/maticInit.js';
+import Contract from '../../../contract/contract';
 
 type Time = { name: string, date: any, value: number };
 

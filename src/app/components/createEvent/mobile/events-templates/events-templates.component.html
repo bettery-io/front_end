@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="whichEvent != 'createPrivateEvent' && whichEvent != 'createPublicEvent'">
     <p class="createEvent">CREATE EVENT</p>
     <div class="markBox">
         <div class="tabSpace">
@@ -22,13 +22,13 @@
             <p class="tabName">Make rules</p>
         </div>
     </div>
-    <set-question-tab *ngIf="whichEvent=='setQuestion'" [formData]="formData" (getData)="swithToCreateRoom($event)"></set-question-tab>
-    <create-room-tab *ngIf="whichEvent=='createRoom'" [formData]="formData" (goBack)="swithToSetQuestion($event)" (goNext)="switchToMakeRules($event)"></create-room-tab>
-    <make-rules-tab *ngIf="whichEvent=='makeRules'" [formData]="formData" (goBack)="swithToCreateRoomTab($event)"></make-rules-tab>
-    <!-- <div class="box">
-        <button routerLink="/~ki339203/public-event" type="button" class="btn btn-info publicEvent">Public
-            event</button>
-        <button routerLink="/~ki339203/private-event" type="button" class="btn btn-success privateEvent">Private
-            event</button>
-    </div> -->
+    <set-question-tab *ngIf="whichEvent=='setQuestion'" [formData]="formData" (getData)="swithToCreateRoom($event)">
+    </set-question-tab>
+    <create-room-tab *ngIf="whichEvent=='createRoom'" [formData]="formData" (goBack)="swithToSetQuestion($event)"
+        (goNext)="switchToMakeRules($event)"></create-room-tab>
+    <make-rules-tab *ngIf="whichEvent=='makeRules'" [formData]="formData" (goBack)="swithToCreateRoomTab($event)"
+        (goPrivateEvent)="switchToPrivateEvent($event)"></make-rules-tab>
+</div>
+<div *ngIf="whichEvent == 'createPrivateEvent' || whichEvent == 'createPublicEvent'">
+    <private-event-modile *ngIf="whichEvent=='createPrivateEvent'" [formData]="formData"></private-event-modile>
 </div>

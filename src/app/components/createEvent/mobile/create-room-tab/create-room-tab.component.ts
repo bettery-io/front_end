@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import GradientJSON from '../../../../assets/gradients.json';
+import GradientJSON from '../../../../../assets/gradients.json';
 
 @Component({
   selector: 'create-room-tab',

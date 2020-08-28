@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import _ from 'lodash';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
 
 type Time = { name: string, date: any, value: number };
 
@@ -30,6 +32,8 @@ const times: Time[] = [
 export class MakeRulesTabComponent implements OnInit {
   @Input() formData
   @Output() goBack = new EventEmitter<Object[]>();
+  @Output() goPublicEvent = new EventEmitter<Object[]>();
+  @Output() goPrivateEvent = new EventEmitter<Object[]>();
 
   submitted = false;
   publicForm: FormGroup;
@@ -39,10 +43,11 @@ export class MakeRulesTabComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
-    if(this.formData.privateEndTime !== ''){
+    if (this.formData.privateEndTime !== '') {
       console.log(this.formData.privateEndTime)
       let findTime = _.find(this.times, (x) => { return x.value === this.formData.privateEndTime.value })
       console.log(findTime);
@@ -64,6 +69,11 @@ export class MakeRulesTabComponent implements OnInit {
   get pub() { return this.publicForm.controls; }
   get priv() { return this.privateForm.controls; }
 
+  openCalendar(content) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
+    this.populatedropdown("daydropdown", "monthdropdown", "yeardropdown")
+  }
+
   chosePrivateEndTime(value) {
     let name = value.name.replace(/minutes|hours|hour/gi, "")
     this.startTimeValue = name;
@@ -73,7 +83,7 @@ export class MakeRulesTabComponent implements OnInit {
 
   createPublicEvent() {
     this.submitted = true;
-    if(this.publicForm.invalid){
+    if (this.publicForm.invalid) {
       return
     }
     console.log(this.publicForm.value)
@@ -81,10 +91,10 @@ export class MakeRulesTabComponent implements OnInit {
 
   createPrivateEvent() {
     this.submitted = true;
-    if(this.privateForm.invalid){
+    if (this.privateForm.invalid) {
       return
     }
-    console.log(this.privateForm.value)
+    this.goPrivateEvent.next(this.privateForm.value)
   }
 
   cancel() {
@@ -93,6 +103,30 @@ export class MakeRulesTabComponent implements OnInit {
       ...this.privateForm.value
     };
     this.goBack.next(data)
+  }
+
+
+  populatedropdown(dayfield, monthfield, yearfield) {
+    var monthtext = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+    var today: any = new Date()
+    var dayfield: any = document.getElementById(dayfield)
+    var monthfield: any = document.getElementById(monthfield)
+    var yearfield: any = document.getElementById(yearfield)
+    for (var i = 0; i < 31; i++) {
+      dayfield.options[i] = new Option(String(i), String(i + 1))
+      dayfield.options[today.getDate()] = new Option(today.getDate(), today.getDate(), true, true) //select today's day
+    }
+    for (var m = 0; m < 12; m++) {
+      monthfield.options[m] = new Option(monthtext[m], monthtext[m])
+      monthfield.options[today.getMonth()] = new Option(monthtext[today.getMonth()], monthtext[today.getMonth()], true, true) //select today's month
+    }
+    var thisyear = today.getFullYear()
+    for (var y = 0; y < 20; y++) {
+      yearfield.options[y] = new Option(thisyear, thisyear)
+      thisyear += 1
+    }
+    yearfield.options[0] = new Option(today.getFullYear(), today.getFullYear(), true, true) //select today's year
   }
 
 }

@@ -1,26 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
+import { AppState } from '../../../../app.state';
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { Question } from '../../../models/Question.model';
+import { Question } from '../../../../models/Question.model';
 import { faTimesCircle, faPlus, faCalendarAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookSquare, faTwitter, faInstagram } from '@fortawesome/fontawesome-free-brands'
-import { GetService } from '../../../services/get.service';
-import { PostService } from '../../../services/post.service'
-import { User } from '../../../models/User.model';
+import { GetService } from '../../../../services/get.service';
+import { PostService } from '../../../../services/post.service'
+import { User } from '../../../../models/User.model';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import Contract from '../../../contract/contract';
-import * as UserActions from '../../../actions/user.actions';
-import * as InvitesAction from '../../../actions/invites.actions';
-import * as CoinsActios from '../../../actions/coins.actions';
+import Contract from '../../../../contract/contract';
+import * as UserActions from '../../../../actions/user.actions';
+import * as InvitesAction from '../../../../actions/invites.actions';
+import * as CoinsActios from '../../../../actions/coins.actions';
 
 import Web3 from 'web3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RegistrationComponent } from '../../registration/registration.component';
-import web3Obj from '../../../helpers/torus'
-import maticInit from '../../../contract/maticInit.js'
+import { RegistrationComponent } from '../../../registration/registration.component';
+import web3Obj from '../../../../helpers/torus'
+import maticInit from '../../../../contract/maticInit.js'
 
 
 

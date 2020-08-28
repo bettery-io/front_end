@@ -1,0 +1,43 @@
+<div class="box">
+    <p class="comfirm">CONFIRM EVENT</p>
+
+    <div class="quizBox">
+        <p class="quizName">{{formData.question}}</p>
+    </div>
+
+    <div class="label"><img class="img" src="../../../../assets/CommentYellow.png">
+        <p>possible outcomes</p>
+    </div>
+    <div *ngFor="let answer of formData.answers">
+        <div class="answerBox">
+            <p class="answer">{{answer}}</p>
+        </div>
+    </div>
+    <div class="label" style="padding-top: 16px;"><img class="img" src="../../../../assets/LightYellow.png">
+        <p>resolution details</p>
+    </div>
+    <div class="answerBox">
+        <p class="answer">{{formData.resolutionDetalis}}</p>
+    </div>
+
+    <div class="label"><img class="img" src="../../../../assets/CupYellow.png">
+        <p>What to win or lose</p>
+    </div>
+    <div class="answerBox tipBox">
+        <p class="answer tipWidth">{{formData.winner}}</p>
+        <p class="tipText">Winners</p>
+    </div>
+    <div class="answerBox tipBox">
+        <p class="answer tipWidth">{{formData.losers}}</p>
+        <p class="tipText">Losers</p>
+    </div>
+
+    <div class="label"><img class="img" src="../../../../assets/ClockYellow.png">
+        <p>TIME TO BET</p>
+    </div>
+    <div class="label"><img class="img" src="../../../../assets/BoxYellow.png">
+        <p>ROOM</p>
+    </div>
+
+    <p class="info">The event ends after the Expert validates.</p>
+</div>

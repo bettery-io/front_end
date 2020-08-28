@@ -28,12 +28,13 @@
 
                 </div>
             </div>
-            <p class="info">Mininum bet is <b>1 BTY</b> or <b>0.001 ETH.</b><a class="link" href="#">Learn more</a></p>
+            <p class="info">Mininum bet is <b>1 BTY</b> or <b>0.001 ETH.</b> <a class="link" href="#">Learn more</a></p>
             <div class="timeBox">
                 <div>
                     <div class="labelTime"><img class="clockImg" src="../../../../assets/Clock.png">
                         <p class="timeLabel">TIME TO BET</p>
                     </div>
+                    <img class="calendarImg" src="../../../../assets/Calendar.png" (click)="openCalendar(content)">
                 </div>
                 <div>
                     <div class="labelTime"><img class="clockImg" src="../../../../assets/Clock.png">
@@ -106,7 +107,8 @@
                 </div>
             </div>
             <div *ngIf="submitted && priv.privateEndTime.errors">
-                <small *ngIf="priv.privateEndTime.errors.required" class="form-text quize_validation_error">End time is required</small>
+                <small *ngIf="priv.privateEndTime.errors.required" class="form-text quize_validation_error">End time is
+                    required</small>
             </div>
 
             <div class="buttonBox">
@@ -115,6 +117,28 @@
             </div>
 
         </form>
-
     </div>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">SET DATE AND TIME</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="date">DATE</p>
+        <form action="" name="someform" class="formPicker">
+            <select id="daydropdown" class="datePicker">
+            </select>
+            <select id="monthdropdown" class="datePicker">
+            </select>
+            <select id="yeardropdown" class="datePicker">
+            </select>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn saveModal" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>

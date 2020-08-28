@@ -6,20 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./events-templates.component.sass']
 })
 export class EventsTemplatesComponent implements OnInit {
-  whichEvent = "setQuestion"
+  whichEvent = "createPrivateEvent"
   formData = {
-    question: '',
-    answers: [],
-    resolutionDetalis: '',
+    question: 'Who will be the next president of the US?',
+    answers: ["Donald Trump", "Joe Biden", "Hilary Clinton"],
+    resolutionDetalis: 'www.cnn.com',
     whichRoom: "new",
     roomName: '',
     roomColor: 'linear-gradient(228.16deg, #54DD96 -1.47%, #6360F7 97.79%)',
-    eventType: 'private',
+    eventType: 'public',
     startTime: '',
     endTime: "",
     tokenType: "token",
-    winner: "",
-    losers: "",
+    winner: "Free dinner",
+    losers: "Share the bill",
     privateEndTime: ""
   }
 
@@ -60,6 +60,13 @@ export class EventsTemplatesComponent implements OnInit {
     this.formData.winner = data.winner;
     this.formData.losers = data.losers;
     this.formData.privateEndTime = data.privateEndTime;
+  }
+
+  switchToPrivateEvent(data) {
+    this.formData.winner = data.winner;
+    this.formData.losers = data.losers;
+    this.formData.privateEndTime = data.privateEndTime;
+    this.whichEvent = "createPrivateEvent";
   }
 
   getCircleOneStyle() {

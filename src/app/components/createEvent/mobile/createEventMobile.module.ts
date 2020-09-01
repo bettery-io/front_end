@@ -11,6 +11,7 @@ import { SetQuestionTabComponent } from './set-question-tab/set-question-tab.com
 import { CreateRoomTabComponent } from './create-room-tab/create-room-tab.component';
 import { MakeRulesTabComponent } from './make-rules-tab/make-rules-tab.component';
 import { PrivateEventComponent } from './private-event/private-event.component';
+import { PublicEventComponent } from './public-event/public-event.component';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { PrivateEventComponent } from './private-event/private-event.component';
         SetQuestionTabComponent,
         CreateRoomTabComponent,
         MakeRulesTabComponent,
-        PrivateEventComponent
+        PrivateEventComponent,
+        PublicEventComponent
     ]
 })
 export class CreateEventMobileModule { }

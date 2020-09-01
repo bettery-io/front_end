@@ -56,7 +56,7 @@
                         <p [ngbPopover]="popContent" [popoverTitle]="popTitle" class="loom_balance">
                             Balance: {{coinInfo.loomBalance | number:'1.0-2'}} ETH /
                             {{ERC20Coins?.loomBalance | number:'1.0-2'}} BET
-                            <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} $</p>
+                        <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} $</p>
                     </div>
                 </div>
             </li>
@@ -74,6 +74,21 @@
         </ul>
     </div>
 </nav>
+
+<div class="mobileNavbar">
+    <div class="logoBox">
+        <img class="logo" src="../../../assets/Logo.png">
+    </div>
+    <div *ngIf="nickName === undefined" class="loginBox" (click)="loginWithTorus()">
+        <img class="enter" src="../../../assets/Enter.png">
+        <p class="login">Login</p>
+    </div>
+    <div *ngIf="nickName !== undefined" class="loginBoxRegist" >
+        <p class="userNickName">{{nickName}}</p>
+        <ngx-avatar size="40" name="{{nickName}}"></ngx-avatar>
+    </div>
+
+</div>
 
 <ng-template #content let-modal>
     <div class="modal-header">

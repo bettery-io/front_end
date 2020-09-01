@@ -27,8 +27,9 @@
     <create-room-tab *ngIf="whichEvent=='createRoom'" [formData]="formData" (goBack)="swithToSetQuestion($event)"
         (goNext)="switchToMakeRules($event)"></create-room-tab>
     <make-rules-tab *ngIf="whichEvent=='makeRules'" [formData]="formData" (goBack)="swithToCreateRoomTab($event)"
-        (goPrivateEvent)="switchToPrivateEvent($event)"></make-rules-tab>
+        (goPrivateEvent)="switchToPrivateEvent($event)" (goPublicEvent)="switchToPublicEvent($event)" ></make-rules-tab>
 </div>
 <div *ngIf="whichEvent == 'createPrivateEvent' || whichEvent == 'createPublicEvent'">
-    <private-event-modile *ngIf="whichEvent=='createPrivateEvent'" [formData]="formData"></private-event-modile>
+    <private-event-modile *ngIf="whichEvent=='createPrivateEvent'" (goBack)="switchToMakeRuleTab()" [formData]="formData"></private-event-modile>
+    <public-event-mobile *ngIf="whichEvent=='createPublicEvent'" (goBack)="switchToMakeRuleTab()" [formData]="formData"></public-event-mobile>  
 </div>

@@ -1,26 +1,28 @@
-<div class="box">
+<div class="box" *ngIf="!created">
     <p class="comfirm">CONFIRM EVENT</p>
 
     <div class="quizBox">
         <p class="quizName">{{formData.question}}</p>
     </div>
 
-    <div class="label"><img class="img" src="../../../../assets/CommentYellow.png">
+    <div class="label"><img class="img" src="../../../../../assets/CommentYellow.png">
         <p>possible outcomes</p>
     </div>
     <div *ngFor="let answer of formData.answers">
         <div class="answerBox">
-            <p class="answer">{{answer}}</p>
+            <p class="answer">{{answer.name}}</p>
         </div>
     </div>
-    <div class="label" style="padding-top: 16px;"><img class="img" src="../../../../assets/LightYellow.png">
-        <p>resolution details</p>
-    </div>
-    <div class="answerBox">
-        <p class="answer">{{formData.resolutionDetalis}}</p>
+    <div *ngIf="formData.resolutionDetalis != ''">
+        <div class="label" style="padding-top: 16px;"><img class="img" src="../../../../../assets/LightYellow.png">
+            <p>resolution details</p>
+        </div>
+        <div class="answerBox">
+            <p class="answer">{{formData.resolutionDetalis}}</p>
+        </div>
     </div>
 
-    <div class="label"><img class="img" src="../../../../assets/CupYellow.png">
+    <div class="label"><img class="img" src="../../../../../assets/CupYellow.png">
         <p>What to win or lose</p>
     </div>
     <div class="answerBox tipBox">
@@ -32,12 +34,54 @@
         <p class="tipText">Losers</p>
     </div>
 
-    <div class="label"><img class="img" src="../../../../assets/ClockYellow.png">
+    <div class="label"><img class="img" src="../../../../../assets/ClockYellow.png">
         <p>TIME TO BET</p>
     </div>
-    <div class="label"><img class="img" src="../../../../assets/BoxYellow.png">
+    <div class="answerBox">
+        <p class="answer">{{formData.privateEndTime.name}}</p>
+    </div>
+
+    <div class="label"><img class="img" src="../../../../../assets/HandYellow.png">
+        <p>REWARD for EXPERT</p>
+    </div>
+    <div class="answerBox">
+        <p class="answer">Eternal gratitude for the honesty</p>
+    </div>
+
+    <div class="label"><img class="img" src="../../../../../assets/BoxYellow.png">
         <p>ROOM</p>
+    </div>
+    <div class="answerBox">
+        <p class="answer">{{formData.roomName}}</p>
     </div>
 
     <p class="info">The event ends after the Expert validates.</p>
+
+    <div class="buttonBox">
+        <button type="button" class="cancel" (click)="cancel()">BACK</button>
+        <button type="button" class="next" (click)="createEvent()">CREATE</button>
+    </div>
+</div>
+<div *ngIf="created" class="box">
+    <p class="title">EVENT IS NOW LIVE</p>
+    <p class="titleTwo">Event ends in <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
+    <div class="aboutBox">
+        <p class="byLink">YOUR FRIENDS CAN JOIN BY THIS LINK:</p>
+        <a class="link" href="#">www.bettery.io/{{eventData._id}}</a>
+        <div class="imgBox" (click)="copyToClickBoard()">
+            <img class="img" style="margin-right: 8px" src="../../../../../assets/list.png">
+            <p class="copyToClick">Copy to clipboard</p>
+        </div>
+    </div>
+    <ul class="listBox">
+        <li class="list" style="padding-bottom: 20px;">With the link, anyone can join as a Player, or become a single
+            Expert to validate the result.
+            Expert can't bet.</li>
+        <li class="list">Players and the Expert need to join in 8 hours, otherwise the event will be cancelled.</li>
+    </ul>
+    <a class="linkYellow" href="#">How do I manage my event?</a>
+
+    <div class="joinBox">
+        <a class="joinButton" href="#">JOIN EVENT</a>
+    </div>
 </div>

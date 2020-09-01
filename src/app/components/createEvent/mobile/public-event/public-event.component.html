@@ -1,0 +1,149 @@
+<div class="box" *ngIf="!created">
+    <p class="comfirm">CONFIRM EVENT</p>
+
+    <div class="quizBox">
+        <p class="quizName">{{formData.question}}</p>
+    </div>
+
+    <div class="label"><img class="img" src="../../../../../assets/CommentYellow.png">
+        <p>possible outcomes</p>
+    </div>
+    <div *ngFor="let answer of formData.answers">
+        <div class="answerBox">
+            <p class="answer">{{answer.name}}</p>
+        </div>
+    </div>
+    <div *ngIf="formData.resolutionDetalis != ''">
+        <div class="label" style="padding-top: 16px;"><img class="img" src="../../../../../assets/LightYellow.png">
+            <p>resolution details</p>
+        </div>
+        <div class="answerBox">
+            <p class="answer">{{formData.resolutionDetalis}}</p>
+        </div>
+    </div>
+    <div class="label" style="padding-top: 16px;"><img class="img" src="../../../../../assets/BetWith.png">
+        <p>BET WITH</p>
+    </div>
+    <div class="answerBox">
+        <p class="answer">{{betWith()}}</p>
+    </div>
+
+    <div class="timeBox">
+        <div class="timeBoxOne">
+            <div class="label"><img class="img" src="../../../../../assets/ClockYellow.png">
+                <p>TIME TO BET</p>
+            </div>
+            <div class="answerBox">
+                <p class="answer">{{timeToBet()}}</p>
+            </div>
+        </div>
+        <div class="timeBoxTwo">
+            <div class="label"><img class="img" src="../../../../../assets/ExpertsYellow.png">
+                <p>NO. of EXPERTS</p>
+            </div>
+            <div class="answerBox">
+                <p class="answer">{{expertsName()}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="label"><img class="img" src="../../../../../assets/BoxYellow.png">
+        <p>ROOM</p>
+    </div>
+    <div class="answerBox">
+        <p class="answer">{{formData.roomName}}</p>
+    </div>
+
+    <p class="info">The event ends after the Expert validates.</p>
+
+    <div class="buttonBox">
+        <button type="button" class="cancel" (click)="cancel()">BACK</button>
+        <button type="button" class="next" (click)="createEvent()">CREATE</button>
+    </div>
+</div>
+<div class="box" *ngIf="created">
+    <p class="title">NOW BETTING</p>
+    <p class="titleTwo">Event ends in <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
+
+    <div class="quizBox">
+        <p class="quizText">{{formData.question}}</p>
+    </div>
+
+    <div *ngFor="let answer of formData.answers">
+        <div class="answerBoxCreated">
+            <p class="answerCreated">{{answer.name}}</p>
+        </div>
+    </div>
+
+    <div class="answerBoxResolution" *ngIf="formData.resolutionDetalis != ''">
+        <p class="resolutionText">Resolution details: <b>{{formData.resolutionDetalis}}</b></p>
+    </div>
+
+    <div class="poolBox">
+        <p class="pool">CURRENT POOL</p>
+        <p class="tokenType">0 {{tokenCharacter()}}</p>
+    </div>
+
+    <div>
+        <div class="infoLabelPos">
+            <p class="infoLabel">HOST:</p>
+            <div>
+                <p class="name">{{nickName}} (You)</p>
+                <ngx-avatar size="40" name="{{nickName}}"></ngx-avatar>
+            </div>
+        </div>
+        <div class="infoLabelPos">
+            <p class="infoLabel">PLAYERS joined:</p>
+            <p class="name">0</p>
+        </div>
+        <div class="infoLabelPos">
+            <p class="infoLabel">EXPERTS joined:</p>
+            <p class="name">0</p>
+        </div>
+    </div>
+
+    <div class="aboutBox">
+        <p class="byLink">share on your social media!</p>
+        <a class="link" href="#">www.bettery.io/TODO</a>
+        <div class="imgBox" (click)="copyToClickBoard()">
+            <img class="img" style="margin-right: 8px" src="../../../../../assets/list.png">
+            <p class="copyToClick">Copy to clipboard</p>
+        </div>
+    </div>
+
+    <div class="sendCommentBox">
+        <div class="addCommentBox">
+            <p class="addCommentText">Add a comment...</p>
+        </div>
+        <img class="commentImg" class="img sendImg" src="../../../../../assets/send.png">
+    </div>
+
+    <div class="commentBox">
+        <div class="commentHeader">
+            <div class="senderBox">
+                <img class="commentImg" src='../../../../../assets/face1.png'>
+                <p class="commentName">Jenna Logan</p>
+            </div>
+            <div class="timeBox">1 day ago</div>
+        </div>
+        <div>
+            <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+
+    <div class="commentBox">
+        <div class="commentHeader">
+            <div class="senderBox">
+                <img class="commentImg" src='../../../../../assets/face2.png'>
+                <p class="commentName">Terry Crews</p>
+            </div>
+            <div class="timeBox">1 day ago</div>
+        </div>
+        <div>
+            <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                ut labore et dolore magna aliqua.</p>
+        </div>
+    </div>
+
+</div>

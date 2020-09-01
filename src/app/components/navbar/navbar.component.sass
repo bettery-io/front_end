@@ -6,11 +6,17 @@
     border-radius: 40%
     color: white
 
+.navbar
+    display: block !important
+
+.mobileNavbar
+    display: none !important
+
 .loom_balance:hover
     text-decoration: underline
 
 .showAll
-    text-align: center    
+    text-align: center
 
 .noneHistory
     text-align: center
@@ -18,23 +24,23 @@
 
 .historyBox
     display: flex
-    justify-content: space-between    
+    justify-content: space-between
 
 .historyIconSend
-    color: #dc3545 
+    color: #dc3545
 
 .historyIconReceive
-    color:#28a745     
+    color: #28a745
 
 .invitation
-    position: relative    
-    
+    position: relative
+
 .modal-header
     border-bottom: none !important
 
 .justify-content-start
-    justify-content: center !important    
-    
+    justify-content: center !important
+
 .registration
     float: right
 
@@ -89,7 +95,7 @@
     top: 3px
 
 .amount_deposit_label
-    margin-right: 10px  
+    margin-right: 10px
     position: relative
     top: 6px
 
@@ -102,8 +108,7 @@
     text-align: center
     color: red
     padding-bottom: 0px
-    margin-bottom: 0px    
-
+    margin-bottom: 0px
 
 .lds-ripple-small
     margin-top: 0px
@@ -141,17 +146,70 @@
 
 .active_tab
     font-weight: 500 !important
-    color: black !important  
+    color: black !important
 
 .circle
     width: 25px
     height: 25px
     border-radius: 50%
-    display: inline-block    
+    display: inline-block
     position: relative
     top: 7px
 
 .erc20
-    padding-left: 10px    
-          
+    padding-left: 10px
 
+@media only screen and (max-width: 600px)
+.navbar
+    display: none !important
+
+.mobileNavbar
+    display: flex !important
+    background-color: #FFFFFF !important
+    justify-content: space-between
+
+.logo
+    height: 48px
+
+.enter
+    height: 30px
+    margin-right: 8px
+
+.login
+    font-family: 'Open Sans', sans-serif
+    font-style: normal
+    font-weight: bold
+    font-size: 14px
+    line-height: 19px
+    display: flex
+    align-items: center
+    text-align: center
+    color: #000000
+
+.loginBox
+    display: flex
+    margin-top: 24px
+    margin-right: 12px
+
+.logoBox
+    margin-top: 12px
+    margin-bottom: 12px
+    margin-left: 16px
+
+.userNickName
+    font-family: Open Sans
+    font-style: normal
+    font-weight: bold
+    font-size: 14px
+    line-height: 19px
+    display: flex
+    align-items: center
+    text-align: center
+    font-family: 'Open Sans', sans-serif
+    margin-right: 8px
+    margin-bottom: 11px
+
+.loginBoxRegist
+    display: flex
+    margin-top: 17px
+    margin-right: 12px

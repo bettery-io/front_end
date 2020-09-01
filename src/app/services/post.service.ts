@@ -7,7 +7,7 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
- //url = 'http://13.229.200.135';
+//url = 'http://13.229.200.135';
  url = "http://localhost:80"
  
 

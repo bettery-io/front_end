@@ -2,7 +2,7 @@
     <form [formGroup]="questionForm">
         <div class="box">
             <label for="Question" class="name">
-                <img class="img" src="../../../../assets/yourTopic.png" />
+                <img class="img" src="../../../../../assets/yourTopic.png" />
                 <span class="text">YOUR TOPIC</span></label>
             <textarea type="text" formControlName="question" class="question" id="Question"
                 placeholder="Enter the question..."
@@ -16,7 +16,7 @@
 
         <div class="box" style="margin-top:25px;">
             <label class="name">
-                <img class="img" src="../../../../assets/Answers.png" />
+                <img class="img" src="../../../../../assets/Answers.png" />
                 <span class="text">POSSIBLE OUTCOMES</span>
             </label>
             <div *ngFor="let answer of t.controls; let i = index" style="margin-bottom: 8px;">
@@ -26,7 +26,7 @@
                         placeholder="Outcome that may happen...">
                     <div *ngIf='answesQuantity >= 3' class="deleteButtonPos">
                         <button (click)="deleteAnswer(i)" class="deleteButton" type="button">
-                            <img class="trashImg" src="../../../../assets/Trash.png">
+                            <img class="trashImg" src="../../../../../assets/Trash.png">
                         </button>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
         <div class="border"></div>
         <div class="box">
             <label for="Question" class="name" style="margin-top: 24px">
-                <img class="img" src="../../../../assets/light.png" />
+                <img class="img" src="../../../../../assets/light.png" />
                 <span class="text">RESOLUTION DETAILS <span class="optional">(optional)</span></span></label>
             <input type="text" formControlName="details" class="answer" id="detalis"
                 placeholder="Where to validate final outcome...">

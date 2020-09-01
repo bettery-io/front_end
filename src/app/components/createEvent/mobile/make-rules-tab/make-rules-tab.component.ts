@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import _ from 'lodash';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 
 type Time = { name: string, date: any, value: number };
@@ -27,7 +29,8 @@ const times: Time[] = [
 @Component({
   selector: 'make-rules-tab',
   templateUrl: './make-rules-tab.component.html',
-  styleUrls: ['./make-rules-tab.component.sass']
+  styleUrls: ['./make-rules-tab.component.sass'],
+  providers: [NgbTimepickerConfig]
 })
 export class MakeRulesTabComponent implements OnInit {
   @Input() formData
@@ -38,32 +41,59 @@ export class MakeRulesTabComponent implements OnInit {
   submitted = false;
   publicForm: FormGroup;
   privateForm: FormGroup;
+  exactTime: FormGroup;
   times = times;
-  startTimeValue;
+  endPrivateTime;
+  endPublicTime;
+  timeData: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  exactTimeBool: boolean
 
   constructor(
     private formBuilder: FormBuilder,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    config: NgbTimepickerConfig
+  ) {
+    config.seconds = false;
+    config.spinners = false;
+  }
 
   ngOnInit(): void {
     if (this.formData.privateEndTime !== '') {
-      console.log(this.formData.privateEndTime)
       let findTime = _.find(this.times, (x) => { return x.value === this.formData.privateEndTime.value })
-      console.log(findTime);
       let name = findTime.name.replace(/minutes|hours|hour/gi, "")
-      this.startTimeValue = name;
+      this.endPrivateTime = name;
+    }
+    if (this.formData.exactTimeBool) {
+      this.endPublicTime = `Until ${this.formData.exactDay} ${this.formData.exactMonth} ${this.formData.exactYear}, ${this.formData.exactHour} : ${this.formData.exactMinutes}`;
+    } else if (this.formData.publicEndTime !== "") {
+      let findTime = _.find(this.times, (x) => { return x.value === this.formData.publicEndTime.value })
+      this.endPublicTime = findTime.name;
     }
     this.publicForm = this.formBuilder.group({
       tokenType: [this.formData.tokenType],
-      startTime: [this.formData.startTime, Validators.required],
-      endTime: [this.formData.endTime, Validators.required]
+      publicEndTime: [this.formData.publicEndTime, Validators.required],
+      expertsCountType: [this.formData.expertsCountType],
+      expertsCount: [this.formData.expertsCount, this.formData.expertsCountType == "custom" ? Validators.required : '']
     })
     this.privateForm = this.formBuilder.group({
       winner: [this.formData.winner, Validators.required],
       losers: [this.formData.losers, Validators.required],
       privateEndTime: [this.formData.privateEndTime, Validators.required]
     })
+    var monthtext = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+    console.log(this.formData.exactMonth)
+
+    this.exactTime = this.formBuilder.group({
+      day: [this.formData.exactDay],
+      month: [typeof this.formData.exactMonth === 'string' ? this.formData.exactMonth : monthtext[this.formData.exactMonth]],
+      year: [this.formData.exactYear]
+    })
+
+    this.timeData.hour = this.formData.exactHour
+    this.timeData.minute = this.formData.exactMinutes
+    this.exactTimeBool = this.formData.exactTimeBool;
+
   }
 
   get pub() { return this.publicForm.controls; }
@@ -76,9 +106,14 @@ export class MakeRulesTabComponent implements OnInit {
 
   chosePrivateEndTime(value) {
     let name = value.name.replace(/minutes|hours|hour/gi, "")
-    this.startTimeValue = name;
+    this.endPrivateTime = name;
     this.privateForm.controls.privateEndTime.setValue(value)
+  }
 
+  chosePublicEndTime(value) {
+    this.endPublicTime = value.name;
+    this.publicForm.controls.publicEndTime.setValue(value)
+    this.exactTimeBool = false;
   }
 
   createPublicEvent() {
@@ -86,7 +121,13 @@ export class MakeRulesTabComponent implements OnInit {
     if (this.publicForm.invalid) {
       return
     }
-    console.log(this.publicForm.value)
+    let data = {
+      ...this.publicForm.value,
+      ...this.exactTime.value,
+      ...this.timeData,
+      "exactTimeBool": this.exactTimeBool
+    }
+    this.goPublicEvent.next(data)
   }
 
   createPrivateEvent() {
@@ -97,16 +138,27 @@ export class MakeRulesTabComponent implements OnInit {
     this.goPrivateEvent.next(this.privateForm.value)
   }
 
+  saveExactTime() {
+    this.endPublicTime = `Until ${this.exactTime.value.day} ${this.exactTime.value.month} ${this.exactTime.value.year}, ${this.timeData.hour} : ${this.timeData.minute}`
+    this.exactTimeBool = true;
+    this.publicForm.controls.publicEndTime.setValue({ hour: 0, minute: 0, second: 0 })
+    this.modalService.dismissAll()
+  }
+
   cancel() {
     let data = {
       ...this.publicForm.value,
-      ...this.privateForm.value
+      ...this.privateForm.value,
+      ...this.exactTime.value,
+      ...this.timeData,
+      "exactTimeBool": this.exactTimeBool
     };
     this.goBack.next(data)
   }
 
 
   populatedropdown(dayfield, monthfield, yearfield) {
+
     var monthtext = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
     var today: any = new Date()

@@ -6,21 +6,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./events-templates.component.sass']
 })
 export class EventsTemplatesComponent implements OnInit {
-  whichEvent = "createPrivateEvent"
+  whichEvent = "makeRules"
   formData = {
     question: 'Who will be the next president of the US?',
-    answers: ["Donald Trump", "Joe Biden", "Hilary Clinton"],
+    answers: [{ name: "Donald Trump" }, { name: "Joe Biden" }, { name: "Hilary Clinton" }],
     resolutionDetalis: 'www.cnn.com',
     whichRoom: "new",
     roomName: '',
     roomColor: 'linear-gradient(228.16deg, #54DD96 -1.47%, #6360F7 97.79%)',
     eventType: 'public',
-    startTime: '',
-    endTime: "",
     tokenType: "token",
     winner: "Free dinner",
     losers: "Share the bill",
-    privateEndTime: ""
+    privateEndTime: "",
+    publicEndTime: "",
+    expertsCountType: "company",
+    expertsCount: '',
+    exactMinutes: new Date().getMinutes(),
+    exactHour: new Date().getHours(),
+    exactDay: new Date().getDate(),
+    exactMonth: new Date().getMonth(),
+    exactYear: new Date().getFullYear(),
+    exactTimeBool: false
   }
 
   constructor() { }
@@ -53,9 +60,17 @@ export class EventsTemplatesComponent implements OnInit {
   }
 
   swithToCreateRoomTab(data) {
+    console.log(data);
     this.whichEvent = "createRoom";
-    this.formData.startTime = data.startTime;
-    this.formData.endTime = data.endTime;
+    this.formData.exactDay = data.day;
+    this.formData.exactTimeBool = data.exactTimeBool;
+    this.formData.expertsCount = data.expertsCount;
+    this.formData.expertsCountType = data.expertsCountType;
+    this.formData.exactHour = data.hour;
+    this.formData.exactMinutes = data.minute;
+    this.formData.exactMonth = data.month;
+    this.formData.exactYear = data.year;
+    this.formData.publicEndTime = data.publicEndTime;
     this.formData.tokenType = data.tokenType;
     this.formData.winner = data.winner;
     this.formData.losers = data.losers;
@@ -67,6 +82,24 @@ export class EventsTemplatesComponent implements OnInit {
     this.formData.losers = data.losers;
     this.formData.privateEndTime = data.privateEndTime;
     this.whichEvent = "createPrivateEvent";
+  }
+
+  switchToPublicEvent(data) {
+    this.formData.tokenType = data.tokenType;
+    this.formData.publicEndTime = data.publicEndTime;
+    this.formData.expertsCountType = data.expertsCountType;
+    this.formData.expertsCount = data.expertsCount;
+    this.formData.exactDay = data.day;
+    this.formData.exactTimeBool = data.exactTimeBool;
+    this.formData.exactHour = data.hour;
+    this.formData.exactMinutes = data.minute;
+    this.formData.exactMonth = data.month;
+    this.formData.exactYear = data.year;
+    this.whichEvent = "createPublicEvent";
+  }
+
+  switchToMakeRuleTab() {
+    this.whichEvent = "makeRules";
   }
 
   getCircleOneStyle() {

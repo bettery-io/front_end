@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
+import { ClipboardModule } from 'ngx-clipboard';
+import { AvatarModule } from 'ngx-avatar';
 
 import { userReducer } from './reducers/user.reducer';
 import { coinsReducer } from './reducers/coins.reducer';
@@ -48,6 +50,8 @@ import {CreateEventModule } from './components/createEvent/createEvent.module';
     QuizTemplateComponent,
   ],
   imports: [
+    AvatarModule,
+    ClipboardModule,
     CreateEventModule,
     BrowserModule,
     HttpClientModule,

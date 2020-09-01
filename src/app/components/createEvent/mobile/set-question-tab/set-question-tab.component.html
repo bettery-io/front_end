@@ -2,8 +2,9 @@
     <form [formGroup]="questionForm">
         <div class="box">
             <label for="Question" class="name">
-                <img class="img" src="../../../../../assets/yourTopic.png" />
-                <span class="text">YOUR TOPIC</span></label>
+                <div class="yourTopic"></div>
+                <span class="text">YOUR TOPIC</span>
+            </label>
             <textarea type="text" formControlName="question" class="question" id="Question"
                 placeholder="Enter the question..."
                 [ngClass]="{ 'is_invalid': submitted && f.question.errors }"></textarea>
@@ -16,7 +17,7 @@
 
         <div class="box" style="margin-top:25px;">
             <label class="name">
-                <img class="img" src="../../../../../assets/Answers.png" />
+                <div class="AnswersImg"></div>
                 <span class="text">POSSIBLE OUTCOMES</span>
             </label>
             <div *ngFor="let answer of t.controls; let i = index" style="margin-bottom: 8px;">
@@ -26,7 +27,7 @@
                         placeholder="Outcome that may happen...">
                     <div *ngIf='answesQuantity >= 3' class="deleteButtonPos">
                         <button (click)="deleteAnswer(i)" class="deleteButton" type="button">
-                            <img class="trashImg" src="../../../../../assets/Trash.png">
+                            <div class="trashImg"></div>
                         </button>
                     </div>
                 </div>
@@ -47,8 +48,9 @@
         <div class="border"></div>
         <div class="box">
             <label for="Question" class="name" style="margin-top: 24px">
-                <img class="img" src="../../../../../assets/light.png" />
-                <span class="text">RESOLUTION DETAILS <span class="optional">(optional)</span></span></label>
+                <div class="lightImg"></div>
+                <span class="text">RESOLUTION DETAILS <span class="optional">(optional)</span></span>
+            </label>
             <input type="text" formControlName="details" class="answer" id="detalis"
                 placeholder="Where to validate final outcome...">
             <div class="info">When result is announced on Bettery, this is where to verify it.</div>

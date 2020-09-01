@@ -112,10 +112,7 @@ export class PublicEventComponent implements OnInit {
       this.seconds = "00"
     } else {
       this.seconds = second > 9 ? second : "0" + second;
-
     }
-
-
     setTimeout(() => {
       this.calculateDate()
     }, 1000);

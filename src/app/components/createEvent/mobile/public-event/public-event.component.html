@@ -5,7 +5,8 @@
         <p class="quizName">{{formData.question}}</p>
     </div>
 
-    <div class="label"><img class="img" src="../../../../../assets/CommentYellow.png">
+    <div class="label">
+        <div class="CommentYellow"></div>
         <p>possible outcomes</p>
     </div>
     <div *ngFor="let answer of formData.answers">
@@ -14,15 +15,17 @@
         </div>
     </div>
     <div *ngIf="formData.resolutionDetalis != ''">
-        <div class="label" style="padding-top: 16px;"><img class="img" src="../../../../../assets/LightYellow.png">
+        <div class="label" style="padding-top: 16px;">
+            <div class="LightYellow"></div>
             <p>resolution details</p>
         </div>
         <div class="answerBox">
             <p class="answer">{{formData.resolutionDetalis}}</p>
         </div>
     </div>
-    <div class="label" style="padding-top: 16px;"><img class="img" src="../../../../../assets/BetWith.png">
-        <p>BET WITH</p>
+    <div class="label" style="padding-top: 16px;">
+        <div class="BetWith"></div>
+        <p class="labelNamePos">BET WITH</p>
     </div>
     <div class="answerBox">
         <p class="answer">{{betWith()}}</p>
@@ -30,16 +33,18 @@
 
     <div class="timeBox">
         <div class="timeBoxOne">
-            <div class="label"><img class="img" src="../../../../../assets/ClockYellow.png">
-                <p>TIME TO BET</p>
+            <div class="label">
+                <div class="ClockYellow"></div>
+                <p class="labelNamePos">TIME TO BET</p>
             </div>
             <div class="answerBox">
                 <p class="answer">{{timeToBet()}}</p>
             </div>
         </div>
         <div class="timeBoxTwo">
-            <div class="label"><img class="img" src="../../../../../assets/ExpertsYellow.png">
-                <p>NO. of EXPERTS</p>
+            <div class="label">
+                <div class="ExpertsYellow"></div>
+                <p class="labelNamePos">NO. of EXPERTS</p>
             </div>
             <div class="answerBox">
                 <p class="answer">{{expertsName()}}</p>
@@ -47,8 +52,9 @@
         </div>
     </div>
 
-    <div class="label"><img class="img" src="../../../../../assets/BoxYellow.png">
-        <p>ROOM</p>
+    <div class="label">
+        <div class="BoxYellow"></div>
+        <p class="labelNamePos">ROOM</p>
     </div>
     <div class="answerBox">
         <p class="answer">{{formData.roomName}}</p>
@@ -106,7 +112,7 @@
         <p class="byLink">share on your social media!</p>
         <a class="link" href="#">www.bettery.io/TODO</a>
         <div class="imgBox" (click)="copyToClickBoard()">
-            <img class="img" style="margin-right: 8px" src="../../../../../assets/list.png">
+            <div class="listImg" style="margin-right: 8px"></div>
             <p class="copyToClick">Copy to clipboard</p>
         </div>
     </div>
@@ -115,13 +121,13 @@
         <div class="addCommentBox">
             <p class="addCommentText">Add a comment...</p>
         </div>
-        <img class="commentImg" class="img sendImg" src="../../../../../assets/send.png">
+        <div class="sendImg"></div>
     </div>
 
     <div class="commentBox">
         <div class="commentHeader">
             <div class="senderBox">
-                <img class="commentImg" src='../../../../../assets/face1.png'>
+                <div class="commentImg face1"></div>
                 <p class="commentName">Jenna Logan</p>
             </div>
             <div class="timeBox">1 day ago</div>
@@ -135,7 +141,7 @@
     <div class="commentBox">
         <div class="commentHeader">
             <div class="senderBox">
-                <img class="commentImg" src='../../../../../assets/face2.png'>
+                <div class="commentImg face2"></div>
                 <p class="commentName">Terry Crews</p>
             </div>
             <div class="timeBox">1 day ago</div>

@@ -19,8 +19,8 @@ import { PrivateEventFormComponent } from './private-event-form/private-event-fo
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forChild([
-            { path: "~ki339203/public-event", component: PublicEventFormComponent },
-            { path: "~ki339203/private-event", component: PrivateEventFormComponent },
+            { path: "public-event", component: PublicEventFormComponent },
+            { path: "private-event", component: PrivateEventFormComponent },
         ])
     ],
     declarations: [

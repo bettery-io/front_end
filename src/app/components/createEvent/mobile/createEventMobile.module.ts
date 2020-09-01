@@ -22,7 +22,7 @@ import { PublicEventComponent } from './public-event/public-event.component';
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forChild([
-            { path: "~ki339203/create-event", component: EventsTemplatesComponent }
+            { path: "create-event", component: EventsTemplatesComponent }
         ])
     ],
     declarations: [

@@ -44,7 +44,7 @@ export class MyActivitesComponent implements OnInit {
       if (x.length === 0) {
         this.userId = null;
         this.userData = undefined;
-        this.router.navigate(['~ki339203/home'])
+        this.router.navigate(['/home'])
       } else {
         this.userData = x[0];
         this.userId = x[0]._id;

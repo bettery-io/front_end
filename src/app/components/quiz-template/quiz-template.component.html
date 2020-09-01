@@ -3,7 +3,7 @@
         <div class="title">
             <p class="question">{{question.question}}</p>
             <p class="from">You are: {{this.getPosition(question)}}</p>
-            <a [routerLink]="['/~ki339203/question', question.id]">Open Link</a>
+            <a [routerLink]="['question', question.id]">Open Link</a>
             <button type="button" *ngIf="this.whichComponent()" (click)="deleteInvitation(question)"
                 class="btn btn-danger btn-sm">Delete Invitation</button>
         </div>

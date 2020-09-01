@@ -65,14 +65,14 @@ import {CreateEventModule } from './components/createEvent/createEvent.module';
     NgbModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: "~ki339203/home", component: HomeComponent },
-      { path: "~ki339203", redirectTo: "~ki339203/home", pathMatch: "full" },
-      { path: "~ki339203/eventFeed", component: EventFeedComponent },
-      { path: "~ki339203/my-activites", component: MyActivitesComponent },
-      { path: '~ki339203/question/:id', component: QuestionComponent },
-      { path: '~ki339203/invitation', component: InvitationComponent },
-      { path: '~ki339203/history', component: HistoryComponent },
-      { path: '~ki339203/erc20', component: ErcCoinSaleComponent }
+      { path: "home", component: HomeComponent },
+      // { path: "~ki339203", redirectTo: "~ki339203/home", pathMatch: "full" },
+      { path: "eventFeed", component: EventFeedComponent },
+      { path: "my-activites", component: MyActivitesComponent },
+      { path: 'question/:id', component: QuestionComponent },
+      { path: 'invitation', component: InvitationComponent },
+      { path: 'history', component: HistoryComponent },
+      { path: 'erc20', component: ErcCoinSaleComponent }
     ])   
   ],
   providers: [

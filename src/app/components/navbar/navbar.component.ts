@@ -358,9 +358,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.CoinsSubscribe.unsubscribe();
   }
 
-  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-    this.logOut()
-  }
+  // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+  //   this.logOut()
+  // }
 
   async logOut() {
     if (this.userWallet !== undefined && this.verifier !== "metamask") {

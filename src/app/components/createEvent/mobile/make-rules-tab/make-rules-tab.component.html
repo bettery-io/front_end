@@ -35,11 +35,10 @@
                         <p style="margin-bottom: 8px">TIME TO BET</p>
                     </div>
                     <div ngbDropdown class="dropBox">
-                        <button [ngClass]="{ 'is_invalid': submitted && pub.publicEndTime.errors }" type="button" class="btn"
-                            id="startPublicTime" ngbDropdownToggle>{{endPublicTime}}</button>
+                        <button [ngClass]="{ 'is_invalid': submitted && pub.publicEndTime.errors }" type="button"
+                            class="btn" id="startPublicTime" ngbDropdownToggle>{{endPublicTime}}</button>
                         <div class="calendarPosition">
-                            <img class="calendarImg" src="../../../../../assets/Calendar.png"
-                                (click)="openCalendar(content)">
+                            <div class="calendarImg" (click)="openCalendar(content)"></div>
                         </div>
                         <div ngbDropdownMenu aria-labelledby="startPublicTime">
                             <div *ngFor="let time of times">
@@ -49,7 +48,8 @@
                         </div>
                     </div>
                     <div *ngIf="submitted && pub.publicEndTime.errors">
-                        <small *ngIf="pub.publicEndTime.errors.required" class="form-text quize_validation_error">Time to bet
+                        <small *ngIf="pub.publicEndTime.errors.required" class="form-text quize_validation_error">Time
+                            to bet
                             is required</small>
                     </div>
                     <p class="infoPublicText"> The event ends after the last Expert validates.</p>
@@ -114,7 +114,8 @@
     </div>
     <div *ngIf="formData.eventType === 'private'">
         <form [formGroup]="privateForm">
-            <div class="cupInfo"><img class="cupImg" src="../../../../../assets/Cup.png">
+            <div class="cupInfo">
+                <div class="cupImg"></div>
                 <p class="name cupName">What to win or lose</p>
             </div>
             <div class="form-group">
@@ -144,7 +145,8 @@
                 </div>
             </div>
 
-            <div class="cupInfo" style="padding-top: 20px;"><img class="cupImg" src="../../../../../assets/Clock.png">
+            <div class="cupInfo" style="padding-top: 20px;">
+                <div class="clockImg"></div>
                 <p class="name cupName">TIME TO BET</p>
             </div>
 
@@ -165,7 +167,8 @@
             <p class="infoPrivateText">Event needs Players to bet and one Expert to validate the resuls after betting.
                 Expert can't bet.</p>
 
-            <div class="cupInfo" style="padding-top: 0px"><img class="cupImg" src="../../../../../assets/Hand.png">
+            <div class="cupInfo" style="padding-top: 0px">
+                <div class="handImg"></div>
                 <p class="name cupName">REWARD for EXPERT</p>
             </div>
             <div class="answerBox">

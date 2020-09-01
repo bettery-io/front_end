@@ -26,15 +26,14 @@ export class SetQuestionTabComponent implements OnInit {
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
     private http: PostService,
-  ) {
+  ) { }
+
+  ngOnInit(): void {
     this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
         this.registered = true;
       }
     });
-  }
-
-  ngOnInit(): void {
     this.questionForm = this.formBuilder.group({
       question: [this.formData.question, Validators.required],
       answers: new FormArray([]),

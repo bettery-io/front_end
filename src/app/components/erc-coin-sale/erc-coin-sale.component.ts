@@ -42,7 +42,7 @@ export class ErcCoinSaleComponent implements OnInit {
     config.animated = true;
     this.store.select("user").subscribe((x) => {
       if (x.length === 0) {
-        this.router.navigate(['~ki339203/home'])
+        this.router.navigate(['home'])
       } else {
         this.userWallet = x[0].wallet;
         this.verifier = x[0].verifier;

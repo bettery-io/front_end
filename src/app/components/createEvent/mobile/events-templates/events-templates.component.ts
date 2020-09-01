@@ -6,18 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./events-templates.component.sass']
 })
 export class EventsTemplatesComponent implements OnInit {
-  whichEvent = "makeRules"
+  whichEvent = "setQuestion"
   formData = {
-    question: 'Who will be the next president of the US?',
-    answers: [{ name: "Donald Trump" }, { name: "Joe Biden" }, { name: "Hilary Clinton" }],
-    resolutionDetalis: 'www.cnn.com',
+    question: '',
+    answers: [],
+    resolutionDetalis: '',
     whichRoom: "new",
     roomName: '',
     roomColor: 'linear-gradient(228.16deg, #54DD96 -1.47%, #6360F7 97.79%)',
     eventType: 'public',
     tokenType: "token",
-    winner: "Free dinner",
-    losers: "Share the bill",
+    winner: "",
+    losers: "",
     privateEndTime: "",
     publicEndTime: "",
     expertsCountType: "company",

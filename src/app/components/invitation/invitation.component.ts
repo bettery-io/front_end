@@ -46,7 +46,7 @@ export class InvitationComponent implements OnInit {
       if (x.length === 0) {
         this.userId = null;
         this.userData = [];
-        this.router.navigate(['~ki339203/home'])
+        this.router.navigate(['/home'])
       } else {
         this.userId = x[0]._id
         this.userData = x[0];

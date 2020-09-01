@@ -215,7 +215,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
           let getLocation = document.location.href
           let gurd = getLocation.search("question")
           if (gurd === -1) {
-            this.router.navigate(['~ki339203/eventFeed'])
+            this.router.navigate(['eventFeed'])
           }
         },
         (err) => {

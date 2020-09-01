@@ -25,7 +25,7 @@ export class HistoryComponent implements OnInit {
   ) {
     this.store.select("user").subscribe((x:User[]) => {
       if (x.length === 0) {
-        this.router.navigate(['~ki339203/home'])
+        this.router.navigate(['home'])
       } else {
         this.getUserData(x[0]._id)
       }

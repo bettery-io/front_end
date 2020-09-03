@@ -17,7 +17,7 @@ const times: Time[] = [
   { name: "2 hours", date: new Date().setHours(new Date().getHours() + 2), value: 2 },
   { name: "3 hours", date: new Date().setHours(new Date().getHours() + 3), value: 3 },
   { name: "4 hours", date: new Date().setHours(new Date().getHours() + 4), value: 4 },
-  { name: "6 hours", date: new Date().setHours(new Date().getHours() + 4), value: 6 },
+  { name: "6 hours", date: new Date().setHours(new Date().getHours() + 6), value: 6 },
   { name: "8 hours", date: new Date().setHours(new Date().getHours() + 8), value: 8 },
   { name: "12 hours", date: new Date().setHours(new Date().getHours() + 12), value: 12 },
   { name: "18 hours", date: new Date().setHours(new Date().getHours() + 18), value: 18 },

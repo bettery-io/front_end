@@ -68,7 +68,10 @@
     </div>
 </div>
 <div class="box" *ngIf="created">
-    <p class="title">NOW BETTING</p>
+    <div class="titleBox">
+        <div class="imgCoin"></div>
+        <p class="title">NOW BETTING</p>
+    </div>
     <p class="titleTwo">Event ends in <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
 
     <div class="quizBox">
@@ -93,7 +96,7 @@
     <div>
         <div class="infoLabelPos">
             <p class="infoLabel">HOST:</p>
-            <div>
+            <div class="hostBox">
                 <p class="name">{{nickName}} (You)</p>
                 <ngx-avatar size="40" name="{{nickName}}"></ngx-avatar>
             </div>
@@ -110,7 +113,7 @@
 
     <div class="aboutBox">
         <p class="byLink">share on your social media!</p>
-        <a class="link" href="#">www.bettery.io/TODO</a>
+        <a class="link" href="#">www.bettery.io/public_event/{{quizData._id}}</a>
         <div class="imgBox" (click)="copyToClickBoard()">
             <div class="listImg" style="margin-right: 8px"></div>
             <p class="copyToClick">Copy to clipboard</p>

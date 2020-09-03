@@ -3,6 +3,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import { ClipboardService } from 'ngx-clipboard'
 import { GetService } from '../../../../services/get.service';
+import { PostService } from '../../../../services/post.service'
+import maticInit from '../../../../contract/maticInit.js'
+import Contract from '../../../../contract/contract';
 
 
 @Component({
@@ -19,17 +22,20 @@ export class PublicEventComponent implements OnInit {
   minutes;
   seconds;
   nickName;
-  eventData;
+  host
+  quizData;
 
   constructor(
     private store: Store<AppState>,
     private _clipboardService: ClipboardService,
-    private getSevice: GetService
+    private getSevice: GetService,
+    private PostService: PostService
   ) {
     this.store.select("user").subscribe((x) => {
       console.log(x)
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
+        this.host = x;
       }
     })
   }
@@ -75,11 +81,33 @@ export class PublicEventComponent implements OnInit {
   }
 
   copyToClickBoard() {
-    this._clipboardService.copy(`www.bettery.io/${this.eventData._id}`)
+    this._clipboardService.copy(`www.bettery.io/public_event/${this.quizData._id}`)
   }
 
   generateID() {
     return this.getSevice.get("publicEvents/createId")
+  }
+
+  getStartTime() {
+    return Number((new Date().getTime() / 1000).toFixed(0));
+  }
+
+  getTimeStamp(strDate) {
+    return Number((new Date(strDate).getTime() / 1000).toFixed(0));
+  }
+
+  getEndTime() {
+    if (!this.formData.exactTimeBool) {
+      return (this.formData.publicEndTime.date / 1000).toFixed(0);
+    } else {
+      let day = this.formData.exactDay;
+      let month = this.formData.exactMonth;
+      let year = this.formData.exactYear;
+      let hour = this.formData.exactHour;
+      let minute = this.formData.exactMinutes;
+      let second = 0;
+      return this.getTimeStamp(`${month}/${day}/${year} ${hour}:${minute}:${second}`)
+    }
   }
 
   createEvent() {
@@ -92,14 +120,102 @@ export class PublicEventComponent implements OnInit {
     })
   }
 
-  sendToContract(id) {
-    // this.created = true;
-    // this.calculateDate()
+  async sendToContract(id) {
+    let matic = new maticInit(this.host[0].verifier);
+    let userWallet = await matic.getUserAccount()
+    let contract = new Contract()
+
+    let payEther = this.formData.tokenType === "token" ? false : true;
+    let startTime = this.getStartTime();
+    let endTime = Number(this.getEndTime());
+    let percentHost = 0;
+    let percentValidator = 0;
+    let questionQuantity = this.formData.answers.length;
+    let validatorsAmount = this.formData.expertsCountType === "company" ? 0 : this.formData.expertsCount;
+    let validatorsQuantityWay = this.formData.expertsCountType === "company" ? true : false
+
+    try {
+      let sendToContract = await contract.createPublicEvent(
+        id,
+        startTime,
+        endTime,
+        percentHost,
+        percentValidator,
+        questionQuantity,
+        validatorsAmount,
+        true, //_pathHoldMoney
+        payEther,
+        validatorsQuantityWay,
+        userWallet,
+        this.host[0].verifier
+      )
+      if (sendToContract.transactionHash !== undefined) {
+        this.setToDb(id, sendToContract.transactionHash);
+      }
+    } catch (error) {
+      console.log(error);
+      this.deleteEvent(id)
+    }
+  }
+
+  setToDb(id, transactionHash) {
+    // think about status
+
+    this.quizData = {
+      _id: id,
+      status: "deployed",
+      host: this.host[0]._id,
+      question: this.formData.question,
+      hashtags: [], // TO DO
+      answers: this.formData.answers.map((x) => {
+        return x.name
+      }),
+      multiChoise: false, // TO DO
+      startTime: this.getStartTime(),
+      endTime: Number(this.getEndTime()),
+      private: false, // TO DO
+      parcipiant: [], // TO DO
+      validators: [], // TO DO
+      answerAmount: 0,
+      validated: 0,
+      validatorsAmount: this.formData.expertsCountType === "company" ? 0 : this.formData.expertsCount, // TO DO
+      money: 0, // TO DO
+      finalAnswer: undefined,
+      transactionHash: transactionHash,
+      showDistribution: true, // TO DO
+      getCoinsForHold: 0,
+      currencyType: this.formData.tokenType
+    }
+
+    this.PostService.post("publicEvents/set", this.quizData)
+      .subscribe(
+        () => {
+          this.created = true;
+          this.calculateDate()
+          console.log("set to db DONE")
+        },
+        (err) => {
+          console.log("set qestion error");
+          console.log(err);
+        })
+  }
+
+  deleteEvent(id) {
+    let data = {
+      id: id
+    }
+    this.PostService.post("delete_event_id", data)
+      .subscribe(() => {
+      },
+        (err) => {
+          console.log("from delete wallet")
+          console.log(err)
+        })
   }
 
   calculateDate() {
     let startDate = new Date();
-    let endTime = new Date(this.eventData.endTime * 1000);
+    let endTime = new Date(this.quizData.endTime * 1000);
     var diffMs = (endTime.getTime() - startDate.getTime());
     this.day = Math.floor(Math.abs(diffMs / 86400000));
     let hour = Math.floor(Math.abs((diffMs % 86400000) / 3600000));

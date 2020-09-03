@@ -12,9 +12,11 @@ import { CreateRoomTabComponent } from './create-room-tab/create-room-tab.compon
 import { MakeRulesTabComponent } from './make-rules-tab/make-rules-tab.component';
 import { PrivateEventComponent } from './private-event/private-event.component';
 import { PublicEventComponent } from './public-event/public-event.component';
+import { AvatarModule } from 'ngx-avatar';
 
 @NgModule({
     imports: [
+        AvatarModule,
         CommonModule,
         BrowserModule,
         FontAwesomeModule,

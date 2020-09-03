@@ -46,7 +46,7 @@ export class PrivateEventComponent implements OnInit {
   }
 
   copyToClickBoard(){
-    this._clipboardService.copy(`www.bettery.io/${this.eventData._id}`)
+    this._clipboardService.copy(`www.bettery.io/private_event/${this.eventData._id}`)
   }
 
   generateID() {
@@ -58,11 +58,7 @@ export class PrivateEventComponent implements OnInit {
   }
 
   getEndTime() {
-    if (this.formData.privateEndTime.value < 1) {
-      return Number(((new Date(this.getStartTime() * 1000).setMinutes(new Date(this.getStartTime() * 1000).getMinutes() + 5)) / 1000).toFixed(0));
-    } else {
-      return Number(((new Date(this.getStartTime() * 1000).setHours(new Date(this.getStartTime() * 1000).getHours() + this.formData.privateEndTime.value)) / 1000).toFixed(0));
-    }
+    return (this.formData.privateEndTime.date / 1000).toFixed(0);
   }
 
   createEvent() {

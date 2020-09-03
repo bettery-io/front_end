@@ -105,10 +105,21 @@ export default class Contract {
         return PublicEventJSON.networks[networkConfiguration.maticMumbai].address;
     }
 
-    async createPublicEvent(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay, userWallet, from) {
+    async createPublicEvent(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, path, payEther, validatorsQuantityWay, userWallet, from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
         let bettery = await this.publicEventContract()
-        let functionSignature = await bettery.methods.startQestion(id, startTime, endTime, percentHost, percentValidator, questionQuantity, validatorsAmount, quizePrice, path, tokenPay).encodeABI();
+        let functionSignature = await bettery.methods.startQestion(
+            id,
+            startTime,
+            endTime,
+            percentHost,
+            percentValidator,
+            questionQuantity,
+            validatorsAmount,
+            path,
+            payEther,
+            validatorsQuantityWay
+        ).encodeABI();
         let nonce = await bettery.methods.getNonce(userWallet).call();
         let tokenName = "Bettery";
         let betteryAddress = this.publicEventAddress()

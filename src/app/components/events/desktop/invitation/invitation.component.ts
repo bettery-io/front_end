@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from "@angular/router"
-import { AppState } from '../../app.state';
-import { PostService } from '../../services/post.service';
-import { Answer } from '../../models/Answer.model';
+import { AppState } from '../../../../app.state';
+import { PostService } from '../../../../services/post.service';
+import { Answer } from '../../../../models/Answer.model';
 import _ from 'lodash';
-import * as InvitesAction from '../../actions/invites.actions';
+import * as InvitesAction from '../../../../actions/invites.actions';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { User } from '../../models/User.model';
-import * as UserActions from '../../actions/user.actions';
+import { User } from '../../../../models/User.model';
+import * as UserActions from '../../../../actions/user.actions';
 
 
 

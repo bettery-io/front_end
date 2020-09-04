@@ -19,18 +19,14 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { PostService } from './services/post.service';
 import { GetService } from './services/get.service';
 import { HomeComponent } from './components/home/home.component';
-import { EventFeedComponent } from './components/eventFeed/eventFeed.component';
-import { MyActivitesComponent } from './components/my-activites/my-activites.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { QuestionComponent } from './components/question/question.component';
-import { TimeComponent } from './components/time/time.component';
-import { InvitationComponent } from './components/invitation/invitation.component';
 import { HistoryComponent } from './components/history/history.component';
 import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.component';
-import {NumericDirective} from './helpers/numeric';
-import { QuizTemplateComponent } from './components/quiz-template/quiz-template.component';
-import {CreateEventModule } from './components/createEvent/createEvent.module';
+import { NumericDirective } from './helpers/numeric';
+
+import { CreateEventModule } from './components/createEvent/createEvent.module';
+import { EventsModule } from './components/events/events.module'
 
 
 @NgModule({
@@ -39,20 +35,15 @@ import {CreateEventModule } from './components/createEvent/createEvent.module';
     NavbarComponent,
     RegistrationComponent,
     HomeComponent,
-    EventFeedComponent,
-    MyActivitesComponent,
-    QuestionComponent,
-    TimeComponent,
-    InvitationComponent,
     HistoryComponent,
     ErcCoinSaleComponent,
     NumericDirective,
-    QuizTemplateComponent,
   ],
   imports: [
     AvatarModule,
     ClipboardModule,
     CreateEventModule,
+    EventsModule,
     BrowserModule,
     HttpClientModule,
     FontAwesomeModule,
@@ -66,14 +57,10 @@ import {CreateEventModule } from './components/createEvent/createEvent.module';
     FormsModule,
     RouterModule.forRoot([
       { path: "home", component: HomeComponent },
-      // { path: "~ki339203", redirectTo: "~ki339203/home", pathMatch: "full" },
-      { path: "eventFeed", component: EventFeedComponent },
-      { path: "my-activites", component: MyActivitesComponent },
-      { path: 'question/:id', component: QuestionComponent },
-      { path: 'invitation', component: InvitationComponent },
+      { path: "", redirectTo: "home", pathMatch: "full" },
       { path: 'history', component: HistoryComponent },
       { path: 'erc20', component: ErcCoinSaleComponent }
-    ])   
+    ])
   ],
   providers: [
     PostService,

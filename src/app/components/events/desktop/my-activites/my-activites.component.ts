@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
+import { AppState } from '../../../../app.state';
 import { Router } from "@angular/router"
-import { PostService } from '../../services/post.service';
-import { Answer } from '../../models/Answer.model';
-import { User } from '../../models/User.model';
+import { PostService } from '../../../../services/post.service';
+import { Answer } from '../../../../models/Answer.model';
+import { User } from '../../../../models/User.model';
 import _ from 'lodash';
 import { NgbTabsetConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 

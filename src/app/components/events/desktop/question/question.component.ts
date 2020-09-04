@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PostService } from '../../services/post.service';
+import { PostService } from '../../../../services/post.service';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
-import Contract from '../../contract/contract';
-import { Answer } from '../../models/Answer.model';
-import { User } from '../../models/User.model';
-import { Question } from '../../models/Question.model';
+import { AppState } from '../../../../app.state';
+import Contract from '../../../../contract/contract';
+import { Answer } from '../../../../models/Answer.model';
+import { User } from '../../../../models/User.model';
+import { Question } from '../../../../models/Question.model';
 import _ from 'lodash';
 import Web3 from 'web3';
 

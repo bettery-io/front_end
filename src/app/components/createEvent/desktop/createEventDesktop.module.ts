@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PublicEventFormComponent } from './public-event-form/public-event-form.component';
 import { PrivateEventFormComponent } from './private-event-form/private-event-form.component';
+import { EventGroupComponent } from './event-group/event-group.component';
 
 @NgModule({
     imports: [
@@ -19,13 +20,15 @@ import { PrivateEventFormComponent } from './private-event-form/private-event-fo
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forChild([
-            { path: "public-event", component: PublicEventFormComponent },
-            { path: "private-event", component: PrivateEventFormComponent },
+            { path: "event-group", component: EventGroupComponent},
+            { path: "create-public-event", component: PublicEventFormComponent },
+            { path: "create-private-event", component: PrivateEventFormComponent },
         ])
     ],
     declarations: [
         PublicEventFormComponent,
         PrivateEventFormComponent,
+        EventGroupComponent,
     ]
 })
 export class CreateEventDesktopModule { }

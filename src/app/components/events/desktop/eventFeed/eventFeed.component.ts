@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
-import { GetService } from '../../services/get.service';
-import { Answer } from '../../models/Answer.model';
-import { User } from '../../models/User.model';
+import { AppState } from '../../../../app.state';
+import { GetService } from '../../../../services/get.service';
+import { Answer } from '../../../../models/Answer.model';
+import { User } from '../../../../models/User.model';
 import _ from 'lodash';
 
 

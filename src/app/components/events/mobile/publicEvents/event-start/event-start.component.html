@@ -116,7 +116,7 @@
         </div>
 
         <info *ngIf="showInfo()" [joinedAs]="joinedAs" (goBack)="goBack()" (agree)="agree()"></info>
-        <participate *ngIf="showParticipate()"></participate>
-        <validate *ngIf="showValidate()"></validate>
+        <participate *ngIf="showParticipate()" [eventData]="eventData" (goBack)="goToInfo()"></participate>
+        <validate *ngIf="showValidate()" [eventData]="eventData"></validate>
     </div>
 </div>

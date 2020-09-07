@@ -1,1 +1,34 @@
-<p class="name">participate works!</p>
+<div>
+    <div class="boxName">
+        <p class="userName">{{userData.nickName}},</p>
+        <p class="text">you’re joining as an <span class="colorPlayer">Player</span></p>
+    </div>
+    <div>
+        <p class="event">Event</p>
+        <div class="questionBox">
+            <p class="question">{{eventData.question}}</p>
+        </div>
+        <form [formGroup]="answerForm">
+            <div *ngFor="let answer of eventData.answers">
+                <div class="pretty p-default p-round inline checkBackGround">
+                    <input type="radio" value={{answer}} formControlName="answer">
+                    <div class="state p-warning-o checkPos">
+                        <label> </label>
+                    </div>
+                    <p class="label">{{answer}}</p>
+                </div>
+            </div>
+            <div>
+                <p class="event">YOUR BET</p>
+                <input type="number" formControlName="amount" />
+            </div>
+            <p class="infoEmial">We’ll notify the results to your email</p>
+            <p class="email">{{userData.email}}</p>
+            <div class="buttonBox">
+                <button type="button" class="cancel" (click)="cancel()">BACK</button>
+                <button type="button" class="nextPlayer" (click)="bet()">BET</button>
+            </div>
+        </form>
+    </div>
+
+</div>

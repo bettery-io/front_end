@@ -1,4 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
+import web3Obj from '../../../../../helpers/torus'
+import { PostService } from '../../../../../services/post.service';
+import * as UserActions from '../../../../../actions/user.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../app.state';
 
 @Component({
   selector: 'event-start',
@@ -16,14 +21,94 @@ export class EventStartComponent implements OnInit {
   minutes;
   seconds;
 
-  constructor() { }
+  constructor(
+    private http: PostService,
+    private store: Store<AppState>,
+  ) { }
 
   ngOnInit(): void {
   }
 
-  join() {
+  async join() {
+    await this.loginWithTorus();
     this.letsJoin = true;
     this.calculateDate();
+  }
+
+  async loginWithTorus() {
+    try {
+      await web3Obj.initialize()
+      this.setTorusInfoToDB()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async setTorusInfoToDB() {
+    let userInfo = await web3Obj.torus.getUserInfo("")
+    let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
+
+    console.log(userInfo)
+    console.log(userWallet)
+
+    let data: Object = {
+      _id: null,
+      wallet: userWallet,
+      nickName: userInfo.name,
+      email: userInfo.email,
+      avatar: userInfo.profileImage,
+      verifier: userInfo.verifier,
+      verifierId: userInfo.verifierId,
+    }
+    this.http.post("user/torus_regist", data)
+      .subscribe(
+        (x: any) => {
+          console.log(x);
+          this.addUser(
+            x.email,
+            x.nickName,
+            x.wallet,
+            x.listHostEvents,
+            x.listParticipantEvents,
+            x.listValidatorEvents,
+            x.historyTransaction,
+            x.invitationList,
+            x.avatar,
+            x._id,
+            x.verifier
+          );
+        }, (err) => {
+          console.log(err)
+        })
+  }
+
+  addUser(
+    email: string,
+    nickName: string,
+    wallet: string,
+    listHostEvents: Object,
+    listParticipantEvents: Object,
+    listValidatorEvents: Object,
+    historyTransaction: Object,
+    invitationList: Object,
+    color: string,
+    _id: number,
+    verifier: string
+  ) {
+
+    this.store.dispatch(new UserActions.AddUser({
+      _id: _id,
+      email: email,
+      nickName: nickName,
+      wallet: wallet,
+      listHostEvents: listHostEvents,
+      listParticipantEvents: listParticipantEvents,
+      listValidatorEvents: listValidatorEvents,
+      historyTransaction: historyTransaction,
+      invitationList: invitationList,
+      avatar: color,
+      verifier: verifier
+    }))
   }
 
   joinAsPlayer() {
@@ -38,39 +123,29 @@ export class EventStartComponent implements OnInit {
   }
 
   showEvent() {
-    if (this.letsJoin && this.joinedAs == undefined) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.letsJoin && this.joinedAs == undefined
   }
 
   showInfo() {
-    if (this.info && !this.goToAction) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.info && !this.goToAction;
   }
 
   showParticipate() {
     if (this.joinedAs !== undefined && this.goToAction) {
-      if (this.joinedAs == "player") {
-        return true;
-      } else {
-        return false;
-      }
+      return this.joinedAs == "player";
     }
   }
 
   showValidate() {
     if (this.joinedAs !== undefined && this.goToAction) {
-      if (this.joinedAs == "expert") {
-        return true;
-      } else {
-        return false;
-      }
+      return this.joinedAs == "expert";
     }
+  }
+
+  goToInfo() {
+    this.info = true;
+    this.joinedAs = "player"
+    this.goToAction = false;
   }
 
   agree() {

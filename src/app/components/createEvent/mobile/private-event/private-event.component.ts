@@ -127,7 +127,7 @@ export class PrivateEventComponent implements OnInit {
       endTime: this.getEndTime(),
       transactionHash: transactionHash,
       winner: this.formData.winner,
-      loser: this.formData.loser
+      loser: this.formData.losers
     }
 
     this.postService.post("privateEvents/createEvent", this.eventData)

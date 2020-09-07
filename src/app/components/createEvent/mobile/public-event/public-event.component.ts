@@ -98,7 +98,7 @@ export class PublicEventComponent implements OnInit {
 
   getEndTime() {
     if (!this.formData.exactTimeBool) {
-      return (this.formData.publicEndTime.date / 1000).toFixed(0);
+      return Number((this.formData.publicEndTime.date / 1000).toFixed(0));
     } else {
       let day = this.formData.exactDay;
       let month = this.formData.exactMonth;

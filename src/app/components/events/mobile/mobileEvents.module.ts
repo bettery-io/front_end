@@ -7,6 +7,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrivateMainComponent } from './privateEvents/private-main/private-main.component';
 import { PublicMainComponent } from './publicEvents/public-main/public-main.component';
+import { EventStartComponent } from './publicEvents/event-start/event-start.component';
+import { InfoComponent } from './publicEvents/info/info.component';
 
 
 
@@ -25,7 +27,9 @@ import { PublicMainComponent } from './publicEvents/public-main/public-main.comp
     ],
     declarations: [
     PrivateMainComponent,
-    PublicMainComponent
+    PublicMainComponent,
+    EventStartComponent,
+    InfoComponent
 ]
 })
 export class MobileEventsModule { }

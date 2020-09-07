@@ -19,98 +19,104 @@
         <button class="join" (click)="join()">JOIN</button>
     </div>
     <div *ngIf="letsJoin">
-        <div class="titleBox">
-            <div class="imgCoin"></div>
-            <p class="titleBetting">NOW BETTING</p>
-        </div>
-        <p class="titleTwo">Event ends in <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
-
-        <div class="quizBoxTwo">
-            <p class="quizText">{{eventData.question}}</p>
-        </div>
-
-        <div *ngFor="let answer of eventData.answers">
-            <div class="answerBoxCreated">
-                <p class="answerCreated">{{answer}}</p>
+        <div *ngIf="showEvent()">
+            <div class="titleBox">
+                <div class="imgCoin"></div>
+                <p class="titleBetting">NOW BETTING</p>
             </div>
-        </div>
+            <p class="titleTwo">Event ends in <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
 
-        <div class="answerBoxResolution" *ngIf="eventData.resolutionDetalis">
-            <p class="resolutionText">Resolution details: <b>{{eventData.resolutionDetalis}}</b></p>
-        </div>
+            <div class="quizBoxTwo">
+                <p class="quizText">{{eventData.question}}</p>
+            </div>
 
-        <div class="arrow"></div>
-
-        <div>
-            <div class="infoLabelPos">
-                <p class="infoLabel">HOST:</p>
-                <div class="hostBox">
-                    <p class="name">{{eventData?.host.nickName}}</p>
-                    <img class="avatarHost" src={{eventData.host.avatat}}>
+            <div *ngFor="let answer of eventData.answers">
+                <div class="answerBoxCreated">
+                    <p class="answerCreated">{{answer}}</p>
                 </div>
             </div>
-            <div class="infoLabelPos">
-                <p class="infoLabel">Current pool:</p>
-                <p class="name">0</p>
-            </div>
-            <div class="infoLabelPos">
-                <p class="infoLabel">PLAYERS joined:</p>
-                <p class="name">0</p>
-            </div>
-            <div class="infoLabelPos">
-                <p class="infoLabel">EXPERTS joined:</p>
-                <p class="name">0</p>
-            </div>
-        </div>
 
-        <div>
-            <p class="timeLeft">TIME LEFT FOR PLAYERS TO JOIN <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
-        </div>
-
-        <div>
-            <button class="buttonBecome buttonColorPlayer">JOIN AS PLAYER</button>
-            <a class="linkInfo colorLinkPlayer" href="#">What is a Player?</a>
-            <button class="buttonBecome buttonColorExpert">BECOME AN EXPERT</button>
-            <a class="linkInfo colorLinkExpert" href="#">What is an Expert?</a>
-        </div>
-
-        <div class="arrow"></div>
-
-        <div class="sendCommentBox">
-            <div class="addCommentBox">
-                <p class="addCommentText">Add a comment...</p>
+            <div class="answerBoxResolution" *ngIf="eventData.resolutionDetalis">
+                <p class="resolutionText">Resolution details: <b>{{eventData.resolutionDetalis}}</b></p>
             </div>
-            <div class="sendImg"></div>
-        </div>
 
-        <div class="commentBox">
-            <div class="commentHeader">
-                <div class="senderBox">
-                    <div class="commentImg face1"></div>
-                    <p class="commentName">Jenna Logan</p>
-                </div>
-                <div class="timeBox">1 day ago</div>
-            </div>
+            <div class="arrow"></div>
+
             <div>
-                <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt
-                    ut labore et dolore magna aliqua.</p>
+                <div class="infoLabelPos">
+                    <p class="infoLabel">HOST:</p>
+                    <div class="hostBox">
+                        <p class="name">{{eventData?.host.nickName}}</p>
+                        <img class="avatarHost" src={{eventData.host.avatat}}>
+                    </div>
+                </div>
+                <div class="infoLabelPos">
+                    <p class="infoLabel">Current pool:</p>
+                    <p class="name">0</p>
+                </div>
+                <div class="infoLabelPos">
+                    <p class="infoLabel">PLAYERS joined:</p>
+                    <p class="name">0</p>
+                </div>
+                <div class="infoLabelPos">
+                    <p class="infoLabel">EXPERTS joined:</p>
+                    <p class="name">0</p>
+                </div>
+            </div>
+
+            <div>
+                <p class="timeLeft">TIME LEFT FOR PLAYERS TO JOIN <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
+            </div>
+
+            <div>
+                <button class="buttonBecome buttonColorPlayer" (click)="joinAsPlayer()">JOIN AS PLAYER</button>
+                <a class="linkInfo colorLinkPlayer" href="#">What is a Player?</a>
+                <button class="buttonBecome buttonColorExpert" (click)="joinAsExpert()">BECOME AN EXPERT</button>
+                <a class="linkInfo colorLinkExpert" href="#">What is an Expert?</a>
+            </div>
+
+            <div class="arrow"></div>
+
+            <div class="sendCommentBox">
+                <div class="addCommentBox">
+                    <p class="addCommentText">Add a comment...</p>
+                </div>
+                <div class="sendImg"></div>
+            </div>
+
+            <div class="commentBox">
+                <div class="commentHeader">
+                    <div class="senderBox">
+                        <div class="commentImg face1"></div>
+                        <p class="commentName">Jenna Logan</p>
+                    </div>
+                    <div class="timeBox">1 day ago</div>
+                </div>
+                <div>
+                    <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        incididunt
+                        ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+
+            <div class="commentBox">
+                <div class="commentHeader">
+                    <div class="senderBox">
+                        <div class="commentImg face2"></div>
+                        <p class="commentName">Terry Crews</p>
+                    </div>
+                    <div class="timeBox">1 day ago</div>
+                </div>
+                <div>
+                    <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        incididunt
+                        ut labore et dolore magna aliqua.</p>
+                </div>
             </div>
         </div>
 
-        <div class="commentBox">
-            <div class="commentHeader">
-                <div class="senderBox">
-                    <div class="commentImg face2"></div>
-                    <p class="commentName">Terry Crews</p>
-                </div>
-                <div class="timeBox">1 day ago</div>
-            </div>
-            <div>
-                <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt
-                    ut labore et dolore magna aliqua.</p>
-            </div>
-        </div>
+        <info *ngIf="showInfo()" [joinedAs]="joinedAs" (goBack)="goBack()" (agree)="agree()"></info>
+        <participate *ngIf="showParticipate()"></participate>
+        <validate *ngIf="showValidate()"></validate>
     </div>
 </div>

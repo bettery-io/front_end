@@ -8,10 +8,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class EventStartComponent implements OnInit {
   @Input() eventData;
   letsJoin: boolean = false;
+  info: boolean = false;
+  goToAction: boolean = false;
+  joinedAs: string = undefined;
   day;
   hour;
   minutes;
-  seconds
+  seconds;
 
   constructor() { }
 
@@ -21,6 +24,62 @@ export class EventStartComponent implements OnInit {
   join() {
     this.letsJoin = true;
     this.calculateDate();
+  }
+
+  joinAsPlayer() {
+    this.info = true;
+    this.joinedAs = "player"
+
+  }
+
+  joinAsExpert() {
+    this.info = true;
+    this.joinedAs = "expert"
+  }
+
+  showEvent() {
+    if (this.letsJoin && this.joinedAs == undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  showInfo() {
+    if (this.info && !this.goToAction) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  showParticipate() {
+    if (this.joinedAs !== undefined && this.goToAction) {
+      if (this.joinedAs == "player") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  showValidate() {
+    if (this.joinedAs !== undefined && this.goToAction) {
+      if (this.joinedAs == "expert") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  agree() {
+    this.goToAction = true;
+  }
+
+  goBack() {
+    this.info = false;
+    this.joinedAs = undefined;
   }
 
   calculateDate() {

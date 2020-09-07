@@ -9,6 +9,8 @@ import { PrivateMainComponent } from './privateEvents/private-main/private-main.
 import { PublicMainComponent } from './publicEvents/public-main/public-main.component';
 import { EventStartComponent } from './publicEvents/event-start/event-start.component';
 import { InfoComponent } from './publicEvents/info/info.component';
+import { ParticipateComponent } from './publicEvents/participate/participate.component';
+import { ValidateComponent } from './publicEvents/validate/validate.component';
 
 
 
@@ -29,7 +31,9 @@ import { InfoComponent } from './publicEvents/info/info.component';
     PrivateMainComponent,
     PublicMainComponent,
     EventStartComponent,
-    InfoComponent
+    InfoComponent,
+    ParticipateComponent,
+    ValidateComponent
 ]
 })
 export class MobileEventsModule { }

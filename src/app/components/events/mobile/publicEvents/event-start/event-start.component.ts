@@ -143,9 +143,9 @@ export class EventStartComponent implements OnInit {
     }
   }
 
-  goToInfo() {
+  goToInfo(from) {
     this.info = true;
-    this.joinedAs = "player"
+    this.joinedAs = from
     this.goToAction = false;
   }
 

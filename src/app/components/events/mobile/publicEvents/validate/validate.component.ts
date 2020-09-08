@@ -1,7 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ClipboardService } from 'ngx-clipboard'
+import Contract from '../../../../../contract/contract';
+import { PostService } from '../../../../../services/post.service';
+import _ from "lodash";
 
 @Component({
   selector: 'validate',
@@ -10,8 +14,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ValidateComponent implements OnInit {
   @Input() eventData;
+  @Output() goBack = new EventEmitter();
+  @Output() goViewStatus = new EventEmitter();
   timeIsValid: boolean;
+  created: boolean = false;
+  submitted: boolean = false;
   answerForm: FormGroup;
+  errorMessage: string;
   userData;
   date;
   month;
@@ -21,7 +30,9 @@ export class ValidateComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private postService: PostService,
+    private _clipboardService: ClipboardService
   ) {
     this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
@@ -34,7 +45,6 @@ export class ValidateComponent implements OnInit {
     this.checkTimeIsValid();
     this.answerForm = this.formBuilder.group({
       answer: ["", Validators.required],
-      amount: ["", Validators.required]
     })
   }
 
@@ -55,6 +65,79 @@ export class ValidateComponent implements OnInit {
     this.year = endTime.getFullYear();
     this.hour = endTime.getHours() >= 10 ? endTime.getHours() : "0" + endTime.getHours();
     this.minutes = endTime.getMinutes() >= 10 ? endTime.getMinutes() : "0" + endTime.getMinutes();
+  }
+
+  cancel() {
+    this.goBack.next();
+  }
+
+  copyToClickBoard() {
+    this._clipboardService.copy(`www.bettery.io/public_event/${this.eventData.id}`)
+  }
+
+  validate() {
+    this.submitted = true;
+    if (this.answerForm.invalid) {
+      return
+    }
+    this.setValidation()
+  }
+
+  async setValidation() {
+
+    let contract = new Contract();
+    var _question_id = this.eventData.id;
+    var _whichAnswer = _.findIndex(this.eventData.answers, (o) => { return o == this.answerForm.value.answer; });
+    console.log(_question_id)
+    console.log(_whichAnswer)
+    let contr = await contract.publicEventContract()
+    let validator = await contr.methods.setTimeValidator(_question_id).call();
+    console.log(validator)
+
+    switch (Number(validator)) {
+      case 0:
+        let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.userData.wallet, this.userData.verifier)
+        console.log(sendToContract)
+        if (sendToContract.transactionHash !== undefined) {
+          this.setToDBValidation(_whichAnswer, this.eventData, sendToContract.transactionHash)
+        }
+        break;
+      case 1:
+        this.errorMessage = "Event not started yeat."
+        break;
+      case 2:
+        this.errorMessage = "Event is finished."
+        break;
+      case 3:
+        this.errorMessage = "You have been like the participant in this event. The participant can't be the validator."
+        break;
+    }
+  }
+
+  setToDBValidation(answer, dataAnswer, transactionHash) {
+    let data = {
+      event_id: dataAnswer.id,
+      date: new Date(),
+      answer: answer,
+      transactionHash: transactionHash,
+      userId: this.userData._id,
+      from: "validator",
+      currencyType: dataAnswer.currencyType,
+      validated: dataAnswer.validated + 1,
+      money: 0
+    }
+    console.log(data);
+    this.postService.post("answer", data).subscribe(async () => {
+      this.errorMessage = undefined;
+      this.created = true;
+    },
+      (err) => {
+        console.log(err)
+      })
+  }
+
+  viewStatus(){
+    this.goViewStatus.next();
   }
 
 }

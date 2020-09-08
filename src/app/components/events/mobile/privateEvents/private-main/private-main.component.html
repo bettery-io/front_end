@@ -2,25 +2,25 @@
   <!--    First page    -->
   <ng-container class="main" *ngIf="!condition">
     <div class="title">
-      <h1>WELCOME TO THE EVENT of <br> <span>{{data.host.nickName}}</span></h1>
+      <h1>WELCOME TO THE EVENT of <br> <span>{{data?.host.nickName}}</span></h1>
     </div>
 
     <div class="question_block">
-      <div class="mb-3"><img src="{{data.host.avatat}}" alt="avatar"></div>
+      <div class="mb-3"><img src="{{data?.host.avatat}}" alt="avatar"></div>
       <div class="question">
-        <h2>{{data.question}}</h2>
+        <h2>{{data?.question}}</h2>
       </div>
     </div>
     <div class="results_block">
       <div class="winners">
         <p>Winners: <br>
-          <span>Get free dinner</span>
+          <span>{{data?.winner}}</span>
         </p>
       </div>
       <div class="losers">
         <div>
           <p>Losers: <br>
-            <span>Share the bill</span>
+            <span>{{data?.loser}}</span>
           </p>
         </div>
       </div>
@@ -43,165 +43,104 @@
     </div>
   </ng-container>
 
-  <!--=========================================================-->
-
+  <!--==================-->
   <ng-container *ngIf="condition">
-    <ng-container [ngSwitch]="counts">
-
-      <ng-container *ngSwitchCase="1">
-        <div class="now_batting__title">
-          <div class="img_yellow_hand"></div>
-          <div>Now Betting</div>
-        </div>
-        <div class="event_ends">
-          Event ends in  {{data.endTime | date}}
-        </div>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="2">
-        <div class="now_batting__title">
-          <div class="login_name">
-            <div>
-              <h3>Tony,</h3>
-              <p>you’re joining as an <span>Player</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="event">EVENT</div>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="3">
-        <div class="pt-4 mb-3">
-          <h3>Thank you for playing!</h3>
-        </div>
-      </ng-container>
-    </ng-container>
-
-    <div class="question_second">
-      <div class="question_text">
-        <p>{{data.question}}</p>
-
-        <div *ngIf="counts == 3">
-          <div class="hr"></div>
-          <div class="your_answer">
-            <p>Your Answer <br>
-              <span>{{fakeAnswer}}</span>
-            </p>
-          </div>
+    <ng-container *ngIf="counts == 1">
+      <div class="now_batting__title">
+        <div class="img_yellow_hand"></div>
+        <div>Now Betting</div>
+      </div>
+      <div class="event_ends">
+        Event ends in  <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b>
+      </div>
+      <div class="question_second">
+        <div class="question_text">
+          <p>{{data?.question}}</p>
         </div>
       </div>
-    </div>
 
-    <form action="#" [formGroup]="answerForm">
-
-      <div class="answers" [ngSwitch]="counts">
-        <ng-container *ngSwitchCase="1">
-          <div class="answers_item" *ngFor="let a of data.answers">
+      <div class="answers">
+        <ng-container>
+          <div class="answers_item" *ngFor="let a of data?.answers">
             <li>{{a}}</li>
           </div>
         </ng-container>
-
-        <ng-container *ngSwitchCase="2">
-          <div class="answers_item" *ngFor="let a of data.answers">
-            <div class="pretty p-default p-round ">
-              <input formControlName="answer" type="radio" name="answer" value="{{a}}">
-              <div class="state">
-                <label><b>{{a}}</b></label>
+        <div class="resolution_details">
+          Resolution details: <span>www.cnn.com</span>
+        </div>
+        <div>
+          <div class="winner_get">
+            <div class="winner_get_left">
+              <div class="winner_get_left_top">WINNER GET:</div>
+              <div>LOSERS AGREE TO:</div>
+            </div>
+            <div class="winner_get_right">
+              <div class="winner_get_right_top">{{data?.winner}}</div>
+              <div class="winner_get_right_bottom">{{data?.loser}}</div>
+            </div>
+          </div>
+        </div>
+        <ng-container>
+          <div class="hr"></div>
+          <div class="create_by textWhite">
+            <div class="create_by__item">
+              <div class="left">
+                <p>CREATED BY:</p>
+              </div>
+              <div class="right">
+                <div><span>{{data.host.nickName}}</span></div>
+                <div><img src="./assets/face1.png" alt="avatar1"></div>
+              </div>
+            </div>
+            <div class="create_by__item">
+              <div class="left">
+                <p>EXPERT:</p>
+              </div>
+              <div *ngIf="!expert" class="right">
+                <div><p>The Lady </p></div>
+                <div><img src="./assets/face2.png" alt="avatar2"></div>
+              </div>
+              <div *ngIf="expert" class="right">
+                No one yet. <span class="pink">Consider to join!</span>
+              </div>
+            </div>
+            <div class="create_by__item">
+              <div class="left">
+                <p>PLAYERS JOINED:</p>
+              </div>
+              <div class="right">
+                <img src="./assets/face1.png" alt="avatar3">
               </div>
             </div>
           </div>
+          <ng-container *ngIf="!hideBtn">
+            <div class="time-left">Time left : <span>{{day}}</span> days
+              <span>{{hour}} </span>
+              hours <span>{{minutes}} </span>minutes
+            </div>
+            <div class="btn_join_as_player">
+              <button (click)="nextPage()"> JOIN AS PLAYER</button>
+            </div>
+            <div>
+              <div class="whats_player"><a href="#">Whats is a Player?</a></div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="expert">
+            <div class="btn_join_expert">
+              <button (click)="nextPage()"> BECOME AN EXPERT</button>
+            </div>
+            <div>
+              <div class="whats_expert"><a href="#">What is an Expert?</a></div>
+            </div>
+          </ng-container>
+
+          <div class="hr"></div>
+
         </ng-container>
       </div>
-
-    </form>
-
-    <div *ngIf="counts==1" class="resolution_details">
-      Resolution details: <span>www.cnn.com</span>
-    </div>
-
-    <div>
-      <div *ngIf="counts!=3" class="winner_get">
-        <div class="winner_get_left">
-          <div class="winner_get_left_top">WINNER GET:</div>
-          <div>LOSERS AGREE TO:</div>
-        </div>
-        <div class="winner_get_right">
-          <div class="winner_get_right_top">FREE DINNER</div>
-          <div class="winner_get_right_bottom">SHARE THE BILL</div>
-        </div>
-      </div>
-    </div>
-    <ng-container *ngIf="counts == 1">
-      <div class="hr"></div>
-
-      <div class="create_by textWhite">
-        <div class="create_by__item">
-          <div class="left">
-            <p>CREATED BY:</p>
-          </div>
-          <div class="right">
-            <div><span>{{data.host.nickName}}</span></div>
-            <div><img src="./assets/face1.png" alt="avatar1"></div>
-          </div>
-        </div>
-        <div class="create_by__item">
-          <div class="left">
-            <p>EXPERT:</p>
-          </div>
-          <div *ngIf="!expert" class="right">
-            <div><p>The Lady </p></div>
-            <div><img src="./assets/face2.png" alt="avatar2"></div>
-          </div>
-          <div *ngIf="expert" class="right">
-            No one yet. <span class="pink">Consider to join!</span>
-          </div>
-        </div>
-        <div class="create_by__item">
-          <div class="left">
-            <p>PLAYERS JOINED:</p>
-          </div>
-          <div class="right">
-            <img src="./assets/face1.png" alt="avatar3">
-          </div>
-        </div>
-      </div>
-      <!--    ==========================================-->
-
-      <div class="time-left">Time left : <span>{{data.endTime | date: 'dd'}} </span>days
-        <span>{{data.endTime | date: 'hh'}} </span>
-        hours <span>{{data.endTime | date: 'mm'}} </span>minutes
-      </div>
-      <div class="btn_join_as_player">
-        <button (click)="nextPage()"> JOIN AS PLAYER</button>
-      </div>
-      <div>
-        <div class="whats_player"><a href="#">Whats is a Player?</a></div>
-      </div>
-      <!--====-->
-      <ng-container *ngIf="expert">
-        <div class="btn_join_expert">
-          <button (click)="nextPage()"> BECOME AN EXPERT</button>
-        </div>
-        <div>
-          <div class="whats_expert"><a href="#">What is an Expert?</a></div>
-        </div>
-      </ng-container>
-
-      <div class="hr"></div>
-      <!--======-->
     </ng-container>
-    <div *ngIf="counts==3" class="btn_join_as_player btn_join_up">
-      <button>VIEW EVENT STATUS</button>
-    </div>
   </ng-container>
 
-  <div *ngIf="counts==2">
-    <div class="results_mail">
-      <p>We’ll notify the results to your email</p>
-      <p><span>nguyennguyen@bettery.io</span></p>
-    </div>
-    <div class="two_button">
-      <button (click)="prevPage()">Back</button>
-      <button class="btn_bet" (click)="sendAnswer(answerForm)" [disabled]="answerForm.invalid">Bet</button>
-    </div>
-  </div>
+  <app-private-form *ngIf="counts==2" [data]="data" (onChanged)="onChanged($event)"></app-private-form>
+</div>

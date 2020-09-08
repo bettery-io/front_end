@@ -127,10 +127,10 @@ export default class Contract {
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
     }
 
-    async participateOnPublicEvent(id, answer, userWallet, from) {
+    async participateOnPublicEvent(id, answer, amount, userWallet, from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider);
         let bettery = await this.publicEventContract()
-        let functionSignature = await bettery.methods.setAnswer(id, answer).encodeABI();
+        let functionSignature = await bettery.methods.setAnswer(id, answer, amount).encodeABI();
         let nonce = await bettery.methods.getNonce(userWallet).call();
         let tokenName = "Bettery";
         let betteryAddress = this.publicEventAddress()

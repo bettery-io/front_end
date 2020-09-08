@@ -27,6 +27,7 @@ export class EventStartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.eventData);
   }
 
   async join() {
@@ -155,6 +156,10 @@ export class EventStartComponent implements OnInit {
   goBack() {
     this.info = false;
     this.joinedAs = undefined;
+  }
+
+  pariticatDone(){
+   // TODO
   }
 
   calculateDate() {

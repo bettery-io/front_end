@@ -1,1 +1,7 @@
-<event-start [eventData]="eventData"></event-start>
+<event-start *ngIf="!errorPage" [eventData]="eventData"></event-start>
+<div *ngIf="errorPage" class="box">
+    <div class="errorImg"></div>
+    <p class="eventNotFound">Event not found!</p>
+    <p class="eventNotFoundInfo">Sorry. The event you are looking for does not exist. Please join other events or create your own.</p>
+    <a href="#" class="becomeHost">HOST AN EVENT</a>
+</div>

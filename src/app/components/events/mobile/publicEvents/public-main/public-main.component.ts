@@ -10,6 +10,7 @@ import { PostService } from '../../../../../services/post.service';
 export class PublicMainComponent implements OnInit {
   eventId: number;
   eventData;
+  errorPage: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,8 +33,10 @@ export class PublicMainComponent implements OnInit {
       .subscribe((x: any) => {
         console.log(x);
         this.eventData = x;
+        this.errorPage = false;
       }, (err) => {
         console.log(err)
+        this.errorPage = true;
       })
   }
 

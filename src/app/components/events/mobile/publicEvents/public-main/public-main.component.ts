@@ -40,4 +40,11 @@ export class PublicMainComponent implements OnInit {
       })
   }
 
+  interacDone(data) {
+    let x = {
+      id: Number(data)
+    }
+    this.getDataFromServer(x);
+  }
+
 }

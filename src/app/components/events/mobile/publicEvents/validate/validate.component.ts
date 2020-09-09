@@ -15,7 +15,7 @@ import _ from "lodash";
 export class ValidateComponent implements OnInit {
   @Input() eventData;
   @Output() goBack = new EventEmitter();
-  @Output() goViewStatus = new EventEmitter();
+  @Output() goViewStatus = new EventEmitter<number>();
   timeIsValid: boolean;
   created: boolean = false;
   submitted: boolean = false;
@@ -137,7 +137,7 @@ export class ValidateComponent implements OnInit {
   }
 
   viewStatus(){
-    this.goViewStatus.next();
+    this.goViewStatus.next(this.eventData.id);
   }
 
 }

@@ -16,7 +16,7 @@ import { PostService } from '../../../../../services/post.service';
 export class ParticipateComponent implements OnInit {
   @Input() eventData;
   @Output() goBack = new EventEmitter();
-  @Output() goViewStatus = new EventEmitter();
+  @Output() goViewStatus = new EventEmitter<number>();
   userData;
   answerForm: FormGroup;
   coinType: string;
@@ -120,7 +120,7 @@ export class ParticipateComponent implements OnInit {
   }
 
   viewStatus(){
-    this.goViewStatus.next();
+    this.goViewStatus.next(this.eventData.id);
   }
 
 }

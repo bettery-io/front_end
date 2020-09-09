@@ -1,33 +1,85 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import web3Obj from '../../../../../helpers/torus'
 import { PostService } from '../../../../../services/post.service';
 import * as UserActions from '../../../../../actions/user.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
+import { ClipboardService } from 'ngx-clipboard';
+import _ from "lodash";
 
 @Component({
   selector: 'event-start',
   templateUrl: './event-start.component.html',
   styleUrls: ['./event-start.component.sass']
 })
-export class EventStartComponent implements OnInit {
-  @Input() eventData;
+export class EventStartComponent implements OnInit, OnChanges {
+  @Input('eventData') eventData;
+  @Output() interacDone = new EventEmitter<number>();
   letsJoin: boolean = false;
   info: boolean = false;
   goToAction: boolean = false;
   joinedAs: string = undefined;
+  validation: boolean = false;
+  created: boolean = false;
   day;
   hour;
   minutes;
   seconds;
+  userData
+  participatedIndex;
+  validatedIndex
 
   constructor(
     private http: PostService,
     private store: Store<AppState>,
+    private _clipboardService: ClipboardService
   ) { }
 
   ngOnInit(): void {
-    console.log(this.eventData);
+  }
+
+  getUsers() {
+    this.store.select("user").subscribe((x) => {
+      if (x.length != 0) {
+        console.log("TEST")
+        this.userData = x[0]
+        this.letsFindActivites(x[0]);
+      }
+    });
+  }
+
+  ngOnChanges(changes) {
+    if (changes['eventData'] !== undefined) {
+      if (changes['eventData'].currentValue !== undefined) {
+        const timeNow = Number((Date.now() / 1000).toFixed(0));
+        if (!(this.eventData.endTime - timeNow > 0)) {
+          this.validation = true;
+        }
+        this.getUsers();
+      }
+    }
+  }
+
+  letsFindActivites(userData) {
+    if (this.eventData.parcipiantAnswers) {
+      let findParts = _.find(this.eventData.parcipiantAnswers, (o) => { return o.userId == userData._id; });
+      this.participatedIndex = findParts.answer;
+      this.created = true;
+    }
+    if (this.eventData.validatorsAnswers) {
+      let findParts = _.find(this.eventData.validatorsAnswers, (o) => { return o.userId == userData._id; });
+      this.participatedIndex = findParts.answer;
+      this.created = true;
+    }
+  }
+
+  poolName() {
+    return this.validation ? "TOTAL" : "CURRENT"
+  }
+
+  clickBoardName() {
+    return this.validation ? "Invite friends to join as an Expert" : "share event with friends!"
+
   }
 
   async join() {
@@ -143,6 +195,16 @@ export class EventStartComponent implements OnInit {
     }
   }
 
+  timeToLeftDisplay() {
+    if (this.created) {
+      return false;
+    } else if (this.validation) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   goToInfo(from) {
     this.info = true;
     this.joinedAs = from
@@ -158,8 +220,14 @@ export class EventStartComponent implements OnInit {
     this.joinedAs = undefined;
   }
 
-  pariticatDone(){
-   // TODO
+  interactionDone(data) {
+    this.letsJoin = true;
+    this.info = false;
+    this.goToAction = false;
+    this.joinedAs = undefined;
+    this.created = true;
+  //  this.getUsers();
+    this.interacDone.next(data);
   }
 
   calculateDate() {
@@ -182,5 +250,10 @@ export class EventStartComponent implements OnInit {
       this.calculateDate()
     }, 1000);
   }
+
+  copyToClickBoard() {
+    this._clipboardService.copy(`www.bettery.io/public_event/${this.eventData.id}`)
+  }
+
 
 }

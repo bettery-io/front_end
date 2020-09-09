@@ -7,7 +7,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="count" class="pt-4 mb-3">
+  <div *ngIf="count" class="pt-4 mb-4 title_thank">
     <h3>Thank you for playing!</h3>
   </div>
   <div *ngIf="!count" class="event">EVENT</div>
@@ -19,25 +19,26 @@
         <div class="hr"></div>
         <div class="your_answer">
           <p>Your Answer <br>
-            <span>{{fakeAnswer}}</span>
+            <span>fakeAnswer</span>
           </p>
         </div>
       </div>
     </div>
   </div>
 
-  <form *ngIf="!count" action="#" [formGroup]="answerForm">
+  <form *ngIf="!count" action="#" [formGroup]="answerForm" (change)="formValid = false">
     <div class="answers_item" *ngFor="let a of data?.answers">
       <div class="pretty p-default p-round ">
-        <input formControlName="answer" type="radio" name="answer" value="{{a}}">
+        <input class="input" formControlName="answer" type="radio" name="answer" value="{{a}}">
         <div class="state">
           <label><b>{{a}}</b></label>
         </div>
       </div>
     </div>
+    <div *ngIf="formValid" class="form_valid">Please make your choice</div>
   </form>
 
-  <div>
+  <div *ngIf="!count">
     <div class="winner_get">
       <div class="winner_get_left">
         <div class="winner_get_left_top">WINNER GET:</div>
@@ -53,11 +54,11 @@
   <div *ngIf="!count">
     <div class="results_mail">
       <p>We’ll notify the results to your email</p>
-      <p><span>nguyennguyen@bettery.io</span></p>
+      <div><span>nguyennguyen@bettery.io</span></div>
     </div>
     <div class="two_button">
-      <button (click)="change(true)">Back</button>
-      <button class="btn_bet" (click)="sendAnswer(answerForm)" [disabled]="answerForm.invalid">Bet</button>
+      <button class="btn_back" (click)="change(true)">Back</button>
+      <button class="btn_bet" (click)="sendAnswer(answerForm)">Bet</button>
     </div>
   </div>
   <div *ngIf="count" class="btn_join_as_player btn_join_up">

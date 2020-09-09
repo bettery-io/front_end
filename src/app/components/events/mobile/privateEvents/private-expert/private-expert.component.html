@@ -1,23 +1,143 @@
-<ng-container>
-  <div class="now_batting__title">
-    <div class="login_name">
+<ng-container *ngIf="!confirm">
+  <ng-container *ngIf="!join">
+    <div>
+      <div class="now_batting__title">
+        <div class="login_name">
+          <div>
+            <h3>Tony,</h3>
+            <p>you’re joining as an <span>Expert</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="event">EVENT</div>
+    </div>
+
+
+    <!--=========-->
+    <ng-container>
+      <div class="question_second">
+        <div class="question_text">
+          <p>{{data?.question}}</p>
+        </div>
+      </div>
+      <div class="event">VALIDATE AFTER</div>
+      <div class="question_second time">
+        <div class="question_text_white">
+          <p>20 AUG 2020, 10:45PM </p>
+        </div>
+      </div>
+    </ng-container>
+
+
+    <div class="sumText_24h">
+      <p>You have maximum 24 hours to validate</p>
+    </div>
+    <div class="learn_more">
+      <span>WHAT IS AN EXPERT? </span>
+      <p>Experts validate the event outcome to announce the results to Players.</p>
+      <div class="mt-3"><a href="#">Learn more</a></div>
+    </div>
+    <div class="results_mail">
+      <p>We'll remind you when to join via email</p>
+      <div><span>nguyennguyen@bettery.io</span></div>
+    </div>
+    <div class="two_button">
+      <button class="btn_cancel">CANCEL</button>
+      <button class="btn_join" (click)="isConfirm()">JOIN</button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="join">
+
+    <div *ngIf="!ifTimeValid" class="head">
+      <div class="title">
+        <h3>YOU JOINED AS AN EXPERT!</h3>
+        <span>Come back to validate in</span>
+      </div>
+      <div class="timer">
+        <p>{{allTime.hour}}:{{allTime.minutes}}:{{allTime.seconds}}</p>
+      </div>
+    </div>
+
+    <div *ngIf="ifTimeValid" class="head">
+      <div class="title">
+        <h3>validate event</h3>
+        <span>Time left to validate</span>
+      </div>
+      <div class="timer">
+        <p>{{allTime.hour}}:{{allTime.minutes}}:{{allTime.seconds}}</p>
+      </div>
+    </div>
+
+    <div class="question_second_true">
+      <div class="question_text">
+        <p>{{data?.question}}</p>
+      </div>
+    </div>
+
+    <div *ngIf="!ifTimeValid" class="answers">
+      <ng-container>
+        <div class="answers_item" *ngFor="let a of data?.answers">
+          <div>{{a}}</div>
+        </div>
+      </ng-container>
+
+    </div>
+    <form *ngIf="ifTimeValid" action="#" [formGroup]="answerForm" (change)="formValid = false">
+      <div class="answers_item" *ngFor="let a of data?.answers">
+        <div class="pretty p-default p-round ">
+          <input class="input" formControlName="answer" type="radio" name="answer" value="{{a}}">
+          <div class="state">
+            <label><b>{{a}}</b></label>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="formValid" class="form_valid">Please make your choice</div>
+    </form>
+    <div class="resolution_details">
+      Resolution details: <span>www.cnn.com</span>
+    </div>
+
+    <ng-container *ngIf="!ifTimeValid">
+      <div class="someText">
+        <p><span>345 Players</span> placed their bet so far.</p>
+      </div>
+    </ng-container>
+    <div *ngIf="!ifTimeValid" class="btn_join_expert">
+      <button (click)="change(false)">VIEW EVENT STATUS</button>
+    </div>
+
+    <ng-container *ngIf="ifTimeValid">
+      <div class="someText">
+        <p><span>124 Players</span> placed their bet. Now it’s your turn to decide who’s right.</p>
+      </div>
+      <div *ngIf="ifTimeValid" class="btn_join_expert">
+        <button (click)="isConfirm2(answerForm)">CONFIRM</button>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="confirm">
+<div class="pt-4 mb-4 title_thank">
+  <h3> Thank you for validating!</h3>
+</div>
+  <div class="question_second_true">
+    <div class="question_text">
+      <p class="fs_20">{{data?.question}}</p>
       <div>
-        <h3>Tony,</h3>
-        <p>you’re joining as an <span>Expert</span></p>
+        <div class="your_answer">
+          <div class="hr"></div>
+          <p>Your Answer <br>
+            <span>fakeAnswer</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>
-  <div class="event">EVENT</div>
-  <div class="question_second">
-    <div class="question_text">
-      <p>data?.question</p>
-    </div>
+  <div class="event_over">
+    <h3>The Event is now over!</h3>
   </div>
-  <div class="event">VALIDATE AFTER</div>
-  <div class="question_second">
-    <div class="question_text">
-      <p>20 AUG 2020, 10:45PM </p>
-    </div>
+  <div class="btn_join_expert">
+    <button>VIEW EVENT RESULT</button>
   </div>
-<!--TO DO & DO-->
 </ng-container>

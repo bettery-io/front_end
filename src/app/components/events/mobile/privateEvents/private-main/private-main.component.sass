@@ -1,8 +1,5 @@
 *
   box-sizing: border-box
-//padding: 0
-//margin: 0
-//font-family: 'Open Sans', sans-serif
 
 h1, h1, h3, h4, p
   margin: 0
@@ -16,7 +13,7 @@ h1, h1, h3, h4, p
   background-color: #242521
 
 .main
-  max-width: 91.5%
+  //max-width: 91.5%
   text-transform: uppercase
 
 .img_icon
@@ -38,9 +35,6 @@ h1, h1, h3, h4, p
     & span
       color: #FFD300
       font-weight: bold
-
-
-//=====================
 
 .question_block
   background: linear-gradient(90.35deg, #F7797D -1.43%, #FBD786 46.71%, #C6FFDD 97.96%)
@@ -65,7 +59,6 @@ h1, h1, h3, h4, p
     font-size: 32px
     line-height: 44px
 
-//==============================
 .results_block
   display: flex
   flex-wrap: wrap
@@ -84,7 +77,6 @@ h1, h1, h3, h4, p
 
 .losers
   width: 50%
-  //background: #FF0000
   background: rgba(255, 0, 0, 0.7)
   padding-top: 5px
   padding-bottom: 8px
@@ -107,10 +99,8 @@ h1, h1, h3, h4, p
   margin-right: 14px
 
 .hr
-  border: 0.5px solid #B6B6B6
-  margin: 24px 0 24px 0
-
-//  ==================================
+  border: 0.5px solid #474747
+  margin: 24px 6px 24px 6px
 
 .tutorial
   & h3
@@ -138,11 +128,9 @@ h1, h1, h3, h4, p
     height: 49px
     border: none
     margin-top: 24px
-
-
     border-radius: 8px
-
-//============================
+    font-size: 18px
+    font-weight: 600
 
 //color
 $primary-color: #FFFFFF
@@ -178,29 +166,6 @@ $info-color: #34DDDD
   height: 21.5px
   margin-right: 8px
 
-.login_name
-  color: $primary-color
-  text-transform: none
-  background-color: $secondary-color
-  width: 91.5%
-  border-radius: 8px
-
-  & h3
-    font-size: 24px
-
-  & span
-    color: $info-color
-
-  & div
-    margin: 13px auto 23px auto
-
-.event
-  color: $primary-color
-  font-weight: bold
-  margin: 40px 0 8px 16px
-  text-align: left
-
-
 .event_ends
   text-align: center
   padding-bottom: 24px
@@ -219,22 +184,18 @@ $info-color: #34DDDD
   text-align: center
   color: $warning_color
   background-color: $secondary-color
-  width: 91.5%
   margin: auto
   border-radius: 8px
-
+  padding: 0 70px
 
 .question_text
-  width: 67%
-  margin: 29px auto
-
+  margin: 17px auto
 
 .answers
   color: $primary-color
 
 .answers_item
   text-align: left
-  width: 91.5%
   min-height: 48px
   background-color: $secondary-color
   border-radius: 8px
@@ -250,15 +211,7 @@ $info-color: #34DDDD
   & li
     list-style: none
 
-.state
-  min-width: 343px
-
-  & label
-    width: 100%
-    height: 100%
-
 .resolution_details
-  width: 91.5%
   height: 48px
   border-radius: 8px
   margin: 8px auto
@@ -275,7 +228,6 @@ $info-color: #34DDDD
 .winner_get
   display: flex
   justify-content: space-between
-  padding: 0 18px
   font-weight: bold
   font-size: 14px
   text-align: left
@@ -296,6 +248,7 @@ $info-color: #34DDDD
 
 .winner_get_right_bottom
   color: $danger-color
+  text-transform: uppercase
 
 .winner_get_right_top
   color: $success-color
@@ -321,7 +274,7 @@ $info-color: #34DDDD
   text-align: center
 
   & button
-    width: 91.5%
+    width: 100%
     height: 48px
     cursor: pointer
     background: #34DDDD
@@ -334,8 +287,9 @@ $info-color: #34DDDD
 .btn_join_expert
   text-align: center
 
+
   & button
-    width: 91.5%
+    width: 100%
     height: 48px
     cursor: pointer
     background: #BF94E4
@@ -353,16 +307,22 @@ $info-color: #34DDDD
   & a
     color: #BF94E4
     font-size: 12px
+    font-weight: 600
+    border-bottom: 1px solid #BF94E4
+    text-decoration: none
 
 
 .whats_player
   text-align: center
-  padding-bottom: 33px
+  padding-bottom: 9px
   padding-top: 8px
 
   & a
     color: $info-color
     font-size: 12px
+    font-weight: 600
+    border-bottom: 1px solid $info-color
+    text-decoration: none
 
 //=====================
 
@@ -378,6 +338,7 @@ $info-color: #34DDDD
   color: #FFD300
 
 .create_by__item
+  text-align: left
   display: flex
   justify-content: space-between
   margin: 32px 11px 0 11px
@@ -385,59 +346,9 @@ $info-color: #34DDDD
   font-size: 14px
 
 .right
+  text-align: right
   display: flex
-
   & span.pink
     color: #BF94E4
-
-//===========
-
-.two_button
-  display: flex
-  justify-content: space-around
-  padding: 0 16px 30px 16px
-
-  & button
-    width: 43%
-    height: 48px
-    border-radius: 8px
-    font-weight: bold
-    text-transform: uppercase
-    cursor: pointer
-    border: none
-
-.btn_bet
-  background-color: $info-color
-
-.results_mail
-  color: $primary-color
-  font-size: 12px
-  text-align: center
-  padding-bottom: 39px
-
-  & p
-    opacity: 0.6
-
-  & span
-    font-weight: bold
-
-//=================
-
-.your_answer
-  color: #ffffff
-  font-weight: bold
-  font-size: 12px
-  line-height: 16px
-
-  & span
-
-    font-size: 16px
-    line-height: 22px
-
-.btn_join_up
-  & button
-    width: 100%
-    margin-top: 258px
-
-
-
+  & img
+    border-radius: 100%

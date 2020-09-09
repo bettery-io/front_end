@@ -27,18 +27,25 @@ $info-color: #34DDDD
   display: flex
   align-items: center
   justify-content: center
-
   padding: 10px 0 3px 0
+
+.title_thank
+  & h3
+    font-size: 20px
+    font-weight: 600
+    text-transform: uppercase
+    line-height: 27px
 
 .login_name
   color: $primary-color
   text-transform: none
   background-color: $secondary-color
-  width: 91.5%
+  width: 100%
   border-radius: 8px
 
   & h3
     font-size: 24px
+    font-weight: bold
 
   & span
     color: $info-color
@@ -51,29 +58,30 @@ $info-color: #34DDDD
   font-weight: bold
   margin: 40px 0 8px 16px
   text-align: left
+  font-size: 14px
 
 .question_second
   font-size: 18px
   line-height: 25px
+  font-weight: bold
   display: flex
   align-items: center
   text-align: center
   color: $warning_color
   background-color: $secondary-color
-  width: 91.5%
+  width: 100%
   margin: auto
   border-radius: 8px
-
+  padding: 0 70px
 
 .question_text
-  width: 67%
-  margin: 29px auto
+  margin: 17px auto
 
 .answers_item
   text-align: left
   overflow-x: hidden
-  width: 91.5%
-  min-height: 48px
+   width: 100%
+  //height: 48px
   background-color: $secondary-color
   border-radius: 8px
   margin: 8px auto
@@ -88,17 +96,18 @@ $info-color: #34DDDD
   & li
     list-style: none
 
-.state
-  min-width: 343px
-
   & label
-    width: 100%
     height: 100%
+    width: 100%
+
+.form_valid
+  color: $danger-color
+  font-size: 12px
+  text-align: right
 
 .winner_get
   display: flex
   justify-content: space-between
-  padding: 0 18px
   font-weight: bold
   font-size: 14px
   text-align: left
@@ -119,6 +128,7 @@ $info-color: #34DDDD
 
 .winner_get_right_bottom
   color: $danger-color
+  text-transform: uppercase
 
 .winner_get_right_top
   color: $success-color
@@ -129,7 +139,7 @@ $info-color: #34DDDD
   text-align: center
 
   & button
-    width: 91.5%
+    width: 100%
     height: 48px
     cursor: pointer
     background: #34DDDD
@@ -145,16 +155,20 @@ $info-color: #34DDDD
 
 
   & button
-    width: 43%
     height: 48px
     border-radius: 8px
     font-weight: bold
     text-transform: uppercase
     cursor: pointer
     border: none
+    width: 100%
 
 .btn_bet
   background-color: $info-color
+  margin-left: 8px
+
+.btn_back
+  margin-right: 8px
 
 .results_mail
   color: $primary-color
@@ -168,8 +182,6 @@ $info-color: #34DDDD
   & span
     font-weight: bold
 
-//=================
-
 .your_answer
   color: #ffffff
   font-weight: bold
@@ -177,15 +189,17 @@ $info-color: #34DDDD
   line-height: 16px
 
   & span
-
     font-size: 16px
     line-height: 22px
 
 .btn_join_up
   & button
-    width: 100%
     margin-top: 258px
+    font-size: 18px
+    font-weight: 600
 
 .hr
-  border: 0.5px solid #B6B6B6
-  margin: 24px 0 24px 0
+  border: 0.5px solid #474747
+  margin: 24px auto 24px auto
+  width: 100%
+

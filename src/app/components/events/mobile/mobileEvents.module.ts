@@ -9,6 +9,7 @@ import { PrivateMainComponent } from './privateEvents/private-main/private-main.
 import { PublicMainComponent } from './publicEvents/public-main/public-main.component';
 import { PrivateFormComponent } from './privateEvents/private-form/private-form.component';
 import { PrivateExpertComponent } from './privateEvents/private-expert/private-expert.component';
+import { BadRequestComponent } from './privateEvents/bad-request/bad-request.component';
 
 
 
@@ -29,7 +30,8 @@ import { PrivateExpertComponent } from './privateEvents/private-expert/private-e
     PrivateMainComponent,
     PublicMainComponent,
     PrivateFormComponent,
-    PrivateExpertComponent
+    PrivateExpertComponent,
+    BadRequestComponent
 ]
 })
 export class MobileEventsModule { }

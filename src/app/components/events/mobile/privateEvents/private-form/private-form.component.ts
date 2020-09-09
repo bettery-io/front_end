@@ -11,10 +11,8 @@ export class PrivateFormComponent implements OnInit {
   @Input()
   data: any;
   count: boolean;
-
-  fakeAnswer: any = '';
-
-  @Output() onChanged = new EventEmitter<boolean>();
+  formValid: boolean;
+  @Output() changed = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder) {
     this.answerForm = formBuilder.group({
@@ -26,12 +24,15 @@ export class PrivateFormComponent implements OnInit {
   }
 
   sendAnswer(answerForm: any) {
-    console.log(answerForm.value);
-    this.fakeAnswer = answerForm.value.answer;
+    if (answerForm.status === 'INVALID') {
+      this.formValid = true;
+      return;
+    }
     this.count = true;
+    console.log(answerForm.value.answer);
   }
 
   change(increased: any) {
-    this.onChanged.emit(increased);
+    this.changed.emit(increased);
   }
 }

@@ -6,6 +6,10 @@ $danger-color: #FF0000
 $success-color: #7BBD69
 $info-color: #34DDDD
 
+p, h3
+  padding: 0
+  margin: 0
+
 .now_batting__title
   font-weight: bold
   font-size: 18px
@@ -23,11 +27,12 @@ $info-color: #34DDDD
   color: $primary-color
   text-transform: none
   background-color: $secondary-color
-  width: 91.5%
+  width: 100%
   border-radius: 8px
 
   & h3
     font-size: 24px
+    font-weight: bold
 
   & span
     color: #BF94E4
@@ -43,14 +48,27 @@ $info-color: #34DDDD
   align-items: center
   text-align: center
   color: $warning_color
-  background-color: $secondary-color
-  width: 91.5%
+  background-color: #3C3C3C
   margin: auto
   border-radius: 8px
+  padding: 0 70px
 
 .question_text
-  width: 67%
-  margin: 29px auto
+  margin: auto
+  padding: 15px 0
+  font-weight: bold
+
+.time
+  text-align: left
+  padding: 0 70px 0 20px
+
+.question_text_white
+  color: $primary-color
+  padding: 15px 0
+  font-weight: bold
+  font-size: 14px
+  line-height: 19px
+  text-align: left
 
 .your_answer
   color: #ffffff
@@ -66,5 +84,196 @@ $info-color: #34DDDD
 .event
   color: $primary-color
   font-weight: bold
-  margin: 40px 0 8px 16px
+  margin: 40px 0 8px 0px
   text-align: left
+  font-size: 14px
+
+.sumText_24h
+  font-size: 12px
+  line-height: 16px
+  text-align: left
+  color: #9E9E9E
+  margin-top: 5px
+  margin-bottom: 33px
+
+.learn_more
+  text-align: left
+  font-size: 14px
+  line-height: 19px
+  color: #C4C4C4
+  margin-bottom: 52px
+  & span
+    font-weight: bold
+    font-size: 14px
+    text-transform: uppercase
+    color: $primary-color
+  & a
+    color: #BF94E4
+    font-size: 12px
+    border-bottom: 1px solid #BF94E4
+    text-decoration: none
+
+
+.two_button
+  display: flex
+  justify-content: space-around
+
+
+  & button
+    height: 48px
+    border-radius: 8px
+    text-transform: uppercase
+    cursor: pointer
+    border: none
+    width: 100%
+    font-weight: 600
+    font-size: 18px
+    line-height: 25px
+
+.btn_join
+  background-color: #BF94E4
+  margin-left: 8px
+
+.btn_cancel
+  margin-right: 8px
+
+.results_mail
+  color: $primary-color
+  font-size: 12px
+  line-height: 16px
+  text-align: center
+  padding-bottom: 39px
+
+  & p
+    opacity: 0.6
+
+  & span
+    font-weight: 600
+    color: $primary-color
+    opacity: 1
+
+//======= second page ==========
+.head
+  text-align: center
+  color: $primary-color
+
+.title
+  font-weight: 600
+  font-size: 14px
+  line-height: 19px
+  color: #C4C4C4
+  padding-top: 10px
+  & h3
+    font-weight: bold
+    font-size: 18px
+    line-height: 25px
+    margin-bottom: 4px
+    text-transform: uppercase
+    color: $primary-color
+
+.timer
+  font-size: 30px
+  font-weight: bold
+  line-height: 41px
+  margin-bottom: 34px
+
+.question_second_true
+  font-weight: bold
+  font-size: 18px
+  line-height: 25px
+  display: flex
+  align-items: center
+  text-align: center
+  color: $warning_color
+  background-color: $secondary-color
+  margin: auto
+  border-radius: 8px
+  padding: 17px 70px
+
+
+.question_text
+  margin: auto
+
+.answers
+  color: $primary-color
+
+.answers_item
+  overflow-x: hidden
+  min-height: 48px
+  background-color: $secondary-color
+  border-radius: 8px
+  margin: 8px auto
+  padding-top: 14px
+  padding-bottom: 14px
+  padding-left: 26px
+  font-style: normal
+  font-weight: bold
+  font-size: 14px
+  line-height: 19px
+  text-align: left
+
+  & li
+    list-style: none
+
+.resolution_details
+  height: 48px
+  border-radius: 8px
+  margin: 8px auto 16px auto
+  background-color: #404040
+  text-align: center
+  color: $primary-color
+  padding-top: 14px
+  font-size: 14px
+
+  & span
+    font-weight: bold
+
+.someText
+  font-size: 14px
+  line-height: 19px
+  margin-bottom: 22px
+  & span
+    font-weight: bold
+
+.btn_join_expert
+  text-align: center
+
+  & button
+    padding: 0 77.5px
+    height: 48px
+    cursor: pointer
+    background: #BF94E4
+    border-radius: 8px
+    border: none
+
+    font-size: 18px
+    font-weight: 600
+    width: 100%
+    margin: auto
+.event_over
+  margin: 100px 0 100px 0
+  & h3
+    font-weight: bold
+    font-size: 20px
+    line-height: 27px
+    text-transform: uppercase
+
+.title_thank
+  & h3
+    font-weight: bold
+    font-size: 20px
+    line-height: 27px
+
+.hr
+  border: 0.5px solid #474747
+  margin: 24px 6px 24px 6px
+
+.fs_20
+  font-weight: bold
+  font-size: 20px
+  line-height: 27px
+
+.form_valid
+  color: $danger-color
+  font-size: 12px
+  text-align: right

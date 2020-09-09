@@ -13,20 +13,22 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   data: any;
 
   answerForm: FormGroup;
-
+  badRequest: boolean;
   condition: boolean;
   counts: any = 1;
   expert: boolean;
+  expertPage: boolean;
   hideBtn: boolean;
+  ifTimeValid: boolean;
 
   routeSub: Subscription;
   id: any;
-  fakeAnswer: string;
-  fakeEndDate: number = 1;
-  day: any;
-  hour: any;
-  minutes: any;
-  seconds: any;
+  allTime: any = {
+    day: '',
+    hour: '',
+    minutes: '',
+    seconds: '',
+  };
 
   constructor(private postService: PostService, private formBuilder: FormBuilder, private route: ActivatedRoute) {
     this.answerForm = formBuilder.group({
@@ -44,6 +46,9 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       this.data = value;
     }, (err) => {
       console.log(err);
+      if (err.status === 404) {
+        this.badRequest = true;
+      }
     });
   }
 
@@ -52,11 +57,13 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   changePage() {
-    this.condition = true;
     this.calculateDate();
-    const timeNow = Date.now();
+    const timeNow = Number((Date.now() / 1000).toFixed(0));
     if (this.data.endTime - timeNow > 0) {
       this.expert = true;
+      this.condition = true;
+    } else {
+      this.condition = true;
     }
   }
 
@@ -68,12 +75,19 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     this.counts = 2;
   }
 
+  onExpertPage() {
+    this.expertPage = true;
+  }
+
   onChanged(increased: boolean) {
+    console.log(increased);
     if (increased) {
       this.prevPage();
 
     } else {
       this.hideBtn = true;
+      this.expertPage = false;
+      this.expert = false;
       this.prevPage();
     }
   }
@@ -82,20 +96,21 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     const startDate = new Date();
     const endTime = new Date(this.data.endTime * 1000);
     var diffMs = (endTime.getTime() - startDate.getTime());
-    this.day = Math.floor(Math.abs(diffMs / 86400000));
+    this.allTime.day = Math.floor(Math.abs(diffMs / 86400000));
     const hour = Math.floor(Math.abs((diffMs % 86400000) / 3600000));
     const minutes = Math.floor(Math.abs(((diffMs % 86400000) % 3600000) / 60000));
     const second = Math.round(Math.abs((((diffMs % 86400000) % 3600000) % 60000) / 1000));
 
-    this.hour = Number(hour) > 9 ? hour : '0' + hour;
-    this.minutes = Number(minutes) > 9 ? minutes : '0' + minutes;
+    this.allTime.hour = Number(hour) > 9 ? hour : '0' + hour;
+    this.allTime.minutes = Number(minutes) > 9 ? minutes : '0' + minutes;
     if (second === 60) {
-      this.seconds = '00';
+      this.allTime.seconds = '00';
     } else {
-      this.seconds = second > 9 ? second : '0' + second;
+      this.allTime.seconds = second > 9 ? second : '0' + second;
     }
     setTimeout(() => {
       this.calculateDate();
     }, 1000);
   }
+
 }

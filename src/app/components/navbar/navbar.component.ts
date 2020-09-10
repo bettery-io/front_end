@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Coins } from '../../models/Coins.model';
@@ -26,6 +26,7 @@ import web3Obj from '../../helpers/torus'
   styleUrls: ['./navbar.component.sass']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  @ViewChild('insideElement', { static: false }) insideElement;
 
   nickName: string = undefined;
   web3: Web3 | undefined = null;
@@ -55,6 +56,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ERC20withdrawalError: string = undefined;
   ERC20withdrawalAmount: number = 0;
   verifier: string = undefined;
+  openNavBar = false;
 
   constructor(
     private store: Store<AppState>,
@@ -142,6 +144,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
       }
     }, 500)
+
+    this.onDocumentClick = this.onDocumentClick.bind(this);
+    document.addEventListener('click', this.onDocumentClick);
 
   }
 
@@ -352,12 +357,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  ngOnDestroy() {
-    this.UserSubscribe.unsubscribe();
-    this.CoinsSubscribe.unsubscribe();
-  }
-
   // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
   //   this.logOut()
   // }
@@ -368,6 +367,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(new UserActions.RemoveUser(0));
     this.nickName = undefined;
+    this.openNavBar = false;
   }
 
   async loginWithTorus() {
@@ -444,6 +444,25 @@ export class NavbarComponent implements OnInit, OnDestroy {
       avatar: color,
       verifier: verifier
     }))
+  }
+
+  navBar() {
+    this.openNavBar = !this.openNavBar
+  }
+
+
+
+  protected onDocumentClick(event: MouseEvent) {
+    if (this.insideElement.nativeElement.contains(event.target)) {
+      return;
+    }
+    this.openNavBar = false;
+  }
+
+  ngOnDestroy() {
+    this.UserSubscribe.unsubscribe();
+    this.CoinsSubscribe.unsubscribe();
+    document.removeEventListener('click', this.onDocumentClick);
   }
 
 }

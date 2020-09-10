@@ -40,6 +40,9 @@ export class EventStartComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+    this.currentPool = 0;
+    this.playersJoinde = 0;
+    this.expertJoinned = 0;
   }
 
   getUsers() {
@@ -96,13 +99,24 @@ export class EventStartComponent implements OnInit, OnChanges {
     }
   }
 
-  getPartPos(i) {
+  getPartPos(i, from) {
+    let size = from == "part" ? this.eventData.parcipiantAnswers.length : this.eventData.validatorsAnswers.length
+    console.log(size)
     let index = [4, 3, 2, 1]
-    return {
-      'z-index': index[i],
-      'position': 'relative',
-      'right': (i * 10) + "px"
+    if (size === 1) {
+      return {
+        'z-index': index[i],
+        'position': 'relative',
+        'right': "20px"
+      }
+    } else {
+      return {
+        'z-index': index[i],
+        'position': 'relative',
+        'right': (i * 10) + "px"
+      }
     }
+
   }
 
   poolName() {

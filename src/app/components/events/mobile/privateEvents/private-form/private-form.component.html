@@ -1,4 +1,4 @@
-<ng-container>
+<div class="bg_img">
   <div class="now_batting__title">
     <div class="login_name">
       <div *ngIf="!count">
@@ -27,7 +27,7 @@
   </div>
 
   <form *ngIf="!count" action="#" [formGroup]="answerForm" (change)="formValid = false">
-    <div class="answers_item" *ngFor="let a of data?.answers">
+    <div class="answers_item" *ngFor="let a of data?.answers; let i = index">
       <div class="pretty p-default p-round ">
         <input class="input" formControlName="answer" type="radio" name="answer" value="{{a}}">
         <div class="state">
@@ -64,4 +64,4 @@
   <div *ngIf="count" class="btn_join_as_player btn_join_up">
     <button (click)="change(false)">VIEW EVENT STATUS</button>
   </div>
-</ng-container>
+</div>

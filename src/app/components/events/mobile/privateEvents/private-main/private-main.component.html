@@ -3,7 +3,11 @@
     <!--    First page    -->
     <ng-container class="main" *ngIf="!condition">
       <div class="title">
-        <h1>WELCOME TO THE EVENT of <br> <span>{{data?.host.nickName}}</span></h1>
+        <h1>WELCOME TO THE EVENT of</h1>
+        <div class="nickName mt-1">
+          <div><h2>{{data?.host.nickName}}</h2></div>
+          <div class="img_icon ml-2"></div>
+        </div>
       </div>
 
       <div class="question_block">
@@ -118,12 +122,14 @@
                 <span>{{allTime.hour}} </span>
                 hours <span>{{allTime.minutes}} </span>minutes
               </div>
-              <div class="btn_join_as_player">
-                <button (click)="nextPage()"> JOIN AS PLAYER</button>
-              </div>
-              <div>
-                <div class="whats_player"><a href="#">Whats is a Player?</a></div>
-              </div>
+             <ng-container *ngIf="!expert">
+               <div class="btn_join_as_player">
+                 <button (click)="nextPage()"> JOIN AS PLAYER</button>
+               </div>
+               <div>
+                 <div class="whats_player"><a href="#">Whats is a Player?</a></div>
+               </div>
+             </ng-container>
             </ng-container>
 
             <ng-container *ngIf="expert">
@@ -143,6 +149,8 @@
     </ng-container>
     <app-private-form *ngIf="counts==2" [data]="data" (changed)="onChanged($event)"></app-private-form>
   </ng_container>
-  <app-private-expert *ngIf="expertPage" [data]="data" [allTime]="allTime" (changed)="onChanged($event)"></app-private-expert>
+  <app-private-expert *ngIf="expertPage" [data]="data" [allTime]="allTime"
+                      (changed)="onChanged($event)"></app-private-expert>
 </div>
 <app-bad-request *ngIf="badRequest"></app-bad-request>
+

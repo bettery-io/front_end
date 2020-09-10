@@ -3,6 +3,10 @@ import {PostService} from "../../../../../services/post.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
+import web3Obj from "../../../../../helpers/torus";
+import * as UserActions from '../../../../../actions/user.actions';
+import {Store} from '@ngrx/store';
+import {AppState} from "../../../../../app.state";
 
 @Component({
   selector: 'app-private-main',
@@ -30,7 +34,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     seconds: '',
   };
 
-  constructor(private postService: PostService, private formBuilder: FormBuilder, private route: ActivatedRoute) {
+  constructor(private postService: PostService, private formBuilder: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {
     this.answerForm = formBuilder.group({
       answer: ['', Validators.required]
     });
@@ -56,16 +60,102 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     this.routeSub.unsubscribe();
   }
 
-  changePage() {
+  async changePage() {
     this.calculateDate();
     const timeNow = Number((Date.now() / 1000).toFixed(0));
+
     if (this.data.endTime - timeNow > 0) {
+      await this.loginWithTorus();
       this.expert = true;
       this.condition = true;
     } else {
+      // this.expert = true; // delete
       this.condition = true;
+      await this.loginWithTorus();
+    }
+
+
+  }
+
+
+  async loginWithTorus() {
+    try {
+      await web3Obj.initialize();
+      await this.setTorusInfoToDB();
+    } catch (error) {
+      console.error(error);
     }
   }
+
+  async setTorusInfoToDB() {
+    const userInfo = await web3Obj.torus.getUserInfo("");
+    const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
+
+    console.log(userInfo);
+    console.log(userWallet);
+
+    const data: object = {
+      _id: null,
+      wallet: userWallet,
+      nickName: userInfo.name,
+      email: userInfo.email,
+      avatar: userInfo.profileImage,
+      verifier: userInfo.verifier,
+      verifierId: userInfo.verifierId,
+    };
+    this.postService.post("user/torus_regist", data)
+      .subscribe(
+        (x: any) => {
+          console.log(x);
+          this.addUser(
+            x.email,
+            x.nickName,
+            x.wallet,
+            x.listHostEvents,
+            x.listParticipantEvents,
+            x.listValidatorEvents,
+            x.historyTransaction,
+            x.invitationList,
+            x.avatar,
+            x._id,
+            x.verifier
+          );
+        }, (err) => {
+          console.log(err);
+        });
+  }
+
+  addUser(
+    email: string,
+    nickName: string,
+    wallet: string,
+    listHostEvents: object,
+    listParticipantEvents: object,
+    listValidatorEvents: object,
+    historyTransaction: object,
+    invitationList: object,
+    color: string,
+    _id: number,
+    verifier: string
+  ) {
+
+    this.store.dispatch(new UserActions.AddUser({
+      _id: _id,
+      email: email,
+      nickName: nickName,
+      wallet: wallet,
+      listHostEvents: listHostEvents,
+      listParticipantEvents: listParticipantEvents,
+      listValidatorEvents: listValidatorEvents,
+      historyTransaction: historyTransaction,
+      invitationList: invitationList,
+      avatar: color,
+      verifier: verifier
+    }));
+  }
+
+  //==========================
+
 
   prevPage() {
     this.counts = 1;

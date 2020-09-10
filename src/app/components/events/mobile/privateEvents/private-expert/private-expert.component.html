@@ -23,7 +23,7 @@
       <div class="event">VALIDATE AFTER</div>
       <div class="question_second time">
         <div class="question_text_white">
-          <p>20 AUG 2020, 10:45PM </p>
+          <p>{{data?.endTime | date: 'dd MMM y'}}, {{data?.endTime | date:'shortTime'}}</p>
         </div>
       </div>
     </ng-container>
@@ -118,9 +118,9 @@
 </ng-container>
 
 <ng-container *ngIf="confirm">
-<div class="pt-4 mb-4 title_thank">
-  <h3> Thank you for validating!</h3>
-</div>
+  <div class="pt-4 mb-4 title_thank">
+    <h3> Thank you for validating!</h3>
+  </div>
   <div class="question_second_true">
     <div class="question_text">
       <p class="fs_20">{{data?.question}}</p>

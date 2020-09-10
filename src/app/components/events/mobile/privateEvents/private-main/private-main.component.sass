@@ -1,10 +1,3 @@
-*
-  box-sizing: border-box
-
-h1, h1, h3, h4, p
-  margin: 0
-  padding: 0
-
 .container
   margin: 0 auto
   padding-bottom: 16px
@@ -13,7 +6,6 @@ h1, h1, h3, h4, p
   background-color: #242521
 
 .main
-  //max-width: 91.5%
   text-transform: uppercase
 
 .img_icon
@@ -22,9 +14,14 @@ h1, h1, h3, h4, p
   width: 17px
   height: 18px
 
+.nickName
+  display: flex
+  justify-content: center
+
 .title
-  padding: 23px 0 11px 0
+  padding: 3px 0 11px 0
   text-transform: uppercase
+
 
   & h1
     font-style: normal
@@ -32,9 +29,11 @@ h1, h1, h3, h4, p
     font-size: 18px
     line-height: 121.8%
 
-    & span
-      color: #FFD300
-      font-weight: bold
+  & h2
+    color: #FFD300
+    font-weight: bold
+    font-size: 20px
+    line-height: 121.8%
 
 .question_block
   background: linear-gradient(90.35deg, #F7797D -1.43%, #FBD786 46.71%, #C6FFDD 97.96%)
@@ -132,14 +131,6 @@ h1, h1, h3, h4, p
     font-size: 18px
     font-weight: 600
 
-//color
-$primary-color: #FFFFFF
-$secondary-color: #0B1511
-$warning_color: #FFD300
-$danger-color: #FF0000
-$success-color: #7BBD69
-$info-color: #34DDDD
-
 .now_batting__title
   width: 100%
   font-style: normal
@@ -148,7 +139,7 @@ $info-color: #34DDDD
   line-height: 25px
   text-align: center
   text-transform: uppercase
-  color: $warning_color
+  color: #FFD300
   display: flex
   align-items: center
   justify-content: center
@@ -169,7 +160,7 @@ $info-color: #34DDDD
 .event_ends
   text-align: center
   padding-bottom: 24px
-  color: $primary-color
+  color: #FFFFFF
 
   font-size: 14px
 
@@ -182,8 +173,8 @@ $info-color: #34DDDD
   display: flex
   align-items: center
   text-align: center
-  color: $warning_color
-  background-color: $secondary-color
+  color: #FFD300
+  background-color: #0B1511
   margin: auto
   border-radius: 8px
   padding: 0 70px
@@ -192,12 +183,12 @@ $info-color: #34DDDD
   margin: 17px auto
 
 .answers
-  color: $primary-color
+  color: #FFFFFF
 
 .answers_item
   text-align: left
   min-height: 48px
-  background-color: $secondary-color
+  background-color: #0B1511
   border-radius: 8px
   margin: 8px auto
   padding-top: 14px
@@ -217,7 +208,7 @@ $info-color: #34DDDD
   margin: 8px auto
   background-color: #404040
   text-align: center
-  color: $primary-color
+  color: #FFFFFF
   padding-top: 14px
   font-size: 14px
 
@@ -235,7 +226,7 @@ $info-color: #34DDDD
 .winner_get_left
   margin-top: 24px
   margin-bottom: 32px
-  color: $primary-color
+  color: #FFFFFF
 
 .winner_get_left_top
   margin-bottom: 16px
@@ -247,11 +238,11 @@ $info-color: #34DDDD
   text-align: right
 
 .winner_get_right_bottom
-  color: $danger-color
+  color: #FF0000
   text-transform: uppercase
 
 .winner_get_right_top
-  color: $success-color
+  color: #7BBD69
   text-transform: uppercase
   margin-bottom: 16px
 
@@ -260,11 +251,8 @@ $info-color: #34DDDD
   font-weight: normal
   font-size: 14px
   line-height: 19px
-
   text-align: center
-
   color: #FFFFFF
-
   padding-bottom: 8px
 
 .time-left span
@@ -318,10 +306,10 @@ $info-color: #34DDDD
   padding-top: 8px
 
   & a
-    color: $info-color
+    color: #34DDDD
     font-size: 12px
     font-weight: 600
-    border-bottom: 1px solid $info-color
+    border-bottom: 1px solid #34DDDD
     text-decoration: none
 
 //=====================

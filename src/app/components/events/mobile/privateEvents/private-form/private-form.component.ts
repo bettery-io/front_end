@@ -1,5 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import _ from "lodash";
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../app.state';
+
+// import Contract from "../../../../../contract/contract";
+
 
 @Component({
   selector: 'app-private-form',
@@ -13,11 +19,19 @@ export class PrivateFormComponent implements OnInit {
   count: boolean;
   formValid: boolean;
   @Output() changed = new EventEmitter<boolean>();
-
-  constructor(private formBuilder: FormBuilder) {
+  userData
+  constructor(private formBuilder: FormBuilder, private store: Store<AppState>) {
     this.answerForm = formBuilder.group({
       answer: ['', Validators.required]
     });
+
+    this.store.select("user").subscribe((x) => {
+      if (x.length != 0) {
+        this.userData = x[0];
+        console.log(this.userData);
+      }
+    });
+
   }
 
   ngOnInit(): void {
@@ -29,7 +43,12 @@ export class PrivateFormComponent implements OnInit {
       return;
     }
     this.count = true;
-    console.log(answerForm.value.answer);
+    const index = _.findIndex(this.data.answers, (el => {
+        return el === answerForm.value.answer;
+      })
+    );
+    console.log(index, 'index');
+    console.log(answerForm.value);
   }
 
   change(increased: any) {

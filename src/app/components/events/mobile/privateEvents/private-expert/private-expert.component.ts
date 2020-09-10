@@ -31,6 +31,7 @@ export class PrivateExpertComponent implements OnInit {
   isConfirm() {
     this.join = true;
     console.log(this.confirm);
+    this.ifTimeValid = true; // delete
   //  need use date
   }
 

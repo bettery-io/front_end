@@ -11,6 +11,7 @@ import { EventStartComponent } from './publicEvents/event-start/event-start.comp
 import { InfoComponent } from './publicEvents/info/info.component';
 import { ParticipateComponent } from './publicEvents/participate/participate.component';
 import { ValidateComponent } from './publicEvents/validate/validate.component';
+import { EventFinishComponent } from './publicEvents/event-finish/event-finish.component';
 
 
 
@@ -33,7 +34,8 @@ import { ValidateComponent } from './publicEvents/validate/validate.component';
     EventStartComponent,
     InfoComponent,
     ParticipateComponent,
-    ValidateComponent
+    ValidateComponent,
+    EventFinishComponent
 ]
 })
 export class MobileEventsModule { }

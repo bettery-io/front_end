@@ -21,6 +21,7 @@ export class SetQuestionTabComponent implements OnInit {
   faPlus = faPlus;
   submitted = false;
   registered = false;
+  clicked = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -85,6 +86,7 @@ export class SetQuestionTabComponent implements OnInit {
   }
 
   async loginWithTorus() {
+    this.clicked = true;
     try {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
@@ -126,6 +128,9 @@ export class SetQuestionTabComponent implements OnInit {
             x._id,
             x.verifier
           );
+          if (this.clicked) {
+            this.onSubmit()
+          }
         }, (err) => {
           console.log(err)
         })

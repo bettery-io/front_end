@@ -25,9 +25,13 @@ export class EventStartComponent implements OnInit, OnChanges {
   hour;
   minutes;
   seconds;
-  userData
+  userData = undefined
   participatedIndex;
   validatedIndex
+  currentPool = 0;
+  playersJoinde = 0;
+  expertJoinned = 0;
+  coinType;
 
   constructor(
     private http: PostService,
@@ -41,9 +45,9 @@ export class EventStartComponent implements OnInit, OnChanges {
   getUsers() {
     this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
-        console.log("TEST")
         this.userData = x[0]
         this.letsFindActivites(x[0]);
+        this.calculatePool()
       }
     });
   }
@@ -55,6 +59,7 @@ export class EventStartComponent implements OnInit, OnChanges {
         if (!(this.eventData.endTime - timeNow > 0)) {
           this.validation = true;
         }
+        this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
         this.getUsers();
       }
     }
@@ -63,13 +68,40 @@ export class EventStartComponent implements OnInit, OnChanges {
   letsFindActivites(userData) {
     if (this.eventData.parcipiantAnswers) {
       let findParts = _.find(this.eventData.parcipiantAnswers, (o) => { return o.userId == userData._id; });
-      this.participatedIndex = findParts.answer;
-      this.created = true;
+      if (findParts) {
+        this.participatedIndex = findParts.answer;
+        this.created = true;
+      }
     }
     if (this.eventData.validatorsAnswers) {
-      let findParts = _.find(this.eventData.validatorsAnswers, (o) => { return o.userId == userData._id; });
-      this.participatedIndex = findParts.answer;
-      this.created = true;
+      let findValid = _.find(this.eventData.validatorsAnswers, (o) => { return o.userId == userData._id; });
+      if (findValid) {
+        this.participatedIndex = findValid.answer;
+        this.created = true;
+      }
+    }
+  }
+
+  calculatePool() {
+    if (this.eventData.parcipiantAnswers) {
+      this.eventData.parcipiantAnswers.forEach(x => {
+        this.currentPool += x.amount;
+        this.playersJoinde += 1;
+      });
+    }
+    if (this.eventData.validatorsAnswers) {
+      this.eventData.validatorsAnswers.forEach(() => {
+        this.expertJoinned += 1;
+      });
+    }
+  }
+
+  getPartPos(i) {
+    let index = [4, 3, 2, 1]
+    return {
+      'z-index': index[i],
+      'position': 'relative',
+      'right': (i * 10) + "px"
     }
   }
 
@@ -83,17 +115,27 @@ export class EventStartComponent implements OnInit, OnChanges {
   }
 
   async join() {
-    await this.loginWithTorus();
-    this.letsJoin = true;
-    this.calculateDate();
+    console.log(this.userData)
+    if (this.userData == undefined) {
+      if (await this.loginWithTorus()) {
+        this.letsJoin = true;
+        this.calculateDate();
+      }
+    } else {
+      this.letsJoin = true;
+      this.calculateDate();
+    }
+
   }
 
   async loginWithTorus() {
     try {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
+      return true;
     } catch (error) {
       console.error(error)
+      return false;
     }
   }
 
@@ -226,7 +268,7 @@ export class EventStartComponent implements OnInit, OnChanges {
     this.goToAction = false;
     this.joinedAs = undefined;
     this.created = true;
-  //  this.getUsers();
+    //  this.getUsers();
     this.interacDone.next(data);
   }
 

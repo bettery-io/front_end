@@ -98,6 +98,8 @@ export class ParticipateComponent implements OnInit {
   }
 
   setToDB(answer, dataAnswer, transactionHash, amount) {
+    let web3 = new Web3();
+    var _money = web3.utils.fromWei(String(amount), 'ether')
     let data = {
       event_id: dataAnswer.id,
       date: new Date(),
@@ -107,19 +109,19 @@ export class ParticipateComponent implements OnInit {
       from: "participant",
       currencyType: dataAnswer.currencyType,
       answerAmount: dataAnswer.answerAmount + 1,
-      money: amount
+      amount: Number(_money)
     }
     console.log(data);
-      this.postService.post("answer", data).subscribe(async () => {
-        this.errorMessage = undefined;
-        this.answered = true;
-      },
-        (err) => {
-          console.log(err)
-        })
+    this.postService.post("answer", data).subscribe(async () => {
+      this.errorMessage = undefined;
+      this.answered = true;
+    },
+      (err) => {
+        console.log(err)
+      })
   }
 
-  viewStatus(){
+  viewStatus() {
     this.goViewStatus.next(this.eventData.id);
   }
 

@@ -7,7 +7,7 @@
         </div>
         <div class="gradientBox">
             <div class="avatarBox">
-                <img class="avatar" src={{eventData?.host.avatat}}>
+                <img class="avatar" src={{eventData?.host.avatat}} referrerpolicy="no-referrer">
             </div>
             <div class="eventBox">
                 <p class="eventName">{{eventData?.question}}</p>
@@ -25,7 +25,7 @@
                     <div class="imgCoin"></div>
                     <p class="titleBetting">NOW BETTING</p>
                 </div>
-                <p class="titleTwo">Event ends in <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
+                <p class="titleTwo">Event ends in <b style="font-weight: 600;">{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
             </div>
             <div *ngIf="validation">
                 <div class="titleBox" style="margin-bottom: 24px;">
@@ -43,7 +43,7 @@
                     <p [ngClass]="{ 
                         'validated': i == validatedIndex,
                         'participated': i == participatedIndex
-                     }"  class="answerCreated">{{answer}}</p>
+                     }" class="answerCreated">{{answer}}</p>
                 </div>
             </div>
 
@@ -58,20 +58,34 @@
                     <p class="infoLabel">HOST:</p>
                     <div class="hostBox">
                         <p class="name">{{eventData?.host.nickName}}</p>
-                        <img class="avatarHost" src={{eventData.host.avatat}}>
+                        <img class="avatarHost" src={{eventData.host.avatat}} referrerpolicy="no-referrer">
                     </div>
                 </div>
                 <div class="infoLabelPos">
                     <p class="infoLabel">{{poolName()}} pool:</p>
-                    <p class="name">0</p>
+                    <p class="name">{{currentPool}} {{coinType}}</p>
                 </div>
                 <div class="infoLabelPos">
                     <p class="infoLabel">PLAYERS joined:</p>
-                    <p class="name">0</p>
+                    <div class="partBox">
+                        <div *ngFor="let part of eventData.parcipiantAnswers; index as i">
+                            <div [ngStyle]="getPartPos(i)">
+                                <img *ngIf="i <= 4" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
+                            </div>
+                        </div>
+                        <p class="name playersNumber">{{playersJoinde}}</p>
+                    </div>
                 </div>
                 <div *ngIf="validation" class="infoLabelPos">
                     <p class="infoLabel">EXPERTS joined:</p>
-                    <p class="name">0</p>
+                    <div class="partBox">
+                        <div *ngFor="let valid of eventData.validatorsAnswers; index as i">
+                            <div [ngStyle]="getPartPos(i)">
+                                <img *ngIf="i <= 4" class="partImg" referrerpolicy="no-referrer" src="{{valid.avatar}}">
+                            </div>
+                        </div>
+                        <p class="name playersNumber">{{expertJoinned}}</p>
+                    </div>
                 </div>
             </div>
 
@@ -91,7 +105,7 @@
             <div *ngIf="timeToLeftDisplay()" class="arrow"></div>
 
             <div *ngIf="validation || created" class="aboutBox">
-                <p class="only" *ngIf="validation" >ONLY 3 more experts to go</p>
+                <p class="only" *ngIf="validation">ONLY 3 more experts to go</p>
                 <p class="byLink" [ngStyle]="{'margin-top': validation ? '0px' : '16px'}">{{clickBoardName()}}</p>
                 <a class="link" href="#">www.bettery.io/public_event/{{eventData.id}}</a>
                 <div class="imgBox" (click)="copyToClickBoard()">

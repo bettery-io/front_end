@@ -124,7 +124,7 @@ export class ValidateComponent implements OnInit {
       from: "validator",
       currencyType: dataAnswer.currencyType,
       validated: dataAnswer.validated + 1,
-      money: 0
+      amount: 0
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {

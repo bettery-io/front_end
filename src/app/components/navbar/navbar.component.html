@@ -85,24 +85,28 @@
     </div>
     <div *ngIf="nickName !== undefined" class="loginBoxRegist" (click)="navBar()">
         <p class="userNickName">{{nickName}}</p>
-        <img src={{avatar}} class="avatarImg">
+        <img src={{avatar}} class="avatarImg" referrerpolicy="no-referrer">
     </div>
     <div *ngIf="openNavBar" class="positionNavbar">
         <p class="balance">Balance</p>
         <div class="balanceBox">
             <div class="balancePos">
-                <p class="balance"><b>{{coinInfo?.loomBalance | number:'1.0-2'}}</b> ETH</p>
+                <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
+                    <b>{{coinInfo?.loomBalance | number:'1.0-2'}}</b> ETH</p>
+                <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
                 <div class="ethImg"></div>
             </div>
             <div class="balancePos" style="margin-right: 48px">
-                <p class="balance"><b>{{ERC20Coins?.loomBalance | number:'1.0-2'}}</b> BTY</p>
+                <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
+                    <b>{{ERC20Coins?.loomBalance | number:'1.0-2'}}</b> BTY</p>
+                <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
                 <div class="btyImg"></div>
             </div>
         </div>
         <button class="lowOnCoins">Low on coins?</button>
         <div class="arrow"></div>
         <div class="navBox">
-            <button class="navLink">Wallet</button>
+            <button class="navLink">My Wallet</button>
         </div>
         <div class="arrow"></div>
         <div class="navBox">

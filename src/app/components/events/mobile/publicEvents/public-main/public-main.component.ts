@@ -11,6 +11,8 @@ export class PublicMainComponent implements OnInit {
   eventId: number;
   eventData;
   errorPage: boolean = false;
+  // TODO
+  eventFinish: boolean = false;
 
   constructor(
     private route: ActivatedRoute,

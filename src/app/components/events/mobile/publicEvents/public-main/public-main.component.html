@@ -1,4 +1,5 @@
-<event-start *ngIf="!errorPage" [eventData]="eventData" (interacDone)="interacDone($event)"></event-start>
+<event-start *ngIf="!errorPage && !eventFinish" [eventData]="eventData" (interacDone)="interacDone($event)"></event-start>
+<event-finish *ngIf="eventFinish" [eventData]="eventData" ></event-finish>
 <div *ngIf="errorPage" class="box">
     <div class="errorImg"></div>
     <p class="eventNotFound">Event not found!</p>

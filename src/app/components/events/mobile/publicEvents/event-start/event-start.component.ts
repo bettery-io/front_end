@@ -40,9 +40,6 @@ export class EventStartComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.currentPool = 0;
-    this.playersJoinde = 0;
-    this.expertJoinned = 0;
   }
 
   getUsers() {
@@ -63,8 +60,27 @@ export class EventStartComponent implements OnInit, OnChanges {
           this.validation = true;
         }
         this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
+        this.currentPool = 0;
+        this.playersJoinde = 0;
+        this.expertJoinned = 0;
+        this.remainderExperts();
         this.getUsers();
       }
+    }
+  }
+
+  remainderExperts() {
+    let expertDone = this.eventData.validatorsAnswers === undefined ? 0 : this.eventData.validatorsAnswers.length
+    let epxertIn = this.eventData.validatorsAmount == 0 ? this.expertAmount() : this.eventData.validatorsAmount
+    return epxertIn - expertDone;
+  }
+
+  expertAmount() {
+    let part = this.eventData.parcipiantAnswers == undefined ? 0 : this.eventData.parcipiantAnswers.length;
+    if (part == 0) {
+      return 3;
+    } else {
+      return (part * 10) / 100 <= 3 ? 3 : Number(((part * 10) / 100).toFixed(0));
     }
   }
 
@@ -88,6 +104,7 @@ export class EventStartComponent implements OnInit, OnChanges {
   calculatePool() {
     if (this.eventData.parcipiantAnswers) {
       this.eventData.parcipiantAnswers.forEach(x => {
+        console.log(x);
         this.currentPool += x.amount;
         this.playersJoinde += 1;
       });
@@ -101,7 +118,6 @@ export class EventStartComponent implements OnInit, OnChanges {
 
   getPartPos(i, from) {
     let size = from == "part" ? this.eventData.parcipiantAnswers.length : this.eventData.validatorsAnswers.length
-    console.log(size)
     let index = [4, 3, 2, 1]
     if (size === 1) {
       return {
@@ -129,7 +145,6 @@ export class EventStartComponent implements OnInit, OnChanges {
   }
 
   async join() {
-    console.log(this.userData)
     if (this.userData == undefined) {
       if (await this.loginWithTorus()) {
         this.letsJoin = true;

@@ -7,6 +7,9 @@ import Web3 from "web3"
 import Contract from '../../../../../contract/contract';
 import _ from "lodash";
 import { PostService } from '../../../../../services/post.service';
+import web3Obj from '../../../../../helpers/torus'
+import maticInit from '../../../../../contract/maticInit.js'
+import * as CoinsActios from '../../../../../actions/coins.actions';
 
 @Component({
   selector: 'participate',
@@ -113,6 +116,7 @@ export class ParticipateComponent implements OnInit {
     }
     console.log(data);
     this.postService.post("answer", data).subscribe(async () => {
+      await this.updateBalance();
       this.errorMessage = undefined;
       this.answered = true;
     },
@@ -124,5 +128,25 @@ export class ParticipateComponent implements OnInit {
   viewStatus() {
     this.goViewStatus.next(this.eventData.id);
   }
+
+  async updateBalance() {
+    let web3 = new Web3(this.userData.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
+    let mainBalance = await web3.eth.getBalance(this.userData.wallet);
+
+    let matic = new maticInit(this.userData.verifier);
+    let MTXToken = await matic.getMTXBalance();
+    let TokenBalance = await matic.getERC20Balance();
+
+    let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
+    let mainEther = web3.utils.fromWei(mainBalance, "ether")
+    let tokBal = web3.utils.fromWei(TokenBalance, "ether")
+
+    this.store.dispatch(new CoinsActios.UpdateCoins({
+      loomBalance: maticTokenBalanceToEth,
+      mainNetBalance: mainEther,
+      tokenBalance: tokBal
+    }))
+  }
+
 
 }

@@ -75,6 +75,21 @@ export class ValidateComponent implements OnInit {
     this._clipboardService.copy(`www.bettery.io/public_event/${this.eventData.id}`)
   }
 
+  remainderExperts() {
+    let expertDone = this.eventData.validatorsAnswers == undefined ? 0 : this.eventData.validatorsAnswers.length
+    let epxertIn = this.eventData.validatorsAmount == 0 ? this.expertAmount() : this.eventData.validatorsAmount
+    return epxertIn - expertDone;
+  }
+
+  expertAmount() {
+    let part = this.eventData.parcipiantAnswers == undefined ? 0 : this.eventData.parcipiantAnswers.length;
+    if (part == 0) {
+      return 3;
+    } else {
+      return (part * 10) / 100 <= 3 ? 3 : Number(((part * 10) / 100).toFixed(0));
+    }
+  }
+
   validate() {
     this.submitted = true;
     if (this.answerForm.invalid) {
@@ -136,7 +151,7 @@ export class ValidateComponent implements OnInit {
       })
   }
 
-  viewStatus(){
+  viewStatus() {
     this.goViewStatus.next(this.eventData.id);
   }
 

@@ -1,7 +1,7 @@
 <div *ngIf="timeIsValid">
     <div class="boxName">
         <p class="userName">{{userData.nickName}},</p>
-        <p class="text">you’re joining as an <span class="colorPlayer">Player</span></p>
+        <p class="text">you’re joining as an <span class="colorPlayer">Expert</span></p>
     </div>
     <p class="event">Event</p>
     <div class="questionBox">
@@ -37,7 +37,7 @@
 <div *ngIf="!timeIsValid">
     <div *ngIf="!created">
         <p class="validateEvent">VALIDATE EVENT</p>
-        <p class="validateInfo">5 Experts already in - <b>only 3 more to go.</b> Give your answer and Confirm now!</p>
+        <p class="validateInfo">{{eventData.validatorsAnswers == undefined ? 0 : eventData.validatorsAnswers.lenght}} Experts already in - <b>only {{remainderExperts()}} more to go.</b> Give your answer and Confirm now!</p>
 
         <form [formGroup]="answerForm">
             <div class="questionBoxValidae">

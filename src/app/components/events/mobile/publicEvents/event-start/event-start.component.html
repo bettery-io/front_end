@@ -105,7 +105,7 @@
             <div *ngIf="timeToLeftDisplay()" class="arrow"></div>
 
             <div *ngIf="validation || created" class="aboutBox">
-                <p class="only" *ngIf="validation">ONLY 3 more experts to go</p>
+                <p class="only" *ngIf="validation">ONLY {{remainderExperts()}} more experts to go</p>
                 <p class="byLink" [ngStyle]="{'margin-top': validation ? '0px' : '16px'}">{{clickBoardName()}}</p>
                 <a class="link" href="#">www.bettery.io/public_event/{{eventData.id}}</a>
                 <div class="imgBox" (click)="copyToClickBoard()">

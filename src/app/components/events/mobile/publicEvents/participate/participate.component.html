@@ -11,7 +11,7 @@
         <form [formGroup]="answerForm">
             <div *ngFor="let answer of eventData.answers">
                 <div class="pretty p-default p-round inline checkBackGround">
-                    <input type="radio" value={{answer}} formControlName="answer">
+                    <input type="radio" value={{answer}} formControlName="answer" min="1">
                     <div class="state p-warning-o checkPos">
                         <label> </label>
                     </div>

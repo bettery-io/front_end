@@ -1,0 +1,161 @@
+<div class="box">
+    <div *ngIf="!letsJoin">
+        <p class="title">You're invited to an event by </p>
+        <div class="boxName">
+            <p class="hostName">{{eventData?.host.nickName}}</p>
+            <div class="bookImg"></div>
+        </div>
+        <div class="gradientBox">
+            <div class="avatarBox">
+                <img class="avatar" src={{eventData?.host.avatat}} referrerpolicy="no-referrer">
+            </div>
+            <div class="eventBox">
+                <p class="eventName">{{eventData?.question}}</p>
+            </div>
+        </div>
+        <div class="arrow"></div>
+        <div class="info">How DO I JOIN?</div>
+        <div>GIF</div>
+        <button class="join" (click)="join()">JOIN</button>
+    </div>
+    <div *ngIf="letsJoin">
+        <div *ngIf="showEvent()">
+            <div *ngIf="!validation">
+                <div class="titleBox">
+                    <div class="imgCoin"></div>
+                    <p class="titleBetting">NOW BETTING</p>
+                </div>
+                <p class="titleTwo">Event ends in <b style="font-weight: 600;">{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
+            </div>
+            <div *ngIf="validation">
+                <div class="titleBox" style="margin-bottom: 24px;">
+                    <div class="checkImg"></div>
+                    <p class="titleBetting">NOW VALIDATING</p>
+                </div>
+            </div>
+
+            <div class="quizBoxTwo">
+                <p class="quizText">{{eventData.question}}</p>
+            </div>
+
+            <div *ngFor="let answer of eventData.answers; index as i">
+                <div class="answerBoxCreated">
+                    <p [ngClass]="{ 
+                        'validated': i == validatedIndex,
+                        'participated': i == participatedIndex
+                     }" class="answerCreated">{{answer}}</p>
+                </div>
+            </div>
+
+            <div class="answerBoxResolution" *ngIf="eventData.resolutionDetalis">
+                <p class="resolutionText">Resolution details: <b>{{eventData.resolutionDetalis}}</b></p>
+            </div>
+
+            <div class="arrow"></div>
+
+            <div>
+                <div class="infoLabelPos">
+                    <p class="infoLabel">HOST:</p>
+                    <div class="hostBox">
+                        <p class="name">{{eventData?.host.nickName}}</p>
+                        <img class="avatarHost" src={{eventData.host.avatat}} referrerpolicy="no-referrer">
+                    </div>
+                </div>
+                <div class="infoLabelPos">
+                    <p class="infoLabel">{{poolName()}} pool:</p>
+                    <p class="name">{{currentPool}} {{coinType}}</p>
+                </div>
+                <div class="infoLabelPos">
+                    <p class="infoLabel">PLAYERS joined:</p>
+                    <div class="partBox">
+                        <div *ngFor="let part of eventData.parcipiantAnswers; index as i">
+                            <div [ngStyle]="getPartPos(i, 'part')">
+                                <img *ngIf="i <= 4" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
+                            </div>
+                        </div>
+                        <p class="name playersNumber">{{playersJoinde}}</p>
+                    </div>
+                </div>
+                <div *ngIf="validation" class="infoLabelPos">
+                    <p class="infoLabel">EXPERTS joined:</p>
+                    <div class="partBox">
+                        <div *ngFor="let valid of eventData.validatorsAnswers; index as i">
+                            <div [ngStyle]="getPartPos(i, 'valid')">
+                                <img *ngIf="i <= 4" class="partImg" referrerpolicy="no-referrer" src="{{valid.avatar}}">
+                            </div>
+                        </div>
+                        <p class="name playersNumber">{{expertJoinned}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="timeToLeftDisplay()">
+                <p class="timeLeft">TIME LEFT FOR PLAYERS TO JOIN <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
+            </div>
+
+            <div *ngIf="!created">
+                <div *ngIf="!validation">
+                    <button class="buttonBecome buttonColorPlayer" (click)="joinAsPlayer()">JOIN AS PLAYER</button>
+                    <a class="linkInfo colorLinkPlayer" href="#">What is a Player?</a>
+                </div>
+                <button class="buttonBecome buttonColorExpert" (click)="joinAsExpert()">BECOME AN EXPERT</button>
+                <a class="linkInfo colorLinkExpert" href="#">What is an Expert?</a>
+            </div>
+
+            <div *ngIf="timeToLeftDisplay()" class="arrow"></div>
+
+            <div *ngIf="validation || created" class="aboutBox">
+                <p class="only" *ngIf="validation">ONLY {{remainderExperts()}} more experts to go</p>
+                <p class="byLink" [ngStyle]="{'margin-top': validation ? '0px' : '16px'}">{{clickBoardName()}}</p>
+                <a class="link" href="#">www.bettery.io/public_event/{{eventData.id}}</a>
+                <div class="imgBox" (click)="copyToClickBoard()">
+                    <div class="listImg" style="margin-right: 8px"></div>
+                    <p class="copyToClick">Copy to clipboard</p>
+                </div>
+            </div>
+
+            <div class="sendCommentBox">
+                <div class="addCommentBox">
+                    <p class="addCommentText">Add a comment...</p>
+                </div>
+                <div class="sendImg"></div>
+            </div>
+
+            <div class="commentBox">
+                <div class="commentHeader">
+                    <div class="senderBox">
+                        <div class="commentImg face1"></div>
+                        <p class="commentName">Jenna Logan</p>
+                    </div>
+                    <div class="timeBox">1 day ago</div>
+                </div>
+                <div>
+                    <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        incididunt
+                        ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+
+            <div class="commentBox">
+                <div class="commentHeader">
+                    <div class="senderBox">
+                        <div class="commentImg face2"></div>
+                        <p class="commentName">Terry Crews</p>
+                    </div>
+                    <div class="timeBox">1 day ago</div>
+                </div>
+                <div>
+                    <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        incididunt
+                        ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+        </div>
+
+        <info *ngIf="showInfo()" [joinedAs]="joinedAs" (goBack)="goBack()" (agree)="agree()"></info>
+        <participate *ngIf="showParticipate()" [eventData]="eventData" (goBack)="goToInfo('player')"
+            (goViewStatus)="interactionDone($event)"></participate>
+        <validate *ngIf="showValidate()" [eventData]="eventData" (goBack)="goToInfo('expert')"
+            (goViewStatus)="interactionDone($event)"></validate>
+    </div>
+</div>

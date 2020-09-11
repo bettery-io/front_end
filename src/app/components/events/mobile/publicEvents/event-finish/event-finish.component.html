@@ -1,0 +1,111 @@
+<div class="box">
+    <div class="titleBox">
+        <div class="flagImg"></div>
+        <p class="title">EVENT ENDED</p>
+    </div>
+    <div class="roomBox">
+        <p class="roomName">ROOM: Avengers</p>
+    </div>
+    <div>
+        <p class="status">{{status}}</p>
+        <p class="amount">{{amount}}</p>
+    </div>
+    <div>
+        <div class="boxInfo">
+            <div class="boxSmall">
+                <div class="partsImg"></div>
+                <p class="name">Participants</p>
+            </div>
+            <div class="boxBig">
+                <div class="totalImg"></div>
+                <p class="name">Total Bet</p>
+            </div>
+        </div>
+        <div class="boxInfo">
+            <div class="boxSmall">
+                <div class="minedImg"></div>
+                <p class="name">Minted</p>
+            </div>
+            <div class="boxBig">
+                <div class="bestWinImg"></div>
+                <p class="name">Biggest Wins</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="quizBoxTwo">
+        <p class="quizText">{{eventData?.question}}</p>
+    </div>
+
+    <div *ngFor="let answer of eventData.answers; index as i">
+        <div class="answerBoxCreated">
+            <p class="answerCreated">{{answer}}</p>
+        </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div>
+        <div class="infoLabelPos">
+            <p class="infoLabel">HOST:</p>
+            <div class="hostBox">
+                <p class="nameInfo">{{eventData?.host.nickName}}</p>
+                <img class="avatarHost" src={{eventData?.host.avatat}} referrerpolicy="no-referrer">
+            </div>
+        </div>
+        <div class="infoLabelPos">
+            <p class="infoLabel">PLAYERS joined:</p>
+            <div class="partBox">
+                <div *ngFor="let part of eventData.parcipiantAnswers; index as i">
+                    <div [ngStyle]="getPartPos(i)">
+                        <img *ngIf="i <= 4" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
+                    </div>
+                </div>
+                <p class="nameInfo playersNumber">{{playersCount()}}</p>
+            </div>
+        </div>
+        <div class="infoLabelPos">
+            <p class="infoLabel">EXPERTS joined:</p>
+            <div class="partBox">
+                <div *ngFor="let valid of eventData.validatorsAnswers; index as i">
+                    <div [ngStyle]="getPartPos(i)">
+                        <img *ngIf="i <= 4" class="partImg" referrerpolicy="no-referrer" src="{{valid.avatar}}">
+                    </div>
+                </div>
+                <p class="nameInfo playersNumber">{{expertCount()}}</p>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="becomeHost">HOST AN EVENT</a>
+    <div>
+        <div class="commentBox">
+            <div class="commentHeader">
+                <div class="senderBox">
+                    <div class="commentImg face1"></div>
+                    <p class="commentName">Jenna Logan</p>
+                </div>
+                <div class="timeBox">1 day ago</div>
+            </div>
+            <div>
+                <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt
+                    ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+
+        <div class="commentBox">
+            <div class="commentHeader">
+                <div class="senderBox">
+                    <div class="commentImg face2"></div>
+                    <p class="commentName">Terry Crews</p>
+                </div>
+                <div class="timeBox">1 day ago</div>
+            </div>
+            <div>
+                <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt
+                    ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div *ngIf="!answered">
+    <div class="boxName">
+        <p class="userName">{{userData.nickName}},</p>
+        <p class="text">you’re joining as an <span class="colorPlayer">Player</span></p>
+    </div>
+    <div>
+        <p class="event">Event</p>
+        <div class="questionBox">
+            <p class="question">{{eventData.question}}</p>
+        </div>
+        <form [formGroup]="answerForm">
+            <div *ngFor="let answer of eventData.answers">
+                <div class="pretty p-default p-round inline checkBackGround">
+                    <input type="radio" value={{answer}} formControlName="answer" min="1">
+                    <div class="state p-warning-o checkPos">
+                        <label> </label>
+                    </div>
+                    <p class="label">{{answer}}</p>
+                </div>
+            </div>
+            <div *ngIf="submitted && f.answer.errors">
+                <small *ngIf="f.answer.errors.required" class="form-text quize_validation_error">Answer is
+                    required</small>
+            </div>
+            <div>
+                <p class="event">YOUR BET</p>
+                <div class="inputBox">
+                    <input type="number" formControlName="amount" class="answer" id="amount"
+                        placeholder="1 {{coinType}}" [ngClass]="{ 'is_invalid': submitted && f.amount.errors }">
+                    <div class="tip">
+                        <p class="posTwo">{{coinType}}</p>
+                    </div>
+                </div>
+                <div *ngIf="submitted && f.amount.errors">
+                    <small *ngIf="f.amount.errors.required" class="form-text quize_validation_error">Amount is
+                        required</small>
+                </div>
+            </div>
+            <p class="infoEmial">We’ll notify the results to your email</p>
+            <p class="email">{{userData.email}}</p>
+
+            <div *ngIf="errorMessage">
+                <div class="errorImg"></div>
+                <p class="errMsg">{{errorMessage}}</p>
+            </div>
+            <div class="buttonBox">
+                <button type="button" class="cancel" (click)="cancel()">BACK</button>
+                <button type="button" class="nextPlayer" (click)="bet()">BET</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div *ngIf="answered">
+    <p class="thank">Thank you for playing!</p>
+    <div class="questionBox">
+        <p class="question paddingAnswer">{{eventData.question}}</p>
+        <div class="arrow"></div>
+        <div class="answerBox">
+            <div style="margin-left: 16px; max-width: 70%;">
+                <p class="titleAnswered">Your Answer</p>
+                <p class="answerValue">{{f.answer.value}}</p>
+            </div>
+            <div style="margin-right: 16px">
+                <p class="titleAnswered">Your bet</p>
+                <p class="answerValue">{{f.amount.value}} {{coinType}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="aboutBox">
+        <p class="byLink">share event with friends!</p>
+        <a class="link" href="#">www.bettery.io/public_event/{{eventData.id}}</a>
+        <div class="imgBox" (click)="copyToClickBoard()">
+            <div class="listImg" style="margin-right: 8px"></div>
+            <p class="copyToClick">Copy to clipboard</p>
+        </div>
+    </div>
+    <div class="buttonPos">
+        <button class="viewStatus" (click)="viewStatus()">VIEW EVENT STATUS</button>
+    </div>
+</div>

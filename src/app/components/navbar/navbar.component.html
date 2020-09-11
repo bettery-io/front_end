@@ -65,8 +65,8 @@
                     Withdrawal</button>
             </li>
             <li class="nav-item erc20">
-                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'erc20'}"
-                    routerLink="erc20" (click)="setActiveTab('erc20')">Buy IBT Tokens</a>
+                <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'erc20'}" routerLink="erc20"
+                    (click)="setActiveTab('erc20')">Buy IBT Tokens</a>
             </li>
             <li class="nav-item">
                 <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="logOut()">Log out</button>
@@ -75,7 +75,7 @@
     </div>
 </nav>
 
-<div class="mobileNavbar">
+<div class="mobileNavbar" #insideElement>
     <div class="logoBox">
         <div class="logo"></div>
     </div>
@@ -83,9 +83,35 @@
         <div class="enter"></div>
         <p class="login">Login</p>
     </div>
-    <div *ngIf="nickName !== undefined" class="loginBoxRegist" >
+    <div *ngIf="nickName !== undefined" class="loginBoxRegist" (click)="navBar()">
         <p class="userNickName">{{nickName}}</p>
-        <ngx-avatar size="40" name="{{nickName}}"></ngx-avatar>
+        <img src={{avatar}} class="avatarImg" referrerpolicy="no-referrer">
+    </div>
+    <div *ngIf="openNavBar" class="positionNavbar">
+        <p class="balance">Balance</p>
+        <div class="balanceBox">
+            <div class="balancePos">
+                <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
+                    <b>{{coinInfo?.loomBalance | number:'1.0-2'}}</b> ETH</p>
+                <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
+                <div class="ethImg"></div>
+            </div>
+            <div class="balancePos" style="margin-right: 48px">
+                <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
+                    <b>{{ERC20Coins?.loomBalance | number:'1.0-2'}}</b> BTY</p>
+                <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
+                <div class="btyImg"></div>
+            </div>
+        </div>
+        <button class="lowOnCoins">Low on coins?</button>
+        <div class="arrow"></div>
+        <div class="navBox">
+            <button class="navLink">My Wallet</button>
+        </div>
+        <div class="arrow"></div>
+        <div class="navBox">
+            <button class="navLink" (click)="logOut()">Signout</button>
+        </div>
     </div>
 
 </div>

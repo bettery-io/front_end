@@ -1,0 +1,98 @@
+<div *ngIf="timeIsValid">
+    <div class="boxName">
+        <p class="userName">{{userData.nickName}},</p>
+        <p class="text">you’re joining as an <span class="colorPlayer">Expert</span></p>
+    </div>
+    <p class="event">Event</p>
+    <div class="questionBox">
+        <p class="question">{{eventData.question}}</p>
+    </div>
+    <p class="event">start VALIDATing AFTER</p>
+    <div class="timeBox">
+        <p class="time">{{date}} {{month}} {{year}}, {{hour}}:{{minutes}}</p>
+    </div>
+    <p class="infoText">After Players finished betting, you have 48 hours to validate</p>
+    <div class="aboutBox">
+        <p class="infoTextCopyClick">To make results fair, events need a number of Experts to validate independently.
+            It’s first-come first-served, so please come back on time!</p>
+        <a class="link" href="#">www.bettery.io/public_event/{{eventData.id}}</a>
+        <div class="imgBox" (click)="copyToClickBoard()">
+            <div class="listImg" style="margin-right: 8px"></div>
+            <p class="copyToClick">Copy to clipboard</p>
+        </div>
+    </div>
+    <div class="emailBox">
+        <div class="pretty p-default p-curve positionCheckBox">
+            <input type="checkbox" />
+            <div class="state p-warning-o posCheckBox">
+                <label> </label>
+            </div>
+            <p class="labelEmail">Remind me when to validate via email</p>
+        </div>
+    </div>
+    <p class="email">{{userData.email}}</p>
+    <a href="#" class="exploreBettery">EXPLORE BETTERY</a>
+    <a href="#" class="changeMind">Changed your mind?</a>
+</div>
+<div *ngIf="!timeIsValid">
+    <div *ngIf="!created">
+        <p class="validateEvent">VALIDATE EVENT</p>
+        <p class="validateInfo">{{eventData.validatorsAnswers == undefined ? 0 : eventData.validatorsAnswers.lenght}} Experts already in - <b>only {{remainderExperts()}} more to go.</b> Give your answer and Confirm now!</p>
+
+        <form [formGroup]="answerForm">
+            <div class="questionBoxValidae">
+                <p class="question">{{eventData.question}}</p>
+            </div>
+            <div *ngFor="let answer of eventData.answers">
+                <div class="pretty p-default p-round inline checkBackGround">
+                    <input type="radio" value={{answer}} formControlName="answer">
+                    <div class="state p-warning-o checkPos">
+                        <label> </label>
+                    </div>
+                    <p class="label">{{answer}}</p>
+                </div>
+            </div>
+            <div *ngIf="submitted && f.answer.errors">
+                <small *ngIf="f.answer.errors.required" class="form-text quize_validation_error">Answer is
+                    required</small>
+            </div>
+        </form>
+        <div class="resolutionBox">
+            <p class="resolution">Resolution details: www.cnn.com</p>
+        </div>
+        <div *ngIf="errorMessage">
+            <div class="errorImg"></div>
+            <p class="errMsg">{{errorMessage}}</p>
+        </div>
+        <div class="buttonBox">
+            <button type="button" class="cancel" (click)="cancel()">BACK</button>
+            <button type="button" class="nextPlayer" (click)="validate()">CONFIRM</button>
+        </div>
+    </div>
+    <div *ngIf="created">
+        <p class="thank">Thank you for validating!</p>
+        <div class="questionBox" style="background-color: #0B1511;">
+            <p class="question paddingAnswer">{{eventData.question}}</p>
+            <div class="arrow"></div>
+            <div class="answerBox">
+                <p class="titleAnswered">Your Answer</p>
+                <p class="answerValue">{{f.answer.value}}</p>
+            </div>
+        </div>
+        <div class="aboutBox">
+            <p class="byLink">share event with friends!</p>
+            <a class="link" href="#">www.bettery.io/public_event/{{eventData.id}}</a>
+            <div class="imgBox" (click)="copyToClickBoard()">
+                <div class="listImg" style="margin-right: 8px"></div>
+                <p class="copyToClick">Copy to clipboard</p>
+            </div>
+        </div>
+        <div class="emailBox">
+            <p class="infoEmial">We’ll notify the results to your email</p>
+            <p class="email">{{userData.email}}</p>
+        </div>
+        <div class="buttonPos">
+            <button class="viewStatus" (click)="viewStatus()">VIEW EVENT STATUS</button>
+        </div>
+    </div>
+</div>

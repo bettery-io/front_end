@@ -1,0 +1,43 @@
+<div>
+    <p class="title">ABOUT EVENT SHARES</p>
+    <p class="infoOne">Bettery is a peer-to-peer pool betting platform and therefore, has no “House” whatsoever. <b>So
+            winners always get their bets back after every event.</b></p>
+    <p class="infoTwo">The prize pool of all events are from the losers’ pot, which is distributed as below for this
+        event:</p>
+
+    <div>
+        <div class="display">
+            <div class="box" style="margin-right: 8px;">
+                <div class="corona"></div>
+                <p class="name">Winners</p>
+                <p class="percent">90%</p>
+            </div>
+            <div class="box" style="margin-left: 8px;">
+                <div class="host"></div>
+                <p class="name">Host</p>
+                <p class="percent">3%</p>
+            </div>
+        </div>
+        <div class="display">
+            <div class="box" style="margin-right: 8px;">
+                <div class="experts"></div>
+                <p class="name">Experts</p>
+                <p class="percent">5%</p>
+            </div>
+            <div class="box" style="margin-left: 8px;">
+                <div class="bettery"></div>
+                <p class="name">Bettery</p>
+                <p class="percent">2%</p>
+            </div>
+        </div>
+    </div>
+    <p class="terms">To join the event, you must agree to our <a class="termsLink" href="#">terms.</a></p>
+
+    <div class="buttonBox">
+        <button type="button" class="cancel" (click)="cancel()">BACK</button>
+        <button type="button" [ngClass]="{ 
+            'nextPlayer': joinedAs == 'player',
+            'nextExpert': joinedAs == 'expert'
+         }" (click)="agreeButton()">AGREE</button>
+    </div>
+</div>

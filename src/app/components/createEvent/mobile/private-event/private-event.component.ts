@@ -58,7 +58,7 @@ export class PrivateEventComponent implements OnInit {
   }
 
   getEndTime() {
-    return (this.formData.privateEndTime.date / 1000).toFixed(0);
+    return Number((this.formData.privateEndTime.date / 1000).toFixed(0));
   }
 
   createEvent() {

@@ -1,15 +1,14 @@
-<div *ngIf="!badRequest" class="container">
-  <ng_container *ngIf="!expertPage">
+<div *ngIf="!badRequest" class="{{condition && counts == 1 && 'bg_img'}} container ">
+  <ng-container *ngIf="!expertPage">
     <!--    First page    -->
     <ng-container class="main" *ngIf="!condition">
       <div class="title">
         <h1>WELCOME TO THE EVENT of</h1>
         <div class="nickName mt-1">
           <div><h2>{{data?.host.nickName}}</h2></div>
-          <div class="img_icon ml-2"></div>
+          <div class="img_icon ml-2 mb-1"></div>
         </div>
       </div>
-
       <div class="question_block">
         <div class="mb-3"><img src="{{data?.host.avatat}}" alt="avatar"></div>
         <div class="question">
@@ -34,9 +33,7 @@
           <div><span>10 friends joined </span></div>
         </div>
       </div>
-
       <div class="hr"></div>
-
       <div class="tutorial">
         <h3>How DO I JOIN?</h3>
         <div class="tutorials-place">
@@ -47,7 +44,6 @@
         <button (click)="changePage()">JOIN</button>
       </div>
     </ng-container>
-
     <ng-container *ngIf="condition">
       <ng-container *ngIf="counts == 1">
         <div class="now_batting__title">
@@ -70,7 +66,7 @@
             </div>
           </ng-container>
           <div class="resolution_details">
-            Resolution details: <span>www.cnn.com</span>
+            Answer check: <span>www.cnn.com</span>
           </div>
           <div>
             <div class="winner_get">
@@ -93,7 +89,7 @@
                 </div>
                 <div class="right">
                   <div><span>{{data?.host.nickName}}</span></div>
-                  <div class="ml-2"><img src="{{data?.host.avatat}}" alt="avatar1"></div>
+                  <div class="ml-1"><img src="{{data?.host.avatat}}" alt="avatar1"></div>
                 </div>
               </div>
               <div class="create_by__item">
@@ -105,7 +101,7 @@
                   <div><img src="./assets/face2.png" alt="avatar2"></div>
                 </div>
                 <div *ngIf="expert" class="right">
-                  No one yet. <span class="pink">Consider to join!</span>
+                  No one yet.  <span class="pink ml-1"> Consider to join!</span>
                 </div>
               </div>
               <div class="create_by__item">
@@ -113,7 +109,7 @@
                   <p>PLAYERS JOINED:</p>
                 </div>
                 <div class="right">
-                  <img src="./assets/face1.png" alt="avatar3">
+                  <div class="players_img"></div>
                 </div>
               </div>
             </div>
@@ -140,17 +136,15 @@
                 <div class="whats_expert"><a href="#">What is an Expert?</a></div>
               </div>
             </ng-container>
-
             <div class="hr"></div>
-
           </ng-container>
         </div>
       </ng-container>
     </ng-container>
     <app-private-form *ngIf="counts==2" [data]="data" (changed)="onChanged($event)"></app-private-form>
-  </ng_container>
+  </ng-container>
   <app-private-expert *ngIf="expertPage" [data]="data" [allTime]="allTime"
-                      (changed)="onChanged($event)"></app-private-expert>
+                      (changed)="onChanged($event)" (changed2)="onChanged2($event)"></app-private-expert>
 </div>
 <app-bad-request *ngIf="badRequest"></app-bad-request>
 

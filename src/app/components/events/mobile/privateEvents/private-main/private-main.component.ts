@@ -63,32 +63,29 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   async changePage() {
     this.calculateDate();
     const timeNow = Number((Date.now() / 1000).toFixed(0));
+    await this.loginWithTorus();
 
     if (this.data.endTime - timeNow > 0) {
-      await this.loginWithTorus();
       this.expert = true;
       this.condition = true;
     } else {
-      // this.expert = true; // delete
       this.condition = true;
-      await this.loginWithTorus();
     }
-
-
   }
-
 
   async loginWithTorus() {
     try {
       await web3Obj.initialize();
-      await this.setTorusInfoToDB();
+      this.setTorusInfoToDB();
+      return true;
     } catch (error) {
       console.error(error);
+      return false;
     }
   }
 
   async setTorusInfoToDB() {
-    const userInfo = await web3Obj.torus.getUserInfo("");
+    const userInfo = await web3Obj.torus.getUserInfo('');
     const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
 
     console.log(userInfo);
@@ -103,7 +100,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       verifier: userInfo.verifier,
       verifierId: userInfo.verifierId,
     };
-    this.postService.post("user/torus_regist", data)
+    this.postService.post('user/torus_regist', data)
       .subscribe(
         (x: any) => {
           console.log(x);
@@ -154,9 +151,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     }));
   }
 
-  //==========================
-
-
   prevPage() {
     this.counts = 1;
   }
@@ -173,12 +167,17 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     console.log(increased);
     if (increased) {
       this.prevPage();
-
     } else {
       this.hideBtn = true;
       this.expertPage = false;
       this.expert = false;
       this.prevPage();
+    }
+  }
+
+  onChanged2($event: boolean) {
+    if ($event) {
+      this.expertPage = false;
     }
   }
 
@@ -202,5 +201,4 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       this.calculateDate();
     }, 1000);
   }
-
 }

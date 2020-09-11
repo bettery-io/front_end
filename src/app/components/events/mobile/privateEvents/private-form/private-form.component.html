@@ -1,4 +1,4 @@
-<div class="bg_img">
+<div class="{{count ? 'bg_img_two' : 'bg_img'}}">
   <div class="now_batting__title">
     <div class="login_name">
       <div *ngIf="!count">
@@ -11,12 +11,13 @@
     <h3>Thank you for playing!</h3>
   </div>
   <div *ngIf="!count" class="event">EVENT</div>
-
   <div class="question_second">
     <div class="question_text">
-      <p>{{data?.question}}</p>
+      <div class="question-padding">
+        <p>{{data?.question}}</p>
+      </div>
+      <div *ngIf="count" class="hr hr-w"></div>
       <div *ngIf="count">
-        <div class="hr"></div>
         <div class="your_answer">
           <p>Your Answer <br>
             <span>fakeAnswer</span>
@@ -25,7 +26,6 @@
       </div>
     </div>
   </div>
-
   <form *ngIf="!count" action="#" [formGroup]="answerForm" (change)="formValid = false">
     <div class="answers_item" *ngFor="let a of data?.answers; let i = index">
       <div class="pretty p-default p-round ">
@@ -37,7 +37,6 @@
     </div>
     <div *ngIf="formValid" class="form_valid">Please make your choice</div>
   </form>
-
   <div *ngIf="!count">
     <div class="winner_get">
       <div class="winner_get_left">
@@ -50,7 +49,6 @@
       </div>
     </div>
   </div>
-
   <div *ngIf="!count">
     <div class="results_mail">
       <p>We’ll notify the results to your email</p>

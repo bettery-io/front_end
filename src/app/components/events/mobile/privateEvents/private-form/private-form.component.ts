@@ -6,7 +6,6 @@ import { AppState } from '../../../../../app.state';
 
 // import Contract from "../../../../../contract/contract";
 
-
 @Component({
   selector: 'app-private-form',
   templateUrl: './private-form.component.html',
@@ -19,18 +18,18 @@ export class PrivateFormComponent implements OnInit {
   count: boolean;
   formValid: boolean;
   @Output() changed = new EventEmitter<boolean>();
-  userData
+  userData;
   constructor(private formBuilder: FormBuilder, private store: Store<AppState>) {
     this.answerForm = formBuilder.group({
       answer: ['', Validators.required]
     });
 
-    this.store.select("user").subscribe((x) => {
-      if (x.length != 0) {
-        this.userData = x[0];
-        console.log(this.userData);
-      }
-    });
+    // this.store.select('user').subscribe((x) => {
+    //   if (x.length != 0) {
+    //     this.userData = x[0];
+    //     console.log(this.userData);
+    //   }
+    // });
 
   }
 

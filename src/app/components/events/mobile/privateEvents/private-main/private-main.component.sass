@@ -5,6 +5,10 @@
   color: #FFFFFF
   background-color: #242521
 
+.bg_img
+  background: url("../../../../../../assets/backg_5_big.png") 20% 50% no-repeat,url("../../../../../../assets/backg_5_small.png") 73% 71% no-repeat #242521
+  background-size: 128px 128px, 68px 68px
+
 .main
   text-transform: uppercase
 
@@ -63,6 +67,8 @@
   flex-wrap: wrap
   font-size: 14px
   line-height: 19px
+  & p
+    margin: 0
 
   & span
     font-weight: bold
@@ -143,8 +149,7 @@
   display: flex
   align-items: center
   justify-content: center
-
-  padding: 10px 0 3px 0
+  padding-bottom: 3px
 
 
 .now_batting__title img
@@ -178,6 +183,8 @@
   margin: auto
   border-radius: 8px
   padding: 0 70px
+  & p
+    margin: 0
 
 .question_text
   margin: 17px auto
@@ -205,7 +212,7 @@
 .resolution_details
   height: 48px
   border-radius: 8px
-  margin: 8px auto
+  margin: 8px auto 0 auto
   background-color: #404040
   text-align: center
   color: #FFFFFF
@@ -225,7 +232,7 @@
 
 .winner_get_left
   margin-top: 24px
-  margin-bottom: 32px
+  margin-bottom: 8px
   color: #FFFFFF
 
 .winner_get_left_top
@@ -234,7 +241,7 @@
 
 .winner_get_right
   margin-top: 24px
-  margin-bottom: 32px
+  margin-bottom: 8px
   text-align: right
 
 .winner_get_right_bottom
@@ -312,10 +319,8 @@
     border-bottom: 1px solid #34DDDD
     text-decoration: none
 
-//=====================
-
 .create_by
-  padding-bottom: 40px
+  padding-bottom: 8px
   font-weight: bold
 
   & img
@@ -332,6 +337,8 @@
   margin: 32px 11px 0 11px
   color: #FFFFFF
   font-size: 14px
+  & p
+    margin: 0
 
 .right
   text-align: right
@@ -340,3 +347,9 @@
     color: #BF94E4
   & img
     border-radius: 100%
+
+.players_img
+  background: url("../../../../../../assets/plysJoined.png") right center no-repeat
+  background-size: contain
+  width: 98px
+  height: 28px

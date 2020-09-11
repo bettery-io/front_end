@@ -13,6 +13,7 @@ export class PrivateExpertComponent implements OnInit {
   @Input()
   data: any;
   @Output() changed = new EventEmitter<boolean>();
+  @Output() changed2 = new EventEmitter<boolean>();
   join: boolean;
   confirm: boolean;
   ifTimeValid: boolean;
@@ -27,12 +28,12 @@ export class PrivateExpertComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   isConfirm() {
+    const timeNow = Number((Date.now() / 1000).toFixed(0));
     this.join = true;
-    console.log(this.confirm);
-    this.ifTimeValid = true; // delete
-  //  need use date
+    if (this.data.endTime - timeNow > 0) {
+      this.ifTimeValid = true;
+    }
   }
 
   isConfirm2(answerForm: any) {
@@ -46,5 +47,9 @@ export class PrivateExpertComponent implements OnInit {
 
   change(increased: any) {
     this.changed.emit(increased);
+  }
+
+  change2(increased: any) {
+    this.changed2.emit(increased);
   }
 }

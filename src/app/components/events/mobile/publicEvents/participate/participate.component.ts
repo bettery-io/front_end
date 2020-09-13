@@ -62,7 +62,9 @@ export class ParticipateComponent implements OnInit, OnDestroy {
   get f() { return this.answerForm.controls; }
 
   copyToClickBoard() {
-    this._clipboardService.copy(`www.bettery.io/public_event/${this.eventData.id}`)
+    let href = window.location.hostname
+    let path = href == "localhost" ? 'http://localhost:4200' : href
+    this._clipboardService.copy(`${path}/public_event/${this.eventData.id}`)
   }
 
   cancel() {

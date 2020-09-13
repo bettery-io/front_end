@@ -7,6 +7,7 @@ import maticInit from '../../../../contract/maticInit.js';
 import Contract from '../../../../contract/contract';
 import { ClipboardService } from 'ngx-clipboard'
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'private-event-modile',
@@ -34,7 +35,8 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     private getSevice: GetService,
     private postService: PostService,
     private store: Store<AppState>,
-    private _clipboardService: ClipboardService
+    private _clipboardService: ClipboardService,
+    private router: Router
   ) {
     this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
@@ -43,14 +45,16 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   cancel() {
     this.goBack.next();
   }
 
-  copyToClickBoard(){
-    this._clipboardService.copy(`www.bettery.io/private_event/${this.eventData._id}`)
+  copyToClickBoard() {
+    let href = window.location.hostname
+    let path = href == "localhost" ? 'http://localhost:4200' : href
+    this._clipboardService.copy(`${path}/private_event/${this.eventData._id}`)
   }
 
   generateID() {
@@ -158,9 +162,9 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
 
     this.hour = Number(hour) > 9 ? hour : "0" + hour;
     this.minutes = Number(minutes) > 9 ? minutes : "0" + minutes;
-    if(second === 60){
+    if (second === 60) {
       this.seconds = "00"
-    }else{
+    } else {
       this.seconds = second > 9 ? second : "0" + second;
 
     }

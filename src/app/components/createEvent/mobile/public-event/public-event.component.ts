@@ -86,7 +86,9 @@ export class PublicEventComponent implements OnInit, OnDestroy {
   }
 
   copyToClickBoard() {
-    this._clipboardService.copy(`www.bettery.io/public_event/${this.quizData._id}`)
+    let href = window.location.hostname
+    let path = href == "localhost" ? 'http://localhost:4200' : href
+    this._clipboardService.copy(`${path}/public_event/${this.quizData._id}`)
   }
 
   generateID() {

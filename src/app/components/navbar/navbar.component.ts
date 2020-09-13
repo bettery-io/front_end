@@ -16,6 +16,7 @@ import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
 import Contract from '../../contract/contract';
 import web3Obj from '../../helpers/torus'
+import { Subscription } from 'rxjs';
 
 
 
@@ -41,8 +42,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   activeTab: string = undefined;
   userWallet: string = undefined;
   userId: number;
-  UserSubscribe;
-  CoinsSubscribe;
+  UserSubscribe: Subscription;
+  CoinsSubscribe: Subscription;
+  userSub: Subscription;
+  coinsSub: Subscription;
+  invitesSub: Subscription;
+  postSub: Subscription;
+  getSub: Subscription;
   invitationQuantity = null;
   userHistory: any = []
   faReply = faReply
@@ -65,7 +71,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private getService: GetService
   ) {
 
-    this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet;
@@ -82,14 +88,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.store.select("coins").subscribe((x) => {
+    this.coinsSub = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
         this.getMoneyHolder();
       }
     })
 
-    this.store.select("invites").subscribe((x) => {
+    this.invitesSub = this.store.select("invites").subscribe((x) => {
       if (x.length !== 0) {
         this.invitationQuantity = x[0].amount
       }
@@ -125,7 +131,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let data = {
       id: this.userId
     }
-    this.postService.post("my_activites/invites", data)
+    this.postSub = this.postService.post("my_activites/invites", data)
       .subscribe(async (x: any) => {
         let amount = x.length
         this.store.dispatch(new InvitesAction.UpdateInvites({ amount: amount }));
@@ -208,7 +214,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async getEthPrice(_holdBalance) {
-    this.getService.get("eth_price").subscribe((price: any) => {
+    this.getSub = this.getService.get("eth_price").subscribe((price: any) => {
       let priceData = price.price;
       this.holdBalance = (_holdBalance * priceData).toFixed(4);
       this.amountSpinner = false;
@@ -279,7 +285,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             coinType: "ether",
             sign: sign
           }
-          this.postService.post("withdrawal/init", data)
+          this.postSub = this.postService.post("withdrawal/init", data)
             .subscribe(async (x: any) => {
               this.modalService.dismissAll()
               this.withdrawalSpinner = false;
@@ -338,7 +344,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             amount: value,
             coinType: "token"
           }
-          this.postService.post("withdrawal/init", data)
+          this.postSub = this.postService.post("withdrawal/init", data)
             .subscribe(async (x: any) => {
               this.modalService.dismissAll()
               this.withdrawalSpinner = false;
@@ -395,7 +401,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       verifier: userInfo.verifier,
       verifierId: userInfo.verifierId,
     }
-    this.postService.post("user/torus_regist", data)
+    this.postSub = this.postService.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
           console.log(x);
@@ -460,9 +466,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    document.removeEventListener('click', this.onDocumentClick);
     this.UserSubscribe.unsubscribe();
     this.CoinsSubscribe.unsubscribe();
-    document.removeEventListener('click', this.onDocumentClick);
+    this.userSub.unsubscribe();
+    this.coinsSub.unsubscribe();
+    this.invitesSub.unsubscribe();
+    this.postSub.unsubscribe();
+    this.getSub.unsubscribe();
   }
 
 }

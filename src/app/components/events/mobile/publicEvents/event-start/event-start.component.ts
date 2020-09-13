@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
 import web3Obj from '../../../../../helpers/torus'
 import { PostService } from '../../../../../services/post.service';
 import * as UserActions from '../../../../../actions/user.actions';
@@ -6,13 +6,14 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { ClipboardService } from 'ngx-clipboard';
 import _ from "lodash";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'event-start',
   templateUrl: './event-start.component.html',
   styleUrls: ['./event-start.component.sass']
 })
-export class EventStartComponent implements OnInit, OnChanges {
+export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   @Input('eventData') eventData;
   @Output() interacDone = new EventEmitter<number>();
   letsJoin: boolean = false;
@@ -32,6 +33,8 @@ export class EventStartComponent implements OnInit, OnChanges {
   playersJoinde = 0;
   expertJoinned = 0;
   coinType;
+  storeSub: Subscription
+  postSub: Subscription
 
   constructor(
     private http: PostService,
@@ -43,7 +46,7 @@ export class EventStartComponent implements OnInit, OnChanges {
   }
 
   getUsers() {
-    this.store.select("user").subscribe((x) => {
+    this.storeSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
         this.userData = x[0]
         this.letsFindActivites(x[0]);
@@ -184,7 +187,7 @@ export class EventStartComponent implements OnInit, OnChanges {
       verifier: userInfo.verifier,
       verifierId: userInfo.verifierId,
     }
-    this.http.post("user/torus_regist", data)
+    this.postSub = this.http.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
           console.log(x);
@@ -325,6 +328,12 @@ export class EventStartComponent implements OnInit, OnChanges {
   copyToClickBoard() {
     this._clipboardService.copy(`www.bettery.io/public_event/${this.eventData.id}`)
   }
+
+  ngOnDestroy() {
+    this.storeSub.unsubscribe();
+    this.postSub.unsubscribe()
+  }
+
 
 
 }

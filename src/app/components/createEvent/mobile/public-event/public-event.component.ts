@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import { ClipboardService } from 'ngx-clipboard'
@@ -6,6 +6,7 @@ import { GetService } from '../../../../services/get.service';
 import { PostService } from '../../../../services/post.service'
 import maticInit from '../../../../contract/maticInit.js'
 import Contract from '../../../../contract/contract';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,7 +14,7 @@ import Contract from '../../../../contract/contract';
   templateUrl: './public-event.component.html',
   styleUrls: ['./public-event.component.sass']
 })
-export class PublicEventComponent implements OnInit {
+export class PublicEventComponent implements OnInit, OnDestroy {
   @Input() formData;
   @Output() goBack = new EventEmitter();
   created = false;
@@ -24,6 +25,10 @@ export class PublicEventComponent implements OnInit {
   nickName;
   host
   quizData;
+  userSub: Subscription
+  idSub: Subscription
+  postSub: Subscription
+  createSub: Subscription
 
   constructor(
     private store: Store<AppState>,
@@ -31,7 +36,7 @@ export class PublicEventComponent implements OnInit {
     private getSevice: GetService,
     private PostService: PostService
   ) {
-    this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x) => {
       console.log(x)
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
@@ -112,7 +117,7 @@ export class PublicEventComponent implements OnInit {
 
   createEvent() {
     let id = this.generateID()
-    id.subscribe((x: any) => {
+    this.idSub = id.subscribe((x: any) => {
       this.sendToContract(x._id);
     }, (err) => {
       console.log(err)
@@ -187,7 +192,7 @@ export class PublicEventComponent implements OnInit {
       currencyType: this.formData.tokenType
     }
 
-    this.PostService.post("publicEvents/set", this.quizData)
+    this.postSub = this.PostService.post("publicEvents/set", this.quizData)
       .subscribe(
         () => {
           this.created = true;
@@ -204,7 +209,7 @@ export class PublicEventComponent implements OnInit {
     let data = {
       id: id
     }
-    this.PostService.post("delete_event_id", data)
+    this.createSub = this.PostService.post("delete_event_id", data)
       .subscribe(() => {
       },
         (err) => {
@@ -233,5 +238,13 @@ export class PublicEventComponent implements OnInit {
       this.calculateDate()
     }, 1000);
   }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+    this.idSub.unsubscribe();
+    this.postSub.unsubscribe();
+    this.createSub.unsubscribe();
+  }
+
 
 }

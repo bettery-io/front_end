@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PostService} from "../../../../../services/post.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PostService } from "../../../../../services/post.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
 import web3Obj from "../../../../../helpers/torus";
 import * as UserActions from '../../../../../actions/user.actions';
-import {Store} from '@ngrx/store';
-import {AppState} from "../../../../../app.state";
+import { Store } from '@ngrx/store';
+import { AppState } from "../../../../../app.state";
 
 @Component({
   selector: 'app-private-main',
@@ -61,15 +61,16 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   async changePage() {
-    this.calculateDate();
-    const timeNow = Number((Date.now() / 1000).toFixed(0));
-    await this.loginWithTorus();
+    if (await this.loginWithTorus()) {
+      this.calculateDate();
+      const timeNow = Number((Date.now() / 1000).toFixed(0));
 
-    if (this.data.endTime - timeNow > 0) {
-      this.expert = true;
-      this.condition = true;
-    } else {
-      this.condition = true;
+      if (this.data.endTime - timeNow > 0) {
+        this.expert = true;
+        this.condition = true;
+      } else {
+        this.condition = true;
+      }
     }
   }
 

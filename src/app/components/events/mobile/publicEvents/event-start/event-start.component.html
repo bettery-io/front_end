@@ -18,7 +18,7 @@
         <div>GIF</div>
         <button class="join" (click)="join()">JOIN</button>
     </div>
-    <div *ngIf="letsJoin">
+    <div *ngIf="letsJoin" class="bg_img">
         <div *ngIf="showEvent()">
             <div *ngIf="!validation">
                 <div class="titleBox">
@@ -40,7 +40,7 @@
 
             <div *ngFor="let answer of eventData.answers; index as i">
                 <div class="answerBoxCreated">
-                    <p [ngClass]="{ 
+                    <p [ngClass]="{
                         'validated': i == validatedIndex,
                         'participated': i == participatedIndex
                      }" class="answerCreated">{{answer}}</p>
@@ -158,4 +158,7 @@
         <validate *ngIf="showValidate()" [eventData]="eventData" (goBack)="goToInfo('expert')"
             (goViewStatus)="interactionDone($event)"></validate>
     </div>
+<!--  <div class="test-loading">-->
+<!--    <app-sppiner-loading></app-sppiner-loading>-->
+<!--  </div>-->
 </div>

@@ -1,0 +1,24 @@
+<div class="p-2 pb-0">
+  <div>
+    <button type="button" class="close border-hover" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="img-title"></div>
+</div>
+<div class="modal-title">
+  <h4>Welcome to Bettery!</h4>
+</div>
+<div class="modal-body modal-body-text">
+  <p><b>You just got 10 Bettery</b> Tokens (BTY) as a welcome bonus. Hope you’ll have fun betting with friends here!</p>
+  <p><b>Please
+    note:</b> this is a prototype application running on a testing environment called Testnet. All funds are simulated
+    and
+    have no value. If you need more coins or have a word to say - <span>join our Telegram community!</span></p>
+</div>
+<div class="btn-modal">
+  <button type="button" (click)="activeModal.dismiss('Cross click')">get free coins</button>
+</div>
+<div class="modal-a">
+  <a href="#">Learn more about Bettery</a>
+</div>

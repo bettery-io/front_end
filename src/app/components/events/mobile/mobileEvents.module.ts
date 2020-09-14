@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -24,8 +24,8 @@ import { EventFinishComponent } from './publicEvents/event-finish/event-finish.c
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forChild([
-            { path: "private_event/:id", component: PrivateMainComponent },
-            { path: 'public_event/:id', component: PublicMainComponent },
+            {path: "private_event/:id", component: PrivateMainComponent},
+            {path: 'public_event/:id', component: PublicMainComponent},
         ])
     ],
     declarations: [

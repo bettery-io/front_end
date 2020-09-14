@@ -26,48 +26,55 @@ import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.c
 import { NumericDirective } from './helpers/numeric';
 
 import { CreateEventModule } from './components/createEvent/createEvent.module';
-import { EventsModule } from './components/events/events.module'
+import { EventsModule } from './components/events/events.module';
+import { SpinnerLoadingComponent } from './components/share/spinner-loading/spinner-loading.component';
+import { WelcomePageComponent } from './components/share/welcome-page/welcome-page.component'
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    RegistrationComponent,
-    HomeComponent,
-    HistoryComponent,
-    ErcCoinSaleComponent,
-    NumericDirective,
-  ],
-  imports: [
-    AvatarModule,
-    ClipboardModule,
-    CreateEventModule,
-    EventsModule,
-    BrowserModule,
-    HttpClientModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    StoreModule.forRoot({
-      user: userReducer,
-      coins: coinsReducer,
-      invites: invitesReducer
-    }),
-    NgbModule,
-    FormsModule,
-    RouterModule.forRoot([
-      { path: "home", component: HomeComponent },
-      { path: "", redirectTo: "home", pathMatch: "full" },
-      { path: 'history', component: HistoryComponent },
-      { path: 'erc20', component: ErcCoinSaleComponent }
-    ])
-  ],
-  providers: [
-    PostService,
-    GetService
-  ],
-  bootstrap: [
-    AppComponent
-  ]
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        RegistrationComponent,
+        HomeComponent,
+        HistoryComponent,
+        ErcCoinSaleComponent,
+        NumericDirective,
+        SpinnerLoadingComponent,
+        WelcomePageComponent,
+    ],
+    imports: [
+        AvatarModule,
+        ClipboardModule,
+        CreateEventModule,
+        EventsModule,
+        BrowserModule,
+        HttpClientModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        StoreModule.forRoot({
+            user: userReducer,
+            coins: coinsReducer,
+            invites: invitesReducer
+        }),
+        NgbModule,
+        FormsModule,
+        RouterModule.forRoot([
+            {path: "home", component: HomeComponent},
+            {path: "", redirectTo: "home", pathMatch: "full"},
+            {path: 'history', component: HistoryComponent},
+            {path: 'erc20', component: ErcCoinSaleComponent}
+        ])
+    ],
+    providers: [
+        PostService,
+        GetService
+    ],
+    exports: [
+        SpinnerLoadingComponent
+    ],
+    bootstrap: [
+        AppComponent
+    ]
 })
 export class AppModule { }

@@ -26,7 +26,8 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   hideBtn: boolean;
   ifTimeValid: boolean;
   participatedIndex: number;
-  created: boolean
+  created: boolean;
+  finised: boolean = false;
 
   routeSub: Subscription;
   userSub: Subscription;
@@ -62,7 +63,10 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: object) => {
+    this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: any) => {
+      if(value.finalAnswer !== '' ){
+        this.finised = true;
+      }
       console.log(value)
       this.data = value;
     }, (err) => {

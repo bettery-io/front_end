@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,13 +10,14 @@ import { PostService } from '../../../../../services/post.service';
 import web3Obj from '../../../../../helpers/torus'
 import maticInit from '../../../../../contract/maticInit.js'
 import * as CoinsActios from '../../../../../actions/coins.actions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'participate',
   templateUrl: './participate.component.html',
   styleUrls: ['./participate.component.sass']
 })
-export class ParticipateComponent implements OnInit {
+export class ParticipateComponent implements OnInit, OnDestroy {
   @Input() eventData;
   @Output() goBack = new EventEmitter();
   @Output() goViewStatus = new EventEmitter<number>();
@@ -27,6 +28,9 @@ export class ParticipateComponent implements OnInit {
   submitted: boolean = false;
   errorMessage: string;
   coinInfo;
+  userSub: Subscription
+  coinsSub: Subscription
+  postSub: Subscription
 
 
   constructor(
@@ -35,12 +39,12 @@ export class ParticipateComponent implements OnInit {
     private _clipboardService: ClipboardService,
     private postService: PostService,
   ) {
-    this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
         this.userData = x[0]
       }
     });
-    this.store.select("coins").subscribe((x) => {
+    this.coinsSub = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }
@@ -58,7 +62,9 @@ export class ParticipateComponent implements OnInit {
   get f() { return this.answerForm.controls; }
 
   copyToClickBoard() {
-    this._clipboardService.copy(`www.bettery.io/public_event/${this.eventData.id}`)
+    let href = window.location.hostname
+    let path = href == "localhost" ? 'http://localhost:4200' : href
+    this._clipboardService.copy(`${path}/public_event/${this.eventData.id}`)
   }
 
   cancel() {
@@ -115,7 +121,7 @@ export class ParticipateComponent implements OnInit {
       amount: Number(_money)
     }
     console.log(data);
-    this.postService.post("answer", data).subscribe(async () => {
+    this.postSub = this.postService.post("answer", data).subscribe(async () => {
       await this.updateBalance();
       this.errorMessage = undefined;
       this.answered = true;
@@ -146,6 +152,12 @@ export class ParticipateComponent implements OnInit {
       mainNetBalance: mainEther,
       tokenBalance: tokBal
     }))
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+    this.coinsSub.unsubscribe();
+    this.postSub.unsubscribe();
   }
 
 

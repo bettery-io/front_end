@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,13 +6,14 @@ import { ClipboardService } from 'ngx-clipboard'
 import Contract from '../../../../../contract/contract';
 import { PostService } from '../../../../../services/post.service';
 import _ from "lodash";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'validate',
   templateUrl: './validate.component.html',
   styleUrls: ['./validate.component.sass']
 })
-export class ValidateComponent implements OnInit {
+export class ValidateComponent implements OnInit, OnDestroy {
   @Input() eventData;
   @Output() goBack = new EventEmitter();
   @Output() goViewStatus = new EventEmitter<number>();
@@ -27,6 +28,8 @@ export class ValidateComponent implements OnInit {
   year;
   hour;
   minutes;
+  userSub: Subscription;
+  postSub: Subscription;
 
   constructor(
     private store: Store<AppState>,
@@ -34,7 +37,7 @@ export class ValidateComponent implements OnInit {
     private postService: PostService,
     private _clipboardService: ClipboardService
   ) {
-    this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
         this.userData = x[0]
       }
@@ -72,7 +75,9 @@ export class ValidateComponent implements OnInit {
   }
 
   copyToClickBoard() {
-    this._clipboardService.copy(`www.bettery.io/public_event/${this.eventData.id}`)
+    let href = window.location.hostname
+    let path = href == "localhost" ? 'http://localhost:4200' : href
+    this._clipboardService.copy(`${path}/public_event/${this.eventData.id}`)
   }
 
   remainderExperts() {
@@ -142,7 +147,7 @@ export class ValidateComponent implements OnInit {
       amount: 0
     }
     console.log(data);
-    this.postService.post("answer", data).subscribe(async () => {
+    this.postSub = this.postService.post("answer", data).subscribe(async () => {
       this.errorMessage = undefined;
       this.created = true;
     },
@@ -153,6 +158,12 @@ export class ValidateComponent implements OnInit {
 
   viewStatus() {
     this.goViewStatus.next(this.eventData.id);
+  }
+
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+    this.postSub.unsubscribe();
   }
 
 }

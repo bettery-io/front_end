@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { GetService } from '../../../../services/get.service';
 import { PostService } from '../../../../services/post.service';
 import { Store } from '@ngrx/store';
@@ -6,13 +6,15 @@ import { AppState } from '../../../../app.state';
 import maticInit from '../../../../contract/maticInit.js';
 import Contract from '../../../../contract/contract';
 import { ClipboardService } from 'ngx-clipboard'
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'private-event-modile',
   templateUrl: './private-event.component.html',
   styleUrls: ['./private-event.component.sass']
 })
-export class PrivateEventComponent implements OnInit {
+export class PrivateEventComponent implements OnInit, OnDestroy {
   @Input() formData;
   @Output() goBack = new EventEmitter();
   spinner: boolean = false;
@@ -23,30 +25,36 @@ export class PrivateEventComponent implements OnInit {
   hour;
   minutes;
   seconds;
-
+  userSub: Subscription
+  idSub: Subscription
+  postSub: Subscription
+  createSub: Subscription
 
 
   constructor(
     private getSevice: GetService,
     private postService: PostService,
     private store: Store<AppState>,
-    private _clipboardService: ClipboardService
+    private _clipboardService: ClipboardService,
+    private router: Router
   ) {
-    this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
         this.host = x;
       }
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   cancel() {
     this.goBack.next();
   }
 
-  copyToClickBoard(){
-    this._clipboardService.copy(`www.bettery.io/private_event/${this.eventData._id}`)
+  copyToClickBoard() {
+    let href = window.location.hostname
+    let path = href == "localhost" ? 'http://localhost:4200' : href
+    this._clipboardService.copy(`${path}/private_event/${this.eventData._id}`)
   }
 
   generateID() {
@@ -63,7 +71,7 @@ export class PrivateEventComponent implements OnInit {
 
   createEvent() {
     let id = this.generateID()
-    id.subscribe((x: any) => {
+    this.idSub = id.subscribe((x: any) => {
       this.sendToContract(x._id);
     }, (err) => {
       console.log(err)
@@ -103,7 +111,7 @@ export class PrivateEventComponent implements OnInit {
     let data = {
       id: id
     }
-    this.postService.post("delete_event_id", data)
+    this.postSub = this.postService.post("delete_event_id", data)
       .subscribe(() => {
         this.spinner = false;
       },
@@ -130,7 +138,7 @@ export class PrivateEventComponent implements OnInit {
       loser: this.formData.losers
     }
 
-    this.postService.post("privateEvents/createEvent", this.eventData)
+    this.createSub = this.postService.post("privateEvents/createEvent", this.eventData)
       .subscribe(
         () => {
           this.calculateDate();
@@ -154,9 +162,9 @@ export class PrivateEventComponent implements OnInit {
 
     this.hour = Number(hour) > 9 ? hour : "0" + hour;
     this.minutes = Number(minutes) > 9 ? minutes : "0" + minutes;
-    if(second === 60){
+    if (second === 60) {
       this.seconds = "00"
-    }else{
+    } else {
       this.seconds = second > 9 ? second : "0" + second;
 
     }
@@ -165,6 +173,13 @@ export class PrivateEventComponent implements OnInit {
     setTimeout(() => {
       this.calculateDate()
     }, 1000);
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+    this.idSub.unsubscribe();
+    this.postSub.unsubscribe();
+    this.createSub.unsubscribe();
   }
 
 }

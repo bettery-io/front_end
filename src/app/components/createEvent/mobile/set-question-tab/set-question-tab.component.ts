@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
@@ -6,13 +6,14 @@ import { AppState } from '../../../../app.state';
 import web3Obj from '../../../../helpers/torus'
 import { PostService } from '../../../../services/post.service';
 import * as UserActions from '../../../../actions/user.actions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'set-question-tab',
   templateUrl: './set-question-tab.component.html',
   styleUrls: ['./set-question-tab.component.sass']
 })
-export class SetQuestionTabComponent implements OnInit {
+export class SetQuestionTabComponent implements OnInit, OnDestroy {
   @Input() formData;
   @Output() getData = new EventEmitter<Object[]>();
 
@@ -22,6 +23,8 @@ export class SetQuestionTabComponent implements OnInit {
   submitted = false;
   registered = false;
   clicked = false;
+  userSub: Subscription;
+  postSub: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,7 +33,7 @@ export class SetQuestionTabComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
         this.registered = true;
       }
@@ -111,7 +114,7 @@ export class SetQuestionTabComponent implements OnInit {
       verifier: userInfo.verifier,
       verifierId: userInfo.verifierId,
     }
-    this.http.post("user/torus_regist", data)
+    this.postSub = this.http.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
           console.log(x);
@@ -163,6 +166,11 @@ export class SetQuestionTabComponent implements OnInit {
       avatar: color,
       verifier: verifier
     }))
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+    this.postSub.unsubscribe();
   }
 
 }

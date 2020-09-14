@@ -7,6 +7,7 @@ import web3Obj from "../../../../../helpers/torus";
 import * as UserActions from '../../../../../actions/user.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from "../../../../../app.state";
+import _ from 'lodash';
 
 @Component({
   selector: 'app-private-main',
@@ -24,8 +25,13 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   expertPage: boolean;
   hideBtn: boolean;
   ifTimeValid: boolean;
+  participatedIndex: number;
+  created: boolean
 
   routeSub: Subscription;
+  userSub: Subscription;
+  postSub: Subscription
+  userData;
   id: any;
   allTime: any = {
     day: '',
@@ -46,7 +52,18 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
         id: Number(params.id)
       };
     });
-    this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: object) => {
+
+    this.userSub = this.store.select('user').subscribe((x) => {
+      if (x.length != 0) {
+        this.userData = x[0];
+        this.letsFindActivites(x[0]._id);
+
+        console.log(this.userData);
+      }
+    });
+
+    this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: object) => {
+      console.log(value)
       this.data = value;
     }, (err) => {
       console.log(err);
@@ -56,8 +73,14 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.routeSub.unsubscribe();
+  letsFindActivites(userID) {
+    if (this.data.parcipiantAnswers) {
+      let findParts = _.find(this.data.parcipiantAnswers, (o) => { return o.userId == userID; });
+      if (findParts) {
+        this.participatedIndex = findParts.answer;
+        this.created = true;
+      }
+    }
   }
 
   async changePage() {
@@ -201,5 +224,29 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.calculateDate();
     }, 1000);
+  }
+
+  getPartPos(i) {
+    let size = this.data.parcipiantAnswers ? this.data.parcipiantAnswers.length : 0;
+    let index = [4, 3, 2, 1]
+    if (size === 1) {
+      return {
+        'z-index': index[i],
+        'position': 'relative',
+        'right': "20px"
+      }
+    } else {
+      return {
+        'z-index': index[i],
+        'position': 'relative',
+        'right': (i * 10) + "px"
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.routeSub.unsubscribe();
+    this.userSub.unsubscribe();
+    this.postSub.unsubscribe();
   }
 }

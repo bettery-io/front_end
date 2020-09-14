@@ -20,7 +20,7 @@
       <div *ngIf="count">
         <div class="your_answer">
           <p>Your Answer <br>
-            <span>fakeAnswer</span>
+            <span>{{f.answer.value}}</span>
           </p>
         </div>
       </div>
@@ -50,9 +50,14 @@
     </div>
   </div>
   <div *ngIf="!count">
-    <div class="results_mail">
+    <div class="results_mail" [ngStyle]="{'padding-bottom': errorMessage ? '20px' : '39px'}">
       <p>We’ll notify the results to your email</p>
       <div><span>nguyennguyen@bettery.io</span></div>
+    </div>
+
+    <div *ngIf="errorMessage">
+      <div class="errorImg"></div>
+      <p class="errMsg">{{errorMessage}}</p>
     </div>
     <div class="two_button">
       <button class="btn_back" (click)="change(true)">Back</button>

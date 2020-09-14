@@ -20,7 +20,7 @@
       <div class="event">VALIDATE AFTER</div>
       <div class="question_second time">
         <div class="question_text_white">
-          <p>{{data?.endTime | date: 'dd MMM y'}}, {{data?.endTime | date:'shortTime'}}</p>
+          <p>{{date}} {{month}} {{year}}, {{hour}}:{{minutes}}</p>
         </div>
       </div>
     </ng-container>
@@ -88,7 +88,7 @@
     </div>
     <ng-container *ngIf="!ifTimeValid">
       <div class="someText">
-        <p><span>345 Players</span> placed their bet so far.</p>
+        <p><span>{{data?.parcipiantAnswers ? data?.parcipiantAnswers.length : 0}} Players</span> placed their bet so far.</p>
       </div>
     </ng-container>
     <div *ngIf="!ifTimeValid" class="btn_join_expert">
@@ -96,8 +96,12 @@
     </div>
     <ng-container *ngIf="ifTimeValid">
       <div class="someText">
-        <p><span>124 Players</span> placed their bet. Now it’s your turn to decide who’s right.</p>
+        <p><span>{{data?.parcipiantAnswers ? data?.parcipiantAnswers.length : 0}} Players</span> placed their bet. Now it’s your turn to decide who’s right.</p>
       </div>
+      <div *ngIf="errorMessage">
+        <div class="errorImg"></div>
+        <p class="errMsg">{{errorMessage}}</p>
+    </div>
       <div *ngIf="ifTimeValid" class="btn_join_expert">
         <button (click)="isConfirm2(answerForm)">CONFIRM</button>
       </div>

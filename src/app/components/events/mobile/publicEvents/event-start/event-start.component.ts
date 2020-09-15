@@ -107,7 +107,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   calculatePool() {
     if (this.eventData.parcipiantAnswers) {
       this.eventData.parcipiantAnswers.forEach(x => {
-        console.log(x);
         this.currentPool += x.amount;
         this.playersJoinde += 1;
       });
@@ -148,35 +147,31 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async join() {
-    if (this.userData == undefined) {
-      if (await this.loginWithTorus()) {
-        this.letsJoin = true;
-        this.calculateDate();
-      }
-    } else {
+    if (await this.loginWithTorus()) {
       this.letsJoin = true;
       this.calculateDate();
     }
-
   }
 
   async loginWithTorus() {
-    try {
-      await web3Obj.initialize()
-      this.setTorusInfoToDB()
+    if (!this.userData) {
+      try {
+        await web3Obj.initialize()
+        this.setTorusInfoToDB()
+        return true;
+      } catch (error) {
+        console.error(error)
+        return false;
+      }
+    } else {
       return true;
-    } catch (error) {
-      console.error(error)
-      return false;
     }
+
   }
 
   async setTorusInfoToDB() {
     let userInfo = await web3Obj.torus.getUserInfo("")
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
-
-    console.log(userInfo)
-    console.log(userWallet)
 
     let data: Object = {
       _id: null,
@@ -190,7 +185,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     this.postSub = this.http.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
-          console.log(x);
           this.addUser(
             x.email,
             x.nickName,

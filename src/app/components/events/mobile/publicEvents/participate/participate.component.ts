@@ -120,7 +120,6 @@ export class ParticipateComponent implements OnInit, OnDestroy {
       answerAmount: dataAnswer.answerAmount + 1,
       amount: Number(_money)
     }
-    console.log(data);
     this.postSub = this.postService.post("answer", data).subscribe(async () => {
       await this.updateBalance();
       this.errorMessage = undefined;

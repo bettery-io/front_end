@@ -40,7 +40,6 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
     this.userSub = this.store.select('user').subscribe((x) => {
       if (x.length != 0) {
         this.userData = x[0];
-        console.log(this.userData);
       }
     });
 
@@ -86,7 +85,6 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
       case 2:
         try {
           let transaction = await contract.validateOnPrivateEvent(id, answer, wallet, verifier);
-          console.log(transaction)
           if (transaction.transactionHash !== undefined) {
             this.sendToDb(transaction.transactionHash, answer)
           }

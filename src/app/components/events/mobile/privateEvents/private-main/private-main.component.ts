@@ -41,11 +41,11 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private postService: PostService, 
-    private formBuilder: FormBuilder, 
-    private route: ActivatedRoute, 
+    private postService: PostService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private store: Store<AppState>
-    ) {
+  ) {
     this.answerForm = formBuilder.group({
       answer: ['', Validators.required]
     });
@@ -62,8 +62,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       if (x.length != 0) {
         this.userData = x[0];
         this.letsFindActivites(x[0]._id);
-
-        console.log(this.userData);
       }
     });
 
@@ -72,10 +70,10 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
 
   letsGetDataFromDB() {
     this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: any) => {
+      console.log(value)
       if (value.finalAnswer !== '') {
         this.finised = true;
       }
-      console.log(value)
       this.data = value;
       if (this.userData) {
         this.letsFindActivites(this.userData._id)
@@ -130,10 +128,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   async setTorusInfoToDB() {
     const userInfo = await web3Obj.torus.getUserInfo('');
     const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
-
-    console.log(userInfo);
-    console.log(userWallet);
-
     const data: object = {
       _id: null,
       wallet: userWallet,
@@ -146,7 +140,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     this.postService.post('user/torus_regist', data)
       .subscribe(
         (x: any) => {
-          console.log(x);
           this.addUser(
             x.email,
             x.nickName,
@@ -207,7 +200,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   onChanged(increased: boolean) {
-    console.log(increased);
     if (increased) {
       this.prevPage();
     } else {
@@ -223,6 +215,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     if ($event) {
       this.expertPage = false;
     }
+    this.letsGetDataFromDB();
   }
 
   calculateDate() {

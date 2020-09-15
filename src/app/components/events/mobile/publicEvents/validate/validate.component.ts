@@ -104,20 +104,15 @@ export class ValidateComponent implements OnInit, OnDestroy {
   }
 
   async setValidation() {
-
     let contract = new Contract();
     var _question_id = this.eventData.id;
     var _whichAnswer = _.findIndex(this.eventData.answers, (o) => { return o == this.answerForm.value.answer; });
-    console.log(_question_id)
-    console.log(_whichAnswer)
     let contr = await contract.publicEventContract()
     let validator = await contr.methods.setTimeValidator(_question_id).call();
-    console.log(validator)
 
     switch (Number(validator)) {
       case 0:
         let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.userData.wallet, this.userData.verifier)
-        console.log(sendToContract)
         if (sendToContract.transactionHash !== undefined) {
           this.setToDBValidation(_whichAnswer, this.eventData, sendToContract.transactionHash)
         }
@@ -146,7 +141,6 @@ export class ValidateComponent implements OnInit, OnDestroy {
       validated: dataAnswer.validated + 1,
       amount: 0
     }
-    console.log(data);
     this.postSub = this.postService.post("answer", data).subscribe(async () => {
       this.errorMessage = undefined;
       this.created = true;

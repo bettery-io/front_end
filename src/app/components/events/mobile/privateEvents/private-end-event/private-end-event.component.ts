@@ -33,7 +33,6 @@ export class PrivateEndEventComponent implements OnInit {
   }
 
   letsFindActivites(id) {
-    console.log(this.eventData)
     let find = _.find(this.eventData.parcipiantAnswers, (o) => { return o.userId == id });
     if (find) {
       if (find.answer == Number(this.eventData.finalAnswer)) {
@@ -46,13 +45,16 @@ export class PrivateEndEventComponent implements OnInit {
   }
 
   letsFindWinner() {
-    for (let i = 0; i < this.eventData.parcipiantAnswers.length; i++) {
-      if (this.eventData.parcipiantAnswers[i].answer == Number(this.eventData.finalAnswer)) {
-        this.winners.push(this.eventData.parcipiantAnswers[i])
-      } else {
-        this.losers.push(this.eventData.parcipiantAnswers[i])
+    if(this.eventData.parcipiantAnswers){
+      for (let i = 0; i < this.eventData.parcipiantAnswers.length; i++) {
+        if (this.eventData.parcipiantAnswers[i].answer == Number(this.eventData.finalAnswer)) {
+          this.winners.push(this.eventData.parcipiantAnswers[i])
+        } else {
+          this.losers.push(this.eventData.parcipiantAnswers[i])
+        }
       }
     }
+
   }
 
   copyToClickBoard() {

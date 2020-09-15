@@ -32,7 +32,6 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     this.userSub = this.store.select('user').subscribe((x) => {
       if (x.length != 0) {
         this.userData = x[0];
-        console.log(this.userData);
       }
     });
 
@@ -68,7 +67,6 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
       case 0:
         try {
           let transaction = await contract.participateOnPrivateEvent(id, answer, wallet, verifier);
-          console.log(transaction)
           if (transaction.transactionHash !== undefined) {
             this.sendToDb(transaction.transactionHash, answer)
           }

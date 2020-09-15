@@ -17,6 +17,7 @@ import _ from "lodash";
 import Contract from '../../contract/contract';
 import web3Obj from '../../helpers/torus'
 import {Subscription} from 'rxjs';
+import {WelcomePageComponent} from "../share/welcome-page/welcome-page.component";
 
 
 @Component({
@@ -61,6 +62,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ERC20withdrawalAmount: number = 0;
   verifier: string = undefined;
   openNavBar = false;
+
+  spinnerLoading: boolean;
 
 
   constructor(
@@ -376,9 +379,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async loginWithTorus() {
+    this.spinnerLoading = true;
     try {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
+
+      if (!localStorage.getItem('userBettery')) {
+        this.modalService.open(WelcomePageComponent);
+      }
+      this.spinnerLoading = false;
     } catch (error) {
       console.error(error)
     }
@@ -388,6 +397,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let userInfo = await web3Obj.torus.getUserInfo("")
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
 
+    localStorage.setItem('userBettery', userInfo.email);
     console.log(userInfo)
     console.log(userWallet)
 
@@ -475,7 +485,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   openModal(contentModal) {
-    this.modalService.open(contentModal, {size: 'sm', centered: true });
+    this.modalService.open(contentModal, {size: 'sm', centered: true});
     this.openNavBar = false;
   }
 }

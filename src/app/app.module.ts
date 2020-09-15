@@ -27,8 +27,10 @@ import { NumericDirective } from './helpers/numeric';
 
 import { CreateEventModule } from './components/createEvent/createEvent.module';
 import { EventsModule } from './components/events/events.module';
-import { SpinnerLoadingComponent } from './components/share/spinner-loading/spinner-loading.component';
+// import { SpinnerLoadingComponent } from './components/share/spinner-loading/spinner-loading.component';
 import { WelcomePageComponent } from './components/share/welcome-page/welcome-page.component'
+import {ShareModule} from "./components/share/share.module";
+
 
 
 @NgModule({
@@ -40,38 +42,39 @@ import { WelcomePageComponent } from './components/share/welcome-page/welcome-pa
         HistoryComponent,
         ErcCoinSaleComponent,
         NumericDirective,
-        SpinnerLoadingComponent,
+        // SpinnerLoadingComponent,
         WelcomePageComponent,
     ],
-    imports: [
-        AvatarModule,
-        ClipboardModule,
-        CreateEventModule,
-        EventsModule,
-        BrowserModule,
-        HttpClientModule,
-        FontAwesomeModule,
-        ReactiveFormsModule,
-        StoreModule.forRoot({
-            user: userReducer,
-            coins: coinsReducer,
-            invites: invitesReducer
-        }),
-        NgbModule,
-        FormsModule,
-        RouterModule.forRoot([
-            {path: "home", component: HomeComponent},
-            {path: "", redirectTo: "home", pathMatch: "full"},
-            {path: 'history', component: HistoryComponent},
-            {path: 'erc20', component: ErcCoinSaleComponent}
-        ])
-    ],
+  imports: [
+    AvatarModule,
+    ClipboardModule,
+    CreateEventModule,
+    EventsModule,
+    BrowserModule,
+    HttpClientModule,
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    StoreModule.forRoot({
+      user: userReducer,
+      coins: coinsReducer,
+      invites: invitesReducer
+    }),
+    NgbModule,
+    FormsModule,
+    RouterModule.forRoot([
+      {path: "home", component: HomeComponent},
+      {path: "", redirectTo: "home", pathMatch: "full"},
+      {path: 'history', component: HistoryComponent},
+      {path: 'erc20', component: ErcCoinSaleComponent}
+    ]),
+    ShareModule
+  ],
     providers: [
         PostService,
         GetService
     ],
     exports: [
-        SpinnerLoadingComponent
+        // SpinnerLoadingComponent
     ],
     bootstrap: [
         AppComponent

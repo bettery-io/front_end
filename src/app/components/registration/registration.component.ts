@@ -8,7 +8,7 @@ import * as UserActions from '../../actions/user.actions';
 import { PostService } from '../../services/post.service';
 import Web3 from 'web3';
 import { Router } from "@angular/router";
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import web3Obj from '../../helpers/torus'
 
 

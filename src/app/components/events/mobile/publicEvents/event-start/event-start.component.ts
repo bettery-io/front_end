@@ -1,12 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy} from '@angular/core';
 import web3Obj from '../../../../../helpers/torus'
-import { PostService } from '../../../../../services/post.service';
+import {PostService} from '../../../../../services/post.service';
 import * as UserActions from '../../../../../actions/user.actions';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../../app.state';
-import { ClipboardService } from 'ngx-clipboard';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../../app.state';
+import {ClipboardService} from 'ngx-clipboard';
 import _ from "lodash";
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {WelcomePageComponent} from "../../../../share/welcome-page/welcome-page.component";
+
 
 @Component({
   selector: 'event-start',
@@ -35,12 +38,15 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   coinType;
   storeSub: Subscription
   postSub: Subscription
+  spinnerLoading: boolean;
 
   constructor(
     private http: PostService,
     private store: Store<AppState>,
-    private _clipboardService: ClipboardService
-  ) { }
+    private _clipboardService: ClipboardService,
+    private modalService: NgbModal
+  ) {
+  }
 
   ngOnInit(): void {
   }
@@ -89,14 +95,18 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
 
   letsFindActivites(userData) {
     if (this.eventData.parcipiantAnswers) {
-      let findParts = _.find(this.eventData.parcipiantAnswers, (o) => { return o.userId == userData._id; });
+      let findParts = _.find(this.eventData.parcipiantAnswers, (o) => {
+        return o.userId == userData._id;
+      });
       if (findParts) {
         this.participatedIndex = findParts.answer;
         this.created = true;
       }
     }
     if (this.eventData.validatorsAnswers) {
-      let findValid = _.find(this.eventData.validatorsAnswers, (o) => { return o.userId == userData._id; });
+      let findValid = _.find(this.eventData.validatorsAnswers, (o) => {
+        return o.userId == userData._id;
+      });
       if (findValid) {
         this.participatedIndex = findValid.answer;
         this.created = true;
@@ -161,9 +171,15 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async loginWithTorus() {
+    this.spinnerLoading = true;
     try {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
+
+      if (!localStorage.getItem('userBettery')) {
+        this.modalService.open(WelcomePageComponent);
+      }
+      this.spinnerLoading = false;
       return true;
     } catch (error) {
       console.error(error)
@@ -174,6 +190,8 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   async setTorusInfoToDB() {
     let userInfo = await web3Obj.torus.getUserInfo("")
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
+
+    localStorage.setItem('userBettery', userInfo.email);
 
     console.log(userInfo)
     console.log(userWallet)
@@ -335,7 +353,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     this.storeSub.unsubscribe();
     this.postSub.unsubscribe()
   }
-
 
 
 }

@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../../app.state';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ClipboardService } from 'ngx-clipboard'
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../../app.state';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ClipboardService} from 'ngx-clipboard'
 import Contract from '../../../../../contract/contract';
-import { PostService } from '../../../../../services/post.service';
+import {PostService} from '../../../../../services/post.service';
 import _ from "lodash";
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'validate',
@@ -31,6 +31,8 @@ export class ValidateComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   postSub: Subscription;
 
+  spinnerLoading: boolean;
+
   constructor(
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
@@ -51,12 +53,16 @@ export class ValidateComponent implements OnInit, OnDestroy {
     })
   }
 
-  get f() { return this.answerForm.controls; }
+  get f() {
+    return this.answerForm.controls;
+  }
 
   checkTimeIsValid() {
     let time = Number((Date.now() / 1000).toFixed(0))
     this.timeIsValid = this.eventData.endTime - time > 0;
-    if (this.timeIsValid) { this.calculateDate() }
+    if (this.timeIsValid) {
+      this.calculateDate()
+    }
   }
 
   calculateDate() {
@@ -135,6 +141,7 @@ export class ValidateComponent implements OnInit, OnDestroy {
   }
 
   setToDBValidation(answer, dataAnswer, transactionHash) {
+    this.spinnerLoading = true;
     let data = {
       event_id: dataAnswer.id,
       date: new Date(),
@@ -148,9 +155,10 @@ export class ValidateComponent implements OnInit, OnDestroy {
     }
     console.log(data);
     this.postSub = this.postService.post("answer", data).subscribe(async () => {
-      this.errorMessage = undefined;
-      this.created = true;
-    },
+        this.errorMessage = undefined;
+        this.created = true;
+        this.spinnerLoading = false;
+      },
       (err) => {
         console.log(err)
       })

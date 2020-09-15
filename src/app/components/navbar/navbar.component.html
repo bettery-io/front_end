@@ -271,21 +271,24 @@
 </ng-template>
 
 <ng-template #contentModal let-modal>
-    <div class="modal-header p-2 pb-0">
-      <button type="button" class="close border-hover" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-header modal-title">
-      <h4>LOW ON COINS?</h4>
-    </div>
-    <div class="modal-body modal-body-text">
-      <p> You are using Bettery prototype application running on a testing environment called Testnet. All funds are
-        simulated and <b>have no value</b>. If you need more coins, we can deposit to your account at no cost - just ask us in
-        Telegram!</p>
-    </div>
-    <div class="btn-modal">
-      <button type="button" (click)="modal.close('Close click')">get free coins</button>
-    </div>
-    <div class="modal-a"><a href="#">Learn more about Bettery</a></div>
+  <div class="modal-header p-2 pb-0">
+    <button type="button" class="close border-hover" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-header modal-title">
+    <h4>LOW ON COINS?</h4>
+  </div>
+  <div class="modal-body modal-body-text">
+    <p> You are using Bettery prototype application running on a testing environment called Testnet. All funds are
+      simulated and <b>have no value</b>. If you need more coins, we can deposit to your account at no cost - just ask
+      us in
+      Telegram!</p>
+  </div>
+  <div class="btn-modal">
+    <button type="button" (click)="modal.close('Close click')">get free coins</button>
+  </div>
+  <div class="modal-a"><a href="#">Learn more about Bettery</a></div>
 </ng-template>
+
+<app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>

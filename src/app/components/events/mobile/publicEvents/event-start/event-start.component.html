@@ -158,7 +158,5 @@
         <validate *ngIf="showValidate()" [eventData]="eventData" (goBack)="goToInfo('expert')"
             (goViewStatus)="interactionDone($event)"></validate>
     </div>
-<!--  <div class="test-loading">-->
-<!--    <app-sppiner-loading></app-sppiner-loading>-->
-<!--  </div>-->
+    <app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>
 </div>

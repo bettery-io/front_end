@@ -1,12 +1,15 @@
-import { NgModule } from '@angular/core';
-import {CreateEventMobileModule } from './mobile/createEventMobile.module';
+import {NgModule} from '@angular/core';
+import {CreateEventMobileModule} from './mobile/createEventMobile.module';
 import {CreateEventDesktopModule} from './desktop/createEventDesktop.module'
 
 
+
+
 @NgModule({
-    imports: [
-        CreateEventMobileModule,
-        CreateEventDesktopModule
-    ],
+  imports: [
+    CreateEventMobileModule,
+    CreateEventDesktopModule,
+  ],
 })
-export class CreateEventModule { }
+export class CreateEventModule {
+}

@@ -7,12 +7,26 @@
         <h1>EVENT ENDED</h1>
       </div>
     </div>
-    <div class="title_text">
-      <p>What a ride! Did you have a good time? Host more events and have more fun!</p>
+    <div class="roomBox">
+      <p class="roomName">ROOM: Avengers</p>
     </div>
-    <div class="title_btn">
-      <button>HOST YOUR OWN EVENT</button>
+    <div *ngIf="award == 'none'">
+      <div class="title_text">
+        <p>What a ride! Did you have a good time? Host more events and have more fun!</p>
+      </div>
+      <div class="title_btn">
+        <button>HOST YOUR OWN EVENT</button>
+      </div>
     </div>
+    <div *ngIf="award == 'winner'">
+      <p class="titleName">YOU WON</p>
+      <p class="winnerAward">{{eventData?.winner}}</p>
+    </div>
+    <div *ngIf="award == 'loser'">
+      <p class="titleName">YOU LOST</p>
+      <p class="loserAward">{{eventData?.loser}}</p>
+    </div>
+
   </div>
   <div class="second row">
     <div class="left col">
@@ -25,7 +39,7 @@
       </div>
       <div class="people">
         <div *ngFor="let winner of winners">
-          <img src="{{winner.avatar}}" class="avatars">
+          <img src="{{winner.avatar}}" class="avatars" referrerpolicy="no-referrer">
         </div>
       </div>
     </div>
@@ -36,11 +50,11 @@
         <h4>Losers agree to</h4>
       </div>
       <div class="loserBox">
-        <p class="loserBox" >{{eventData?.loser}}</p>
+        <p class="loserBox">{{eventData?.loser}}</p>
       </div>
       <div class="people">
         <div *ngFor="let loser of losers">
-          <img src="{{loser.avatar}}" class="avatars">
+          <img src="{{loser.avatar}}" class="avatars" referrerpolicy="no-referrer">
         </div>
       </div>
     </div>
@@ -72,10 +86,13 @@
         </div>
       </div>
     </div>
-    <div class="share_event">
+    <div class="share_event" *ngIf="award == 'none'">
       <h4>share YOUR event with friends!</h4>
       <p><a href="#">www.bettery.io/tonystarkevent</a></p>
       <div class="share_img" (click)="copyToClickBoard()"></div>
+    </div>
+    <div style="margin-top: 36px;" class="title_btn" *ngIf="award != 'none'">
+      <button>HOST YOUR OWN EVENT</button>
     </div>
   </div>
   <div class="hr-grey"></div>

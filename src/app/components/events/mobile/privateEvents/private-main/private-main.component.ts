@@ -26,7 +26,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   hideBtn: boolean;
   ifTimeValid: boolean;
   participatedIndex: number;
-  created: boolean;
   finised: boolean = false;
 
   routeSub: Subscription;
@@ -41,7 +40,12 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     seconds: '',
   };
 
-  constructor(private postService: PostService, private formBuilder: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(
+    private postService: PostService, 
+    private formBuilder: FormBuilder, 
+    private route: ActivatedRoute, 
+    private store: Store<AppState>
+    ) {
     this.answerForm = formBuilder.group({
       answer: ['', Validators.required]
     });
@@ -73,6 +77,9 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       }
       console.log(value)
       this.data = value;
+      if (this.userData) {
+        this.letsFindActivites(this.userData._id)
+      }
     }, (err) => {
       console.log(err);
       if (err.status === 404) {
@@ -86,7 +93,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       let findParts = _.find(this.data.parcipiantAnswers, (o) => { return o.userId == userID; });
       if (findParts) {
         this.participatedIndex = findParts.answer;
-        this.created = true;
+        this.hideBtn = true;
       }
     }
   }
@@ -106,13 +113,17 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   async loginWithTorus() {
-    try {
-      await web3Obj.initialize();
-      this.setTorusInfoToDB();
+    if (!this.userData) {
+      try {
+        await web3Obj.initialize();
+        this.setTorusInfoToDB();
+        return true;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+    } else {
       return true;
-    } catch (error) {
-      console.error(error);
-      return false;
     }
   }
 
@@ -205,9 +216,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       this.expert = false;
       this.prevPage();
     }
-
     this.letsGetDataFromDB();
-    this.letsFindActivites(this.userData._id)
   }
 
   onChanged2($event: boolean) {

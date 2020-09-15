@@ -58,7 +58,7 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
     this.join = true;
     if (this.data.endTime - timeNow > 0) {
       this.ifTimeValid = false;
-    }else{
+    } else {
       this.ifTimeValid = true;
     }
   }
@@ -140,7 +140,11 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSub.unsubscribe();
-    this.postSub.unsubscribe();
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
   }
 }

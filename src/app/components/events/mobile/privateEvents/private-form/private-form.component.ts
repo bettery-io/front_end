@@ -70,7 +70,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
           let transaction = await contract.participateOnPrivateEvent(id, answer, wallet, verifier);
           console.log(transaction)
           if (transaction.transactionHash !== undefined) {
-           this.sendToDb(transaction.transactionHash, answer)
+            this.sendToDb(transaction.transactionHash, answer)
           }
         } catch (error) {
           console.log(error);
@@ -106,7 +106,11 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSub.unsubscribe();
-    this.postSub.unsubscribe();
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
   }
 }

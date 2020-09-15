@@ -19,6 +19,17 @@ export class PrivateEndEventComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.eventData)
+    this.letsFindWinner();
+  }
+
+  letsFindWinner(){
+    for(let i = 0; i < this.eventData.parcipiantAnswers.length; i++){
+      if(this.eventData.parcipiantAnswers[i].answer == Number(this.eventData.finalAnswer)){
+        this.winners.push(this.eventData.parcipiantAnswers[i])
+      }else{
+        this.losers.push(this.eventData.parcipiantAnswers[i])
+      }
+    }
   }
 
   copyToClickBoard() {

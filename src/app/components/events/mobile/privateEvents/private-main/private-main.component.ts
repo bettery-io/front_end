@@ -63,8 +63,12 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.letsGetDataFromDB();
+  }
+
+  letsGetDataFromDB() {
     this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: any) => {
-      if(value.finalAnswer !== '' ){
+      if (value.finalAnswer !== '') {
         this.finised = true;
       }
       console.log(value)
@@ -201,6 +205,9 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       this.expert = false;
       this.prevPage();
     }
+
+    this.letsGetDataFromDB();
+    this.letsFindActivites(this.userData._id)
   }
 
   onChanged2($event: boolean) {
@@ -249,8 +256,14 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.routeSub.unsubscribe();
-    this.userSub.unsubscribe();
-    this.postSub.unsubscribe();
+    if (this.routeSub) {
+      this.routeSub.unsubscribe();
+    }
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
   }
 }

@@ -1,5 +1,5 @@
 <div *ngIf="!badRequest" class="{{condition && counts == 1 && 'bg_img'}} container ">
-  <div *ngIf="!finised" >
+  <div *ngIf="!finised">
     <ng-container *ngIf="!expertPage">
       <!--    First page    -->
       <ng-container class="main" *ngIf="!condition">
@@ -61,7 +61,7 @@
               <p>{{data?.question}}</p>
             </div>
           </div>
-  
+
           <div class="answers">
             <ng-container>
               <div class="answers_item" *ngFor="let a of data?.answers; index as i">
@@ -125,40 +125,42 @@
                   </div>
                 </div>
               </div>
-              <ng-container *ngIf="!hideBtn">
-                <div class="time-left">Time left : <span>{{allTime.day}}</span> days
-                  <span>{{allTime.hour}} </span>
-                  hours <span>{{allTime.minutes}} </span>minutes
+              <div *ngIf="!hideBtn">
+                <div>
+                  <div class="time-left">Time left : <span>{{allTime.day}}</span> days
+                    <span>{{allTime.hour}} </span>
+                    hours <span>{{allTime.minutes}} </span>minutes
+                  </div>
+                  <ng-container *ngIf="expert">
+                    <div class="btn_join_as_player">
+                      <button (click)="nextPage()"> JOIN AS PLAYER</button>
+                    </div>
+                    <div>
+                      <div class="whats_player"><a href="#">Whats is a Player?</a></div>
+                    </div>
+                  </ng-container>
                 </div>
-                <ng-container *ngIf="expert">
-                  <div class="btn_join_as_player">
-                    <button (click)="nextPage()"> JOIN AS PLAYER</button>
+
+                <div>
+                  <div class="btn_join_expert">
+                    <button (click)="onExpertPage()"> BECOME AN EXPERT</button>
                   </div>
                   <div>
-                    <div class="whats_player"><a href="#">Whats is a Player?</a></div>
+                    <div class="whats_expert"><a href="#">What is an Expert?</a></div>
                   </div>
-                </ng-container>
-              </ng-container>
-  
-              <ng-container *ngIf="!expert">
-                <div class="btn_join_expert">
-                  <button (click)="onExpertPage()"> BECOME AN EXPERT</button>
                 </div>
-                <div>
-                  <div class="whats_expert"><a href="#">What is an Expert?</a></div>
-                </div>
-              </ng-container>
+              </div>
               <div class="hr"></div>
             </ng-container>
             <div>
-  
+
               <div class="sendCommentBox">
                 <div class="addCommentBox">
                   <p class="addCommentText">Add a comment...</p>
                 </div>
                 <div class="sendImg"></div>
               </div>
-  
+
               <div class="commentBox">
                 <div class="commentHeader">
                   <div class="senderBox">
@@ -173,7 +175,7 @@
                     ut labore et dolore magna aliqua.</p>
                 </div>
               </div>
-  
+
               <div class="commentBox">
                 <div class="commentHeader">
                   <div class="senderBox">

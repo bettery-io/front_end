@@ -92,7 +92,6 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     // TO DO
     let correctAnswerSetter = userWallet
 
-    console.log(startTime, endTime, winner, loser, questionQuantity, userWallet)
 
     try {
       let contract = new Contract()
@@ -176,10 +175,17 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSub.unsubscribe();
-    this.idSub.unsubscribe();
-    this.postSub.unsubscribe();
-    this.createSub.unsubscribe();
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+    if (this.idSub) {
+      this.idSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
+    if (this.createSub) {
+      this.createSub.unsubscribe();
+    }
   }
-
 }

@@ -58,7 +58,7 @@
             <div class="partBox">
                 <div *ngFor="let part of eventData.parcipiantAnswers; index as i">
                     <div [ngStyle]="getPartPos(i)">
-                        <img *ngIf="i <= 4" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
+                        <img *ngIf="i <= 3" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
                     </div>
                 </div>
                 <p class="nameInfo playersNumber">{{playersCount()}}</p>
@@ -69,7 +69,7 @@
             <div class="partBox">
                 <div *ngFor="let valid of eventData.validatorsAnswers; index as i">
                     <div [ngStyle]="getPartPos(i)">
-                        <img *ngIf="i <= 4" class="partImg" referrerpolicy="no-referrer" src="{{valid.avatar}}">
+                        <img *ngIf="i <= 3" class="partImg" referrerpolicy="no-referrer" src="{{valid.avatar}}">
                     </div>
                 </div>
                 <p class="nameInfo playersNumber">{{expertCount()}}</p>

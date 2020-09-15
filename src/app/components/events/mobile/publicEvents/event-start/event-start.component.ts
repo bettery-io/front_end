@@ -332,8 +332,12 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.storeSub.unsubscribe();
-    this.postSub.unsubscribe()
+    if (this.storeSub) {
+      this.storeSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe()
+    }
   }
 
 

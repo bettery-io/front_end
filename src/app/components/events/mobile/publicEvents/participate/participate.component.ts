@@ -155,9 +155,15 @@ export class ParticipateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSub.unsubscribe();
-    this.coinsSub.unsubscribe();
-    this.postSub.unsubscribe();
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+    if (this.coinsSub) {
+      this.coinsSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
   }
 
 

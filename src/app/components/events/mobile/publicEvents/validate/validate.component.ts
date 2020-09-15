@@ -162,8 +162,12 @@ export class ValidateComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    this.userSub.unsubscribe();
-    this.postSub.unsubscribe();
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
   }
 
 }

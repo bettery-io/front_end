@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +12,10 @@ import { InfoComponent } from './publicEvents/info/info.component';
 import { ParticipateComponent } from './publicEvents/participate/participate.component';
 import { ValidateComponent } from './publicEvents/validate/validate.component';
 import { EventFinishComponent } from './publicEvents/event-finish/event-finish.component';
+import { PrivateFormComponent } from './privateEvents/private-form/private-form.component';
+import { PrivateExpertComponent } from './privateEvents/private-expert/private-expert.component';
+import { BadRequestComponent } from './privateEvents/bad-request/bad-request.component';
+import { PrivateEndEventComponent } from './privateEvents/private-end-event/private-end-event.component';
 
 
 
@@ -35,7 +39,11 @@ import { EventFinishComponent } from './publicEvents/event-finish/event-finish.c
     InfoComponent,
     ParticipateComponent,
     ValidateComponent,
-    EventFinishComponent
+    EventFinishComponent,
+    PrivateFormComponent,
+    PrivateExpertComponent,
+    BadRequestComponent,
+    PrivateEndEventComponent
 ]
 })
 export class MobileEventsModule { }

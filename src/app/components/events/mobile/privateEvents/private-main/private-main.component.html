@@ -1,1 +1,205 @@
-<p>private-main works!</p>
+<div *ngIf="!badRequest" class="{{condition && counts == 1 && 'bg_img'}} container ">
+  <div *ngIf="!finised">
+    <ng-container *ngIf="!expertPage">
+      <!--    First page    -->
+      <ng-container class="main" *ngIf="!condition">
+        <div class="title">
+          <h1>WELCOME TO THE EVENT of</h1>
+          <div class="nickName mt-1">
+            <div>
+              <h2>{{data?.host.nickName}}</h2>
+            </div>
+            <div class="img_icon ml-2 mb-1"></div>
+          </div>
+        </div>
+        <div class="question_block">
+          <div class="mb-3"><img src="{{data?.host.avatat}}" alt="avatar" referrerpolicy="no-referrer"></div>
+          <div class="question">
+            <h2>{{data?.question}}</h2>
+          </div>
+        </div>
+        <div class="results_block">
+          <div class="winners">
+            <p>Winners: <br>
+              <span>{{data?.winner}}</span>
+            </p>
+          </div>
+          <div class="losers">
+            <div>
+              <p>Losers: <br>
+                <span>{{data?.loser}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="total_friends">
+            <div class="img_green_people"></div>
+            <div><span>{{data?.parcipiantAnswers ? data?.parcipiantAnswers.length : 0}} friends joined </span></div>
+          </div>
+        </div>
+        <div class="hr"></div>
+        <div class="tutorial">
+          <h3>How DO I JOIN?</h3>
+          <div class="tutorials-place">
+            <p>Gif Tutorials</p>
+          </div>
+        </div>
+        <div class="btn_join">
+          <button (click)="changePage()">JOIN</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="condition">
+        <ng-container *ngIf="counts == 1">
+          <div class="now_batting__title">
+            <div class="img_yellow_hand"></div>
+            <div>Now Betting</div>
+          </div>
+          <div class="event_ends">
+            Event ends in <b>{{allTime.day}}:{{allTime.hour}}:{{allTime.minutes}}:{{allTime.seconds}}</b>
+          </div>
+          <div class="question_second">
+            <div class="question_text">
+              <p>{{data?.question}}</p>
+            </div>
+          </div>
+
+          <div class="answers">
+            <ng-container>
+              <div class="answers_item" *ngFor="let a of data?.answers; index as i">
+                <li [ngClass]="{ 
+                  'participated': i == participatedIndex
+               }">{{a}}</li>
+              </div>
+            </ng-container>
+            <div class="resolution_details">
+              Answer check: <span>www.cnn.com</span>
+            </div>
+            <div>
+              <div class="winner_get">
+                <div class="winner_get_left">
+                  <div class="winner_get_left_top">WINNER GET:</div>
+                  <div>LOSERS AGREE TO:</div>
+                </div>
+                <div class="winner_get_right">
+                  <div class="winner_get_right_top">{{data?.winner}}</div>
+                  <div class="winner_get_right_bottom">{{data?.loser}}</div>
+                </div>
+              </div>
+            </div>
+            <ng-container>
+              <div class="hr"></div>
+              <div class="create_by textWhite">
+                <div class="create_by__item">
+                  <div class="left">
+                    <p>CREATED BY:</p>
+                  </div>
+                  <div class="right">
+                    <div><span>{{data?.host.nickName}}</span></div>
+                    <div class="ml-1"><img src="{{data?.host.avatat}}" alt="avatar1" referrerpolicy="no-referrer"></div>
+                  </div>
+                </div>
+                <div class="create_by__item">
+                  <div class="left">
+                    <p>EXPERT:</p>
+                  </div>
+                  <div *ngIf="!expert" class="right">
+                    <div>
+                      <p>The Lady </p>
+                    </div>
+                    <div><img src="./assets/face2.png" alt="avatar2"></div>
+                  </div>
+                  <div *ngIf="expert" class="right">
+                    No one yet. <span class="pink ml-1"> Consider to join!</span>
+                  </div>
+                </div>
+                <div class="create_by__item">
+                  <div class="left">
+                    <p>PLAYERS JOINED:</p>
+                  </div>
+                  <div class="partBox">
+                    <div *ngFor="let part of data.parcipiantAnswers; index as i">
+                      <div [ngStyle]="getPartPos(i)">
+                        <img *ngIf="i <= 3" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
+                      </div>
+                    </div>
+                    <p class="name playersNumber">{{data?.parcipiantAnswers ? data?.parcipiantAnswers.length : 0}}</p>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="!hideBtn">
+                <div>
+                  <div class="time-left">Time left : <span>{{allTime.day}}</span> days
+                    <span>{{allTime.hour}} </span>
+                    hours <span>{{allTime.minutes}} </span>minutes
+                  </div>
+                  <ng-container *ngIf="expert">
+                    <div class="btn_join_as_player">
+                      <button (click)="nextPage()"> JOIN AS PLAYER</button>
+                    </div>
+                    <div>
+                      <div class="whats_player"><a href="#">Whats is a Player?</a></div>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div>
+                  <div class="btn_join_expert">
+                    <button (click)="onExpertPage()"> BECOME AN EXPERT</button>
+                  </div>
+                  <div>
+                    <div class="whats_expert"><a href="#">What is an Expert?</a></div>
+                  </div>
+                </div>
+              </div>
+              <div class="hr"></div>
+            </ng-container>
+            <div>
+
+              <div class="sendCommentBox">
+                <div class="addCommentBox">
+                  <p class="addCommentText">Add a comment...</p>
+                </div>
+                <div class="sendImg"></div>
+              </div>
+
+              <div class="commentBox">
+                <div class="commentHeader">
+                  <div class="senderBox">
+                    <div class="commentImg face1"></div>
+                    <p class="commentName">Jenna Logan</p>
+                  </div>
+                  <div class="timeBox">1 day ago</div>
+                </div>
+                <div>
+                  <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt
+                    ut labore et dolore magna aliqua.</p>
+                </div>
+              </div>
+
+              <div class="commentBox">
+                <div class="commentHeader">
+                  <div class="senderBox">
+                    <div class="commentImg face2"></div>
+                    <p class="commentName">Terry Crews</p>
+                  </div>
+                  <div class="timeBox">1 day ago</div>
+                </div>
+                <div>
+                  <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt
+                    ut labore et dolore magna aliqua.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+      <app-private-form *ngIf="counts==2" [data]="data" (changed)="onChanged($event)"></app-private-form>
+    </ng-container>
+    <app-private-expert *ngIf="expertPage" [data]="data" [allTime]="allTime" (changed)="onChanged($event)"
+      (changed2)="onChanged2($event)"></app-private-expert>
+  </div>
+</div>
+<app-bad-request *ngIf="badRequest"></app-bad-request>
+
+<app-private-end-event [eventData]="data" *ngIf="finised"></app-private-end-event>

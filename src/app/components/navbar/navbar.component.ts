@@ -73,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
+        console.log(x[0])
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet;
         this.verifier = x[0].verifier

@@ -15,6 +15,18 @@ export class EventFinishComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  totalBet() {
+    let count = 0
+    let coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
+    if (this.eventData.parcipiantAnswers == undefined) {
+      return count + " " + coinType;
+    }
+    this.eventData.parcipiantAnswers.forEach(x => {
+      count += x.amount;
+    });
+    return count + " " + coinType;
+  }
+
   getPartPos(i) {
     let index = [4, 3, 2, 1]
     return {
@@ -24,11 +36,11 @@ export class EventFinishComponent implements OnInit {
     }
   }
 
-  playersCount(){
+  playersCount() {
     return this.eventData.parcipiantAnswers == undefined ? 0 : this.eventData.parcipiantAnswers.length
   }
 
-  expertCount(){
+  expertCount() {
     return this.eventData.validatorsAnswers == undefined ? 0 : this.eventData.validatorsAnswers.length
   }
 

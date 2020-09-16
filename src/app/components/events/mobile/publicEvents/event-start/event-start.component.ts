@@ -9,6 +9,7 @@ import _ from "lodash";
 import {Subscription} from 'rxjs';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {WelcomePageComponent} from "../../../../share/welcome-page/welcome-page.component";
+import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component'
 
 
 @Component({
@@ -342,6 +343,20 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     let href = window.location.hostname
     let path = href == "localhost" ? 'http://localhost:4200' : href
     this._clipboardService.copy(`${path}/public_event/${this.eventData.id}`)
+  }
+
+  modalAboutExpert() {
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    modalRef.componentInstance.name = 'Validate the result of the event, what actually happened. Depending on event type and how many Players joined, you can earn BTY tokens for being an Expert.';
+    modalRef.componentInstance.boldName ='Expert - ';
+    modalRef.componentInstance.link ='Learn more about roles on Bettery';
+  }
+
+  modalAboutPlayers(){
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    modalRef.componentInstance.name = ' Bet on the event outcome. The prize pool is taken from the losers pot which is shared to all winning Players, the Host, and Experts. The higher your bet is, the bigger amount you will win.';
+    modalRef.componentInstance.boldName ='Player - ';
+    modalRef.componentInstance.link ='Learn more about roles on Bettery';
   }
 
   ngOnDestroy() {

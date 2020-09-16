@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component'
 
 @Component({
   selector: 'event-finish',
@@ -10,7 +12,7 @@ export class EventFinishComponent implements OnInit {
   status = "TODO"
   amount = "TODO"
 
-  constructor() { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
   }
@@ -44,5 +46,11 @@ export class EventFinishComponent implements OnInit {
     return this.eventData.validatorsAnswers == undefined ? 0 : this.eventData.validatorsAnswers.length
   }
 
+  openInfoModal(title, name, link) {
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    modalRef.componentInstance.boldName = title;
+    modalRef.componentInstance.name = name;
+    modalRef.componentInstance.link = link;
+  }
 
 }

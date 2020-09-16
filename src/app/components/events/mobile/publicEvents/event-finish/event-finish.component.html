@@ -13,11 +13,17 @@
     <div>
         <div class="boxInfo">
             <div class="boxSmall">
+                <div class="infoImg"
+                    (click)="openInfoModal('Participants - ', 'Total number of Players and Experts who joined the event.', undefined)">
+                </div>
                 <div class="partsImg"></div>
                 <p class="name">Participants</p>
                 <p class="number">{{playersCount()}}</p>
             </div>
             <div class="boxBig">
+                <div class="infoImg"
+                    (click)="openInfoModal('Total Bet - ', 'Total value of all bets made by winners and losers of the event.', undefined)">
+                </div>
                 <div class="totalImg"></div>
                 <p class="name">Total Bet</p>
                 <p class="number">{{totalBet()}}</p>
@@ -25,12 +31,22 @@
         </div>
         <div class="boxInfo">
             <div class="boxSmall">
+                <div class="infoImg"
+                    (click)="openInfoModal('Tokens Minted - Coming soon!', 'Each event on Bettery platform will generate a certain amount of BTY depending on how many participants joined, given as extra bonuses to Hosts, winning Players, and Experts.', 'Learn more about how Bettery works')">
+                </div>
                 <div class="minedImg"></div>
                 <p class="name">Minted</p>
+                <a class="comingSoon"
+                    (click)="openInfoModal('Tokens Minted - Coming soon!', 'Each event on Bettery platform will generate a certain amount of BTY depending on how many participants joined, given as extra bonuses to Hosts, winning Players, and Experts.', 'Learn more about how Bettery works')">Coming
+                    soon!</a>
             </div>
             <div class="boxBig">
+                <div class="infoImg"
+                    (click)="openInfoModal('Biggest Wins - ', 'The amount won by the winning Player who made the highest bet in the event.', undefined)">
+                </div>
                 <div class="bestWinImg"></div>
                 <p class="name">Biggest Wins</p>
+                <p class="number">TODO</p>
             </div>
         </div>
     </div>
@@ -40,8 +56,24 @@
     </div>
 
     <div *ngFor="let answer of eventData.answers; index as i">
-        <div class="answerBoxCreated">
+        <div class="answerBoxCreated" *ngIf="eventData.finalAnswerNumber != i">
             <p class="answerCreated">{{answer}}</p>
+        </div>
+        <div class="answer_active" *ngIf="answer == eventData?.finalAnswer">
+            <div class="d-flex justify-content-between">
+                <div class="mb-2">
+                    <p>{{answer}}</p>
+                </div>
+                <div class="check_img"></div>
+            </div>
+            <div class="hr"></div>
+            <div class="d-flex mt-2">
+                <div><span>Validated by:</span></div>
+                <img src="{{eventData?.validatorAnswer.avatar}}" class="experAvatar" referrerpolicy="no-referrer">
+                <div>
+                    <p>{{eventData?.validatorAnswer.nickName}}</p>
+                </div>
+            </div>
         </div>
     </div>
 

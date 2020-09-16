@@ -27,8 +27,6 @@ import { NumericDirective } from './helpers/numeric';
 
 import { CreateEventModule } from './components/createEvent/createEvent.module';
 import { EventsModule } from './components/events/events.module';
-// import { SpinnerLoadingComponent } from './components/share/spinner-loading/spinner-loading.component';
-import { WelcomePageComponent } from './components/share/welcome-page/welcome-page.component'
 import {ShareModule} from "./components/share/share.module";
 
 
@@ -42,8 +40,6 @@ import {ShareModule} from "./components/share/share.module";
         HistoryComponent,
         ErcCoinSaleComponent,
         NumericDirective,
-        // SpinnerLoadingComponent,
-        WelcomePageComponent,
     ],
   imports: [
     AvatarModule,

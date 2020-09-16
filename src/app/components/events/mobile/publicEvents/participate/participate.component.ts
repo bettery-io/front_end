@@ -26,6 +26,7 @@ export class ParticipateComponent implements OnInit, OnDestroy {
   coinType: string;
   answered: boolean = false;
   submitted: boolean = false;
+  spinnerLoading: boolean = false;
   errorMessage: string;
   coinInfo;
   userSub: Subscription
@@ -76,11 +77,12 @@ export class ParticipateComponent implements OnInit, OnDestroy {
     if (this.answerForm.invalid) {
       return;
     }
-    let balance = this.eventData.currencyType == "token" ? this.coinInfo.tokenBalance : this.coinInfo.loomBalance;
 
+    let balance = this.eventData.currencyType == "token" ? this.coinInfo.tokenBalance : this.coinInfo.loomBalance;
     if (Number(balance) < Number(this.answerForm.value.amount)) {
       this.errorMessage = "Don't have enough " + this.coinType
     } else {
+      this.spinnerLoading = true;
       let web3 = new Web3();
       let contract = new Contract();
       var _question_id = this.eventData.id;
@@ -99,8 +101,10 @@ export class ParticipateComponent implements OnInit, OnDestroy {
           this.setToDB(_whichAnswer, this.eventData, sendToContract.transactionHash, _money)
         }
       } else if (Number(validator) === 1) {
+        this.spinnerLoading = false;
         this.errorMessage = "Event not started yeat."
       } else if (Number(validator) === 2) {
+        this.spinnerLoading = false;
         this.errorMessage = "Event is finished"
       }
     }
@@ -121,11 +125,13 @@ export class ParticipateComponent implements OnInit, OnDestroy {
       amount: Number(_money)
     }
     this.postSub = this.postService.post("answer", data).subscribe(async () => {
+      this.spinnerLoading = false
       await this.updateBalance();
       this.errorMessage = undefined;
       this.answered = true;
     },
       (err) => {
+        this.spinnerLoading = false
         console.log(err)
       })
   }

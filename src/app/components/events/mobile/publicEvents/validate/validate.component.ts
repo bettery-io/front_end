@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../../app.state';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ClipboardService } from 'ngx-clipboard'
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../../app.state';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ClipboardService} from 'ngx-clipboard'
 import Contract from '../../../../../contract/contract';
-import { PostService } from '../../../../../services/post.service';
+import {PostService} from '../../../../../services/post.service';
 import _ from "lodash";
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'validate',
@@ -20,6 +20,8 @@ export class ValidateComponent implements OnInit, OnDestroy {
   timeIsValid: boolean;
   created: boolean = false;
   submitted: boolean = false;
+  spinnerLoading: boolean = false
+
   answerForm: FormGroup;
   errorMessage: string;
   userData;
@@ -51,12 +53,16 @@ export class ValidateComponent implements OnInit, OnDestroy {
     })
   }
 
-  get f() { return this.answerForm.controls; }
+  get f() {
+    return this.answerForm.controls;
+  }
 
   checkTimeIsValid() {
     let time = Number((Date.now() / 1000).toFixed(0))
     this.timeIsValid = this.eventData.endTime - time > 0;
-    if (this.timeIsValid) { this.calculateDate() }
+    if (this.timeIsValid) {
+      this.calculateDate()
+    }
   }
 
   calculateDate() {
@@ -104,6 +110,8 @@ export class ValidateComponent implements OnInit, OnDestroy {
   }
 
   async setValidation() {
+    this.spinnerLoading = true;
+
     let contract = new Contract();
     var _question_id = this.eventData.id;
     var _whichAnswer = _.findIndex(this.eventData.answers, (o) => { return o == this.answerForm.value.answer; });
@@ -118,12 +126,15 @@ export class ValidateComponent implements OnInit, OnDestroy {
         }
         break;
       case 1:
+        this.spinnerLoading = false;
         this.errorMessage = "Event not started yeat."
         break;
       case 2:
+        this.spinnerLoading = false;
         this.errorMessage = "Event is finished."
         break;
       case 3:
+        this.spinnerLoading = false;
         this.errorMessage = "You have been like the participant in this event. The participant can't be the validator."
         break;
     }
@@ -142,10 +153,12 @@ export class ValidateComponent implements OnInit, OnDestroy {
       amount: 0
     }
     this.postSub = this.postService.post("answer", data).subscribe(async () => {
-      this.errorMessage = undefined;
-      this.created = true;
-    },
+        this.errorMessage = undefined;
+        this.created = true;
+        this.spinnerLoading = false;
+      },
       (err) => {
+        this.spinnerLoading = false;
         console.log(err)
       })
   }

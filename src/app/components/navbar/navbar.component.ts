@@ -1,24 +1,23 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
-import { Coins } from '../../models/Coins.model';
+import {Component, OnInit, OnDestroy, HostListener, ViewChild} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../app.state';
+import {Coins} from '../../models/Coins.model';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
-import { RegistrationComponent } from '../registration/registration.component';
+import {RegistrationComponent} from '../registration/registration.component';
 import maticInit from '../../contract/maticInit.js'
 
 import Web3 from 'web3';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { PostService } from '../../services/post.service';
-import { GetService } from '../../services/get.service';
-import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {PostService} from '../../services/post.service';
+import {GetService} from '../../services/get.service';
+import {faReply, faShare} from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
 import Contract from '../../contract/contract';
 import web3Obj from '../../helpers/torus'
-import { Subscription } from 'rxjs';
-
-
+import {Subscription} from 'rxjs';
+import {WelcomePageComponent} from "../share/welcome-page/welcome-page.component";
 
 
 @Component({
@@ -27,7 +26,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./navbar.component.sass']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  @ViewChild('insideElement', { static: false }) insideElement;
+  @ViewChild('insideElement', {static: false}) insideElement;
 
   nickName: string = undefined;
   web3: Web3 | undefined = null;
@@ -64,11 +63,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   verifier: string = undefined;
   openNavBar = false;
 
+  spinnerLoading: boolean;
+  saveUserLocStorage = [];
+
   constructor(
     private store: Store<AppState>,
     private modalService: NgbModal,
     private postService: PostService,
-    private getService: GetService
+    private getService: GetService,
   ) {
 
     this.userSub = this.store.select("user").subscribe((x) => {
@@ -135,7 +137,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.postSub = this.postService.post("my_activites/invites", data)
       .subscribe(async (x: any) => {
         let amount = x.length
-        this.store.dispatch(new InvitesAction.UpdateInvites({ amount: amount }));
+        this.store.dispatch(new InvitesAction.UpdateInvites({amount: amount}));
       })
   }
 
@@ -228,7 +230,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   open(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
     this.updateBalance()
   }
 
@@ -276,7 +278,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         let web3 = new Web3()
         var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
         let contract = new Contract()
-        let { withdrawal, sign } = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier)
+        let {withdrawal, sign} = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier)
         console.log(withdrawal);
         if (withdrawal.transactionHash !== undefined) {
           let data = {
@@ -378,9 +380,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async loginWithTorus() {
+    this.spinnerLoading = true;
     try {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
+      this.spinnerLoading = false;
     } catch (error) {
       console.error(error)
     }
@@ -390,6 +394,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let userInfo = await web3Obj.torus.getUserInfo("")
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
 
+    this.localStoreUser(userInfo);
     console.log(userInfo)
     console.log(userWallet)
 
@@ -458,7 +463,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
 
-
   protected onDocumentClick(event: MouseEvent) {
     if (this.insideElement.nativeElement.contains(event.target)) {
       return;
@@ -477,4 +481,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.getSub.unsubscribe();
   }
 
+  openModal(contentModal) {
+    this.modalService.open(contentModal, {size: 'sm', centered: true});
+    this.openNavBar = false;
+  }
+
+  localStoreUser(userInfo): void {
+    if (localStorage.getItem('userBettery') === undefined || localStorage.getItem('userBettery') == null) {
+      localStorage.setItem('userBettery', JSON.stringify(this.saveUserLocStorage));
+    }
+    const getItem = JSON.parse(localStorage.getItem('userBettery'));
+    if (getItem.length === 0 || !getItem.includes(userInfo.email)) {
+      const array = JSON.parse(localStorage.getItem('userBettery'));
+      array.push(userInfo.email);
+      localStorage.setItem('userBettery', JSON.stringify(array));
+      this.modalService.open(WelcomePageComponent);
+    }
+  }
 }

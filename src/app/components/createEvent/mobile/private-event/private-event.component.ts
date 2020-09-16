@@ -8,6 +8,7 @@ import Contract from '../../../../contract/contract';
 import { ClipboardService } from 'ngx-clipboard'
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { timeStamp } from 'console';
 
 @Component({
   selector: 'private-event-modile',
@@ -29,6 +30,8 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
   idSub: Subscription
   postSub: Subscription
   createSub: Subscription
+  spinnerLoading: boolean = false;
+
 
 
   constructor(
@@ -70,10 +73,12 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
   }
 
   createEvent() {
+    this.spinnerLoading = true;
     let id = this.generateID()
     this.idSub = id.subscribe((x: any) => {
       this.sendToContract(x._id);
     }, (err) => {
+      this.spinnerLoading = false;
       console.log(err)
       console.log("error from generate id")
     })
@@ -101,6 +106,7 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
       }
 
     } catch (err) {
+      this.spinnerLoading = false;
       console.log(err);
       this.deleteEvent(id);
     }
@@ -140,6 +146,7 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     this.createSub = this.postService.post("privateEvents/createEvent", this.eventData)
       .subscribe(
         () => {
+          this.spinnerLoading = false;
           this.calculateDate();
           this.spinner = false;
           this.created = true;

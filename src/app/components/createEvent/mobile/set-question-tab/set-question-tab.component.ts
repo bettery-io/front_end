@@ -1,12 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.state';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../app.state';
 import web3Obj from '../../../../helpers/torus'
-import { PostService } from '../../../../services/post.service';
+import {PostService} from '../../../../services/post.service';
 import * as UserActions from '../../../../actions/user.actions';
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {WelcomePageComponent} from "../../../share/welcome-page/welcome-page.component";
 
 @Component({
   selector: 'set-question-tab',
@@ -26,11 +28,17 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   postSub: Subscription;
 
+  spinnerLoading: boolean;
+  saveUserLocStorage = [];
+
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
     private http: PostService,
-  ) { }
+    private modalService: NgbModal
+  ) {
+  }
 
   ngOnInit(): void {
     this.userSub = this.store.select("user").subscribe((x) => {
@@ -59,8 +67,13 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
     }
   }
 
-  get f() { return this.questionForm.controls; }
-  get t() { return this.f.answers as FormArray; }
+  get f() {
+    return this.questionForm.controls;
+  }
+
+  get t() {
+    return this.f.answers as FormArray;
+  }
 
   oneMoreAnswer() {
     this.t.push(this.formBuilder.group({
@@ -89,11 +102,13 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
   }
 
   async loginWithTorus() {
+    this.spinnerLoading = true;
     this.clicked = true;
     try {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
     } catch (error) {
+      this.spinnerLoading = false;
       console.error(error)
     }
   }
@@ -101,6 +116,8 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
   async setTorusInfoToDB() {
     let userInfo = await web3Obj.torus.getUserInfo("")
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
+
+    this.localStoreUser(userInfo)
 
     console.log(userInfo)
     console.log(userWallet)
@@ -117,7 +134,7 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
     this.postSub = this.http.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
-          console.log(x);
+          this.spinnerLoading = false;
           this.addUser(
             x.email,
             x.nickName,
@@ -177,4 +194,16 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
     }
   }
 
+  localStoreUser(userInfo): void {
+    if (localStorage.getItem('userBettery') === undefined || localStorage.getItem('userBettery') == null) {
+      localStorage.setItem('userBettery', JSON.stringify(this.saveUserLocStorage));
+    }
+    const getItem = JSON.parse(localStorage.getItem('userBettery'));
+    if (getItem.length === 0 || !getItem.includes(userInfo.email)) {
+      const array = JSON.parse(localStorage.getItem('userBettery'));
+      array.push(userInfo.email);
+      localStorage.setItem('userBettery', JSON.stringify(array));
+      this.modalService.open(WelcomePageComponent);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,8 @@ import { MakeRulesTabComponent } from './make-rules-tab/make-rules-tab.component
 import { PrivateEventComponent } from './private-event/private-event.component';
 import { PublicEventComponent } from './public-event/public-event.component';
 import { AvatarModule } from 'ngx-avatar';
+import {ShareModule} from "../../share/share.module";
+
 
 @NgModule({
     imports: [
@@ -24,8 +26,9 @@ import { AvatarModule } from 'ngx-avatar';
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forChild([
-            { path: "create-event", component: EventsTemplatesComponent }
-        ])
+            {path: "create-event", component: EventsTemplatesComponent}
+        ]),
+        ShareModule,
     ],
     declarations: [
         EventsTemplatesComponent,

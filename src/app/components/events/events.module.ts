@@ -3,10 +3,13 @@ import { MobileEventsModule } from './mobile/mobileEvents.module';
 import { DesktopEventsModule } from './desktop/desktopEvents.module'
 
 
+
+
+
 @NgModule({
     imports: [
         MobileEventsModule,
-        DesktopEventsModule
+        DesktopEventsModule,
     ],
 })
 export class EventsModule { }

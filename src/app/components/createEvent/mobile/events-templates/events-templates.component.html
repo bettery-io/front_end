@@ -1,4 +1,4 @@
-<div *ngIf="whichEvent != 'createPrivateEvent' && whichEvent != 'createPublicEvent'">
+<div *ngIf="whichEvent != 'createPrivateEvent' && whichEvent != 'createPublicEvent'" class="bg-img">
     <p class="createEvent">CREATE EVENT</p>
     <div class="markBox">
         <div class="tabSpace">
@@ -31,5 +31,5 @@
 </div>
 <div *ngIf="whichEvent == 'createPrivateEvent' || whichEvent == 'createPublicEvent'">
     <private-event-modile *ngIf="whichEvent=='createPrivateEvent'" (goBack)="switchToMakeRuleTab()" [formData]="formData"></private-event-modile>
-    <public-event-mobile *ngIf="whichEvent=='createPublicEvent'" (goBack)="switchToMakeRuleTab()" [formData]="formData"></public-event-mobile>  
+    <public-event-mobile *ngIf="whichEvent=='createPublicEvent'" (goBack)="switchToMakeRuleTab()" [formData]="formData"></public-event-mobile>
 </div>

@@ -1,4 +1,4 @@
-<div class="box" *ngIf="!created">
+<div class="box bg-img-public" *ngIf="!created">
     <p class="comfirm">CONFIRM EVENT</p>
 
     <div class="quizBox">
@@ -67,7 +67,7 @@
         <button type="button" class="next" (click)="createEvent()">CREATE</button>
     </div>
 </div>
-<div class="box" *ngIf="created">
+<div class="box bg-img-public" *ngIf="created">
     <div class="titleBox">
         <div class="imgCoin"></div>
         <p class="title">NOW BETTING</p>
@@ -154,5 +154,6 @@
                 ut labore et dolore magna aliqua.</p>
         </div>
     </div>
-
 </div>
+
+<app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>

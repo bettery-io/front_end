@@ -26,19 +26,25 @@ import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.c
 import { NumericDirective } from './helpers/numeric';
 
 import { CreateEventModule } from './components/createEvent/createEvent.module';
-import { EventsModule } from './components/events/events.module'
+import { EventsModule } from './components/events/events.module';
+// import { SpinnerLoadingComponent } from './components/share/spinner-loading/spinner-loading.component';
+import { WelcomePageComponent } from './components/share/welcome-page/welcome-page.component'
+import {ShareModule} from "./components/share/share.module";
+
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    RegistrationComponent,
-    HomeComponent,
-    HistoryComponent,
-    ErcCoinSaleComponent,
-    NumericDirective,
-  ],
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        RegistrationComponent,
+        HomeComponent,
+        HistoryComponent,
+        ErcCoinSaleComponent,
+        NumericDirective,
+        // SpinnerLoadingComponent,
+        WelcomePageComponent,
+    ],
   imports: [
     AvatarModule,
     ClipboardModule,
@@ -56,18 +62,22 @@ import { EventsModule } from './components/events/events.module'
     NgbModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: "home", component: HomeComponent },
-      { path: "", redirectTo: "home", pathMatch: "full" },
-      { path: 'history', component: HistoryComponent },
-      { path: 'erc20', component: ErcCoinSaleComponent }
-    ])
+      {path: "home", component: HomeComponent},
+      {path: "", redirectTo: "home", pathMatch: "full"},
+      {path: 'history', component: HistoryComponent},
+      {path: 'erc20', component: ErcCoinSaleComponent}
+    ]),
+    ShareModule
   ],
-  providers: [
-    PostService,
-    GetService
-  ],
-  bootstrap: [
-    AppComponent
-  ]
+    providers: [
+        PostService,
+        GetService
+    ],
+    exports: [
+        // SpinnerLoadingComponent
+    ],
+    bootstrap: [
+        AppComponent
+    ]
 })
 export class AppModule { }

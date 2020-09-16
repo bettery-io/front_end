@@ -40,6 +40,9 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   postSub: Subscription
   spinnerLoading: boolean;
 
+  saveUserLocStorage = [];
+
+
   constructor(
     private http: PostService,
     private store: Store<AppState>,
@@ -176,9 +179,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
 
-      if (!localStorage.getItem('userBettery')) {
-        this.modalService.open(WelcomePageComponent);
-      }
+
       this.spinnerLoading = false;
       return true;
     } catch (error) {
@@ -191,8 +192,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     let userInfo = await web3Obj.torus.getUserInfo("")
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
 
-    localStorage.setItem('userBettery', userInfo.email);
-
+     this.localStoreUser(userInfo)
     console.log(userInfo)
     console.log(userWallet)
 
@@ -354,5 +354,17 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     this.postSub.unsubscribe()
   }
 
+  localStoreUser(userInfo): void {
+    if (localStorage.getItem('userBettery') === undefined || localStorage.getItem('userBettery') == null) {
+      localStorage.setItem('userBettery', JSON.stringify(this.saveUserLocStorage));
+    }
+    const getItem = JSON.parse(localStorage.getItem('userBettery'));
+    if (getItem.length === 0 || !getItem.includes(userInfo.email)) {
+      const array = JSON.parse(localStorage.getItem('userBettery'));
+      array.push(userInfo.email);
+      localStorage.setItem('userBettery', JSON.stringify(array));
+      this.modalService.open(WelcomePageComponent);
+    }
+  }
 
 }

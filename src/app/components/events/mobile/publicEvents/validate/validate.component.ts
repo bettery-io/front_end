@@ -20,6 +20,8 @@ export class ValidateComponent implements OnInit, OnDestroy {
   timeIsValid: boolean;
   created: boolean = false;
   submitted: boolean = false;
+  spinnerLoading: boolean = false
+
   answerForm: FormGroup;
   errorMessage: string;
   userData;
@@ -30,8 +32,6 @@ export class ValidateComponent implements OnInit, OnDestroy {
   minutes;
   userSub: Subscription;
   postSub: Subscription;
-
-  spinnerLoading: boolean;
 
   constructor(
     private store: Store<AppState>,
@@ -110,12 +110,11 @@ export class ValidateComponent implements OnInit, OnDestroy {
   }
 
   async setValidation() {
+    this.spinnerLoading = true;
 
     let contract = new Contract();
     var _question_id = this.eventData.id;
     var _whichAnswer = _.findIndex(this.eventData.answers, (o) => { return o == this.answerForm.value.answer; });
-    console.log(_question_id)
-    console.log(_whichAnswer)
     let contr = await contract.publicEventContract()
     let validator = await contr.methods.setTimeValidator(_question_id).call();
     console.log(validator)
@@ -129,19 +128,21 @@ export class ValidateComponent implements OnInit, OnDestroy {
         }
         break;
       case 1:
+        this.spinnerLoading = false;
         this.errorMessage = "Event not started yeat."
         break;
       case 2:
+        this.spinnerLoading = false;
         this.errorMessage = "Event is finished."
         break;
       case 3:
+        this.spinnerLoading = false;
         this.errorMessage = "You have been like the participant in this event. The participant can't be the validator."
         break;
     }
   }
 
   setToDBValidation(answer, dataAnswer, transactionHash) {
-    this.spinnerLoading = true;
     let data = {
       event_id: dataAnswer.id,
       date: new Date(),
@@ -160,6 +161,7 @@ export class ValidateComponent implements OnInit, OnDestroy {
         this.spinnerLoading = false;
       },
       (err) => {
+        this.spinnerLoading = false;
         console.log(err)
       })
   }

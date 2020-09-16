@@ -29,6 +29,7 @@ export class PublicEventComponent implements OnInit, OnDestroy {
   idSub: Subscription
   postSub: Subscription
   createSub: Subscription
+  spinnerLoading: boolean = false;
 
   constructor(
     private store: Store<AppState>,
@@ -118,10 +119,12 @@ export class PublicEventComponent implements OnInit, OnDestroy {
   }
 
   createEvent() {
+    this.spinnerLoading = true;
     let id = this.generateID()
     this.idSub = id.subscribe((x: any) => {
       this.sendToContract(x._id);
     }, (err) => {
+      this.spinnerLoading = false;
       console.log(err)
       console.log("error from generate id")
     })
@@ -160,6 +163,7 @@ export class PublicEventComponent implements OnInit, OnDestroy {
         this.setToDb(id, sendToContract.transactionHash);
       }
     } catch (error) {
+      this.spinnerLoading = false;
       console.log(error);
       this.deleteEvent(id)
     }
@@ -197,11 +201,13 @@ export class PublicEventComponent implements OnInit, OnDestroy {
     this.postSub = this.PostService.post("publicEvents/set", this.quizData)
       .subscribe(
         () => {
+          this.spinnerLoading = false;
           this.created = true;
           this.calculateDate()
           console.log("set to db DONE")
         },
         (err) => {
+          this.spinnerLoading = false;
           console.log("set qestion error");
           console.log(err);
         })

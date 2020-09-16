@@ -46,6 +46,7 @@ export class PublicMainComponent implements OnInit, OnDestroy {
       }, (err) => {
         console.log(err)
         this.errorPage = true;
+        this.spinnerLoading = false;
       })
   }
 

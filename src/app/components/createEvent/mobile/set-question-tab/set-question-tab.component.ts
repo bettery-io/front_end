@@ -107,8 +107,8 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
     try {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
-      this.spinnerLoading = false;
     } catch (error) {
+      this.spinnerLoading = false;
       console.error(error)
     }
   }
@@ -134,7 +134,7 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
     this.postSub = this.http.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
-          console.log(x);
+          this.spinnerLoading = false;
           this.addUser(
             x.email,
             x.nickName,

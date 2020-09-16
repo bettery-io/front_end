@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import { ClipboardService } from 'ngx-clipboard'
@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './public-event.component.html',
   styleUrls: ['./public-event.component.sass']
 })
-export class PublicEventComponent implements OnInit, OnDestroy {
+export class PublicEventComponent implements  OnDestroy {
   @Input() formData;
   @Output() goBack = new EventEmitter();
   created = false;
@@ -44,10 +44,6 @@ export class PublicEventComponent implements OnInit, OnDestroy {
         this.host = x;
       }
     })
-  }
-
-  ngOnInit(): void {
-    console.log(this.formData)
   }
 
   cancel() {

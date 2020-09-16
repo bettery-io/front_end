@@ -23,6 +23,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   errorMessage = undefined;
   userSub: Subscription;
   postSub: Subscription;
+  spinnerLoading: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,6 +58,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   }
 
   async sendToBlockchain(answer) {
+    this.spinnerLoading = true;
     let id = this.data.id
     let wallet = this.userData.wallet
     let verifier = this.userData.verifier
@@ -71,13 +73,16 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
             this.sendToDb(transaction.transactionHash, answer)
           }
         } catch (error) {
+          this.spinnerLoading = false;
           console.log(error);
         }
         break;
       case 1:
+        this.spinnerLoading = false;
         this.errorMessage = "Event not started yeat."
         break;
       case 2:
+        this.spinnerLoading = false;
         this.errorMessage = "Event is finished."
         break;
     }
@@ -92,9 +97,11 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
       from: this.userData._id,
     }
     this.postSub = this.postService.post("privateEvents/participate", data).subscribe(async () => {
+      this.spinnerLoading = false;
       this.errorMessage = undefined;
       this.count = true;
     }, (err) => {
+      this.spinnerLoading = false;
       console.log(err)
     })
   }

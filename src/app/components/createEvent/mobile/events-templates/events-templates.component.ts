@@ -48,7 +48,6 @@ export class EventsTemplatesComponent implements OnInit {
     this.formData.question = data.question;
     this.formData.answers = data.answers;
     this.formData.resolutionDetalis = data.details;
-    console.log(data);
   }
 
   switchToMakeRules(data) {
@@ -60,7 +59,6 @@ export class EventsTemplatesComponent implements OnInit {
   }
 
   swithToCreateRoomTab(data) {
-    console.log(data);
     this.whichEvent = "createRoom";
     this.formData.exactDay = data.day;
     this.formData.exactTimeBool = data.exactTimeBool;

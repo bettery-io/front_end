@@ -27,6 +27,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   ifTimeValid: boolean;
   participatedIndex: number;
   finised: boolean = false;
+  spinnerLoading: boolean = false;
 
   routeSub: Subscription;
   userSub: Subscription;
@@ -113,10 +114,12 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   async loginWithTorus() {
     if (!this.userData) {
       try {
+        this.spinnerLoading = true;
         await web3Obj.initialize();
         this.setTorusInfoToDB();
         return true;
       } catch (error) {
+        this.spinnerLoading = false;
         console.error(error);
         return false;
       }
@@ -140,6 +143,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     this.postService.post('user/torus_regist', data)
       .subscribe(
         (x: any) => {
+          this.spinnerLoading = false;
           this.addUser(
             x.email,
             x.nickName,

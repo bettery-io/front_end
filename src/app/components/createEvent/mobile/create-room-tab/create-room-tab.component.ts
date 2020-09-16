@@ -22,7 +22,6 @@ export class CreateRoomTabComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.formData)
     this.createRoomForm = this.formBuilder.group({
       createNewRoom: this.formData.whichRoom
     })

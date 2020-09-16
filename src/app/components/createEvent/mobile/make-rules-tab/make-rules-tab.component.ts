@@ -82,8 +82,6 @@ export class MakeRulesTabComponent implements OnInit {
     })
     var monthtext = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-    console.log(this.formData.exactMonth)
-
     this.exactTime = this.formBuilder.group({
       day: [this.formData.exactDay],
       month: [typeof this.formData.exactMonth === 'string' ? this.formData.exactMonth : monthtext[this.formData.exactMonth]],

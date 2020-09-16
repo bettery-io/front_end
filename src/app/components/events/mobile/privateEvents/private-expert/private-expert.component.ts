@@ -18,6 +18,7 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
   @Input() data: any;
   @Output() changed = new EventEmitter<boolean>();
   @Output() changed2 = new EventEmitter<boolean>();
+  spinnerLoading: boolean = false;
   join: boolean;
   confirm: boolean;
   ifTimeValid: boolean;
@@ -75,6 +76,7 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
   get f() { return this.answerForm.controls; }
 
   async sendToBlockchain(answer) {
+    this.spinnerLoading = true;
     let id = this.data.id
     let wallet = this.userData.wallet
     let verifier = this.userData.verifier
@@ -89,13 +91,16 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
             this.sendToDb(transaction.transactionHash, answer)
           }
         } catch (error) {
+          this.spinnerLoading = false;
           console.log(error);
         }
         break;
       case 1:
+        this.spinnerLoading = false;
         this.errorMessage = "Event not started yeat."
         break;
       case 0:
+        this.spinnerLoading = false;
         this.errorMessage = "Time for validation started yeat"
         break;
     }
@@ -111,9 +116,11 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
       from: this.userData._id,
     }
     this.postSub = this.postService.post("privateEvents/validate", data).subscribe(async () => {
+      this.spinnerLoading = false
       this.errorMessage = undefined;
       this.confirm = true;
     }, (err) => {
+      this.spinnerLoading = false
       console.log(err)
     })
   }

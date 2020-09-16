@@ -60,9 +60,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     let userInfo = await web3Obj.torus.getUserInfo("")
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
 
-    console.log(userInfo)
-    console.log(userWallet)
-
     let data: Object = {
       _id: null,
       wallet: userWallet,

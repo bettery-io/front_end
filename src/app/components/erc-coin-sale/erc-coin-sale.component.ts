@@ -69,7 +69,6 @@ export class ErcCoinSaleComponent implements OnInit {
 
     let price = await this.tokenSale.methods.tokenPrice().call();
     this.tokenPricePrivate = Number(price);
-    console.log(this.tokenPricePrivate)
     this.tokenPrice = Number(web3.utils.fromWei(price, "ether"));
 
     // Detect Sell event
@@ -89,7 +88,6 @@ export class ErcCoinSaleComponent implements OnInit {
     let contract = new Contract();
     this.token = await contract.tokenContractMainETH(this.verifier)
     let avaliableTokens = await this.token.methods.balanceOf(wallet).call();
-    console.log(avaliableTokens);
     let tokens = web3.utils.fromWei(avaliableTokens, 'ether');
     this.tokenOwner = tokens;
     this.spinner = false;

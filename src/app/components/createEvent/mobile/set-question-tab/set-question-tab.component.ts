@@ -119,9 +119,6 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
 
     this.localStoreUser(userInfo)
 
-    console.log(userInfo)
-    console.log(userWallet)
-
     let data: Object = {
       _id: null,
       wallet: userWallet,

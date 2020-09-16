@@ -38,7 +38,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   coinType;
   storeSub: Subscription
   postSub: Subscription
-  spinnerLoading: boolean;
+  spinnerLoading: boolean = false;
 
   saveUserLocStorage = [];
 
@@ -174,6 +174,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
         this.setTorusInfoToDB()
         return true;
       } catch (error) {
+        this.spinnerLoading = false;
         console.error(error)
         return false;
       }
@@ -201,6 +202,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     this.postSub = this.http.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
+          this.spinnerLoading = false;
           this.addUser(
             x.email,
             x.nickName,
@@ -215,6 +217,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
             x.verifier
           );
         }, (err) => {
+          this.spinnerLoading = false;
           console.log(err)
         })
   }

@@ -17,8 +17,6 @@ export class PublicMainComponent implements OnInit, OnDestroy {
   // TODO
   eventFinish: boolean = false;
 
-  spinnerLoading: boolean;
-
   constructor(
     private route: ActivatedRoute,
     private postService: PostService
@@ -36,16 +34,13 @@ export class PublicMainComponent implements OnInit, OnDestroy {
   }
 
   getDataFromServer(data) {
-    this.spinnerLoading = true;
     this.postSub = this.postService.post("publicEvents/get_by_id", data)
       .subscribe((x: any) => {
         this.eventData = x;
         this.errorPage = false;
-        this.spinnerLoading = false;
       }, (err) => {
         console.log(err)
         this.errorPage = true;
-        this.spinnerLoading = false;
       })
   }
 

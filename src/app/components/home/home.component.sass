@@ -1,3 +1,451 @@
-.home_box
+p, h1, h2, h3
+  margin: 0
+
+.main
+  color: #0B1511
+  max-width: 1440px
+  margin: auto
+  background: white
+
+header
+  display: flex
+  padding: 160px 70px 185px 70px
+
+.title
+  margin-bottom: 21px
+  background: url("../../../assets/landingPage/greenLine1.png") 38% 98% no-repeat
+  background-size: 520px 24px
+
+  & h1
+    font-weight: bold
+    font-size: 56px
+    line-height: 64px
+
+@media (max-width: 1000px)
+  .title
+    & h1
+      font-size: 40px
+      line-height: 42px
+
+  h2
+    font-size: 32px !important
+
+
+.title_text
+  margin-bottom: 64px
+
+  & p
+    font-weight: normal
+    font-size: 18px
+    line-height: 28px
+
+.btn_title
+  & button
+    padding: 8px 30px
     text-align: center
-    padding-top: 50px
+    font-weight: bold
+    font-size: 16px
+    line-height: 28px
+    background: #54DD96
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16)
+    border-radius: 22px
+    border: none
+    color: #0B1511
+
+.btn_text
+  font-weight: bold
+  font-size: 22px
+  line-height: 28px
+  margin-bottom: 16px
+
+.player
+  display: flex
+  align-items: center
+  justify-content: center
+
+  & p
+    font-weight: bold
+    font-size: 16px
+    line-height: 20px
+    text-align: center
+
+.bg_header
+  background: url("../../../assets/landingPage/main.png") 138px top no-repeat
+  background-size: contain
+  width: 1000px
+  height: 500px
+
+@media (max-width: 1000px)
+  .bg_header
+    display: none
+
+
+//========= second ===========
+.bettery_work
+  //padding: 0 70px 0 70px
+
+.card_item
+  display: flex
+  flex-direction: column
+  align-items: center
+  text-align: center
+  padding: 16px 12px 31px 12px
+  background: #FFFFFF
+  border: 1px solid #EEEEEE
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1)
+  border-radius: 32px
+  width: 222px
+  cursor: pointer
+  margin: 0 auto
+
+.bg-yellow
+  background-color: #FDD92A
+
+.bg-yellow:hover
+  background-color: #FFFFFF
+
+.bg-hover:hover
+  background-color: #FDD92A
+
+.box_left
+  display: flex
+  flex-direction: column
+  flex-wrap: wrap
+
+.box_right
+  display: flex
+  flex-direction: column
+  justify-content: center
+  padding-right: 20px
+
+.img-section2
+  background: url("../../../assets/landingPage/section2.png") left center no-repeat
+  background-size: contain
+  width: 64px
+  height: 64px
+
+.bettery_work_title
+  display: flex
+  align-items: center
+  //padding: 0 60px
+
+  & h2
+    font-weight: 600
+    font-size: 50px
+    line-height: 56px
+
+  & p
+    font-size: 18px
+    line-height: 28px
+
+//================== third =================
+
+.third
+  display: flex
+  padding-bottom: 212px
+
+.third-left
+  display: flex
+  align-items: center
+  //padding-left: 70px
+  padding-top: 95px
+
+  & p
+    font-weight: normal
+    font-size: 18px
+    line-height: 28px
+
+.third-right
+  padding-left: 58px
+  margin: 0 auto
+
+
+.img-choose
+  background: url("../../../assets/landingPage/Group31.png") left center no-repeat
+  background-size: contain
+  width: 600px
+  height: 592px
+
+.mt-16
+  margin-top: 16px
+
+.title_h2
+  & h2
+    font-weight: 600
+    font-size: 50px
+    line-height: 56px
+
+.four
+  margin-bottom: 259px
+
+.four_top
+  text-align: center
+  //margin: 0 400px
+  & h2
+    font-weight: 600
+    font-size: 50px
+    line-height: 56px
+
+  & p
+    font-size: 18px
+    line-height: 28px
+
+.four_card
+  display: flex
+  flex-direction: column
+  align-items: center
+  text-align: center
+  padding: 16px 20px 16px 20px
+  margin: 22px 20px 0 20px
+  background: #FFFFFF
+  border: 1px solid #EEEEEE
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1)
+  border-radius: 32px
+  cursor: pointer
+
+  & h3
+    font-weight: bold
+    font-size: 18px
+    line-height: 22px
+
+  & p
+    font-weight: normal
+    font-size: 14px
+    line-height: 20px
+
+.four_bottom
+  display: flex
+  flex-wrap: wrap
+
+//========== five ================
+.five
+  margin-bottom: 260px
+
+.five_top
+  text-align: center
+
+  & h2
+    font-weight: 600
+    font-size: 40px
+    line-height: 48px
+    text-align: center
+    padding-bottom: 16px
+
+  & p
+    font-size: 18px
+    line-height: 28px
+    text-align: center
+
+.five_bottom
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+
+.img-quoteLeft
+  background: url("../../../assets/landingPage/quote-left.png") left center no-repeat
+  background-size: contain
+  width: 179px
+  height: 37px
+
+.img-avatar
+  background: url("../../../assets/landingPage/Oval.png") left center no-repeat
+  background-size: contain
+  width: 65px
+  height: 65px
+
+.reversBorder
+  border-radius: 0 32px !important
+
+.comment_card
+  border: 3px solid #E0E4F3
+  box-sizing: border-box
+  box-shadow: 4px 4px 0 #FDD92A
+  border-radius: 32px 0 32px 4px
+  padding: 16px 12px 23px 12px
+  margin: 50px 20px 0 20px
+  background-color: #FFFFFF
+
+  & p
+    font-style: italic
+    font-weight: 600
+    font-size: 16px
+    line-height: 20px
+
+.name
+  & p
+    font-style: normal
+    font-weight: bold
+    font-size: 18px
+    line-height: 24px
+
+  & span
+    font-style: italic
+    font-weight: 600
+    font-size: 16px
+    line-height: 24px
+
+//============= Road map ======================
+.road-map
+  margin-bottom: 240px
+  margin-left: 0
+  margin-right: 0
+
+.road-map-top
+  margin-bottom: 75px
+
+  & h2
+    font-weight: 600
+    font-size: 40px
+    line-height: 48px
+    text-align: center
+    padding-bottom: 16px
+
+  & p
+    font-size: 18px
+    line-height: 28px
+    text-align: center
+
+.img-yellow_5
+  background: url("../../../assets/landingPage/Mask.png") left center no-repeat
+  background-size: contain
+  width: 120px
+  height: 120px
+  margin: auto
+  display: flex
+  justify-content: center
+  align-items: center
+
+.text_road
+  font-weight: bold
+  font-size: 16px
+  line-height: 20px
+  text-align: center
+
+  & span
+    color: #54DD96
+    font-weight: 900
+
+.green-box
+  background: #54DD96
+  border-radius: 8px
+  padding: 28px 16px 24px 16px
+  margin-top: 49px
+
+  font-weight: 600
+  font-size: 16px
+  line-height: 20px
+  text-align: center
+
+//  ========= Team ==========
+.team
+  margin-bottom: 150px
+
+.item_team
+  text-align: center
+
+.img_team_logo
+  background: url("../../../assets/landingPage/logoTeam.png") left center no-repeat
+  background-size: contain
+  width: 185px
+  height: 140px
+  margin: auto
+
+.img_team_avatar
+  background: url("../../../assets/landingPage/team_avatar.png") left center no-repeat
+  background-size: contain
+  width: 150px
+  height: 150px
+  margin: auto
+
+.img_team_linkedin
+  margin: auto
+
+  & img
+    width: 18px
+
+
+.team_card_name
+  margin-bottom: 16px
+
+  & h4
+    font-weight: bold
+    font-size: 18px
+    line-height: 27px
+
+  & p
+    font-style: italic
+    font-weight: 600
+    font-size: 14px
+    line-height: 21px
+    text-align: center
+    color: #616161
+
+.team_card_text
+  font-weight: 600
+  font-size: 14px
+  line-height: 20px
+  text-align: center
+  color: #0B1511
+
+
+//======== footer ===========
+
+footer
+  margin-bottom: 50px
+  padding-top: 72px
+  padding-bottom: 85px
+  background: #000000
+  color: #9E9E9E
+  font-weight: normal
+  font-size: 14px
+  line-height: 20px
+
+  & p
+    padding-bottom: 16px
+
+  & input
+    background: rgba(253, 217, 42, 0.0464926)
+    border: 1px solid #FDD92A
+    box-sizing: border-box
+    border-radius: 20px
+
+    &::placeholder
+      font-style: italic
+      font-weight: normal
+      font-size: 14px
+      line-height: 20px
+      color: #9E9E9E
+
+  & button
+    background: #FDD92A
+    border-radius: 0px 100px 100px 0px
+
+.h4
+  font-weight: 600
+  font-size: 18px
+  line-height: 27px
+  color: #E6E6E6
+
+.footer-left a
+  font-style: normal
+  font-weight: 600
+  font-size: 16px
+  line-height: 24px
+  color: #FDD92A
+
+.img_mail
+  background: url("../../../assets/landingPage/mail.png") left center no-repeat
+  background-size: contain
+  width: 32px
+  height: 32px
+  margin-top: 5px
+
+.img_telegram
+  background: url("../../../assets/landingPage/telegram.png") left center no-repeat
+  background-size: contain
+  width: 32px
+  height: 32px
+  margin-top: 5px
+
+.bg-main
+  background: url("../../../assets/landingPage/left.png") left 14% no-repeat, url("../../../assets/landingPage/left.png") left 43% no-repeat, url("../../../assets/landingPage/left.png") left 81% no-repeat, url("../../../assets/landingPage/right.png") right 58% no-repeat #FFFFFF

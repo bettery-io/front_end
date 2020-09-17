@@ -26,7 +26,8 @@ import { ErcCoinSaleComponent } from './components/erc-coin-sale/erc-coin-sale.c
 import { NumericDirective } from './helpers/numeric';
 
 import { CreateEventModule } from './components/createEvent/createEvent.module';
-import { EventsModule } from './components/events/events.module'
+import { EventsModule } from './components/events/events.module';
+import { LandingFormComponent } from './components/home/landing-form/landing-form.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { EventsModule } from './components/events/events.module'
     HistoryComponent,
     ErcCoinSaleComponent,
     NumericDirective,
+    LandingFormComponent,
   ],
   imports: [
     AvatarModule,

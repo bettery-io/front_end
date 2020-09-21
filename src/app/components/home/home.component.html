@@ -1,43 +1,111 @@
 <div class="main bg-main">
+  <nav class="container-fluid row align-items-center">
+    <div class="logo col-3 col-lg-2"></div>
+    <div class="d-flex align-items-center col-lg-9">
+      <ul class="nav_bar">
+        <li class="nav_bar_item"><a href="#">What you can do</a></li>
+        <li class="nav_bar_item"><a href="#">How it works</a></li>
+        <li class="nav_bar_item"><a href="#">Why Bettery</a></li>
+        <li class="nav_bar_item"><a href="#">Roadmap</a></li>
+        <li class="nav_bar_item"><a href="#">Team</a></li>
+        <li class="nav_bar_item"><a href="#">For Investors</a></li>
+        <li class="nav_bar_item"><a href="#">Blog</a></li>
+        <li class="nav_bar_item"><a href="#">Join us on Telegram</a></li>
+      </ul>
+    </div>
+    <div class="d-flex align-items-center pb-3 col-lg-1 lang-1">
+      <select id="language">
+        <option value="english">English</option>
+        <option value="vietnamese">Vietnamese</option>
+      </select>
+    </div>
+  </nav>
 
-  <header class="row container-fluid">
-    <div class="row">
-      <div class="title_block col-lg-7 col-sm-12 col-xs-12">
-        <div class="title">
-          <h1>Bring Everyone Together on what matters to you</h1>
-        </div>
-        <div class="title_text">
-          <p>Feature an event that matters to your friends or community, and let everyone bet or say the truth.</p>
-        </div>
-        <div class="btn_title">
-          <div class="btn_text">
-            What will be the weather tomorrow in Saigon?
+  <div class="mobile_nav container-fluid">
+    <div class="d-flex align-items-center justify-content-between row">
+      <div class="logo col-4"></div>
+
+      <div class="btn_short col-4 d-flex justify-content-end">
+        <div class="d-flex">
+          <div class="mr-2">
+            <select id="language2" class="lang-2">
+              <option value="english">EN</option>
+              <option value="vietnamese">VIE</option>
+            </select>
           </div>
-          <div>
-            <button class="btn btn-success">Create Event</button>
+          <div ngbDropdown class="d-inline-block">
+            <div class="icon-bar-img" id="dropdownBasic1" ngbDropdownToggle></div>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="correct-left">
+              <button ngbDropdownItem>What you can do</button>
+              <div class="dropdown-divider"></div>
+              <button ngbDropdownItem>How it works</button>
+              <div class="dropdown-divider"></div>
+              <button ngbDropdownItem>Why Bettery</button>
+              <div class="dropdown-divider"></div>
+              <button ngbDropdownItem>Roadmap</button>
+              <div class="dropdown-divider"></div>
+              <button ngbDropdownItem>Team</button>
+              <div class="dropdown-divider"></div>
+              <button ngbDropdownItem>For Investors</button>
+              <div class="dropdown-divider"></div>
+              <button ngbDropdownItem>Blog</button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="player col-lg-5 bg_header">
+    </div>
+  </div>
+
+
+  <header class="row container-fluid">
+    <div class="container">
+      <div class="row d-flex">
+        <div class="title_block col-lg-8 col-12">
+          <div class="title">
+            <h1>Bring Everyone Together on what matters to you</h1>
+          </div>
+          <div class="title_text">
+            <p>Feature an event that matters to your friends or community, and let everyone bet or say the truth.</p>
+          </div>
+          <div class="btn_title">
+            <div class="btn_text">
+              What will be the weather tomorrow in Saigon?
+            </div>
+            <div>
+              <button class="btn btn-success">Create Event</button>
+            </div>
+          </div>
+        </div>
+        <div class="player col-lg-4 col-12">
+          <div class="bg_header">
+          </div>
+        </div>
+        <div class="mobile_img col-12">
+          <div class="bg_basic"></div>
+        </div>
       </div>
     </div>
   </header>
 
   <section class="bettery_work row justify-content-around container-fluid">
-    <div class="bettery_work_box col-lg-5 col-xs-12 row ">
+    <div class="bettery_work_box col-lg-5 col-xs-12 row order-lg-first">
       <div class="box_left col">
         <div class="card_item mb-5 bg-hover">
-          <div class="mb-4">
+          <div class="mb-3">
             <div class="img-section2"></div>
           </div>
+          <h3 class="mb-2">Social Media Community</h3>
           <div class="card-text">
             <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, nostrud exercitation.</p>
           </div>
         </div>
         <div class="card_item mb-5 bg-yellow">
-          <div class="mb-4">
-            <div class="img-section2"></div>
+          <div class="mb-3">
+            <div class="round">
+              <div class="img_man"></div>
+            </div>
           </div>
+          <h3 class="mb-2">On My Own</h3>
           <div class="card-text">
             <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, nostrud exercitation.</p>
           </div>
@@ -45,18 +113,21 @@
       </div>
       <div class="box_right col">
         <div class="card_item bg-hover mb-5">
-          <div class="mb-4">
-            <div class="img-section2"></div>
+          <div class="mb-2">
+            <div class="round correct">
+              <div class="img_mans2"></div>
+            </div>
           </div>
+          <h3 class="mb-2">Friends and Mates</h3>
           <div class="card-text">
             <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, nostrud exercitation.</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-5 col-xs-12  bettery_work_title">
+    <div class="col-lg-5 col-xs-12  bettery_work_title order-first mb-5">
       <div>
-        <div>
+        <div class="mb-3">
           <h2>Bettery works for you</h2>
         </div>
         <div><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos doloribus esse eveniet, ex
@@ -73,7 +144,7 @@
         <div class="third-left col-lg-7 col-xs-12">
           <div class="third-title title_h2">
             <h2>Everyone can choose his role</h2>
-            <div class="mt-16">
+            <div class="mt-3">
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                 labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
                 laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -87,7 +158,7 @@
 
   <section class="four">
     <div class="four_top row justify-content-center mb-3">
-      <div class="col-8">
+      <div class="col-lg-6 col-md-10">
         <div>
           <h2 class="pb-3">Why Bettery?</h2>
         </div>
@@ -99,14 +170,16 @@
       </div>
     </div>
     <div class="four_bottom container-fluid">
-      <div class="row justify-content-between">
+      <div class="row justify-content-between a">
         <div class="col-lg-3 col-sm-6 col-sm-6">
           <div class="four_card">
             <div class="mb-4">
-              <div class="img-section2"></div>
+              <div class="img_bg_yellow d-flex justify-content-center align-items-center">
+                <img src="../../../assets/landingPage/Fill.png" alt="fill">
+              </div>
             </div>
             <div>
-              <h3>Uncompromised Outcom Copy</h3>
+              <h3>Uncompromised Outcomes</h3>
             </div>
             <div>
               <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, nostrud exercitation.</p>
@@ -117,7 +190,11 @@
         <div class="col-lg-3 col-xs-12 col-sm-6">
           <div class="four_card">
             <div class="mb-4">
-              <div class="img-section2"></div>
+              <div class="img_bg_yellow d-flex justify-content-center align-items-center correct-img">
+
+                <img src="../../../assets/landingPage/between.png" alt="between">
+
+              </div>
             </div>
             <div>
               <h3>Just between you</h3>
@@ -131,7 +208,9 @@
         <div class="col-lg-3 col-xs-12 col-sm-6">
           <div class="four_card">
             <div class="mb-4">
-              <div class="img-section2"></div>
+              <div class="img_bg_yellow d-flex justify-content-center align-items-center">
+                <img src="../../../assets/landingPage/money.png" alt="money">
+              </div>
             </div>
             <div>
               <h3>Hassle-free withdrawals</h3>
@@ -145,7 +224,9 @@
         <div class="col-lg-3 col-xs-12 col-sm-6">
           <div class="four_card">
             <div class="mb-4">
-              <div class="img-section2"></div>
+              <div class="img_bg_yellow d-flex justify-content-center align-items-center">
+                <img src="../../../assets/landingPage/last.png" alt="1">
+              </div>
             </div>
             <div>
               <h3>Truly personalized</h3>
@@ -161,7 +242,7 @@
 
   <section class="five">
     <div class="five_top row justify-content-center">
-      <div class="col-8">
+      <div class="col-lg-6 col-md-10">
         <div><h2>What others are saying</h2></div>
         <div><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt sit amet,
           consectetur adipiscing elit, sed do eiusmod tempor incididunt</p></div>
@@ -201,7 +282,7 @@
               </div>
             </div>
             <div class="d-flex">
-              <div class="img-avatar mr-2"></div>
+              <div class="img-avatar2 mr-2"></div>
               <div class="name">
                 <p>Sofie Hubert</p>
                 <span>Player</span>
@@ -221,7 +302,7 @@
               </div>
             </div>
             <div class="d-flex">
-              <div class="img-avatar mr-2"></div>
+              <div class="img-avatar3 mr-2"></div>
               <div class="name">
                 <p>Sofie Hubert</p>
                 <span>Player</span>
@@ -235,7 +316,7 @@
 
   <section class="road-map container-fluid">
     <div class="road-map-top row justify-content-center">
-      <div class="col-8">
+      <div class="col-lg-6 col-md-10">
         <div>
           <h2>Roadmap</h2>
         </div>
@@ -244,7 +325,7 @@
         </div>
       </div>
     </div>
-    <div class="road-map-bottom container">
+    <div class="container road-map-desctop">
       <div class="row mb-5 text_road">
 
         <div class="col-lg-3 col-xs-12 col-sm-6">
@@ -280,19 +361,89 @@
         </div>
       </div>
     </div>
+
+    <div class="container road-map-mobile">
+      <div class="row">
+        <div class="col-lg-3 col-xs-12 col-sm-6 mt-3">
+          <div class="card-date pt-2 pb-2">
+            <span>SEPTEMBER 2020</span>
+          </div>
+          <div class="card-mob-text pt-4  pb-1">
+            <div>
+              <p>MVP</p>
+            </div>
+            <div class="p-3 ">
+              <p>Public MVP, available for desktop/mobile web</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-xs-12 col-sm-6 mt-3">
+          <div class="card-date pt-2 pb-2">
+            <span>SEPTEMBER 2020</span>
+          </div>
+          <div class="card-mob-text pt-4  pb-1">
+            <div>
+              <p>MVP</p>
+            </div>
+            <div class="p-3 ">
+              <p>Public MVP, available for desktop/mobile web</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-xs-12 col-sm-6 mt-3">
+          <div class="card-date pt-2 pb-2">
+            <span>SEPTEMBER 2020</span>
+          </div>
+          <div class="card-mob-text pt-4  pb-1">
+            <div>
+              <p>MVP</p>
+            </div>
+            <div class="p-3 ">
+              <p>Public MVP, available for desktop/mobile web</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-xs-12 col-sm-6 mt-3">
+          <div class="card-date pt-2 pb-2">
+            <span>SEPTEMBER 2020</span>
+          </div>
+          <div class="card-mob-text pt-4  pb-1">
+            <div>
+              <p>MVP</p>
+            </div>
+            <div class="p-3 ">
+              <p>Public MVP, available for desktop/mobile web</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <section class="team">
     <div class="container-fluid">
       <div class="row justify-content-center">
-        <div class="item_team mb-5 col-lg-3 col-xs-12 col-sm-6">
+        <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
           <div class="img_team_logo mb-2"></div>
           <div class="team_card_text">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto aut et, eum ex illo ips
               Alias architecto aut et, eum ex illo ips</p>
           </div>
         </div>
-        <div class="item_team mb-5 col-lg-3 col-xs-12 col-sm-6">
+        <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
+          <div class="img_team_avatar3"></div>
+          <div class="team_card_name">
+            <h4>Indu Chakarvarti</h4>
+            <p>Chief Technology Officer</p>
+          </div>
+          <div class="team_card_text">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto aut et, eum ex illo ips</p>
+          </div>
+          <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
+        </div>
+        <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
           <div class="img_team_avatar"></div>
           <div class="team_card_name">
             <h4>Indu Chakarvarti</h4>
@@ -304,7 +455,31 @@
           <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
             src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
         </div>
-        <div class="item_team mb-5 col-lg-3 col-xs-12 col-sm-6">
+        <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
+          <div class="img_team_avatar2"></div>
+          <div class="team_card_name">
+            <h4>Indu Chakarvarti</h4>
+            <p>Chief Technology Officer</p>
+          </div>
+          <div class="team_card_text">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto aut et, eum ex illo ips</p>
+          </div>
+          <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
+        </div>
+        <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
+          <div class="img_team_avatar3"></div>
+          <div class="team_card_name">
+            <h4>Indu Chakarvarti</h4>
+            <p>Chief Technology Officer</p>
+          </div>
+          <div class="team_card_text">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto aut et, eum ex illo ips</p>
+          </div>
+          <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
+        </div>
+        <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
           <div class="img_team_avatar"></div>
           <div class="team_card_name">
             <h4>Indu Chakarvarti</h4>
@@ -316,8 +491,8 @@
           <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
             src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
         </div>
-        <div class="item_team mb-5 col-lg-3 col-xs-12 col-sm-6">
-          <div class="img_team_avatar"></div>
+        <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
+          <div class="img_team_avatar2"></div>
           <div class="team_card_name">
             <h4>Indu Chakarvarti</h4>
             <p>Chief Technology Officer</p>
@@ -328,44 +503,8 @@
           <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
             src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
         </div>
-        <div class="item_team mb-5 col-lg-3 col-xs-12 col-sm-6">
-          <div class="img_team_avatar"></div>
-          <div class="team_card_name">
-            <h4>Indu Chakarvarti</h4>
-            <p>Chief Technology Officer</p>
-          </div>
-          <div class="team_card_text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto aut et, eum ex illo ips</p>
-          </div>
-          <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
-            src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
-        </div>
-        <div class="item_team mb-5 col-lg-3 col-xs-12 col-sm-6">
-          <div class="img_team_avatar"></div>
-          <div class="team_card_name">
-            <h4>Indu Chakarvarti</h4>
-            <p>Chief Technology Officer</p>
-          </div>
-          <div class="team_card_text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto aut et, eum ex illo ips</p>
-          </div>
-          <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
-            src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
-        </div>
-        <div class="item_team mb-5 col-lg-3 col-xs-12 col-sm-6">
-          <div class="img_team_avatar"></div>
-          <div class="team_card_name">
-            <h4>Indu Chakarvarti</h4>
-            <p>Chief Technology Officer</p>
-          </div>
-          <div class="team_card_text">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto aut et, eum ex illo ips</p>
-          </div>
-          <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
-            src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
-        </div>
-        <div class="item_team mb-5 col-lg-3 col-xs-12 col-sm-6">
-          <div class="img_team_avatar"></div>
+        <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
+          <div class="img_team_avatar3"></div>
           <div class="team_card_name">
             <h4>Indu Chakarvarti</h4>
             <p>Chief Technology Officer</p>
@@ -393,13 +532,13 @@
           </p>
         </div>
         <div class="row">
-          <div class="col-lg-6 col-xs-12 d-flex">
+          <div class="col-lg-6 col-12 d-flex">
             <div class="img_mail"></div>
             <div class="pt-1 ml-2 mt-2">
               <a href="#">Join us on Telegram</a>
             </div>
           </div>
-          <div class="col-lg-6 col-xs-12 d-flex">
+          <div class="col-lg-6 col-12 d-flex">
             <div class="img_telegram"></div>
             <div class="pt-1 ml-2 mt-2">
               <a href="#"> hello@bettery.io</a>

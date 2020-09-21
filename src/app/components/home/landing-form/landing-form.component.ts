@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -7,8 +7,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./landing-form.component.sass']
 })
 export class LandingFormComponent implements OnInit {
-
-form: FormGroup;
+  form: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
     this.form = formBuilder.group({
@@ -24,6 +23,9 @@ form: FormGroup;
   }
 
   sendForm(form: FormGroup) {
+    if (form.status === 'INVALID') {
+      return;
+    }
     console.log(form);
   }
 }

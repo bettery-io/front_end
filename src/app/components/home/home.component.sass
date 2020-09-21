@@ -4,12 +4,63 @@ p, h1, h2, h3
 .main
   color: #0B1511
   max-width: 1440px
-  margin: auto
+  margin: -20px auto 0 auto
   background: white
 
+nav
+  display: flex
+
+.logo
+  background: url("../../../assets/landingPage/logo-main.png") left center no-repeat
+  background-size: contain
+  width: 169px
+  height: 120px
+
+.nav_bar
+  & li
+    display: inline-block
+    margin-right: 32px
+    cursor: pointer
+    & a
+      font-style: normal
+      font-weight: 600
+      font-size: 14px
+      line-height: 20px
+      color: #000000
+
+.dropdown-toggle:empty::after
+  display: none
+
+.icon-bar-img
+  background: url("../../../assets/landingPage/btn-nav.png") left center no-repeat
+  background-size: contain
+  width: 28px
+  height: 28px
+  cursor: pointer
+
+  &:active
+    background-color: #9E9E9E
+.lang-2
+  width: 52px
+  height: 29px
+
+.mobile_nav
+  display: none
+
+.correct-left
+  left: -150px !important
+
+@media (max-width: 1023px)
+  nav
+    display: none
+  .mobile_nav
+    display: block
+
+
+//=============== header =====================
 header
   display: flex
-  padding: 160px 70px 185px 70px
+  padding: 160px 15px 42px 15px
 
 .title
   margin-bottom: 21px
@@ -69,20 +120,35 @@ header
     line-height: 20px
     text-align: center
 
+.mobile_img
+  margin-top: 78px
+  display: none
+
 .bg_header
-  background: url("../../../assets/landingPage/main.png") 138px top no-repeat
+  background: url("../../../assets/landingPage/main.png") 17px top no-repeat
   background-size: contain
-  width: 1000px
-  height: 500px
+  width: 800px
+  height: 800px
+
+.bg_basic
+  background: url("../../../assets/landingPage/basice_img.png") center center no-repeat
+  background-size: contain
+  width: 298px
+  height: 294px
+  margin: auto
 
 @media (max-width: 1000px)
   .bg_header
     display: none
+@media (max-width: 768px)
+  .mobile_img
+    display: block
 
 
 //========= second ===========
 .bettery_work
-  //padding: 0 70px 0 70px
+  background: url("../../../assets/landingPage/bg1.png") 88% 1% no-repeat
+  background-size: 100px 75px
 
 .card_item
   display: flex
@@ -97,6 +163,10 @@ header
   width: 222px
   cursor: pointer
   margin: 0 auto
+
+  & h3
+    font-weight: 600
+    font-size: 18px
 
 .bg-yellow
   background-color: #FDD92A
@@ -118,21 +188,42 @@ header
   justify-content: center
   padding-right: 20px
 
+.img_man
+  background: url("../../../assets/landingPage/man1.png") left center no-repeat
+  background-size: contain
+  width: 21.5px
+  height: 44px
+
+.img_mans2
+  background: url("../../../assets/landingPage/mans2.png") left center no-repeat
+  background-size: contain
+  width: 39px
+  height: 39px
+
 .img-section2
   background: url("../../../assets/landingPage/section2.png") left center no-repeat
   background-size: contain
   width: 64px
   height: 64px
 
+.round
+  border-radius: 100%
+  width: 64px
+  height: 64px
+  background: yellow
+  padding-top: 9px
+  padding-left: 20px
+
+.correct
+  padding-left: 13px
+
 .bettery_work_title
   display: flex
   align-items: center
-  //padding: 0 60px
 
   & h2
     font-weight: 600
     font-size: 50px
-    line-height: 56px
 
   & p
     font-size: 18px
@@ -143,11 +234,12 @@ header
 .third
   display: flex
   padding-bottom: 212px
+  background: url("../../../assets/landingPage/bg2.png") 10% 80% no-repeat
+  background-size: 100px 75px
 
 .third-left
   display: flex
   align-items: center
-  //padding-left: 70px
   padding-top: 95px
 
   & p
@@ -166,21 +258,22 @@ header
   width: 600px
   height: 592px
 
-.mt-16
-  margin-top: 16px
-
 .title_h2
   & h2
     font-weight: 600
     font-size: 50px
     line-height: 56px
 
+//=========== 4th =================
+
 .four
-  margin-bottom: 259px
+  padding-bottom: 259px
+  background: url("../../../assets/landingPage/bg4.png") 10% 90% no-repeat
+  background-size: 86px 58px
 
 .four_top
   text-align: center
-  //margin: 0 400px
+
   & h2
     font-weight: 600
     font-size: 50px
@@ -203,6 +296,10 @@ header
   border-radius: 32px
   cursor: pointer
 
+  & img
+    width: 37px
+    height: 37px
+
   & h3
     font-weight: bold
     font-size: 18px
@@ -213,13 +310,26 @@ header
     font-size: 14px
     line-height: 20px
 
+.correct-img
+  & img
+    width: 52px
+    height: 26px
+
 .four_bottom
   display: flex
   flex-wrap: wrap
 
+.img_bg_yellow
+  background: url("../../../assets/landingPage/Mask.png") left center no-repeat
+  background-size: contain
+  width: 69px
+  height: 79px
+
 //========== five ================
 .five
-  margin-bottom: 260px
+  padding-bottom: 260px
+  background: url("../../../assets/landingPage/bg3.png") 95% 90% no-repeat
+  background-size: 80px 69px
 
 .five_top
   text-align: center
@@ -249,6 +359,18 @@ header
 
 .img-avatar
   background: url("../../../assets/landingPage/Oval.png") left center no-repeat
+  background-size: contain
+  width: 65px
+  height: 65px
+
+.img-avatar2
+  background: url("../../../assets/landingPage/Oval2.png") left center no-repeat
+  background-size: contain
+  width: 65px
+  height: 65px
+
+.img-avatar3
+  background: url("../../../assets/landingPage/Oval3.png") left center no-repeat
   background-size: contain
   width: 65px
   height: 65px
@@ -336,9 +458,37 @@ header
   line-height: 20px
   text-align: center
 
+.road-map-mobile
+  text-align: center
+  display: none
+
+.card-date
+  text-transform: uppercase
+  border-top-left-radius: 24px
+  border-top-right-radius: 24px
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1)
+  background-color: #28354C
+  color: #54DD96
+
+.card-mob-text
+  border-bottom-left-radius: 24px
+  border-bottom-right-radius: 24px
+  font-weight: normal
+  font-size: 16px
+  line-height: 20px
+
+  background: #FFFFFF
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1)
+
+@media (max-width: 995px)
+  .road-map-mobile
+    display: block
+  .road-map-desctop
+    display: none
+
 //  ========= Team ==========
 .team
-  margin-bottom: 150px
+  margin-bottom: 100px
 
 .item_team
   text-align: center
@@ -352,6 +502,20 @@ header
 
 .img_team_avatar
   background: url("../../../assets/landingPage/team_avatar.png") left center no-repeat
+  background-size: contain
+  width: 150px
+  height: 150px
+  margin: auto
+
+.img_team_avatar2
+  background: url("../../../assets/landingPage/team_avater2.png") left center no-repeat
+  background-size: contain
+  width: 150px
+  height: 150px
+  margin: auto
+
+.img_team_avatar3
+  background: url("../../../assets/landingPage/team_avatar3.png") left center no-repeat
   background-size: contain
   width: 150px
   height: 150px
@@ -391,7 +555,6 @@ header
 //======== footer ===========
 
 footer
-  margin-bottom: 50px
   padding-top: 72px
   padding-bottom: 85px
   background: #000000
@@ -418,7 +581,7 @@ footer
 
   & button
     background: #FDD92A
-    border-radius: 0px 100px 100px 0px
+    border-radius: 0 100px 100px 0
 
 .h4
   font-weight: 600
@@ -449,3 +612,17 @@ footer
 
 .bg-main
   background: url("../../../assets/landingPage/left.png") left 14% no-repeat, url("../../../assets/landingPage/left.png") left 43% no-repeat, url("../../../assets/landingPage/left.png") left 81% no-repeat, url("../../../assets/landingPage/right.png") right 58% no-repeat #FFFFFF
+
+
+@media (max-width: 768px)
+  header
+    padding: 60px 15px 42px 15px
+  .third
+    padding-bottom: 140px
+  .four
+    padding-bottom: 140px
+  .five
+    padding-bottom: 140px
+  .road-map
+    margin-bottom: 140px
+

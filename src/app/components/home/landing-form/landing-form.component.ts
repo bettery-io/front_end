@@ -8,6 +8,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class LandingFormComponent implements OnInit {
   form: FormGroup;
+  formValid: boolean;
 
   constructor(private formBuilder: FormBuilder) {
     this.form = formBuilder.group({
@@ -24,6 +25,7 @@ export class LandingFormComponent implements OnInit {
 
   sendForm(form: FormGroup) {
     if (form.status === 'INVALID') {
+      this.formValid = true;
       return;
     }
     console.log(form);

@@ -6,30 +6,35 @@
         <p>We newer use your information for purposes other than providing you a valuable demo.</p>
       </div>
       <div>
-        <form action="#" [formGroup]="form">
+        <form action="#" [formGroup]="form" (change)="formValid = false">
           <div class="row">
             <div class="form-group col-lg-6 col-xs-12">
               <label for="firstName">First Name</label>
-              <input type="text" formControlName="firstName" name="firstName" class="form-control" id="firstName" placeholder="First Name">
+              <input type="text" formControlName="firstName" name="firstName" class="form-control" [ngClass]="formValid && 'validator'" id="firstName" placeholder="First Name">
+              <div *ngIf="formValid" class="valid_text">This field is required</div>
             </div>
 
             <div class="form-group col-lg-6 col-xs-12">
               <label for="lastName">Last Name</label>
-              <input type="text" formControlName="lastName" name="lastName" class="form-control" id="lastName" placeholder="Last Name">
+              <input type="text" formControlName="lastName" name="lastName" class="form-control" [ngClass]="formValid && 'validator'" id="lastName" placeholder="Last Name">
+              <div *ngIf="formValid" class="valid_text">This field is required</div>
             </div>
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" formControlName="email" name="email" class="form-control" id="email" placeholder="Email">
+            <input type="text" formControlName="email" name="email" class="form-control" [ngClass]="formValid && 'validator'" id="email" placeholder="Email">
+            <div *ngIf="formValid" class="valid_text">This field is required</div>
           </div>
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="text" formControlName="phoneNumber" name="phoneNumber" class="form-control" id="phone" placeholder="Phone Number">
+            <input type="text" formControlName="phoneNumber" name="phoneNumber" class="form-control" [ngClass]="formValid && 'validator'" id="phone" placeholder="Phone Number">
+            <div *ngIf="formValid" class="valid_text">This field is required</div>
           </div>
           <div class="form-group">
             <label for="firm">Firm</label>
-            <input type="text" formControlName="firm"  name="firm" class="form-control" id="firm" placeholder="Firm (optional)">
+            <input type="text" formControlName="firm"  name="firm" class="form-control" [ngClass]="formValid && 'validator'" id="firm" placeholder="Firm (optional)">
+            <div *ngIf="formValid" class="valid_text">This field is required</div>
           </div>
           <div class="form-btn pt-2">
             <button (click)="sendForm(form)">Book a Demo</button>

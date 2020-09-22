@@ -36,7 +36,7 @@ export class PublicMainComponent implements OnInit, OnDestroy {
   getDataFromServer(data) {
     this.postSub = this.postService.post("publicEvents/get_by_id", data)
       .subscribe((x: any) => {
-        if (x.finalAnswer !== undefined) {
+        if (x.finalAnswer !== null) {
           this.eventFinish = true;
         } 
         this.eventData = x;

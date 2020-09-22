@@ -125,9 +125,9 @@ export class ParticipateComponent implements OnInit, OnDestroy {
       amount: Number(_money)
     }
     this.postSub = this.postService.post("answer", data).subscribe(async () => {
-      this.spinnerLoading = false
       await this.updateBalance();
       this.errorMessage = undefined;
+      this.spinnerLoading = false
       this.answered = true;
     },
       (err) => {

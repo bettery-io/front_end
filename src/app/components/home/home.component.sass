@@ -17,6 +17,7 @@ nav
   height: 120px
 
 .nav_bar
+  padding-left: 0
   & li
     display: inline-block
     margin-right: 32px
@@ -27,6 +28,20 @@ nav
       font-size: 14px
       line-height: 20px
       color: #000000
+    & div
+      font-style: normal
+      font-weight: 600
+      font-size: 14px
+      line-height: 20px
+      color: #000000
+
+.tgr-img:before
+  content: url("../../../assets/landingPage/telegramNav.png")
+  width: 24px
+  height: 24px
+  position: absolute
+  top: 1%
+  left: -20%
 
 .dropdown-toggle:empty::after
   display: none
@@ -57,11 +72,37 @@ nav
   .mobile_nav
     display: block
 
+  .btn_text
+    color: #0EAF5C
+    font-weight: normal !important
+    font-size: 16px
+    line-height: 20px
+    & span
+      font-weight: bold
+
+
+@media (max-width: 1260px)
+  .nav_bar
+    & :last-child
+      margin-right: 0
+    & li
+      margin-right: 18px
+
+
+@media (max-width: 1100px)
+  .nav_bar
+    & li
+      & a
+        font-size: 12px
+      & div
+        font-size: 12px
+
+
 
 //=============== header =====================
 header
   display: flex
-  padding: 160px 15px 42px 15px
+  padding: 100px 0 42px 0
 
 .title
   margin-bottom: 21px
@@ -72,16 +113,6 @@ header
     font-weight: bold
     font-size: 56px
     line-height: 64px
-
-@media (max-width: 1000px)
-  .title
-    & h1
-      font-size: 40px
-      line-height: 42px
-
-  h2
-    font-size: 32px !important
-
 
 .title_text
   margin-bottom: 64px
@@ -126,22 +157,12 @@ header
   display: none
 
 .bg_header
-  background: url("../../../assets/landingPage/main.png") 17px top no-repeat
+  background: url("../../../assets/landingPage/basice_img.png") center top no-repeat
   background-size: contain
-  width: 800px
-  height: 800px
+  width: 100%
+  height: 320px
 
-.bg_basic
-  background: url("../../../assets/landingPage/basice_img.png") center center no-repeat
-  background-size: contain
-  width: 298px
-  height: 294px
-  margin: auto
-
-@media (max-width: 1000px)
-  .bg_header
-    display: none
-@media (max-width: 768px)
+@media (max-width: 1023px)
   .mobile_img
     display: block
 
@@ -161,19 +182,13 @@ header
   border: 1px solid #EEEEEE
   box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1)
   border-radius: 32px
-  width: 222px
+  //width: 222px
   cursor: pointer
   margin: 0 auto
 
   & h3
     font-weight: 600
     font-size: 18px
-
-//.bg-yellow
-//  background-color: #FDD92A
-
-//.bg-yellow:hover
-//  background-color: #FFFFFF
 
 .bg-hover:hover
   background-color: #FDD92A
@@ -187,7 +202,7 @@ header
   display: flex
   flex-direction: column
   justify-content: center
-  padding-right: 20px
+  padding-right: 30px
 
 .img_man
   background: url("../../../assets/landingPage/man1.png") left center no-repeat
@@ -655,6 +670,13 @@ footer
 
 .bg-main
   background: url("../../../assets/landingPage/left.png") left 14% no-repeat, url("../../../assets/landingPage/left.png") left 43% no-repeat, url("../../../assets/landingPage/left.png") left 81% no-repeat, url("../../../assets/landingPage/right.png") right 58% no-repeat #FFFFFF
+.bg-basic-img
+  background:  url("../../../assets/landingPage/main.png") 123% -54px no-repeat
+  background-size: 49%
+
+@media(max-width: 1023px)
+  .bg-basic-img
+    background:  none
 
 
 @media (max-width: 768px)
@@ -668,4 +690,75 @@ footer
     padding-bottom: 140px
   .road-map
     margin-bottom: 140px
+
+
+@media (max-width: 1000px)
+  .title
+    & h1
+      font-size: 28px
+      line-height: 35px
+      font-weight: 700
+  h2
+    font-size: 28px !important
+    line-height: 32.5px !important
+
+  .title_text,.bettery_work_title,.third-title,.four_top,.five_top,.road-map-top
+    & p
+      font-size: 16px
+      line-height: 20px
+
+//============ modal setting ================
+
+.slide_img
+  background: url("../../../assets/landingPage/slides.png")
+  background-size: contain
+  width: 62px
+  height: 84px
+
+.modal_left
+  & p
+    font-size: 18px
+    line-height: 28px
+  & span
+    font-style: italic
+    font-weight: bold
+  & a
+    text-align: center
+    font-style: normal
+    font-weight: bold
+    font-size: 24px
+    line-height: 30px
+    color: #54DD96
+
+.modal_right
+  & p
+    font-weight: bold
+    font-size: 18px
+    line-height: 23px
+    text-align: center
+    color: #0B1511
+  & a
+    font-size: 16px
+    line-height: 20px
+
+.modal-title
+  font-weight: bold
+  font-size: 32px
+  line-height: 40px
+
+.modal-box
+  padding: 32px 30px 52px 30px
+
+.vertical-hr
+  mix-blend-mode: normal
+  opacity: 0.2
+  border-left: 1px solid #979797
+
+@media (max-width: 578px)
+  .vertical-hr
+    border-left: none
+    border-bottom: 1px solid #979797
+    margin: 10px 0 10px 0
+
+
 

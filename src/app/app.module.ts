@@ -6,6 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
 import { ClipboardModule } from 'ngx-clipboard';
 import { AvatarModule } from 'ngx-avatar';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
 import { userReducer } from './reducers/user.reducer';
 import { coinsReducer } from './reducers/coins.reducer';
@@ -27,21 +28,25 @@ import { NumericDirective } from './helpers/numeric';
 
 import { CreateEventModule } from './components/createEvent/createEvent.module';
 import { EventsModule } from './components/events/events.module';
-import {ShareModule} from "./components/share/share.module";
+import { ShareModule } from "./components/share/share.module";
+import { LandingFormComponent } from './components/home/landing-form/landing-form.component';
 
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        NavbarComponent,
-        RegistrationComponent,
-        HomeComponent,
-        HistoryComponent,
-        ErcCoinSaleComponent,
-        NumericDirective,
-    ],
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    RegistrationComponent,
+    HomeComponent,
+    HistoryComponent,
+    ErcCoinSaleComponent,
+    NumericDirective,
+    LandingFormComponent
+  ],
   imports: [
+    ShareModule,
+    RecaptchaV3Module,
     AvatarModule,
     ClipboardModule,
     CreateEventModule,
@@ -58,22 +63,21 @@ import {ShareModule} from "./components/share/share.module";
     NgbModule,
     FormsModule,
     RouterModule.forRoot([
-      {path: "home", component: HomeComponent},
-      {path: "", redirectTo: "home", pathMatch: "full"},
-      {path: 'history', component: HistoryComponent},
-      {path: 'erc20', component: ErcCoinSaleComponent}
-    ]),
-    ShareModule
+      { path: "", component: HomeComponent },
+      { path: 'history', component: HistoryComponent },
+      { path: 'erc20', component: ErcCoinSaleComponent }
+    ])
   ],
-    providers: [
-        PostService,
-        GetService
-    ],
-    exports: [
-        // SpinnerLoadingComponent
-    ],
-    bootstrap: [
-        AppComponent
-    ]
+  providers: [
+    PostService,
+    GetService,
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF' }
+  ],
+  exports: [
+    // SpinnerLoadingComponent
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

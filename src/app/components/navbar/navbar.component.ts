@@ -1,7 +1,7 @@
-import {Component, OnInit, OnDestroy, HostListener, ViewChild} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../app.state';
-import {Coins} from '../../models/Coins.model';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, DoCheck } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.state';
+import { Coins } from '../../models/Coins.model';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
@@ -25,8 +25,8 @@ import {WelcomePageComponent} from "../share/welcome-page/welcome-page.component
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.sass']
 })
-export class NavbarComponent implements OnInit, OnDestroy {
-  @ViewChild('insideElement', {static: false}) insideElement;
+export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
+  @ViewChild('insideElement', { static: false }) insideElement;
 
   nickName: string = undefined;
   web3: Web3 | undefined = null;
@@ -61,6 +61,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ERC20withdrawalAmount: number = 0;
   verifier: string = undefined;
   openNavBar = false;
+  display: boolean = false;
 
   spinnerLoading: boolean;
   saveUserLocStorage = [];
@@ -71,6 +72,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private postService: PostService,
     private getService: GetService,
   ) {
+
+    this.detectPath()
 
     this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
@@ -100,6 +103,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.invitationQuantity = x[0].amount
       }
     })
+  }
+
+  ngDoCheck() {
+    this.detectPath()
+  }
+
+  detectPath() {
+    let href = window.location.pathname
+    if (href == "/") {
+      this.display = false;
+    } else {
+      this.display = true;
+    }
   }
 
   getHistoryUsers(data) {
@@ -459,10 +475,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
 
   protected onDocumentClick(event: MouseEvent) {
-    if (this.insideElement.nativeElement.contains(event.target)) {
-      return;
+    if (this.insideElement) {
+      if (this.insideElement.nativeElement.contains(event.target)) {
+        return;
+      }
+      this.openNavBar = false;
     }
-    this.openNavBar = false;
   }
 
   ngOnDestroy() {

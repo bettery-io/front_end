@@ -1,4 +1,4 @@
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light bg-light" *ngIf="display">
     <div class="logo">
         <h3 style="padding-left: 20px; padding-top: 10px">Logo</h3>
     </div>
@@ -75,7 +75,7 @@
     </div>
 </nav>
 
-<div class="mobileNavbar" #insideElement>
+<div class="mobileNavbar" #insideElement *ngIf="display">
     <div class="logoBox">
         <div class="logo"></div>
     </div>

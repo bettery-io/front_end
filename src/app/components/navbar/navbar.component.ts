@@ -63,6 +63,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ERC20withdrawalAmount: number = 0;
   verifier: string = undefined;
   openNavBar = false;
+  display: boolean = false;
 
   constructor(
     private store: Store<AppState>,
@@ -70,6 +71,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private postService: PostService,
     private getService: GetService
   ) {
+
+    let href = window.location.pathname
+    if(href == "/"){
+      this.display = false;
+    }else{
+      this.display = true;
+    }
 
     this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {

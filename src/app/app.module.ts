@@ -58,8 +58,7 @@ import { LandingFormComponent } from './components/home/landing-form/landing-for
     NgbModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: "home", component: HomeComponent },
-      { path: "", redirectTo: "home", pathMatch: "full" },
+      { path: "", component: HomeComponent },
       { path: 'history', component: HistoryComponent },
       { path: 'erc20', component: ErcCoinSaleComponent }
     ])

@@ -6,6 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
 import { ClipboardModule } from 'ngx-clipboard';
 import { AvatarModule } from 'ngx-avatar';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
 import { userReducer } from './reducers/user.reducer';
 import { coinsReducer } from './reducers/coins.reducer';
@@ -42,6 +43,7 @@ import { LandingFormComponent } from './components/home/landing-form/landing-for
     LandingFormComponent,
   ],
   imports: [
+    RecaptchaV3Module,
     AvatarModule,
     ClipboardModule,
     CreateEventModule,
@@ -65,7 +67,8 @@ import { LandingFormComponent } from './components/home/landing-form/landing-for
   ],
   providers: [
     PostService,
-    GetService
+    GetService,
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF' }
   ],
   bootstrap: [
     AppComponent

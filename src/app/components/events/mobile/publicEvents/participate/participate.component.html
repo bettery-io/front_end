@@ -11,7 +11,7 @@
         <form [formGroup]="answerForm">
             <div *ngFor="let answer of eventData.answers">
                 <div class="pretty p-default p-round inline checkBackGround">
-                    <input type="radio" value={{answer}} formControlName="answer" min="1">
+                    <input type="radio" value={{answer}} formControlName="answer">
                     <div class="state p-warning-o checkPos">
                         <label> </label>
                     </div>
@@ -25,7 +25,7 @@
             <div>
                 <p class="event">YOUR BET</p>
                 <div class="inputBox">
-                    <input type="number" formControlName="amount" class="answer" id="amount"
+                    <input type="number" formControlName="amount" class="answer" id="amount" min="coinType == 'BTY' ? 1 : 0.01"
                         placeholder="1 {{coinType}}" [ngClass]="{ 'is_invalid': submitted && f.amount.errors }">
                     <div class="tip">
                         <p class="posTwo">{{coinType}}</p>
@@ -34,6 +34,7 @@
                 <div *ngIf="submitted && f.amount.errors">
                     <small *ngIf="f.amount.errors.required" class="form-text quize_validation_error">Amount is
                         required</small>
+                    <small *ngIf="f.amount.errors.min" class="form-text quize_validation_error">Minimum amount is {{coinType == 'BTY' ? 1 : 0.01}}</small>
                 </div>
             </div>
             <p class="infoEmial">We’ll notify the results to your email</p>

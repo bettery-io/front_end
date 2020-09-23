@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import GradientJSON from '../../../../../assets/gradients.json';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InfoModalComponent } from '../../../share/info-modal/info-modal.component'
 
 @Component({
   selector: 'create-room-tab',
@@ -18,7 +20,8 @@ export class CreateRoomTabComponent implements OnInit {
   gradietnNumber: number = 0;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +42,14 @@ export class CreateRoomTabComponent implements OnInit {
   generateGradient() {
     this.gradietnNumber == Number(Object.keys(GradientJSON).length) - 1 ? this.gradietnNumber = 0 : this.gradietnNumber++;
     this.roomForm.controls.roomColor.setValue(GradientJSON[this.gradietnNumber]);
+  }
+
+  // TO DO
+  modalAboutExpert() {
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    modalRef.componentInstance.name = "Room is where this and your future events happen. With friends, it's more private fun for better friendship - bet with a pizza or any promise, and let just one friend or yourself to confirm outcome. Ready to invite the whole world? Go with public and anti-thieft social media event when all bets are collected and secured while outcome is voted by many. You can create many rooms.";
+    modalRef.componentInstance.boldName = 'Room for Friends or Social Media? ';
+    modalRef.componentInstance.link = 'Learn more about roles on Bettery';
   }
 
   chooseRoom() {

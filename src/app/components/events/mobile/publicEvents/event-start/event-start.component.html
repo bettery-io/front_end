@@ -96,10 +96,10 @@
             <div *ngIf="!created">
                 <div *ngIf="!validation">
                     <button class="buttonBecome buttonColorPlayer" (click)="joinAsPlayer()">JOIN AS PLAYER</button>
-                    <a class="linkInfo colorLinkPlayer" href="#">What is a Player?</a>
+                    <a class="linkInfo colorLinkPlayer" (click)="modalAboutPlayers()">What is a Player?</a>
                 </div>
                 <button class="buttonBecome buttonColorExpert" (click)="joinAsExpert()">BECOME AN EXPERT</button>
-                <a class="linkInfo colorLinkExpert" href="#">What is an Expert?</a>
+                <a class="linkInfo colorLinkExpert" (click)="modalAboutExpert()">What is an Expert?</a>
             </div>
 
             <div *ngIf="timeToLeftDisplay()" class="arrow"></div>

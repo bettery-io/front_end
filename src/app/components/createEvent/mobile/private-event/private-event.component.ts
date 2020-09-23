@@ -8,7 +8,8 @@ import Contract from '../../../../contract/contract';
 import { ClipboardService } from 'ngx-clipboard'
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { timeStamp } from 'console';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InfoModalComponent } from '../../../share/info-modal/info-modal.component'
 
 @Component({
   selector: 'private-event-modile',
@@ -39,7 +40,8 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     private postService: PostService,
     private store: Store<AppState>,
     private _clipboardService: ClipboardService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
     this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
@@ -180,6 +182,14 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
       this.calculateDate()
     }, 1000);
   }
+
+    // TO DO
+    modalAboutExpert(){
+      const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+      modalRef.componentInstance.name = "the event creator - now it's you - likely also want to bet or validate the outcome. Thus, simply go ahead - Bettery is smart enough and is secure to take care of the rest.";
+      modalRef.componentInstance.boldName = 'When betting with friends';
+      modalRef.componentInstance.link = 'Learn more about roles on Bettery';
+    }
 
   ngOnDestroy() {
     if (this.userSub) {

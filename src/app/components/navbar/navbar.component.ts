@@ -42,7 +42,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userWallet: string = undefined;
   userId: number;
   UserSubscribe: Subscription;
-  CoinsSubscribe: Subscription;
   userSub: Subscription;
   coinsSub: Subscription;
   invitesSub: Subscription;
@@ -469,9 +468,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     document.removeEventListener('click', this.onDocumentClick);
     this.UserSubscribe.unsubscribe();
-    this.CoinsSubscribe.unsubscribe();
     this.userSub.unsubscribe();
-    this.coinsSub.unsubscribe();
+  //  this.coinsSub.unsubscribe();
     this.invitesSub.unsubscribe();
     this.postSub.unsubscribe();
     this.getSub.unsubscribe();

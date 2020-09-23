@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <div class="boxImg">
+        <div class="img"></div>
+    </div>
+    <button type="button" class="close border-hover" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div>
+        <p class="text"><b>{{boldName}}</b> {{name}}</p>
+    </div>
+    <div *ngIf="link">
+        <a class="link">{{link}}</a>
+    </div>
+</div>

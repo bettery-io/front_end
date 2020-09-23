@@ -53,11 +53,11 @@ export class ParticipateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
     this.answerForm = this.formBuilder.group({
       answer: ["", Validators.required],
-      amount: ["", Validators.required]
+      amount: ["", [Validators.required, Validators.min(this.coinType == 'BTY' ? 1 : 0.01)]]
     })
-    this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
   }
 
   get f() { return this.answerForm.controls; }
@@ -125,9 +125,9 @@ export class ParticipateComponent implements OnInit, OnDestroy {
       amount: Number(_money)
     }
     this.postSub = this.postService.post("answer", data).subscribe(async () => {
-      this.spinnerLoading = false
       await this.updateBalance();
       this.errorMessage = undefined;
+      this.spinnerLoading = false
       this.answered = true;
     },
       (err) => {

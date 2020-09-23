@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, DoCheck } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { Coins } from '../../models/Coins.model';
@@ -26,7 +26,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.sass']
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   @ViewChild('insideElement', { static: false }) insideElement;
 
   nickName: string = undefined;
@@ -72,12 +72,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private getService: GetService
   ) {
 
-    let href = window.location.pathname
-    if(href == "/"){
-      this.display = false;
-    }else{
-      this.display = true;
-    }
+    this.detectPath()
 
     this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length !== 0) {
@@ -109,6 +104,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.invitationQuantity = x[0].amount
       }
     })
+  }
+
+  ngDoCheck() {
+    this.detectPath()
+  }
+
+  detectPath() {
+    let href = window.location.pathname
+    if (href == "/") {
+      this.display = false;
+    } else {
+      this.display = true;
+    }
   }
 
   getHistoryUsers(data) {
@@ -468,10 +476,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
 
   protected onDocumentClick(event: MouseEvent) {
-    if (this.insideElement.nativeElement.contains(event.target)) {
-      return;
+    if (this.insideElement) {
+      if (this.insideElement.nativeElement.contains(event.target)) {
+        return;
+      }
+      this.openNavBar = false;
     }
-    this.openNavBar = false;
   }
 
   ngOnDestroy() {

@@ -6,9 +6,10 @@
     <div class="roomBox">
         <p class="roomName">ROOM: Avengers</p>
     </div>
-    <div *ngIf="userData">
+    <div *ngIf="userData && info !== undefined">
         <p class="status">{{status}}</p>
-        <p class="amount">{{amount}}</p>
+        <p class="amount" [ngStyle]="getAmountColor(status)">{{amount}}</p>
+        <p class="infoWinner" [innerHTML]="info"></p>
     </div>
     <div>
         <div class="boxInfo">
@@ -67,9 +68,16 @@
                 <div class="check_img"></div>
             </div>
             <div class="hr"></div>
-            <div class="d-flex mt-2">
-                <div><span>Validated by:</span></div>
-                
+            <div>
+                <div class="infoBox">
+                    <span class="abount"><b>You and 79 Players</b> bet <b>(65%)</b></span>
+                    <span class="abount">Total win:</span>
+                </div>
+                <div class="infoBox">
+                    <span class="abount"><b>5 Experts</b> validated <b>(72%)</b></span>
+                    <span class="abount"><b>1200 BTY</b> and <b>42 ETH</b></span>
+                </div>
+
             </div>
         </div>
     </div>
@@ -107,6 +115,13 @@
             </div>
         </div>
     </div>
+
+    <div class="share_event">
+        <h4>What an earn! Host more events and grow your community.</h4>
+        <p style="text-align: center;"><a href="#">www.bettery.io/public_event/{{eventData.id}}</a></p>
+        <div class="share_img" (click)="copyToClickBoard()"></div>
+    </div>
+
     <a href="#" class="becomeHost">CREATE YOUR OWN EVENT</a>
     <div>
         <div class="commentBox">

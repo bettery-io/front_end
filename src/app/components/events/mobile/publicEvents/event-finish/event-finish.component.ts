@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { Subscription } from 'rxjs';
 import _ from 'lodash';
+import { ClipboardService } from 'ngx-clipboard'
 
 @Component({
   selector: 'event-finish',
@@ -15,13 +16,14 @@ export class EventFinishComponent implements OnDestroy {
   @Input() eventData;
   status = "TODO"
   amount = "TODO"
-  type = undefined;
+  info = undefined;
   userSub: Subscription
   userData;
 
   constructor(
     private modalService: NgbModal,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private _clipboardService: ClipboardService
   ) {
     this.userSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
@@ -37,15 +39,19 @@ export class EventFinishComponent implements OnDestroy {
     if (findValidator !== -1) {
       this.status = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? "YOU WON" : "YOU WERE WRONG";
       this.amount = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? this.letsCalcalteWinner("expert", 0) : "5% Expert rank";
-      this.type = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? "expert win" : "expert lost";
+      this.info = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!` : "will be taken away from you once ranking system is in place.";
     } else {
       let findPlayer = _.findIndex(this.eventData.parcipiantAnswers, (x) => { return x.userId == user._id })
       if (findPlayer !== -1) {
         this.status = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? "YOU WON" : "YOU LOST";
         this.amount = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? this.letsCalcalteWinner("player", this.eventData.parcipiantAnswers[findPlayer].amount) : this.eventData.parcipiantAnswers[findPlayer].amount + " " + currencyType;
-        this.type = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? "player win" : "player lost";
+        this.info = `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!`;
       } else {
-        // to do host
+        if (this.eventData.host.id === user._id) {
+          this.status = "You earned";
+          this.amount = this.letsCalcalteWinner("host", 0);
+          this.info = `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!`;
+        }
       }
     }
     console.log(this.eventData);
@@ -69,9 +75,11 @@ export class EventFinishComponent implements OnDestroy {
     if (from == "expert") {
       let findPercForExpert = (loserPool * 3) / 100;
       return (findPercForExpert / this.eventData.validatorsAnswers.length).toFixed(2) + " " + currencyType
-    } else {
+    } else if (from == "player") {
       let playersFee = (loserPool * 90) / 100
       return (amount + ((playersFee * amount) / winnerPool)).toFixed(2) + " " + currencyType;
+    } else if (from == "host") {
+      return ((loserPool * 5) / 100).toFixed(2) + " " + currencyType;
     }
   }
 
@@ -96,6 +104,20 @@ export class EventFinishComponent implements OnDestroy {
     }
   }
 
+  getAmountColor(text) {
+    let z = text.indexOf("LOST")
+    let x = text.indexOf("WRONG")
+    if (z !== -1 || x !== -1) {
+      return {
+        'color': '#C10000'
+      }
+    } else {
+      return {
+        'color': '#FFD200'
+      }
+    }
+  }
+
   playersCount() {
     return this.eventData.parcipiantAnswers == undefined ? 0 : this.eventData.parcipiantAnswers.length
   }
@@ -115,6 +137,12 @@ export class EventFinishComponent implements OnDestroy {
     if (this.userSub) {
       this.userSub.unsubscribe();
     }
+  }
+
+  copyToClickBoard() {
+    let href = window.location.hostname
+    let path = href == "localhost" ? 'http://localhost:4200' : href
+    this._clipboardService.copy(`${path}/public_event/${this.eventData.id}`)
   }
 
 }

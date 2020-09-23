@@ -47,8 +47,8 @@ export class CreateRoomTabComponent implements OnInit {
   // TO DO
   modalAboutExpert() {
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = 'Validate the result of the event, what actually happened. Depending on event type and how many Players joined, you can earn BTY tokens for being an Expert.';
-    modalRef.componentInstance.boldName = 'Expert - ';
+    modalRef.componentInstance.name = "Room is where this and your future events happen. With friends, it's more private fun for better friendship - bet with a pizza or any promise, and let just one friend or yourself to confirm outcome. Ready to invite the whole world? Go with public and anti-thieft social media event when all bets are collected and secured while outcome is voted by many. You can create many rooms.";
+    modalRef.componentInstance.boldName = 'Room for Friends or Social Media? ';
     modalRef.componentInstance.link = 'Learn more about roles on Bettery';
   }
 

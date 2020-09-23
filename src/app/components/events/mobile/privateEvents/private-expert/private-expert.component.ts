@@ -78,8 +78,8 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
   // TO DO
   modalAboutExpert(){
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = 'Validate the result of the event, what actually happened. Depending on event type and how many Players joined, you can earn BTY tokens for being an Expert.';
-    modalRef.componentInstance.boldName = 'Expert - ';
+    modalRef.componentInstance.name = "Event with outcomes is about what matter and happen to participants. When outcome happens for real, some believe they know the truth and are willing to vote for it. They are experts - unlike risk-taking players who bet, experts don't take risk and always receive a small reward.";
+    modalRef.componentInstance.boldName = 'Who are experts?';
     modalRef.componentInstance.link = 'Learn more about roles on Bettery';
   }
 

@@ -6,43 +6,68 @@
         <p>We newer use your information for purposes other than providing you a valuable demo.</p>
       </div>
       <div>
-        <form action="#" [formGroup]="form" (change)="formValid = false">
+
+        <form action="#" [formGroup]="form" (ngSubmit)="sendForm(form, $event)">
           <div class="row">
             <div class="form-group col-lg-6 col-xs-12">
               <label for="firstName">First Name</label>
               <input type="text" formControlName="firstName" name="firstName" class="form-control"
-                [ngClass]="formValid && 'validator'" id="firstName" placeholder="First Name">
-              <div *ngIf="formValid" class="valid_text">This field is required</div>
+                     [ngClass]="submitted && f.firstName.errors && 'validator'"
+                     id="firstName" placeholder="First Name">
+              <div *ngIf="submitted && f.firstName.errors">
+                <small *ngIf="f.firstName.errors.required" class="valid_text quize_validation_error">This field is
+                  required</small>
+              </div>
             </div>
 
             <div class="form-group col-lg-6 col-xs-12">
               <label for="lastName">Last Name</label>
               <input type="text" formControlName="lastName" name="lastName" class="form-control"
-                [ngClass]="formValid && 'validator'" id="lastName" placeholder="Last Name">
-              <div *ngIf="formValid" class="valid_text">This field is required</div>
+                     [ngClass]="submitted && f.lastName.errors && 'validator'" id="lastName"
+                     placeholder="Last Name">
+              <div *ngIf="submitted && f.lastName.errors">
+                <small *ngIf="f.lastName.errors.required" class="valid_text quize_validation_error">This field is
+                  required</small>
+              </div>
             </div>
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" formControlName="email" name="email" class="form-control"
-              [ngClass]="formValid && 'validator'" id="email" placeholder="Email">
-            <div *ngIf="formValid" class="valid_text">This field is required</div>
+            <input type="email" formControlName="email" name="email" class="form-control"
+                   [ngClass]="submitted && f.email.errors && 'validator'" id="email" placeholder="Email">
+            <div *ngIf="submitted && f.email.errors">
+              <small *ngIf="f.email.errors.required || f.email.errors.email" class="valid_text quize_validation_error">This
+                field is required</small>
+            </div>
           </div>
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="text" formControlName="phoneNumber" name="phoneNumber" class="form-control"
-              [ngClass]="formValid && 'validator'" id="phone" placeholder="Phone Number">
-            <div *ngIf="formValid" class="valid_text">This field is required</div>
+            <input type="number" formControlName="phoneNumber" name="phoneNumber" class="form-control"
+
+                   [ngClass]="submitted && f.phoneNumber.errors && 'validator'" id="phone" placeholder="Phone Number">
+            <div *ngIf="submitted && f.phoneNumber.errors">
+              <small *ngIf="f.phoneNumber.errors.required" class="valid_text quize_validation_error">This field is
+                required</small>
+            </div>
+
           </div>
           <div class="form-group">
             <label for="firm">Firm</label>
             <input type="text" formControlName="firm" name="firm" class="form-control"
-              [ngClass]="formValid && 'validator'" id="firm" placeholder="Firm (optional)">
-            <div *ngIf="formValid" class="valid_text">This field is required</div>
+                   [ngClass]="submitted && f.firm.errors && 'validator'" id="firm" placeholder="Firm (optional)">
+            <div *ngIf="submitted && f.firm.errors">
+              <small *ngIf="f.firm.errors.required" class="valid_text quize_validation_error">This field is
+                required</small>
+            </div>
           </div>
-          <div class="form-btn pt-2">
-            <button (click)="sendForm(form)">Book a Demo</button>
+          <div class="form-btn pt-2 row text-center">
+            <div class="col-12">
+              <button type="submit">Book a Demo</button>
+            </div>
+            <div class="col-12 mt-4 sendMessage">
+              <p *ngIf="sendMessage">The demo is booked. We will contact you soon.</p>
+            </div>
           </div>
         </form>
       </div>

@@ -85,10 +85,10 @@
             Expert can't bet.</li>
         <li class="list">Players and the Expert need to join in 8 hours, otherwise the event will be cancelled.</li>
     </ul>
-    <a class="linkYellow" href="#">How do I manage my event?</a>
+    <a class="linkYellow" (click)="modalAboutExpert()">How do I manage my event?</a>
 
     <div class="joinBox">
-        <a class="joinButton" href="#">JOIN EVENT</a>
+        <a class="joinButton" routerLink="/private_event/{{eventData._id}}">JOIN EVENT</a>
     </div>
 </div>
 

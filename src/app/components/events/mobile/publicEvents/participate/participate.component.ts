@@ -53,11 +53,11 @@ export class ParticipateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
     this.answerForm = this.formBuilder.group({
       answer: ["", Validators.required],
-      amount: ["", Validators.required]
+      amount: ["", [Validators.required, Validators.min(this.coinType == 'BTY' ? 1 : 0.01)]]
     })
-    this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
   }
 
   get f() { return this.answerForm.controls; }

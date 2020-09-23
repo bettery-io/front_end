@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component'
 import { Store } from '@ngrx/store';
@@ -12,13 +12,15 @@ import { ClipboardService } from 'ngx-clipboard'
   templateUrl: './event-finish.component.html',
   styleUrls: ['./event-finish.component.sass']
 })
-export class EventFinishComponent implements OnDestroy {
+export class EventFinishComponent implements OnInit, OnDestroy {
   @Input() eventData;
   status = "TODO"
   amount = "TODO"
   info = undefined;
   userSub: Subscription
   userData;
+  pool = 0;
+  currencyType;
 
   constructor(
     private modalService: NgbModal,
@@ -33,53 +35,65 @@ export class EventFinishComponent implements OnDestroy {
     });
   }
 
+  ngOnInit() {
+    this.currencyType = this.eventData.currencyType == "token" ? "BTY" : "ETH";
+    if (this.eventData.parcipiantAnswers != undefined) {
+      this.eventData.parcipiantAnswers.forEach(x => {
+        this.pool = this.pool + Number(x.amount);
+      });
+    }
+
+  }
+
   letsFindWinner(user) {
-    let currencyType = this.eventData.currencyType == "token" ? "BTY" : "ETH";
     let findValidator = _.findIndex(this.eventData.validatorsAnswers, (x) => { return x.userId == user._id })
     if (findValidator !== -1) {
       this.status = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? "YOU WON" : "YOU WERE WRONG";
       this.amount = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? this.letsCalcalteWinner("expert", 0) : "5% Expert rank";
       this.info = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!` : "will be taken away from you once ranking system is in place.";
     } else {
-      let findPlayer = _.findIndex(this.eventData.parcipiantAnswers, (x) => { return x.userId == user._id })
-      if (findPlayer !== -1) {
-        this.status = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? "YOU WON" : "YOU LOST";
-        this.amount = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? this.letsCalcalteWinner("player", this.eventData.parcipiantAnswers[findPlayer].amount) : this.eventData.parcipiantAnswers[findPlayer].amount + " " + currencyType;
-        this.info = `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!`;
-      } else {
-        if (this.eventData.host.id === user._id) {
-          this.status = "You earned";
-          this.amount = this.letsCalcalteWinner("host", 0);
+      if (this.eventData.parcipiantAnswers != undefined) {
+        let findPlayer = _.findIndex(this.eventData.parcipiantAnswers, (x) => { return x.userId == user._id })
+        if (findPlayer !== -1) {
+          this.status = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? "YOU WON" : "YOU LOST";
+          this.amount = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? this.letsCalcalteWinner("player", this.eventData.parcipiantAnswers[findPlayer].amount) : this.eventData.parcipiantAnswers[findPlayer].amount + " " + this.currencyType;
           this.info = `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!`;
+        } else {
+          this.findHost(user)
         }
+      } else {
+        this.findHost(user)
       }
     }
-    console.log(this.eventData);
+  }
+
+  findHost(user) {
+    if (this.eventData.host.id === user._id) {
+      this.status = "You earned";
+      this.amount = this.letsCalcalteWinner("host", 0);
+      this.info = `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!`;
+    }
   }
 
   letsCalcalteWinner(from, amount) {
-    let currencyType = this.eventData.currencyType == "token" ? "BTY" : "ETH";
-    let pool = 0;
     let loserPool = 0;
     let winnerPool = 0;
-    this.eventData.parcipiantAnswers.forEach(x => {
-      pool = pool + Number(x.amount);
-    });
-    this.eventData.parcipiantAnswers.forEach(x => {
-      if (x.answer != this.eventData.finalAnswer) {
-        loserPool = loserPool + Number(x.amount);
-      }
-    });
-
-    winnerPool = pool - loserPool;
+    if (this.eventData.parcipiantAnswers != undefined) {
+      this.eventData.parcipiantAnswers.forEach(x => {
+        if (x.answer != this.eventData.finalAnswer) {
+          loserPool = loserPool + Number(x.amount);
+        }
+      });
+    }
+    winnerPool = this.pool - loserPool;
     if (from == "expert") {
       let findPercForExpert = (loserPool * 3) / 100;
-      return (findPercForExpert / this.eventData.validatorsAnswers.length).toFixed(2) + " " + currencyType
+      return (findPercForExpert / this.eventData.validatorsAnswers.length).toFixed(2) + " " + this.currencyType
     } else if (from == "player") {
       let playersFee = (loserPool * 90) / 100
-      return (amount + ((playersFee * amount) / winnerPool)).toFixed(2) + " " + currencyType;
+      return (amount + ((playersFee * amount) / winnerPool)).toFixed(2) + " " + this.currencyType;
     } else if (from == "host") {
-      return ((loserPool * 5) / 100).toFixed(2) + " " + currencyType;
+      return ((loserPool * 5) / 100).toFixed(2) + " " + this.currencyType;
     }
   }
 
@@ -116,6 +130,32 @@ export class EventFinishComponent implements OnDestroy {
         'color': '#FFD200'
       }
     }
+  }
+
+  playersBet() {
+    if (this.eventData.parcipiantAnswers == undefined) {
+      return 0
+    } else {
+      let data = _.filter(this.eventData.parcipiantAnswers, (x) => { return x.answer == this.eventData.finalAnswer })
+      return data.length
+    }
+  }
+
+  expertsBet() {
+    if (this.eventData.validatorsAnswers == undefined) {
+      return 0
+    } else {
+      let data = _.filter(this.eventData.validatorsAnswers, (x) => { return x.answer == this.eventData.finalAnswer })
+      return data.length
+    }
+  }
+
+  playersPers() {
+    return ((this.playersBet() * 100) / this.playersCount()) + "%";
+  }
+
+  expertPers() {
+    return ((this.expertsBet() * 100) / this.expertCount()) + "%";
   }
 
   playersCount() {

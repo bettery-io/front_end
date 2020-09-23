@@ -141,7 +141,7 @@
                   </ng-container>
                 </div>
 
-                <div>
+                <div *ngIf="!expert">
                   <div class="btn_join_expert">
                     <button (click)="onExpertPage()"> BECOME AN EXPERT</button>
                   </div>

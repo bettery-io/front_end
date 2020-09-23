@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from "../../../../../app.state";
 import _ from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component'
+import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component'
 
 @Component({
   selector: 'app-private-main',
@@ -103,14 +103,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   async changePage() {
     if (await this.loginWithTorus()) {
       this.calculateDate();
-      const timeNow = Number((Date.now() / 1000).toFixed(0));
-
-      if (this.data.endTime - timeNow > 0) {
-        this.expert = true;
-        this.condition = true;
-      } else {
-        this.condition = true;
-      }
     }
   }
 
@@ -226,6 +218,16 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   calculateDate() {
+    const timeNow = Number((Date.now() / 1000).toFixed(0));
+
+    if (this.data.endTime - timeNow > 0) {
+      this.expert = true;
+      this.condition = true;
+    } else {
+      this.expert = false;
+      this.condition = true;
+    }
+
     const startDate = new Date();
     const endTime = new Date(this.data.endTime * 1000);
     var diffMs = (endTime.getTime() - startDate.getTime());
@@ -267,15 +269,15 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   modalAboutExpert() {
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
     modalRef.componentInstance.name = 'Validate the result of the event, what actually happened. Depending on event type and how many Players joined, you can earn BTY tokens for being an Expert.';
-    modalRef.componentInstance.boldName ='Expert - ';
-    modalRef.componentInstance.link ='Learn more about roles on Bettery';
+    modalRef.componentInstance.boldName = 'Expert - ';
+    modalRef.componentInstance.link = 'Learn more about roles on Bettery';
   }
 
-  modalAboutPlayers(){
+  modalAboutPlayers() {
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
     modalRef.componentInstance.name = ' Bet on the event outcome. The prize pool is taken from the losers pot which is shared to all winning Players, the Host, and Experts. The higher your bet is, the bigger amount you will win.';
-    modalRef.componentInstance.boldName ='Player - ';
-    modalRef.componentInstance.link ='Learn more about roles on Bettery';
+    modalRef.componentInstance.boldName = 'Player - ';
+    modalRef.componentInstance.link = 'Learn more about roles on Bettery';
   }
 
   ngOnDestroy() {

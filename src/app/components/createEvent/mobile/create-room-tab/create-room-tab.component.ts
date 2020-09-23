@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import GradientJSON from '../../../../../assets/gradients.json';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InfoModalComponent } from '../../../share/info-modal/info-modal.component'
 
 @Component({
   selector: 'create-room-tab',
@@ -18,7 +20,8 @@ export class CreateRoomTabComponent implements OnInit {
   gradietnNumber: number = 0;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +42,14 @@ export class CreateRoomTabComponent implements OnInit {
   generateGradient() {
     this.gradietnNumber == Number(Object.keys(GradientJSON).length) - 1 ? this.gradietnNumber = 0 : this.gradietnNumber++;
     this.roomForm.controls.roomColor.setValue(GradientJSON[this.gradietnNumber]);
+  }
+
+  // TO DO
+  modalAboutExpert() {
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    modalRef.componentInstance.name = 'Validate the result of the event, what actually happened. Depending on event type and how many Players joined, you can earn BTY tokens for being an Expert.';
+    modalRef.componentInstance.boldName = 'Expert - ';
+    modalRef.componentInstance.link = 'Learn more about roles on Bettery';
   }
 
   chooseRoom() {

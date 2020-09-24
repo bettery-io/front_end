@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ReCaptchaV3Service } from 'ng-recaptcha';
-import { Subscription } from 'rxjs';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ReCaptchaV3Service} from 'ng-recaptcha';
+import {Subscription} from 'rxjs';
 
 import emailjs, {EmailJSResponseStatus} from 'emailjs-com';
 
@@ -15,6 +15,10 @@ export class LandingFormComponent implements OnInit, OnDestroy {
   submitted = false;
   sendMessage: boolean;
   recaptcaSub: Subscription
+
+  serviceID = 'service_t9q4kx4';
+  templateID = 'template_xgnmhpr';
+  userID = 'user_GmCxmCvs7Xmy69fb0oH8i';
 
 
   constructor(
@@ -39,7 +43,7 @@ export class LandingFormComponent implements OnInit, OnDestroy {
 
   public sendEmail(e: Event) {
     e.preventDefault();
-    emailjs.sendForm('service_0rs3zi2', 'template_bbonnwn', e.target as HTMLFormElement, 'user_zbn8o6eDZLmq7pZjLA84D')
+    emailjs.sendForm(this.serviceID, this.templateID, e.target as HTMLFormElement, this.userID)
       .then((result: EmailJSResponseStatus) => {
         console.log(result.text);
         if (result.text === 'OK') {
@@ -58,14 +62,14 @@ export class LandingFormComponent implements OnInit, OnDestroy {
 
   sendForm(form: FormGroup, $event) {
     this.recaptcaSub = this.recaptchaV3Service.execute('importantAction')
-    .subscribe(() => {
-      this.submitted = true;
-      if (form.status === 'INVALID') {
-        return;
-      }
-      this.sendEmail($event);
-      console.log(form);
-    });
+      .subscribe(() => {
+        this.submitted = true;
+        if (form.status === 'INVALID') {
+          return;
+        }
+        this.sendEmail($event);
+        console.log(form);
+      });
   }
 
   ngOnDestroy() {

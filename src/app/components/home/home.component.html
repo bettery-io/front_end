@@ -8,16 +8,16 @@
             <a href="#">What you can do</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#works">How it works</a>
+            <a href="#works" SimpleSmoothScroll>How it works</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#whyBettery">Why Bettery</a>
+            <a href="#whyBettery" SimpleSmoothScroll>Why Bettery</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#roadmap">Roadmap</a>
+            <a href="#roadmap" SimpleSmoothScroll>Roadmap</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#team">Team</a>
+            <a href="#team" SimpleSmoothScroll>Team</a>
           </li>
           <li class="nav_bar_item">
             <div (click)="open(content)">For Investors</div>
@@ -40,7 +40,7 @@
 
     <div class="mobile_nav container-fluid">
       <div class="d-flex align-items-center justify-content-between row">
-        <div class="logo col-4"></div>
+        <div class="logo col-4 mt-3"></div>
 
         <div class="btn_short col-4 d-flex justify-content-end">
           <div class="d-flex align-items-center">
@@ -56,13 +56,13 @@
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="correct-left">
                 <a href="#" ngbDropdownItem>What you can do</a>
                 <div class="dropdown-divider"></div>
-                <a href="#works" ngbDropdownItem>How it works</a>
+                <a href="#works" SimpleSmoothScroll ngbDropdownItem>How it works</a>
                 <div class="dropdown-divider"></div>
-                <a href="#whyBettery" ngbDropdownItem>Why Bettery</a>
+                <a href="#whyBettery" SimpleSmoothScroll ngbDropdownItem>Why Bettery</a>
                 <div class="dropdown-divider"></div>
-                <a href="#roadmap" ngbDropdownItem>Roadmap</a>
+                <a href="#roadmap" SimpleSmoothScroll ngbDropdownItem>Roadmap</a>
                 <div class="dropdown-divider"></div>
-                <a href="#team" ngbDropdownItem>Team</a>
+                <a href="#team" SimpleSmoothScroll ngbDropdownItem>Team</a>
                 <div class="dropdown-divider"></div>
                 <div (click)="open(content)" ngbDropdownItem>For Investors</div>
                 <div class="dropdown-divider"></div>
@@ -106,26 +106,28 @@
     </header>
 
     <section id="works" class="bettery_work row justify-content-around container-fluid ml-0 mr-0">
-      <div class="bettery_work_box col-lg-6 col-12 row order-lg-first ml-0 mr-0 pr-0">
-        <div class="box_left col-12 col-lg-6 row pr-0">
-          <div class="card_item mb-5 bg-hover col-12 col-lg-10">
-            <div class="mb-3">
-              <div class="img-section2"></div>
-            </div>
-            <h3 class="mb-2">Social Media Community</h3>
-            <div class="card-text">
-              <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, nostrud exercitation.</p>
-            </div>
-          </div>
-          <div class="card_item mb-5 bg-hover col-12 col-lg-10">
-            <div class="mb-3">
-              <div class="round">
-                <div class="img_man"></div>
+      <div class="bettery_work_box col-lg-6 col-12 row order-lg-first">
+        <div class="box_left col-12 col-lg-6">
+          <div class="row">
+            <div class="card_item mb-5 bg-hover col-12 col-lg-10">
+              <div class="mb-3">
+                <div class="img-section2"></div>
+              </div>
+              <h3 class="mb-2">Social Media Community</h3>
+              <div class="card-text">
+                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, nostrud exercitation.</p>
               </div>
             </div>
-            <h3 class="mb-2">On My Own</h3>
-            <div class="card-text">
-              <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, nostrud exercitation.</p>
+            <div class="card_item mb-5 bg-hover col-12 col-lg-10">
+              <div class="mb-3">
+                <div class="round">
+                  <div class="img_man"></div>
+                </div>
+              </div>
+              <h3 class="mb-2">On My Own</h3>
+              <div class="card-text">
+                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, nostrud exercitation.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -392,7 +394,7 @@
       <div class="container road-map-mobile">
         <div class="row">
           <div class="col-lg-3 col-xs-12 col-sm-6 mt-3">
-            <div class="card-date pt-2 pb-2">
+            <div class="card-date pt-2 pb-2 acti">
               <span>SEPTEMBER 2020</span>
             </div>
             <div class="card-mob-text pt-4  pb-1">

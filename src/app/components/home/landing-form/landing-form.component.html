@@ -44,7 +44,6 @@
           <div class="form-group">
             <label for="phone">Phone Number</label>
             <input type="number" formControlName="phoneNumber" name="phoneNumber" class="form-control"
-
                    [ngClass]="submitted && f.phoneNumber.errors && 'validator'" id="phone" placeholder="Phone Number">
             <div *ngIf="submitted && f.phoneNumber.errors">
               <small *ngIf="f.phoneNumber.errors.required" class="valid_text quize_validation_error">This field is

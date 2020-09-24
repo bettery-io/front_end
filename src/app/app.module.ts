@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { ClipboardModule } from 'ngx-clipboard';
 import { AvatarModule } from 'ngx-avatar';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { SimpleSmoothScrollModule } from 'ng2-simple-smooth-scroll';
 
 import { userReducer } from './reducers/user.reducer';
 import { coinsReducer } from './reducers/coins.reducer';
@@ -55,6 +56,7 @@ import { LandingFormComponent } from './components/home/landing-form/landing-for
     HttpClientModule,
     FontAwesomeModule,
     ReactiveFormsModule,
+    SimpleSmoothScrollModule,
     StoreModule.forRoot({
       user: userReducer,
       coins: coinsReducer,

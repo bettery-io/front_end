@@ -1,11 +1,11 @@
 p, h1, h2, h3
   margin: 0
-
 .main
   color: #0B1511
   max-width: 1440px
   margin: -20px auto 0 auto
   background: white
+  overflow: hidden
 
 nav
   display: flex
@@ -56,7 +56,7 @@ nav
   &:active
     background-color: #9E9E9E
 .lang-2
-  width: 52px
+  width: 58px
   height: 29px
 
 .mobile_nav
@@ -182,7 +182,6 @@ header
   border: 1px solid #EEEEEE
   box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1)
   border-radius: 32px
-  //width: 222px
   cursor: pointer
   margin: 0 auto
 
@@ -202,7 +201,6 @@ header
   display: flex
   flex-direction: column
   justify-content: center
-  padding-right: 30px
 
 .img_man
   background: url("../../../assets/landingPage/man1.png") left center no-repeat
@@ -226,7 +224,7 @@ header
   border-radius: 100%
   width: 64px
   height: 64px
-  background: yellow
+  background: #FDD92A
   padding-top: 9px
   padding-left: 20px
 
@@ -486,6 +484,10 @@ header
   background-color: #28354C
   color: #54DD96
 
+.acti
+  background-color: #54DD96
+  color: #0B1511
+
 .card-mob-text
   border-bottom-left-radius: 24px
   border-bottom-right-radius: 24px
@@ -683,7 +685,7 @@ footer
   header
     padding: 60px 15px 42px 15px
   .third
-    padding-bottom: 140px
+    padding-bottom: 40px
   .four
     padding-bottom: 140px
   .five
@@ -761,4 +763,16 @@ footer
     margin: 10px 0 10px 0
 
 
+
+//============ remove background img in mobile ==============
+
+@media (max-width: 1000px)
+  .bettery_work
+    background: none
+  .third
+    background: none
+  .four
+    background: none
+  .five
+    background: none
 

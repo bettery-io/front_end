@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
@@ -31,8 +31,12 @@ import { CreateEventModule } from './components/createEvent/createEvent.module';
 import { EventsModule } from './components/events/events.module';
 import { ShareModule } from "./components/share/share.module";
 import { LandingFormComponent } from './components/home/landing-form/landing-form.component';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 
-
+export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
+  return new TranslateHttpLoader(http, './assets/locale/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -68,16 +72,22 @@ import { LandingFormComponent } from './components/home/landing-form/landing-for
       { path: "", component: HomeComponent },
       { path: 'history', component: HistoryComponent },
       { path: 'erc20', component: ErcCoinSaleComponent }
-    ])
+    ]),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+      useDefaultLang: false,
+    })
   ],
   providers: [
     PostService,
     GetService,
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF' }
   ],
-  exports: [
-    // SpinnerLoadingComponent
-  ],
+  exports: [],
   bootstrap: [
     AppComponent
   ]

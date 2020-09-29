@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {Observable} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {newEventSelector} from '../../../../reducers/newEvent.reducer';
 
 @Component({
   selector: 'app-events-templates',
@@ -7,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventsTemplatesComponent implements OnInit {
   whichEvent = "setQuestion"
+  eventFromLanding$: Observable<string>;
   formData = {
     question: '',
     answers: [],
@@ -27,12 +31,19 @@ export class EventsTemplatesComponent implements OnInit {
     exactDay: new Date().getDate(),
     exactMonth: new Date().getMonth(),
     exactYear: new Date().getFullYear(),
-    exactTimeBool: false
+    exactTimeBool: false,
   }
 
-  constructor() { }
+
+  constructor(private store: Store<any>) { }
 
   ngOnInit(): void {
+    this.eventFromLanding$ = this.store.pipe(select(newEventSelector));
+    this.eventFromLanding$.subscribe(a => {
+      if (a.trim().length > 0) {
+        this.formData.question = a;
+      }
+    });
   }
 
   swithToSetQuestion(data) {

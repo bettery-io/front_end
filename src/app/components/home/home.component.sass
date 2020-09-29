@@ -1,5 +1,6 @@
 p, h1, h2, h3
   margin: 0
+
 .main
   color: #0B1511
   max-width: 1440px
@@ -18,16 +19,19 @@ nav
 
 .nav_bar
   padding-left: 0
+
   & li
     display: inline-block
     margin-right: 32px
     cursor: pointer
+
     & a
       font-style: normal
       font-weight: 600
       font-size: 14px
       line-height: 20px
       color: #000000
+
     & div
       font-style: normal
       font-weight: 600
@@ -55,6 +59,7 @@ nav
 
   &:active
     background-color: #9E9E9E
+
 .lang-2
   width: 58px
   height: 29px
@@ -77,6 +82,7 @@ nav
     font-weight: normal !important
     font-size: 16px
     line-height: 20px
+
     & span
       font-weight: bold
 
@@ -85,6 +91,7 @@ nav
   .nav_bar
     & :last-child
       margin-right: 0
+
     & li
       margin-right: 18px
 
@@ -94,9 +101,9 @@ nav
     & li
       & a
         font-size: 12px
+
       & div
         font-size: 12px
-
 
 
 //=============== header =====================
@@ -153,7 +160,7 @@ header
     text-align: center
 
 .mobile_img
-  margin-top: 78px
+  margin-top: 38px
   display: none
 
 .bg_header
@@ -162,9 +169,45 @@ header
   width: 100%
   height: 320px
 
+//=======new setting =======
+
+.text
+  cursor: pointer
+  font-weight: bold
+  font-size: 22px
+  line-height: 28px
+  margin-bottom: 20px
+  color: #0eaf5c
+
+.headerInput
+  cursor: pointer
+  border: none
+  height: 32px
+  font-size: 22px
+
+  font-weight: bold
+  color: #0eaf5c
+  margin-bottom: 16px
+  padding: 0
+
+.headerInput::placeholder
+  font-size: 22px
+
+.headerInput:active, :hover, :focus
+  outline: 0
+  outline-offset: 0
+
+//  =============================
+
 @media (max-width: 1023px)
   .mobile_img
     display: block
+  .text
+    font-size: 16px
+  .headerInput::placeholder
+    font-size: 16px
+  .headerInput
+    font-size: 16px
 
 
 //========= second ===========
@@ -533,12 +576,14 @@ header
   position: absolute
   left: 36.4%
   top: 56%
+
 .balls-rest :nth-child(7)
-    left: 61.5%
-    top: 56%
+  left: 61.5%
+  top: 56%
+
 .balls-rest :nth-child(8)
-    left: 86.5%
-    top: 56%
+  left: 86.5%
+  top: 56%
 
 @media (max-width: 995px)
   .road-map-mobile
@@ -672,18 +717,19 @@ footer
 
 .bg-main
   background: url("../../../assets/landingPage/left.png") left 14% no-repeat, url("../../../assets/landingPage/left.png") left 43% no-repeat, url("../../../assets/landingPage/left.png") left 81% no-repeat, url("../../../assets/landingPage/right.png") right 58% no-repeat #FFFFFF
+
 .bg-basic-img
-  background:  url("../../../assets/landingPage/main.png") 123% -54px no-repeat
+  background: url("../../../assets/landingPage/main.png") 123% -54px no-repeat
   background-size: 49%
 
 @media(max-width: 1023px)
   .bg-basic-img
-    background:  none
+    background: none
 
 
 @media (max-width: 768px)
   header
-    padding: 60px 15px 42px 15px
+    padding: 40px 15px 42px 15px
   .third
     padding-bottom: 40px
   .four
@@ -696,7 +742,6 @@ footer
     margin-bottom: 10px
 
 
-
 @media (max-width: 1000px)
   .title
     & h1
@@ -707,7 +752,7 @@ footer
     font-size: 28px !important
     line-height: 32.5px !important
 
-  .title_text,.bettery_work_title,.third-title,.four_top,.five_top,.road-map-top
+  .title_text, .bettery_work_title, .third-title, .four_top, .five_top, .road-map-top
     & p
       font-size: 16px
       line-height: 20px
@@ -724,9 +769,11 @@ footer
   & p
     font-size: 18px
     line-height: 28px
+
   & span
     font-style: italic
     font-weight: bold
+
   & a
     text-align: center
     font-style: normal
@@ -742,6 +789,7 @@ footer
     line-height: 23px
     text-align: center
     color: #0B1511
+
   & a
     font-size: 16px
     line-height: 20px
@@ -764,7 +812,6 @@ footer
     border-left: none
     border-bottom: 1px solid #979797
     margin: 10px 0 10px 0
-
 
 
 //============ remove background img in mobile ==============

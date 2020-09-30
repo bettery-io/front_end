@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from 'rxjs';
-import {select, Store} from '@ngrx/store';
-import {newEventSelector} from '../../../../reducers/newEvent.reducer';
+import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../app.state';
 
 @Component({
   selector: 'app-events-templates',
@@ -10,7 +10,7 @@ import {newEventSelector} from '../../../../reducers/newEvent.reducer';
 })
 export class EventsTemplatesComponent implements OnInit {
   whichEvent = "setQuestion"
-  eventFromLanding$: Observable<string>;
+  eventFromLandingSubscr: Subscription;
   formData = {
     question: '',
     answers: [],
@@ -35,13 +35,12 @@ export class EventsTemplatesComponent implements OnInit {
   }
 
 
-  constructor(private store: Store<any>) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.eventFromLanding$ = this.store.pipe(select(newEventSelector));
-    this.eventFromLanding$.subscribe(a => {
-      if (a.trim().length > 0) {
-        this.formData.question = a;
+    this.eventFromLandingSubscr = this.store.select("createEvent").subscribe(a => {
+      if (a.newEvent.trim().length > 0) {
+        this.formData.question = a.newEvent.trim();
       }
     });
   }
@@ -168,6 +167,12 @@ export class EventsTemplatesComponent implements OnInit {
       return { "border-color": "#FFD300" }
     } else {
       return { "border-color": "#FFFFFF" }
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.eventFromLandingSubscr) {
+      this.eventFromLandingSubscr.unsubscribe();
     }
   }
 

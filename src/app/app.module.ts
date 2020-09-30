@@ -12,6 +12,7 @@ import {SimpleSmoothScrollModule} from 'ng2-simple-smooth-scroll';
 import {userReducer} from './reducers/user.reducer';
 import {coinsReducer} from './reducers/coins.reducer';
 import {invitesReducer} from './reducers/invites.reducer';
+import {createEventReducer} from './reducers/newEvent.reducer';
 
 import {AppComponent} from './app.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
@@ -34,7 +35,6 @@ import {LandingFormComponent} from './components/home/landing-form/landing-form.
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxTypedJsModule} from 'ngx-typed-js';
-import {reducers} from './reducers/newEvent.reducer';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/locale/', '.json');
@@ -68,8 +68,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
       user: userReducer,
       coins: coinsReducer,
       invites: invitesReducer,
+      createEvent: createEventReducer
     }),
-    StoreModule.forFeature('event', reducers ),
     NgbModule,
     FormsModule,
     RouterModule.forRoot([

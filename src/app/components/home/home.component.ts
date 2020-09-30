@@ -2,12 +2,11 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '../../../environments/environment';
-import {Observable, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {NgxTypedJsComponent} from 'ngx-typed-js';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
+import { Store} from '@ngrx/store';
 import {createEventAction} from '../../actions/newEvent.actions';
-import {newEventSelector} from '../../reducers/newEvent.reducer';
 
 @Component({
   selector: 'home',
@@ -20,7 +19,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   translateSub: Subscription;
   active: boolean;
   createEventForm: FormGroup;
-  newEvent$: Observable<any>;
   createEvent2 = '';
   topQuestions = ['Which team will win El Clásico at 3am tonight?', 'What will be the weather tomorrow in Saigon?'];
   a: boolean;
@@ -38,7 +36,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.translate();
 
     this.formInitialize();
-    this.valueInitialize();
   }
 
   changeLocale() {
@@ -67,9 +64,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  valueInitialize(): void {
-    this.newEvent$ = this.store.pipe(select(newEventSelector));
-  }
 
   clickMain($event) {
     if (this.createEvent2.trim().length <= 0) {

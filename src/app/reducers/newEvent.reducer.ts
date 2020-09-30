@@ -1,4 +1,4 @@
-import {Action, createFeatureSelector, createReducer, createSelector, on} from '@ngrx/store';
+import {createFeatureSelector, createReducer, createSelector, on} from '@ngrx/store';
 import {createEventAction} from '../actions/newEvent.actions';
 import {LandingStateInterface} from '../models/landingState.model';
 
@@ -22,7 +22,3 @@ export const createEventReducer = createReducer(
     })
   )
 );
-
-export function reducers(state: LandingStateInterface, action: Action) {
-  return createEventReducer(state, action);
-}

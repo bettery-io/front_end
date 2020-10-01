@@ -1,12 +1,15 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
-import {environment} from '../../../environments/environment';
 import {Subscription} from 'rxjs';
 import {NgxTypedJsComponent} from 'ngx-typed-js';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
+
 import {createEventAction} from '../../actions/newEvent.actions';
+import {environment} from '../../../environments/environment';
+import * as EN from '../../../assets/locale/en.json';
+import * as VN from '../../../assets/locale/vn.json';
+
 
 @Component({
   selector: 'home',
@@ -18,28 +21,36 @@ export class HomeComponent implements OnInit, OnDestroy {
   languages: { id: string, title: string }[] = [];
   translateSub: Subscription;
   active: boolean;
-  createEventForm: FormGroup;
-  createEvent2 = '';
-  topQuestions = ['Which team will win El Clásico at 3am tonight?', 'What will be the weather tomorrow in Saigon?'];
-  a: boolean;
+  newCreateEvent = '';
+  switchLang = 'en';
+  topQuestions: any;
+
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
   constructor(
     private modalService: NgbModal,
     private translateService: TranslateService,
-    private formBuilder: FormBuilder, private store: Store<any>) {
+    private store: Store<any>) {
+
   }
 
   ngOnInit() {
     this.translateService.use(environment.defaultLocale);
     this.selectedLanguage = environment.defaultLocale;
     this.translate();
-
-    this.formInitialize();
   }
 
   changeLocale() {
     this.translateService.use(this.selectedLanguage);
+
+    if (this.selectedLanguage === 'vn') {
+      this.switchLang = 'vn';
+      this.topQuestions = VN.HEADER.TOP_QUESTIONS;
+    }
+    if (this.selectedLanguage === 'en') {
+      this.switchLang = 'en';
+      this.topQuestions = EN.HEADER.TOP_QUESTIONS;
+    }
   }
 
   translate(): void {
@@ -58,25 +69,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.modalService.open(content, {centered: true, size: 'lg'});
   }
 
-  formInitialize(): void {
-    this.createEventForm = this.formBuilder.group({
-      newEvent: ['', Validators.required]
-    });
-  }
-
-
   clickMain($event) {
-    if (this.createEvent2.trim().length <= 0) {
+    if (this.newCreateEvent.trim().length <= 0) {
       this.active = $event.target.className === 'typing' || $event.target.id === 'newEvent';
-      this.a = true;
-    }
-    if (!this.active) {
-      this.a = false;
     }
   }
 
-  sendEvent(createEventForm) {
-    const data = createEventForm.value.newEvent;
+  sendEvent() {
+    const data = this.newCreateEvent;
     this.store.dispatch(createEventAction({data}));
   }
 

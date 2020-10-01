@@ -45,7 +45,7 @@
           <div class="d-flex align-items-center">
             <div class="mr-3"><a href="#"><img src="../../../assets/landingPage/telegramNav.png" alt="tel"></a></div>
             <div class="mr-2">
-              <select class="lang-2" id="language" (change)="changeLocale()" [(ngModel)]="selectedLanguage">
+              <select id="language" (change)="changeLocale()" [(ngModel)]="selectedLanguage">
                 <option *ngFor="let language of languages" [value]="language.id">{{ language.id }}</option>
               </select>
             </div>
@@ -56,7 +56,7 @@
                 <div class="dropdown-divider"></div>
                 <a href="#works" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_2' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#whyBettery" SimpleSmoothScroll ngbDropdownItem>W{{'NAVBAR.ITEM_3' | translate}}</a>
+                <a href="#whyBettery" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_3' | translate}}</a>
                 <div class="dropdown-divider"></div>
                 <a href="#roadmap" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_4' | translate}}</a>
                 <div class="dropdown-divider"></div>
@@ -84,23 +84,31 @@
               <p>{{'HEADER.TEXT' | translate}}</p>
             </div>
 
-            <form action="#" [formGroup]="createEventForm">
-              <ngx-typed-js *ngIf="!active"
-                            [strings]="topQuestions"
-                            [typeSpeed]="60" [backSpeed]="20" [loop]="true">
-                <div class="text">
-                  <span class="typing"></span>
-                </div>
-              </ngx-typed-js>
-              <input [(ngModel)]="createEvent2" *ngIf="active" autofocus class="headerInput" type="text"
-                     formControlName="newEvent" id="newEvent" name="newEvent"
-                     placeholder="Please input your questions ...">
-              <div class="btn_title">
-                <button class="btn btn-success" routerLink="/create-event"
-                        (click)="sendEvent(createEventForm)">{{'HEADER.BUTTON_TEXT' | translate}}
-                </button>
+            <ngx-typed-js *ngIf="!active && switchLang === 'vn'"
+                          [strings]="topQuestions"
+                          [typeSpeed]="60" [backSpeed]="20" [loop]="true">
+              <div class="text">
+                <span class="typing"></span>
               </div>
-            </form>
+            </ngx-typed-js>
+
+            <ngx-typed-js *ngIf="!active && switchLang ==='en'"
+                          [strings]="topQuestions"
+                          [typeSpeed]="60" [backSpeed]="20" [loop]="true">
+              <div class="text">
+                <span class="typing"></span>
+              </div>
+            </ngx-typed-js>
+
+            <input [(ngModel)]="newCreateEvent" *ngIf="active" autofocus class="headerInput" type="text"
+                   id="newEvent" name="newEvent"
+                   placeholder="Please input your questions ...">
+            <div class="btn_title">
+              <button class="btn btn-success" routerLink="/create-event"
+                      (click)="sendEvent()">{{'HEADER.BUTTON_TEXT' | translate}}
+              </button>
+            </div>
+
 
           </div>
           <div class="player col-lg-4 col-12">

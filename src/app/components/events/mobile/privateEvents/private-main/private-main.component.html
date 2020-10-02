@@ -1,4 +1,4 @@
-<div *ngIf="!badRequest" class="{{condition && counts == 1 && 'bg_img'}} container ">
+<div *ngIf="!badRequest" class="{{condition && counts == 1 && 'bg_img'}} containe ">
   <div *ngIf="!finised">
     <ng-container *ngIf="!expertPage">
       <!--    First page    -->
@@ -38,7 +38,7 @@
         </div>
         <div class="hr"></div>
         <div class="tutorial">
-          <h3>How DO I JOIN?</h3>
+          <h3>How DO I JOIN ?</h3>
           <div class="tutorials-place">
             <p>Gif Tutorials</p>
           </div>
@@ -65,7 +65,7 @@
           <div class="answers">
             <ng-container>
               <div class="answers_item" *ngFor="let a of data?.answers; index as i">
-                <li [ngClass]="{ 
+                <li [ngClass]="{
                   'participated': i == participatedIndex
                }">{{a}}</li>
               </div>
@@ -89,7 +89,7 @@
               <div class="hr"></div>
               <div class="create_by textWhite">
                 <div class="create_by__item">
-                  <div class="left">
+                  <div class="left pt-1">
                     <p>CREATED BY:</p>
                   </div>
                   <div class="right">

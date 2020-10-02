@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   active: boolean;
   newCreateEvent = '';
   switchLang = 'en';
-  topQuestions: any;
+  topQuestions = EN.HEADER.TOP_QUESTIONS;
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   changeLocale() {
     this.translateService.use(this.selectedLanguage);
+    console.log(this.selectedLanguage)
 
     if (this.selectedLanguage === 'vn') {
       this.switchLang = 'vn';

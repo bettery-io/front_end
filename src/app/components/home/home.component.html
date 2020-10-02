@@ -102,7 +102,7 @@
 
             <input [(ngModel)]="newCreateEvent" *ngIf="active" autofocus class="headerInput" type="text"
                    id="newEvent" name="newEvent"
-                   placeholder="Please input your questions ...">
+                   placeholder="{{'HEADER.TOP_PLACEHOLDER' | translate}}">
             <div class="btn_title">
               <button class="btn btn-success" routerLink="/create-event"
                       (click)="sendEvent()">{{'HEADER.BUTTON_TEXT' | translate}}

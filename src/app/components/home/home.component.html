@@ -26,7 +26,7 @@
             <a href="#">{{'NAVBAR.ITEM_7' | translate}}</a>
           </li>
           <li class="nav_bar_item position-relative ml-3">
-            <a class="tgr-img" href="#">{{'NAVBAR.ITEM_8' | translate}}</a>
+            <a class="tgr-img" target="_blank" href="https://web.telegram.org">{{'NAVBAR.ITEM_8' | translate}}</a>
           </li>
         </ul>
       </div>
@@ -43,7 +43,7 @@
 
         <div class="btn_short col-4 d-flex justify-content-end">
           <div class="d-flex align-items-center">
-            <div class="mr-3"><a href="#"><img src="../../../assets/landingPage/telegramNav.png" alt="tel"></a></div>
+            <div class="mr-3"><a href="https://web.telegram.org" target="_blank"><img src="../../../assets/landingPage/telegramNav.png" alt="tel"></a></div>
             <div class="mr-2">
               <select id="language" (change)="changeLocale()" [(ngModel)]="selectedLanguage">
                 <option *ngFor="let language of languages" [value]="language.id">{{ language.id }}</option>
@@ -73,8 +73,8 @@
     </div>
 
 
-    <header class="row container-fluid mr-0 ml-0">
-      <div class="container">
+    <header class="row mr-0 ml-0">
+      <div class="container-fluid m-2">
         <div class="row d-flex">
           <div class="title_block col-lg-8 col-12 pr-0 pl-0">
             <div class="title">
@@ -120,11 +120,11 @@
       </div>
     </header>
 
-    <section id="works" class="bettery_work row justify-content-around container-fluid ml-0 mr-0">
+    <section id="works" class="bettery_work row container-fluid ml-0 mr-0">
       <div class="bettery_work_box col-lg-6 col-12 row order-lg-first">
         <div class="box_left col-12 col-lg-6">
           <div class="row">
-            <div class="card_item mb-5 bg-hover col-12 col-lg-10">
+            <div class="card_item mb-5 bg-hover col-12 col-lg-10 col-xl-8">
               <div class="mb-3">
                 <div class="img-section2"></div>
               </div>
@@ -133,7 +133,7 @@
                 <p>{{'SECOND.CARD_TEXT_1' | translate}}</p>
               </div>
             </div>
-            <div class="card_item mb-5 bg-hover col-12 col-lg-10">
+            <div class="card_item mb-5 bg-hover col-12 col-lg-10 col-xl-8">
               <div class="mb-3">
                 <div class="round">
                   <div class="img_man"></div>
@@ -148,7 +148,7 @@
         </div>
         <div class="box_right col-12 col-lg-6 ">
           <div class="row">
-            <div class="card_item bg-hover mb-5 col-12 col-lg-10">
+            <div class="card_item bg-hover mb-5 col-12 col-lg-10 col-xl-8 ml-lg-0">
               <div class="mb-2">
                 <div class="round correct">
                   <div class="img_mans2"></div>
@@ -162,7 +162,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-12  bettery_work_title order-first mb-5 text-center text-lg-left">
+      <div class="col-lg-5 col-12  bettery_work_title order-first mb-5 text-center text-lg-left ml-lg-5">
         <div>
           <div class="mb-3">
             <h2>{{'SECOND.TITLE' | translate}}</h2>
@@ -179,7 +179,7 @@
           <div class="third-left col-lg-7 col-xs-12">
             <div class="third-title title_h2 text-center text-lg-left">
               <h2>{{'THIRD.TITLE' | translate}}</h2>
-              <div class="mt-3">
+              <div class="mt-3 third-text">
                 <p>{{'THIRD.TEXT' | translate}}</p>
               </div>
             </div>
@@ -195,21 +195,21 @@
           <div>
             <h2 class="pb-3">{{'FOUR.TITLE' | translate}}</h2>
           </div>
-          <div>
+          <div class="px-lg-5">
             <p>{{'FOUR.TEXT' | translate}}</p>
           </div>
         </div>
       </div>
-      <div class="four_bottom container-fluid">
-        <div class="row justify-content-between mx-auto">
-          <div class="col-lg-3 col-sm-6 col-sm-6">
+      <div class="four_bottom  w-90">
+        <div class="row justify-content-center mx-auto">
+          <div class="col-lg-6 col-xs-12 col-xl-3">
             <div class="four_card">
-              <div class="mb-4">
+              <div class="mb-2">
                 <div class="img_bg_yellow d-flex justify-content-center align-items-center">
                   <img src="../../../assets/landingPage/Fill.png" alt="fill">
                 </div>
               </div>
-              <div>
+              <div class="mb-2">
                 <h3>{{'FOUR.CARD_TITLE_1' | translate}}</h3>
               </div>
               <div>
@@ -218,14 +218,14 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-xs-12 col-sm-6">
+          <div class="col-lg-6 col-xs-12 col-xl-3">
             <div class="four_card">
-              <div class="mb-4">
+              <div class="mb-2">
                 <div class="img_bg_yellow d-flex justify-content-center align-items-center correct-img">
                   <img src="../../../assets/landingPage/between.png" alt="between">
                 </div>
               </div>
-              <div>
+              <div class="mb-2">
                 <h3>{{'FOUR.CARD_TITLE_2' | translate}}</h3>
               </div>
               <div>
@@ -234,14 +234,14 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-xs-12 col-sm-6">
+          <div class="col-lg-6 col-xs-12 col-xl-3">
             <div class="four_card">
-              <div class="mb-4">
+              <div class="mb-2">
                 <div class="img_bg_yellow d-flex justify-content-center align-items-center">
                   <img src="../../../assets/landingPage/money.png" alt="money">
                 </div>
               </div>
-              <div>
+              <div class="mb-2">
                 <h3>{{'FOUR.CARD_TITLE_3' | translate}}</h3>
               </div>
               <div>
@@ -250,14 +250,14 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-xs-12 col-sm-6">
+          <div class="col-lg-6 col-xs-12 col-xl-3">
             <div class="four_card">
-              <div class="mb-4">
+              <div class="mb-2">
                 <div class="img_bg_yellow d-flex justify-content-center align-items-center">
                   <img src="../../../assets/landingPage/last.png" alt="1">
                 </div>
               </div>
-              <div>
+              <div class="mb-2">
                 <h3>{{'FOUR.CARD_TITLE_4' | translate}}</h3>
               </div>
               <div>
@@ -272,8 +272,12 @@
     <section class="five">
       <div class="five_top row justify-content-center">
         <div class="col-lg-6 col-md-10">
-          <div><h2>{{'FIVE.TITLE' | translate}}</h2></div>
-          <div><p>{{'FIVE.TEXT' | translate}}</p></div>
+          <div>
+            <h2>{{'FIVE.TITLE' | translate}}</h2>
+          </div>
+          <div class="px-lg-5">
+            <p>{{'FIVE.TEXT' | translate}}</p>
+          </div>
         </div>
       </div>
       <div class="five_bottom container">
@@ -344,12 +348,12 @@
           <div>
             <h2>{{'ROADMAP.TITLE' | translate}}</h2>
           </div>
-          <div>
+          <div class="px-lg-5">
             <p>{{'ROADMAP.TEXT' | translate}}</p>
           </div>
         </div>
       </div>
-      <div class="container road-map-desctop">
+      <div class=" px-lg-5 road-map-desctop">
         <div class="row mb-5 text_road position-relative balls-rest">
 
           <div class="col-lg-3 col-xs-12 col-sm-6">
@@ -453,7 +457,7 @@
     </section>
 
     <section class="team" id="team">
-      <div class="container-fluid">
+      <div class="container-fluid px-lg-5">
         <div class="row justify-content-center">
           <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
             <div class="img_team_logo mb-2"></div>
@@ -564,7 +568,7 @@
             <div class="col-lg-6 col-12 d-flex mt-2">
               <div class="img_mail"></div>
               <div class="pt-1 ml-2 mt-2">
-                <a href="#">{{'NAVBAR.ITEM_8' | translate}}</a>
+                <a href="https://web.telegram.org" target="_blank">{{'NAVBAR.ITEM_8' | translate}}</a>
               </div>
             </div>
             <div class="col-lg-6 col-12 d-flex mt-2">

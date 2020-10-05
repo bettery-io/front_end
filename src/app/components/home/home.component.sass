@@ -6,20 +6,33 @@ p, h1, h2, h3
   max-width: 1440px
   margin: -20px auto 0 auto
   background: white
+  position: relative
   overflow: hidden
 
 nav
   display: flex
+  max-width: 1440px
+  position: fixed
+  transition: all 0.3s
+  z-index: 99
+  margin: auto
+
+.nav-hide
+  top: -200px
+
+.nav-show
+  top: 0
+  background-color: #fdd92a
+  box-shadow: 0 0 0.25rem rgba(0,0,0,0.5)
 
 .logo
   background: url("../../../assets/landingPage/logo-main.png") left center no-repeat
   background-size: contain
   width: 169px
-  height: 120px
+  height: 80px
 
 .nav_bar
   padding-left: 0
-
   & li
     display: inline-block
     margin-right: 32px
@@ -31,7 +44,6 @@ nav
       font-size: 14px
       line-height: 20px
       color: #000000
-
     & div
       font-style: normal
       font-weight: 600
@@ -77,6 +89,9 @@ nav
 
 .mobile_nav
   display: none
+  position: fixed
+  z-index: 99
+  transition: all 0.2s
 
 .correct-left
   left: -153px !important
@@ -84,10 +99,9 @@ nav
 
 @media (max-width: 1023px)
   nav
-    display: none
+    display: none !important
   .mobile_nav
-    display: block
-
+    display: block !important
   .btn_text
     color: #0EAF5C
     font-weight: normal !important
@@ -115,22 +129,42 @@ nav
 //=============== header =====================
 header
   display: flex
-  padding: 100px 0 42px 70px
+  padding: 235px 0 42px 70px
   margin-bottom: 200px
 
 .title
   margin-bottom: 21px
-  background: url("../../../assets/landingPage/greenLine1.png") 38% 98% no-repeat
-  background-size: 520px 24px
-  padding-right: 210px
 
   & h1
     font-weight: bold
     font-size: 56px
     line-height: 64px
+    font-family: 'Source Sans Pro', sans-serif
+.green_wrapper
+  position: relative
+.green
+    visibility: hidden
+    position: relative
+    display: inline-block
+.green::before
+    content: ""
+    position: absolute
+    visibility: visible
+    background-color: #54dd96
+    right: 2%
+    bottom: .3125rem
+    width: 85%
+    height: 40%
+    display: inline-block
+.green-text
+    position: absolute
+    top: 47%
+    left: 0
+    transform: translateY(-50%)
 
 .title_text
   margin-bottom: 64px
+  font-family: 'Source Sans Pro', sans-serif
   padding-right: 300px
 
   & p
@@ -219,6 +253,7 @@ header
     font-size: 16px
   .headerInput
     font-size: 16px
+
 
 
 //========= second ===========
@@ -731,12 +766,19 @@ footer
   background: url("../../../assets/landingPage/left.png") left 14% no-repeat, url("../../../assets/landingPage/left.png") left 43% no-repeat, url("../../../assets/landingPage/left.png") left 81% no-repeat, url("../../../assets/landingPage/right.png") right 58% no-repeat #FFFFFF
 
 .bg-basic-img
-  background: url("../../../assets/landingPage/main.png") 131% -46px no-repeat
+  background: url("../../../assets/landingPage/main.png") 130% -46px no-repeat
   background-size: 56%
 
 @media(max-width: 1023px)
   .bg-basic-img
     background: none
+
+@media(max-width: 767px)
+  .title
+    & h1
+      font-size: 28px
+      line-height: 35px
+      font-weight: 700
 
 //============ modal setting ================
 
@@ -810,13 +852,21 @@ footer
 
 //==================================================
 
-@media (max-width: 1024px)
+@media (max-width: 1100px)
   header
-    padding: 40px 15px 42px 15px
+    //padding: 40px 15px 42px 15px
+    padding: 175px 15px 42px 15px
+@media (max-width: 1288px)
+  .title
+    & h1
+      font-size: 46px
+      line-height: 46px
 
 @media (max-width: 768px)
+  .logo
+    height: 40px
   header
-    padding: 40px 15px 42px 15px
+    padding: 100px 15px 42px 15px
   .title_text
     margin-bottom: 27px
   .third
@@ -834,12 +884,7 @@ footer
   .four_card
     margin: 22px 0 0 0
 
-@media (max-width: 1000px)
-  .title
-    & h1
-      font-size: 28px
-      line-height: 35px
-      font-weight: 700
+@media (max-width: 1024px)
   h2
     font-size: 28px !important
     line-height: 32.5px !important
@@ -863,9 +908,26 @@ footer
   .w-90
     width: 100%
 
-@media (max-width: 375px)
-      .comment_card
-        margin: 50px 5px 0 5px
-      .img-choose
-        height: 500px
+@media (max-width: 550px)
+  .title
+    & h1
+      font-size: 28px
+      line-height: 35px
+      font-weight: 700
 
+@media (max-width: 375px)
+  header
+    padding: 100px 10px 42px 10px
+  .title
+    & h1
+      font-weight: 600
+  .comment_card
+      margin: 50px 5px 0 5px
+  .img-choose
+      height: 500px
+
+@media (max-width: 350px)
+  .title
+    & h1
+      font-size: 26px
+      font-weight: 700

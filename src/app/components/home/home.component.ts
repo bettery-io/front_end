@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
@@ -24,6 +24,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   newCreateEvent = '';
   switchLang = 'en';
   topQuestions = EN.HEADER.TOP_QUESTIONS;
+  scrollHideMenu: boolean;
+  styleHideMenu = true;
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
@@ -38,11 +40,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.translateService.use(environment.defaultLocale);
     this.selectedLanguage = environment.defaultLocale;
     this.translate();
+    this.scrollMenuSetting();
   }
 
   changeLocale() {
     this.translateService.use(this.selectedLanguage);
-    console.log(this.selectedLanguage)
+    console.log(this.selectedLanguage);
 
     if (this.selectedLanguage === 'vn') {
       this.switchLang = 'vn';
@@ -86,5 +89,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.translateSub.unsubscribe();
     }
   }
+
+  scrollMenuSetting(): void {
+    let prevScrollpos = window.pageYOffset;
+    window.onscroll = () => {
+      const currentScrollPos = window.pageYOffset;
+
+      prevScrollpos > currentScrollPos ? this.scrollHideMenu = false : this.scrollHideMenu = true;
+      prevScrollpos = currentScrollPos;
+      if (currentScrollPos === 0 || currentScrollPos < 0) {
+        this.styleHideMenu = true;
+        this.scrollHideMenu = false;
+      } else {
+        this.styleHideMenu = false;
+      }
+    };
+  }
+
 
 }

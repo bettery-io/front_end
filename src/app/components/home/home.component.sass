@@ -8,6 +8,7 @@ p, h1, h2, h3
   background: white
   position: relative
   overflow: hidden
+  font-family: 'Source Sans Pro', sans-serif
 
 nav
   display: flex
@@ -97,40 +98,11 @@ nav
   left: -153px !important
   width: 180px
 
-@media (max-width: 1023px)
-  nav
-    display: none !important
-  .mobile_nav
-    display: block !important
-  .btn_text
-    color: #0EAF5C
-    font-weight: normal !important
-    font-size: 16px
-    line-height: 20px
-    & span
-      font-weight: bold
-
-@media (max-width: 1260px)
-  .nav_bar
-    & :last-child
-      margin-right: 0
-    & li
-      margin-right: 18px
-
-@media (max-width: 1100px)
-  .nav_bar
-    & li
-      & a
-        font-size: 12px
-      & div
-        font-size: 12px
-
-
 //=============== header =====================
+
 header
   display: flex
-  padding: 235px 0 42px 70px
-  margin-bottom: 200px
+  padding: 200px 0 42px 70px
 
 .title
   margin-bottom: 21px
@@ -173,6 +145,8 @@ header
     line-height: 28px
 
 .btn_title
+  display: flex
+  align-items: center
   & button
     padding: 8px 30px
     text-align: center
@@ -203,7 +177,7 @@ header
     text-align: center
 
 .mobile_img
-  margin-top: 38px
+  margin-top: 70px
   display: none
 
 .bg_header
@@ -211,6 +185,82 @@ header
   background-size: contain
   width: 100%
   height: 320px
+
+//========= dropdown event setting =========
+
+.dropdown_box_show
+  visibility: visible !important
+  opacity: 1 !important
+
+.dropdown_box
+  font-family: 'Source Sans Pro', sans-serif
+  background: #FFFFFF
+  border: 0.25px solid rgba(0, 0, 0, 0.28)
+  box-sizing: border-box
+  border-radius: 20px
+  padding: 3px 25px 3px 25px
+  visibility: hidden
+  opacity: 0
+  transition: visibility 0.1s, opacity 0.3s linear
+
+  & button
+    background: #FDD92A
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16)
+    border-radius: 22px
+    border: none
+    padding: 3px 45px 3px 45px
+    font-size: 16px
+    font-style: normal
+    font-weight: 700
+    line-height: 28px
+    letter-spacing: 0
+    text-align: center
+
+.dropdown_list
+  margin: 0
+  padding: 0
+  font-size: 14px
+  font-style: normal
+  font-weight: 700
+  line-height: 19px
+  letter-spacing: 0
+  text-align: left
+
+  & li
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 20px 0 20px 0
+
+  & li:not(:last-child)
+    border-bottom: 0.25px solid rgba(0, 0, 0, 0.28)
+.dropText
+  color: #005FFF
+  font-style: normal
+  font-weight: 600
+  font-size: 16px
+  line-height: 28px
+  cursor: pointer
+  margin-left: -76px
+
+@media (max-width: 1024px)
+  .dropdown_box_show
+    display: block !important
+  .dropdown_box
+    display: none
+
+@media (max-width: 1390px)
+  .dropText
+    margin-left: -38px
+@media (max-width: 1200px)
+  .dropText
+    margin-left: -20px
+@media (max-width: 1060px)
+  .dropText
+    margin-left: 0
+@media (max-width: 995px)
+  .dropText
+    margin-left: 16px
 
 //======= create event input setting =======
 
@@ -242,7 +292,7 @@ header
   outline-offset: 0
 
 #newEvent
-  width: 100%
+  width: 70%
 
 @media (max-width: 1023px)
   .mobile_img
@@ -253,12 +303,12 @@ header
     font-size: 16px
   .headerInput
     font-size: 16px
-
-
+  #newEvent
+    width: 100%
 
 //========= second ===========
 .bettery_work
-  background: url("../../../assets/landingPage/bg1.png") 88% 1% no-repeat
+  background: url("../../../assets/landingPage/bg1.png") 85% 1% no-repeat
   background-size: 100px 75px
 
 .card_item
@@ -273,6 +323,7 @@ header
   border-radius: 32px
   cursor: pointer
   margin: 0 auto
+  font-family: 'Titillium Web', sans-serif
 
   & h3
     font-weight: 600
@@ -404,6 +455,7 @@ header
   box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1)
   border-radius: 32px
   cursor: pointer
+  font-family: 'Titillium Web', sans-serif
 
   & img
     width: 37px
@@ -490,6 +542,7 @@ header
   padding: 16px 12px 23px 12px
   margin: 50px 35px 0 35px
   background-color: #FFFFFF
+  font-family: 'Titillium Web', sans-serif
 
   & p
     font-style: italic
@@ -638,9 +691,10 @@ header
   .road-map-desctop
     display: none
 
-//  ========= Team ==========
+// ========= Team ==========
 .team
   margin-bottom: 100px
+  font-family: 'Titillium Web', sans-serif
 
 .item_team
   text-align: center
@@ -679,7 +733,6 @@ header
   & img
     width: 18px
 
-
 .team_card_name
   margin-bottom: 16px
 
@@ -703,7 +756,6 @@ header
   text-align: center
   color: #0B1511
 
-
 //======== footer ===========
 
 footer
@@ -714,7 +766,7 @@ footer
   font-weight: normal
   font-size: 14px
   line-height: 20px
-
+  font-family: 'Titillium Web', sans-serif
   & p
     padding-bottom: 16px
 
@@ -766,8 +818,8 @@ footer
   background: url("../../../assets/landingPage/left.png") left 14% no-repeat, url("../../../assets/landingPage/left.png") left 43% no-repeat, url("../../../assets/landingPage/left.png") left 81% no-repeat, url("../../../assets/landingPage/right.png") right 58% no-repeat #FFFFFF
 
 .bg-basic-img
-  background: url("../../../assets/landingPage/main.png") 130% -46px no-repeat
-  background-size: 56%
+  background: url("../../../assets/landingPage/main.png") 134% -46px no-repeat
+  background-size: 59%
 
 @media(max-width: 1023px)
   .bg-basic-img
@@ -836,7 +888,6 @@ footer
     border-bottom: 1px solid #979797
     margin: 10px 0 10px 0
 
-
 //============ remove background img in mobile ==============
 
 @media (max-width: 1000px)
@@ -854,7 +905,6 @@ footer
 
 @media (max-width: 1100px)
   header
-    //padding: 40px 15px 42px 15px
     padding: 175px 15px 42px 15px
 @media (max-width: 1288px)
   .title
@@ -883,6 +933,9 @@ footer
     margin-bottom: 32px
   .four_card
     margin: 22px 0 0 0
+  .dropdown_list
+    & li
+      padding: 11px 0 11px 0
 
 @media (max-width: 1024px)
   h2
@@ -897,8 +950,6 @@ footer
 @media (max-width: 1024px)
   .title
     padding-right: 0
-  .title_text
-    padding-right: 0
   header
     margin-bottom: 10px
   .third-text
@@ -907,6 +958,10 @@ footer
     padding-left: 15px
   .w-90
     width: 100%
+
+@media(max-width: 991px)
+  .dropText
+    margin-top: 18px
 
 @media (max-width: 550px)
   .title
@@ -926,8 +981,44 @@ footer
   .img-choose
       height: 500px
 
+.dropdown_box
+  & button
+    padding: 3px 35px 3px 35px
+
 @media (max-width: 350px)
   .title
     & h1
       font-size: 26px
       font-weight: 700
+
+//=============================
+
+@media (max-width: 1023px)
+  nav
+    display: none !important
+  .mobile_nav
+    display: block !important
+  .btn_text
+    color: #0EAF5C
+    font-weight: normal !important
+    font-size: 16px
+    line-height: 20px
+    & span
+      font-weight: bold
+  .title_text
+    padding-right: 0
+
+@media (max-width: 1260px)
+  .nav_bar
+    & :last-child
+      margin-right: 0
+    & li
+      margin-right: 18px
+
+@media (max-width: 1100px)
+  .nav_bar
+    & li
+      & a
+        font-size: 12px
+      & div
+        font-size: 12px

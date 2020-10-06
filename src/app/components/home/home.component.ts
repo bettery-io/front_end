@@ -9,6 +9,7 @@ import {createEventAction} from '../../actions/newEvent.actions';
 import {environment} from '../../../environments/environment';
 import * as EN from '../../../assets/locale/en.json';
 import * as VN from '../../../assets/locale/vn.json';
+import {PostService} from '../../services/post.service';
 
 
 @Component({
@@ -26,13 +27,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   topQuestions = EN.HEADER.TOP_QUESTIONS;
   scrollHideMenu: boolean;
   styleHideMenu = true;
+  dropDownSwitch: boolean;
+  eventSub: Subscription;
+  eventData;
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
   constructor(
     private modalService: NgbModal,
     private translateService: TranslateService,
-    private store: Store<any>) {
+    private store: Store<any>,
+    private postService: PostService
+  ) {
 
   }
 
@@ -41,6 +47,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.selectedLanguage = environment.defaultLocale;
     this.translate();
     this.scrollMenuSetting();
+
+    this.getEventFromServer();
   }
 
   changeLocale() {
@@ -84,12 +92,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.store.dispatch(createEventAction({data}));
   }
 
-  ngOnDestroy() {
-    if (this.translateSub) {
-      this.translateSub.unsubscribe();
-    }
-  }
-
   scrollMenuSetting(): void {
     let prevScrollpos = window.pageYOffset;
     window.onscroll = () => {
@@ -106,5 +108,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
   }
 
+  dropDown() {
+    this.dropDownSwitch = !this.dropDownSwitch;
+  }
 
+  getEventFromServer() {
+    const email = {
+      email: 'voroshilovmax90@gmail.com'
+    };
+    this.eventSub = this.postService.post('bettery_event', email)
+      .subscribe((x: any) => {
+        this.eventData = x;
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.translateSub) {
+      this.translateSub.unsubscribe();
+    }
+    if (this.eventSub) {
+      this.eventSub.unsubscribe();
+    }
+  }
 }

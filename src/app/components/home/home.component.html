@@ -79,7 +79,7 @@
     <header class="row mr-0 ml-0">
       <div class="container-fluid m-2">
         <div class="row d-flex">
-          <div class="title_block col-lg-8 col-12 pr-0 pl-0">
+          <div class="title_block col-lg-9 col-12 pr-0 pl-0">
             <div class="title">
               <div>
                 <h1>
@@ -118,15 +118,29 @@
             <input [(ngModel)]="newCreateEvent" *ngIf="active" autofocus class="headerInput" type="text"
                    id="newEvent" name="newEvent"
                    placeholder="{{'HEADER.TOP_PLACEHOLDER' | translate}}">
-            <div class="btn_title">
-              <button class="btn btn-success" routerLink="/create-event"
-                      (click)="sendEvent()">{{'HEADER.BUTTON_TEXT' | translate}}
-              </button>
+            <div class="btn_title row">
+              <div class="col-lg-3 col-12 pr-0">
+                <button class="btn btn-success" routerLink="/create-event"
+                        (click)="sendEvent()">{{'HEADER.BUTTON_TEXT' | translate}}
+                </button>
+              </div>
+              <div class="dropText col-lg-5 col-12 px-0">
+                <p (click)="dropDown()">or Join Bettery events ({{eventData?.length}} events)<img class="ml-1"
+                                                                                                  src="{{dropDownSwitch ? '../../../assets/landingPage/triangle-open.png' : '../../../assets/landingPage/triangle-close.png'}}"
+                                                                                                  alt="triangle"></p>
+              </div>
+            </div>
+            <div [class]="dropDownSwitch ? 'dropdown_box_show' : ''" class="dropdown_box col-lg-7 col-12 mt-3">
+              <ul class="dropdown_list ">
+                <li *ngFor="let event of eventData">
+                  <p>{{event['publicEvents/question']}}</p>
+                  <button class="btn" routerLink="public_event/{{event?._id}}">Join</button>
+                </li>
+              </ul>
             </div>
 
-
           </div>
-          <div class="player col-lg-4 col-12">
+          <div class="player col-lg-4 col-md-12">
           </div>
           <div class="mobile_img col-12">
             <div class="bg_header"></div>
@@ -489,7 +503,7 @@
             <div class="team_card_text">
               <p>{{'TEAM.TEXT' | translate}}</p>
             </div>
-            <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
               src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
           </div>
           <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
@@ -501,7 +515,7 @@
             <div class="team_card_text">
               <p>{{'TEAM.TEXT' | translate}}</p>
             </div>
-            <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
               src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
           </div>
           <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
@@ -513,7 +527,7 @@
             <div class="team_card_text">
               <p>{{'TEAM.TEXT' | translate}}</p>
             </div>
-            <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
               src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
           </div>
           <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
@@ -525,7 +539,7 @@
             <div class="team_card_text">
               <p>{{'TEAM.TEXT' | translate}}</p>
             </div>
-            <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
               src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
           </div>
           <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
@@ -537,7 +551,7 @@
             <div class="team_card_text">
               <p>{{'TEAM.TEXT' | translate}}</p>
             </div>
-            <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
               src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
           </div>
           <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
@@ -549,7 +563,7 @@
             <div class="team_card_text">
               <p>{{'TEAM.TEXT' | translate}}</p>
             </div>
-            <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
               src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
           </div>
           <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
@@ -561,7 +575,7 @@
             <div class="team_card_text">
               <p>{{'TEAM.TEXT' | translate}}</p>
             </div>
-            <div class="img_team_linkedin"><a href="https://www.linkedin.com/"><img
+            <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
               src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
           </div>
         </div>

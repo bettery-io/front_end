@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   topQuestions = EN.HEADER.TOP_QUESTIONS;
   scrollHideMenu: boolean;
   styleHideMenu = true;
+  flagMenu = false;
   dropDownSwitch: boolean;
   eventSub: Subscription;
   eventData;
@@ -39,7 +40,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private store: Store<any>,
     private postService: PostService
   ) {
-
   }
 
   ngOnInit() {
@@ -95,8 +95,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   scrollMenuSetting(): void {
     let prevScrollpos = window.pageYOffset;
     window.onscroll = () => {
+      if (this.flagMenu) {
+        return;
+      }
       const currentScrollPos = window.pageYOffset;
-
       prevScrollpos > currentScrollPos ? this.scrollHideMenu = false : this.scrollHideMenu = true;
       prevScrollpos = currentScrollPos;
       if (currentScrollPos === 0 || currentScrollPos < 0) {
@@ -132,4 +134,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.eventSub.unsubscribe();
     }
   }
+
+  styleHideMen() {
+    this.flagMenu = true;
+    this.scrollHideMenu = true;
+    setTimeout(() => {
+      this.flagMenu = false;
+    }, 1000);
+  }
 }
+

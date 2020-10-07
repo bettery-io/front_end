@@ -10,16 +10,16 @@
             <a href="#">{{'NAVBAR.ITEM_1' | translate}}</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#works" SimpleSmoothScroll>{{'NAVBAR.ITEM_2' | translate}}</a>
+            <a href="#works" (click)="styleHideMen()" SimpleSmoothScroll>{{'NAVBAR.ITEM_2' | translate}}</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#whyBettery" SimpleSmoothScroll>{{'NAVBAR.ITEM_3' | translate}}</a>
+            <a href="#whyBettery" (click)="styleHideMen()" SimpleSmoothScroll>{{'NAVBAR.ITEM_3' | translate}}</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#roadmap" SimpleSmoothScroll>{{'NAVBAR.ITEM_4' | translate}}</a>
+            <a href="#roadmap" (click)="styleHideMen()" SimpleSmoothScroll>{{'NAVBAR.ITEM_4' | translate}}</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#team" SimpleSmoothScroll>{{'NAVBAR.ITEM_5' | translate}}</a>
+            <a href="#team"  (click)="styleHideMen()" SimpleSmoothScroll>{{'NAVBAR.ITEM_5' | translate}}</a>
           </li>
           <li class="nav_bar_item">
             <div (click)="open(content)">{{'NAVBAR.ITEM_6' | translate}}</div>
@@ -59,13 +59,13 @@
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="correct-left">
                 <a href="#" ngbDropdownItem>{{'NAVBAR.ITEM_1' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#works" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_2' | translate}}</a>
+                <a href="#works" (click)="styleHideMen()" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_2' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#whyBettery" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_3' | translate}}</a>
+                <a href="#whyBettery" (click)="styleHideMen()" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_3' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#roadmap" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_4' | translate}}</a>
+                <a href="#roadmap" (click)="styleHideMen()" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_4' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#team" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_5' | translate}}</a>
+                <a href="#team" (click)="styleHideMen()" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_5' | translate}}</a>
                 <div class="dropdown-divider"></div>
                 <div (click)="open(content)" ngbDropdownItem>{{'NAVBAR.ITEM_6' | translate}}</div>
                 <div class="dropdown-divider"></div>

@@ -47,9 +47,8 @@ export class CreateRoomTabComponent implements OnInit {
   // TO DO
   modalAboutExpert() {
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = "Room is where events happen. Many events can happen at once in the same room.";
-    modalRef.componentInstance.name1 = "Room for Friends is private and Players can bet with anything like pizza or promise of a favor - it doesn’t have to be money! The result only needs to be confirmed by one person, which can be the Host or another friend.";
-    modalRef.componentInstance.name2 = "Room for Social Media is for betting with online friends and communities using money. With a much bigger participant pool, the result will be confirmed by several people.";
+    modalRef.componentInstance.name = "- Event for Friends is private and they can bet with anything like pizza or promise of a favor. The result will be validated by one person, which can be the Host or another friend.";
+    modalRef.componentInstance.name1 = "Event for Social Media is for betting with online communities using BTY tokens. The result will be validated by several people to ensure fairness.";
     modalRef.componentInstance.boldName = 'Friends vs Social Media';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }

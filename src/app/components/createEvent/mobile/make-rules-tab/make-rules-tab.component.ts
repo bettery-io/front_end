@@ -118,9 +118,8 @@ export class MakeRulesTabComponent implements OnInit {
 
   openLearnMore() {
     const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
-    modalRef.componentInstance.name = '- For convenience, Players can bet with digital currencies using the popular cryptocurrency ETH (Ethereum) or Bettery Tokens (BTY) of the Bettery platform.';
-    modalRef.componentInstance.name1 = 'When you create a Bettery account, you’re given 10 BTY tokens as a signup bonus, which you can use to bet on events. Win more betting events to earn more BTY.';
-    modalRef.componentInstance.name2 = 'As for ETH, you can buy and deposit ETH into your Bettery account via “My Wallet”.';
+    modalRef.componentInstance.name = '- Right now, Players can bet with BTY, the digital token of Bettery platform. Users need BTY to participate in events and grow their Reputation, which is required to access commercial events to earn money.';
+    modalRef.componentInstance.name1 = 'Betting with ETH is coming along the roadmap.';
     modalRef.componentInstance.boldName = 'What to bet with';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }

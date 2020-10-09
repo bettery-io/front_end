@@ -18,13 +18,15 @@
     padding-top: 13px
 
 .link
-    color: #FFD300
+    color: #FFD300 !important
     font-family: 'Open Sans', sans-serif
     font-style: normal
     font-weight: bold
     font-size: 12px
     line-height: 16px
-    text-decoration: underline
+    text-decoration: underline !important
+    text-transform: none
+    margin-left: 8px
 
 .tab
     font-family: 'Open Sans', sans-serif
@@ -43,7 +45,6 @@
 
 .checkBox
     display: flex
-    justify-content: space-between
 
 .box
     margin-left: 16px
@@ -55,11 +56,20 @@
 .infoYellow
     font-family: 'Open Sans', sans-serif
     font-style: normal
-    font-weight: normal
+    font-weight: 700
     font-size: 12px
     line-height: 16px
     text-align: center
     color: #FFD300
+    text-transform: uppercase
+    text-decoration: underline
+
+.question-img
+  background: url("../../../../../assets/Question_Grey.png")
+  background-size: contain
+  width: 19px
+  height: 19px
+  margin-right: 8px
 
 .infoGrey
     font-family: 'Open Sans', sans-serif
@@ -75,14 +85,8 @@ ul
     padding-left: 16px
     padding-bottom: 0px
     margin-bottom: 0px
-
-ul li::before
-    content: "\2022"
-    color: #FFD300
-    font-weight: bolder
-    display: inline-block
-    width: 1em
-    margin-left: -1em
+    & span
+      color: #FFD300
 
 .cancel
     background: #C4C4C4
@@ -100,30 +104,13 @@ ul li::before
     flex: 1
 
 .buttonBox
-    margin-top: 23px
+    //margin-top: 0px
     display: flex
     text-align: center
     padding-bottom: 14px
 
-.clockImg
-    width: 24px
-    height: 24px
-
-.cupImg
-    background: url(../../../../../assets/Cup.png) left center no-repeat
-    background-size: contain
-    width: 24px
-    height: 24px
 
 .clockImg
-    background: url(../../../../../assets/Clock.png) left center no-repeat
-    background-size: contain
-    width: 24px
-    height: 24px
-
-.handImg
-    background: url(../../../../../assets/Hand.png) left center no-repeat
-    background-size: contain
     width: 24px
     height: 24px
 
@@ -254,9 +241,9 @@ ul li::before
     width: 24px
     height: 24px
 
-.modal-header, .modal-body, .modal-footer
-    background-color: #242421 !important
-    border: 0px !important
+.update
+  background-color: #242421 !important
+  border: 0px !important
 
 .modal-footer
     justify-content: center !important
@@ -293,7 +280,7 @@ ul li::before
     font-size: 25px
     font-weight: 200
 
-.close > span
+.closeNew > span
     color: #FFFFFF
 
 .datePicker
@@ -323,22 +310,6 @@ ul li::before
     color: #FFFFFF
     margin-bottom: 5px
 
-.infoPrivateText
-    font-family: 'Open Sans', sans-serif
-    font-style: normal
-    font-weight: normal
-    font-size: 12px
-    line-height: 16px
-    text-align: center
-    color: #C4C4C4
-    padding-top: 24px
-    padding-left: 15px
-    padding-right: 15px
-
-.reward
-    padding: 11px
-    border-radius: 8px !important
-
 .expertsCheckWrapper
     width: 100%
     background: rgba(50, 58, 64, 0.96)
@@ -353,15 +324,6 @@ ul li::before
     margin-top: 15px
     margin-bottom: 15px
 
-.infoPublicText
-    font-family: 'Open Sans', sans-serif
-    font-style: normal
-    font-weight: normal
-    font-size: 12px
-    line-height: 16px
-    color: #C4C4C4
-    padding-top: 8px
-
 .calendarPosition
     position: absolute
     right: 10px
@@ -375,6 +337,10 @@ ul li::before
     width: 100%
     min-height: 48px
     height: auto
+
+.fixBordRadius
+  border-top-right-radius: 0
+  border-bottom-right-radius: 0
 
 .answer::placeholder
     font-family: 'Open Sans', sans-serif
@@ -408,3 +374,85 @@ ul li::before
 .nguyen4
     border-top-left-radius: 0px !important
     border-bottom-left-radius: 0px !important
+
+.correctMB
+  margin-bottom: 134px
+
+.h4-modal
+  font-style: normal
+  font-weight: 800
+  font-size: 18px
+  line-height: 25px
+  color: #FFD300
+  margin: auto
+  text-transform: uppercase
+  border-bottom: 0.5px solid #E6E6E6
+  padding-bottom: 20px
+  width: 80%
+
+.modal-text-new
+  & h5
+    color: #54DD96
+    font-style: normal
+    font-weight: 800
+    font-size: 16px
+    line-height: 22px
+  & li
+    font-style: normal
+    font-weight: normal
+    font-size: 12px
+    line-height: 16px
+    color: #0B1511
+    position: relative
+  & li:before
+    content: url("../../../../../assets/greenElipse.png")
+    width: 4px
+    height: 4px
+    position: absolute
+    top: -5%
+    left: -4%
+
+
+.a-learn-more
+  text-align: center
+  & a
+    font-style: normal
+    font-weight: bold
+    font-size: 12px
+    line-height: 150.3%
+    text-decoration-line: underline
+    color: #FFD300
+
+.border-none
+  border: none
+.modal-btn
+  & button
+    font-style: normal
+    font-weight: 600
+    font-size: 18px
+    line-height: 25px
+    text-transform: uppercase
+    background: #FFD300
+    border-radius: 8px
+    padding: 13px 125px 13px 125px
+    margin: auto
+
+.border-hover
+  border: none !important
+  outline: none !important
+
+.arowMarker
+  position: relative
+
+.arowMarker:before
+  content: url("../../../../../assets/triUP.png")
+  position: absolute
+  top: 3px
+  left: 15px
+
+.arowMarker:after
+  content: url("../../../../../assets/triDown.png")
+  position: absolute
+  top: 21px
+  left: 15px
+

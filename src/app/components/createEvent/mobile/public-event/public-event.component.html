@@ -17,7 +17,7 @@
     <div *ngIf="formData.resolutionDetalis != ''">
         <div class="label" style="padding-top: 16px;">
             <div class="LightYellow"></div>
-            <p>resolution details</p>
+            <p class="mt-1">WHERE TO VERIFY RESULT</p>
         </div>
         <div class="answerBox">
             <p class="answer">{{formData.resolutionDetalis}}</p>
@@ -35,7 +35,7 @@
         <div class="timeBoxOne">
             <div class="label">
                 <div class="ClockYellow"></div>
-                <p class="labelNamePos">TIME TO BET</p>
+                <p class="labelNamePos">betting time</p>
             </div>
             <div class="answerBox">
                 <p class="answer">{{timeToBet()}}</p>
@@ -60,7 +60,7 @@
         <p class="answer">{{formData.roomName}}</p>
     </div>
 
-    <p class="info">The event ends after the Expert validates.</p>
+    <p class="info mt-3">The event ends after all Experts validate.</p>
 
     <div class="buttonBox">
         <button type="button" class="cancel" (click)="cancel()">BACK</button>

@@ -10,7 +10,13 @@
     <div>
         <p class="text"><b>{{boldName}}</b> {{name}}</p>
     </div>
-    <div *ngIf="link">
+    <div *ngIf="name1">
+      <p class="text">{{name1}}</p>
+    </div>
+    <div *ngIf="name2">
+      <p class="text">{{name2}}</p>
+    </div>
+    <div *ngIf="link" class="text-center">
         <a class="link">{{link}}</a>
     </div>
 </div>

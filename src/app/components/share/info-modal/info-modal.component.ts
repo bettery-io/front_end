@@ -9,6 +9,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class InfoModalComponent implements OnInit {
   @Input() boldName;
   @Input() name;
+  @Input() name1;
+  @Input() name2;
   @Input() link;
 
 

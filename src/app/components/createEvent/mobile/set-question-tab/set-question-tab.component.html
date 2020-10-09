@@ -2,8 +2,7 @@
     <form [formGroup]="questionForm">
         <div class="box">
             <label for="Question" class="name">
-                <div class="yourTopic"></div>
-                <span class="text">YOUR TOPIC</span>
+                <span class="text">Set topic</span>
             </label>
             <textarea type="text" formControlName="question" class="question" id="Question"
                 placeholder="Enter the question..."
@@ -12,19 +11,17 @@
                 <small *ngIf="f.question.errors.required" class="form-text quize_validation_error">Please enter the
                     question</small>
             </div>
-            <button class="topicIdeas">Get topic ideas from Advisors</button>
         </div>
 
         <div class="box" style="margin-top:25px;">
             <label class="name">
-                <div class="AnswersImg"></div>
-                <span class="text">POSSIBLE OUTCOMES</span>
+                <span class="text">SET OUTCOMES</span>
             </label>
             <div *ngFor="let answer of t.controls; let i = index" style="margin-bottom: 8px;">
                 <div [formGroup]="answer" class="input-group inputBox">
                     <input [ngClass]="{ 'is_invalid': submitted && answer.controls.name.errors }" type="text"
                         formControlName="name" class="answer" id="Question {{i}}"
-                        placeholder="Outcome that may happen...">
+                        placeholder="Possible outcome {{i+1}}">
                     <div *ngIf='answesQuantity >= 3' class="deleteButtonPos">
                         <button (click)="deleteAnswer(i)" class="deleteButton" type="button">
                             <div class="trashImg"></div>
@@ -33,7 +30,7 @@
                 </div>
                 <div *ngIf="submitted && answer.controls.name.errors">
                     <small style="padding-bottom: 10px" *ngIf="answer.controls.name.errors.required"
-                        class="form-text quize_validation_error">Please enter the outcomes</small>
+                        class="form-text quize_validation_error">Please enter the question</small>
                 </div>
             </div>
             <div>
@@ -48,12 +45,10 @@
         <div class="border"></div>
         <div class="box">
             <label for="Question" class="name" style="margin-top: 24px">
-                <div class="lightImg"></div>
-                <span class="text">RESOLUTION DETAILS <span class="optional">(optional)</span></span>
+                <span class="text mb-2">where to verify result <span class="optional">(optional)</span></span>
             </label>
-            <input type="text" formControlName="details" class="answer" id="detalis"
-                placeholder="Where to validate final outcome...">
-            <div class="info">When result is announced on Bettery, this is where to verify it.</div>
+            <input type="text" formControlName="details" class="answer adapting" id="detalis"
+                placeholder="If result can be checked on the Internet, give source...">s
         </div>
         <div class="buttonBox">
             <button type="button" class="cancel" routerLink="/">CANCEL</button>

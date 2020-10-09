@@ -47,9 +47,11 @@ export class CreateRoomTabComponent implements OnInit {
   // TO DO
   modalAboutExpert() {
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = "Room is where this and your future events happen. With friends, it's more private fun for better friendship - bet with a pizza or any promise, and let just one friend or yourself to confirm outcome. Ready to invite the whole world? Go with public and anti-thieft social media event when all bets are collected and secured while outcome is voted by many. You can create many rooms.";
-    modalRef.componentInstance.boldName = 'Room for Friends or Social Media? ';
-    modalRef.componentInstance.link = 'Learn more about roles on Bettery';
+    modalRef.componentInstance.name = "Room is where events happen. Many events can happen at once in the same room.";
+    modalRef.componentInstance.name1 = "Room for Friends is private and Players can bet with anything like pizza or promise of a favor - it doesn’t have to be money! The result only needs to be confirmed by one person, which can be the Host or another friend.";
+    modalRef.componentInstance.name2 = "Room for Social Media is for betting with online friends and communities using money. With a much bigger participant pool, the result will be confirmed by several people.";
+    modalRef.componentInstance.boldName = 'Friends vs Social Media';
+    modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }
 
   chooseRoom() {

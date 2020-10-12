@@ -132,7 +132,7 @@
             </div>
             <div [class]="dropDownSwitch ? 'dropdown_box_show' : ''" class="dropdown_box col-lg-7 col-12 mt-3">
               <ul class="dropdown_list ">
-                <li *ngFor="let event of eventData | slice :0:3 ">
+                <li *ngFor="let event of eventData">
                   <p>{{event['publicEvents/question']}}</p>
                   <button class="btn" routerLink="public_event/{{event?._id}}">Join</button>
                 </li>

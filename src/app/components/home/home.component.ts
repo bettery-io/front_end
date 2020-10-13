@@ -120,10 +120,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
     this.eventSub = this.postService.post('bettery_event', email)
       .subscribe((x: any) => {
-        this.eventData = x;
+        this.shuffleArray(x);
+        this.eventData = x.slice(0, 3);
       }, (err) => {
         console.log(err);
       });
+  }
+
+  shuffleArray(array): void {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
   }
 
   ngOnDestroy() {

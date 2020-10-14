@@ -24,7 +24,6 @@ export class ParticipateComponent implements OnInit, OnDestroy {
   userData;
   answerForm: FormGroup;
   coinType: string;
-  answered: boolean = false;
   submitted: boolean = false;
   spinnerLoading: boolean = false;
   errorMessage: string;
@@ -128,16 +127,12 @@ export class ParticipateComponent implements OnInit, OnDestroy {
       await this.updateBalance();
       this.errorMessage = undefined;
       this.spinnerLoading = false
-      this.answered = true;
+      this.goViewStatus.next(this.eventData.id);
     },
       (err) => {
         this.spinnerLoading = false
         console.log(err)
       })
-  }
-
-  viewStatus() {
-    this.goViewStatus.next(this.eventData.id);
   }
 
   async updateBalance() {
@@ -151,6 +146,8 @@ export class ParticipateComponent implements OnInit, OnDestroy {
     let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
     let mainEther = web3.utils.fromWei(mainBalance, "ether")
     let tokBal = web3.utils.fromWei(TokenBalance, "ether")
+
+    console.log(maticTokenBalanceToEth, mainEther, tokBal)
 
     this.store.dispatch(new CoinsActios.UpdateCoins({
       loomBalance: maticTokenBalanceToEth,

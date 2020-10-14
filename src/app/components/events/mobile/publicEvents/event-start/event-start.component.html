@@ -3,7 +3,7 @@
         <p class="title">You're invited to an event by </p>
         <div class="boxName">
             <p class="hostName">{{eventData?.host.nickName}}</p>
-            <div class="bookImg"></div>
+            <div class="bookImg" (click)="openComingSoonModal(comingSoon)"></div>
         </div>
         <div class="gradientBox">
             <div class="avatarBox">
@@ -14,24 +14,32 @@
             </div>
         </div>
         <div class="arrow"></div>
-        <div class="info">How DO I JOIN?</div>
+        <div class="info">How to participate?</div>
         <div>GIF</div>
         <button class="join" (click)="join()">JOIN</button>
     </div>
     <div *ngIf="letsJoin" class="bg_img">
         <div *ngIf="showEvent()">
             <div *ngIf="!validation">
-                <div class="titleBox">
+                <div class="titleBox" *ngIf="participatedAnswer.length == 0">
                     <div class="imgCoin"></div>
                     <p class="titleBetting">NOW BETTING</p>
                 </div>
-                <p class="titleTwo">Event ends in <b style="font-weight: 600;">{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
+                <div class="titleBox" *ngIf="participatedAnswer.length != 0">
+                    <p class="partTitile">Thank you for playing!</p>
+                </div>
+                <p class="titleTwo">Betting ends in <b
+                        style="font-weight: 600;">{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
             </div>
             <div *ngIf="validation">
-                <div class="titleBox" style="margin-bottom: 24px;">
+                <div class="titleBox" *ngIf="validatedAnswer.length == 0">
                     <div class="checkImg"></div>
                     <p class="titleBetting">NOW VALIDATING</p>
                 </div>
+                <div class="titleBox" *ngIf="validatedAnswer.length != 0">
+                    <p class="validTitle">Thank you for validating!</p>
+                </div>
+                <p class="only">Only {{remainderExperts()}} more experts to go</p>
             </div>
 
             <div class="quizBoxTwo">
@@ -40,15 +48,21 @@
 
             <div *ngFor="let answer of eventData.answers; index as i">
                 <div class="answerBoxCreated">
-                    <p [ngClass]="{
-                        'validated': i == validatedIndex,
-                        'participated': i == participatedIndex
-                     }" class="answerCreated">{{answer}}</p>
+                    <p class="answerCreated">{{answer}}</p>
+                    <div *ngIf="participatedAnswer.length != 0 && participatedAnswer[0].answer == i"
+                        class="participatedAnswer">
+                        <p class="partAmount">{{participatedAnswer[0].amount}} {{coinType}}</p>
+                        <img class="avatarHost partPostAvatar" src={{userData.avatar}} referrerpolicy="no-referrer">
+                    </div>
+                    <div *ngIf="validatedAnswer.length != 0 && validatedAnswer[0].answer == i"
+                        class="participatedAnswer">
+                        <img class="avatarHost partPostAvatar" src={{userData.avatar}} referrerpolicy="no-referrer">
+                    </div>
                 </div>
             </div>
 
-            <div class="answerBoxResolution" *ngIf="eventData.resolutionDetalis">
-                <p class="resolutionText">Resolution details: <b>{{eventData.resolutionDetalis}}</b></p>
+            <div class="answerBoxResolution">
+                <p class="resolutionText">How to verify: <b>www.cnn.com</b></p>
             </div>
 
             <div class="arrow"></div>
@@ -76,6 +90,12 @@
                         <p class="name playersNumber">{{playersJoinde}}</p>
                     </div>
                 </div>
+                <div class="infoLabelPos" *ngIf="!validation">
+                    <p class="infoLabel">Experts needed:</p>
+                    <div class="partBox">
+                        <p class="name playersNumber">{{validatorsNeeded()}}</p>
+                    </div>
+                </div>
                 <div *ngIf="validation" class="infoLabelPos">
                     <p class="infoLabel">EXPERTS joined:</p>
                     <div class="partBox">
@@ -89,10 +109,6 @@
                 </div>
             </div>
 
-            <div *ngIf="timeToLeftDisplay()">
-                <p class="timeLeft">TIME LEFT FOR PLAYERS TO JOIN <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
-            </div>
-
             <div *ngIf="!created">
                 <div *ngIf="!validation">
                     <button class="buttonBecome buttonColorPlayer" (click)="joinAsPlayer()">JOIN AS PLAYER</button>
@@ -102,17 +118,7 @@
                 <a class="linkInfo colorLinkExpert" (click)="modalAboutExpert()">What is an Expert?</a>
             </div>
 
-            <div *ngIf="timeToLeftDisplay()" class="arrow"></div>
-
-            <div *ngIf="validation || created" class="aboutBox">
-                <p class="only" *ngIf="validation">ONLY {{remainderExperts()}} more experts to go</p>
-                <p class="byLink" [ngStyle]="{'margin-top': validation ? '0px' : '16px'}">{{clickBoardName()}}</p>
-                <a class="link" href="#">www.bettery.io/public_event/{{eventData.id}}</a>
-                <div class="imgBox" (click)="copyToClickBoard()">
-                    <div class="listImg" style="margin-right: 8px"></div>
-                    <p class="copyToClick">Copy to clipboard</p>
-                </div>
-            </div>
+            <div class="arrow"></div>
 
             <div class="sendCommentBox">
                 <div class="addCommentBox">
@@ -152,7 +158,8 @@
             </div>
         </div>
 
-        <info *ngIf="showInfo()" [joinedAs]="joinedAs" (goBack)="goBack()" (agree)="agree()"></info>
+        <info *ngIf="showInfo()" [eventData]="eventData" [joinedAs]="joinedAs" (goBack)="goBack()" (agree)="agree()">
+        </info>
         <participate *ngIf="showParticipate()" [eventData]="eventData" (goBack)="goToInfo('player')"
             (goViewStatus)="interactionDone($event)"></participate>
         <validate *ngIf="showValidate()" [eventData]="eventData" (goBack)="goToInfo('expert')"
@@ -161,3 +168,14 @@
 </div>
 
 <app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>
+
+<ng-template #comingSoon let-modal>
+    <button type="button" class="close comingSoonClose" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <p class="title_coming_soon">COMING SOON</p>
+        <p class="text_coming_soon">In the next updates, you can check more details about the event host here.</p>
+    </div>
+
+</ng-template>

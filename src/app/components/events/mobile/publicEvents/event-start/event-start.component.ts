@@ -1,15 +1,15 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
 import web3Obj from '../../../../../helpers/torus'
-import {PostService} from '../../../../../services/post.service';
+import { PostService } from '../../../../../services/post.service';
 import * as UserActions from '../../../../../actions/user.actions';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../../app.state';
-import {ClipboardService} from 'ngx-clipboard';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../app.state';
+import { ClipboardService } from 'ngx-clipboard';
 import _ from "lodash";
-import {Subscription} from 'rxjs';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {WelcomePageComponent} from "../../../../share/welcome-page/welcome-page.component";
-import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component'
+import { Subscription } from 'rxjs';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { WelcomePageComponent } from "../../../../share/welcome-page/welcome-page.component";
+import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component'
 
 
 @Component({
@@ -31,8 +31,8 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   minutes;
   seconds;
   userData = undefined
-  participatedIndex;
-  validatedIndex
+  participatedAnswer = [];
+  validatedAnswer = []
   currentPool = 0;
   playersJoinde = 0;
   expertJoinned = 0;
@@ -67,6 +67,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes) {
     if (changes['eventData'] !== undefined) {
+      console.log(this.eventData)
       if (changes['eventData'].currentValue !== undefined) {
         const timeNow = Number((Date.now() / 1000).toFixed(0));
         if (!(this.eventData.endTime - timeNow > 0)) {
@@ -103,7 +104,8 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
         return o.userId == userData._id;
       });
       if (findParts) {
-        this.participatedIndex = findParts.answer;
+        console.log(findParts);
+        this.participatedAnswer[0] = findParts;
         this.created = true;
       }
     }
@@ -112,7 +114,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
         return o.userId == userData._id;
       });
       if (findValid) {
-        this.participatedIndex = findValid.answer;
+        this.validatedAnswer[0] = findValid;
         this.created = true;
       }
     }
@@ -189,7 +191,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     let userInfo = await web3Obj.torus.getUserInfo("")
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
 
-     this.localStoreUser(userInfo)
+    this.localStoreUser(userInfo)
 
     let data: Object = {
       _id: null,
@@ -283,16 +285,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  timeToLeftDisplay() {
-    if (this.created) {
-      return false;
-    } else if (this.validation) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   goToInfo(from) {
     this.info = true;
     this.joinedAs = from
@@ -312,8 +304,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     this.letsJoin = true;
     this.info = false;
     this.goToAction = false;
-    this.joinedAs = undefined;
-    this.created = true;
+    this.joinedAs = undefined;  
     //  this.getUsers();
     this.interacDone.next(data);
   }
@@ -347,16 +338,16 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
 
   modalAboutExpert() {
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = 'Validate the result of the event, what actually happened. Depending on event type and how many Players joined, you can earn BTY tokens for being an Expert.';
-    modalRef.componentInstance.boldName ='Expert - ';
-    modalRef.componentInstance.link ='Learn more about roles on Bettery';
+    modalRef.componentInstance.name = ' Validate the event result, confirming what actually happened. For Social Media events, several Experts share a portion of the prize pool. For Friends events, the Expert has 24 hours to validate and gets a custom reward from the Host.';
+    modalRef.componentInstance.boldName = 'Expert - ';
+    modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }
 
-  modalAboutPlayers(){
+  modalAboutPlayers() {
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = ' Bet on the event outcome. The prize pool is taken from the losers pot which is shared to all winning Players, the Host, and Experts. The higher your bet is, the bigger amount you will win.';
-    modalRef.componentInstance.boldName ='Player - ';
-    modalRef.componentInstance.link ='Learn more about roles on Bettery';
+    modalRef.componentInstance.name = ' Bet on the event outcome. The prize pool is taken from loser bets and shared to winning Players, Host, Experts, and other roles.';
+    modalRef.componentInstance.boldName = 'Player - ';
+    modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }
 
   ngOnDestroy() {
@@ -379,6 +370,14 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
       localStorage.setItem('userBettery', JSON.stringify(array));
       this.modalService.open(WelcomePageComponent);
     }
+  }
+
+  openComingSoonModal(content) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true })
+  }
+
+  validatorsNeeded() {
+    return this.eventData.validatorsAmount > 0 ? this.eventData.validatorsAmount : "TBD after betting ends"
   }
 
 }

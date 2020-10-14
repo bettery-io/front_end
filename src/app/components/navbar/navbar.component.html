@@ -98,7 +98,7 @@
       </div>
       <div class="balancePos" style="margin-right: 48px">
         <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
-          <b>{{ERC20Coins?.loomBalance | number:'1.0-2'}}</b> BTY</p>
+          <b>{{coinInfo?.tokenBalance | number:'1.0-2'}}</b> BTY</p>
         <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
         <div class="btyImg"></div>
       </div>

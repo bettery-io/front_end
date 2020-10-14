@@ -1,12 +1,12 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../../app.state';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ClipboardService} from 'ngx-clipboard'
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../app.state';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ClipboardService } from 'ngx-clipboard'
 import Contract from '../../../../../contract/contract';
-import {PostService} from '../../../../../services/post.service';
+import { PostService } from '../../../../../services/post.service';
 import _ from "lodash";
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'validate',
@@ -18,18 +18,15 @@ export class ValidateComponent implements OnInit, OnDestroy {
   @Output() goBack = new EventEmitter();
   @Output() goViewStatus = new EventEmitter<number>();
   timeIsValid: boolean;
-  created: boolean = false;
   submitted: boolean = false;
   spinnerLoading: boolean = false
 
   answerForm: FormGroup;
   errorMessage: string;
   userData;
-  date;
-  month;
-  year;
   hour;
   minutes;
+  seconds
   userSub: Subscription;
   postSub: Subscription;
 
@@ -57,6 +54,10 @@ export class ValidateComponent implements OnInit, OnDestroy {
     return this.answerForm.controls;
   }
 
+  playersAmount() {
+    return this.eventData.parcipiantAnswers == undefined ? 0 : this.eventData.parcipiantAnswers.length
+  }
+
   checkTimeIsValid() {
     let time = Number((Date.now() / 1000).toFixed(0))
     this.timeIsValid = this.eventData.endTime - time > 0;
@@ -66,14 +67,23 @@ export class ValidateComponent implements OnInit, OnDestroy {
   }
 
   calculateDate() {
+    let startDate = new Date();
     let endTime = new Date(this.eventData.endTime * 1000);
-    this.date = endTime.getDate() >= 10 ? endTime.getDate() : "0" + endTime.getDate();
-    let month = endTime.getMonth();
-    var monthtext = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-    this.month = monthtext[month];
-    this.year = endTime.getFullYear();
-    this.hour = endTime.getHours() >= 10 ? endTime.getHours() : "0" + endTime.getHours();
-    this.minutes = endTime.getMinutes() >= 10 ? endTime.getMinutes() : "0" + endTime.getMinutes();
+    var diffMs = (endTime.getTime() - startDate.getTime());
+    let hour = Math.floor(Math.abs((diffMs % 86400000) / 3600000));
+    let minutes = Math.floor(Math.abs(((diffMs % 86400000) % 3600000) / 60000));
+    let second = Math.round(Math.abs((((diffMs % 86400000) % 3600000) % 60000) / 1000));
+
+    this.hour = Number(hour) > 9 ? hour : "0" + hour;
+    this.minutes = Number(minutes) > 9 ? minutes : "0" + minutes;
+    if (second === 60) {
+      this.seconds = "00"
+    } else {
+      this.seconds = second > 9 ? second : "0" + second;
+    }
+    setTimeout(() => {
+      this.calculateDate()
+    }, 1000);
   }
 
   cancel() {
@@ -153,10 +163,10 @@ export class ValidateComponent implements OnInit, OnDestroy {
       amount: 0
     }
     this.postSub = this.postService.post("answer", data).subscribe(async () => {
-        this.errorMessage = undefined;
-        this.created = true;
-        this.spinnerLoading = false;
-      },
+      this.errorMessage = undefined;
+      this.spinnerLoading = false;
+      this.viewStatus();
+    },
       (err) => {
         this.spinnerLoading = false;
         console.log(err)

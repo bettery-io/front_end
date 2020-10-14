@@ -9,7 +9,7 @@
             <div>
               <h2>{{data?.host.nickName}}</h2>
             </div>
-            <div class="img_icon ml-2 mb-1"></div>
+            <div (click)="openSoonModal(soon)" class="img_icon ml-2 mb-1"></div>
           </div>
         </div>
         <div class="question_block">
@@ -38,7 +38,7 @@
         </div>
         <div class="hr"></div>
         <div class="tutorial">
-          <h3>How DO I JOIN ?</h3>
+          <h3>how to participate ?</h3>
           <div class="tutorials-place">
             <p>Gif Tutorials</p>
           </div>
@@ -49,12 +49,21 @@
       </ng-container>
       <ng-container *ngIf="condition">
         <ng-container *ngIf="counts == 1">
-          <div class="now_batting__title">
-            <div class="img_yellow_hand"></div>
-            <div>Now Betting</div>
+          <div *ngIf="hideBtn && !hideTitle" class="blue-text">Thank you for playing!</div>
+          <div *ngIf="!hideBtn && hideTitle" class="now_batting__title">
+            <div *ngIf="displayTime()">
+              <div class="img_yellow_hand"></div>
+              <div>Now Betting</div>
+            </div>
+            <div *ngIf="!displayTime()">
+              <div class="img_yellow_check"></div>
+              <div>NOW VALIDATING</div>
+            </div>
           </div>
           <div class="event_ends">
-            Event ends in <b>{{allTime.day}}:{{allTime.hour}}:{{allTime.minutes}}:{{allTime.seconds}}</b>
+            <div *ngIf="displayTime()">Betting ends in <b>{{allTime.day}}:{{allTime.hour}}:{{allTime.minutes}}
+              :{{allTime.seconds}}</b></div>
+            <div *ngIf="!displayTime()">Betting is over. Waiting for Expert...</div>
           </div>
           <div class="question_second">
             <div class="question_text">
@@ -71,13 +80,13 @@
               </div>
             </ng-container>
             <div class="resolution_details">
-              Answer check: <span>www.cnn.com</span>
+              How to verify: <span>www.cnn.com</span>
             </div>
             <div>
               <div class="winner_get">
                 <div class="winner_get_left">
-                  <div class="winner_get_left_top">WINNER GET:</div>
-                  <div>LOSERS AGREE TO:</div>
+                  <div class="winner_get_left_top">WINNERS:</div>
+                  <div>LOSERS:</div>
                 </div>
                 <div class="winner_get_right">
                   <div class="winner_get_right_top">{{data?.winner}}</div>
@@ -97,20 +106,7 @@
                     <div class="ml-1"><img src="{{data?.host.avatat}}" alt="avatar1" referrerpolicy="no-referrer"></div>
                   </div>
                 </div>
-                <div class="create_by__item">
-                  <div class="left">
-                    <p>EXPERT:</p>
-                  </div>
-                  <!-- <div *ngIf="!expert" class="right">
-                    <div>
-                      <p>The Lady </p>
-                    </div>
-                    <div><img src="./assets/face2.png" alt="avatar2"></div>
-                  </div> -->
-                  <div class="right">
-                    No one yet. <span class="pink ml-1"> Consider to join!</span>
-                  </div>
-                </div>
+
                 <div class="create_by__item">
                   <div class="left">
                     <p>PLAYERS JOINED:</p>
@@ -121,16 +117,23 @@
                         <img *ngIf="i <= 3" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
                       </div>
                     </div>
-                    <p class="name playersNumber">{{data?.parcipiantAnswers ? data?.parcipiantAnswers.length : 0}}</p>
+                    <div class="pt-2 pl-2"><p
+                      class="name playersNumber">{{data?.parcipiantAnswers ? data?.parcipiantAnswers.length : 0}}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="create_by__item margin-40">
+                  <div class="left">
+                    <p>EXPERT:</p>
+                  </div>
+                  <div class="right">
+                    <span class="pink ml-1">Joins after betting ends</span>
                   </div>
                 </div>
               </div>
               <div *ngIf="!hideBtn">
                 <div>
-                  <div class="time-left">Time left : <span>{{allTime.day}}</span> days
-                    <span>{{allTime.hour}} </span>
-                    hours <span>{{allTime.minutes}} </span>minutes
-                  </div>
                   <ng-container *ngIf="expert">
                     <div class="btn_join_as_player">
                       <button (click)="nextPage()"> JOIN AS PLAYER</button>
@@ -138,20 +141,37 @@
                     <div>
                       <div class="whats_player"><a (click)="modalAboutPlayers()">Whats is a Player?</a></div>
                     </div>
+                    <div class="btn_join_expert">
+                      <button (click)="onExpertPage()"> BECOME AN EXPERT</button>
+                    </div>
+                    <div>
+                      <div class="whats_expert"><a (click)="modalAboutExpert()">What is an Expert?</a></div>
+                    </div>
                   </ng-container>
                 </div>
 
                 <div *ngIf="!expert">
                   <div class="btn_join_expert">
-                    <button (click)="onExpertPage()"> BECOME AN EXPERT</button>
+                    <button (click)="onExpertPage()">VALIDATE EVENT</button>
                   </div>
                   <div>
-                    <div class="whats_expert" ><a (click)="modalAboutExpert()" >What is an Expert?</a></div>
+                    <div class="whats_expert"><a (click)="modalAboutExpert()">What is an Expert?</a></div>
                   </div>
                 </div>
               </div>
-              <div class="hr"></div>
+              <div *ngIf="!hideBtn && hideTitle" class="hr"></div>
             </ng-container>
+
+            <div *ngIf="hideBtn" class="aboutBox">
+              <p class="byLink">share event with friends!</p>
+              <a class="link" href="#">www.bettery.io/private_event/{{data?.id}}</a>
+              <div class="imgBox" (click)="copyToClickBoard()">
+                <div class="listImg" style="margin-right: 8px"></div>
+                <p class="copyToClick">Copy to clipboard</p>
+              </div>
+            </div>
+
+
             <div>
 
               <div class="sendCommentBox">
@@ -196,11 +216,22 @@
       </ng-container>
       <app-private-form *ngIf="counts==2" [data]="data" (changed)="onChanged($event)"></app-private-form>
     </ng-container>
-    <app-private-expert *ngIf="expertPage" [data]="data" [allTime]="allTime" (changed)="onChanged($event)"
-      (changed2)="onChanged2($event)"></app-private-expert>
+    <app-private-expert *ngIf="expertPage" [data]="data" [allTime]="allTime" [ifTimeValid]="ifTimeValid"
+                        (changed)="onChanged($event)"
+                        (changed2)="onChanged2($event)" (back)="returnWithStatus($event)"></app-private-expert>
   </div>
 </div>
 <app-bad-request *ngIf="badRequest"></app-bad-request>
 
 <app-private-end-event [eventData]="data" *ngIf="finised"></app-private-end-event>
 <app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>
+
+<ng-template #soon let-modal>
+  <button type="button" class=" soonClose close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body">
+    <p class="title-soon">Coming Soon</p>
+    <p class="text-soon">In the next updates, you can check more details about the event host here.</p>
+  </div>
+</ng-template>

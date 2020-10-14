@@ -16,14 +16,13 @@ import { Subscription } from "rxjs";
 export class PrivateFormComponent implements OnInit, OnDestroy {
   answerForm: FormGroup;
   @Input() data: any;
-  count: boolean;
   formValid: boolean;
   @Output() changed = new EventEmitter<boolean>();
   userData;
   errorMessage = undefined;
   userSub: Subscription;
   postSub: Subscription;
-  spinnerLoading: boolean = false;
+  spinnerLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,14 +46,14 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  sendAnswer(answerForm: any) {
+  sendAnswer(answerForm: any, bool: boolean) {
     if (answerForm.status === 'INVALID') {
       this.formValid = true;
       return;
     }
     const index = _.findIndex(this.data.answers, (el => { return el === answerForm.value.answer; }));
     this.sendToBlockchain(index);
-
+    this.change(bool);
   }
 
   async sendToBlockchain(answer) {
@@ -99,11 +98,10 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     this.postSub = this.postService.post("privateEvents/participate", data).subscribe(async () => {
       this.spinnerLoading = false;
       this.errorMessage = undefined;
-      this.count = true;
     }, (err) => {
       this.spinnerLoading = false;
-      console.log(err)
-    })
+      console.log(err);
+    });
   }
 
   change(increased: any) {

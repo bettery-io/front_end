@@ -7,15 +7,18 @@
         <h1>EVENT ENDED</h1>
       </div>
     </div>
-    <div class="roomBox">
-      <p class="roomName">ROOM: Avengers</p>
+    <div class="title-text">
+      <p>Winners appreciate your expertise! Chase them for a reward, maybe?</p>
     </div>
+<!--    <div class="roomBox">-->
+<!--      <p class="roomName">ROOM: Avengers</p>-->
+<!--    </div>-->
     <div *ngIf="award == 'none'">
-      <div class="title_text">
-        <p>What a ride! Did you have a good time? Host more events and have more fun!</p>
-      </div>
+<!--      <div class="title_text">-->
+<!--        <p>What a ride! Did you have a good time? Host more events and have more fun!</p>-->
+<!--      </div>-->
       <div class="title_btn">
-        <button>HOST YOUR OWN EVENT</button>
+        <button>HOST AN EVENT</button>
       </div>
     </div>
     <div *ngIf="award == 'winner'">
@@ -86,11 +89,11 @@
         </div>
       </div>
     </div>
-    <div class="share_event" *ngIf="award == 'none'">
-      <h4>share YOUR event with friends!</h4>
-      <p><a href="#">www.bettery.io/public_event/{{eventData.id}}</a></p>
-      <div class="share_img" (click)="copyToClickBoard()"></div>
-    </div>
+<!--    <div class="share_event" *ngIf="award == 'none'">-->
+<!--      <h4>share YOUR event with friends!</h4>-->
+<!--      <p><a href="#">www.bettery.io/public_event/{{eventData.id}}</a></p>-->
+<!--      <div class="share_img" (click)="copyToClickBoard()"></div>-->
+<!--    </div>-->
     <div style="margin-top: 36px;" class="title_btn" *ngIf="award != 'none'">
       <button>HOST YOUR OWN EVENT</button>
     </div>

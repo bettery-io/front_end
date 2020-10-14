@@ -1,32 +1,21 @@
-<div class="{{count ? 'bg_img_two' : 'bg_img'}}">
+<div class="bg_img_two"> <!--bg_img-->
   <div class="now_batting__title">
     <div class="login_name">
-      <div *ngIf="!count">
-        <h3>Tony,</h3>
-        <p>you’re joining as an <span>Player</span></p>
+      <div>
+        <p><span>welcome, PLAYER!</span></p>
       </div>
     </div>
   </div>
-  <div *ngIf="count" class="pt-4 mb-4 title_thank">
-    <h3>Thank you for playing!</h3>
-  </div>
-  <div *ngIf="!count" class="event">EVENT</div>
+
   <div class="question_second">
     <div class="question_text">
       <div class="question-padding">
         <p>{{data?.question}}</p>
       </div>
-      <div *ngIf="count" class="hr hr-w"></div>
-      <div *ngIf="count">
-        <div class="your_answer">
-          <p>Your Answer <br>
-            <span>{{f.answer.value}}</span>
-          </p>
-        </div>
-      </div>
     </div>
   </div>
-  <form *ngIf="!count" action="#" [formGroup]="answerForm" (change)="formValid = false">
+
+  <form action="#" [formGroup]="answerForm" (change)="formValid = false">
     <div class="answers_item" *ngFor="let a of data?.answers; let i = index">
       <div class="pretty p-default p-round ">
         <input class="input" formControlName="answer" type="radio" name="answer" value="{{a}}">
@@ -37,19 +26,8 @@
     </div>
     <div *ngIf="formValid" class="form_valid">Please make your choice</div>
   </form>
-  <div *ngIf="!count">
-    <div class="winner_get">
-      <div class="winner_get_left">
-        <div class="winner_get_left_top">WINNER GET:</div>
-        <div>LOSERS AGREE TO:</div>
-      </div>
-      <div class="winner_get_right">
-        <div class="winner_get_right_top">{{data?.winner}}</div>
-        <div class="winner_get_right_bottom">{{data?.loser}}</div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="!count">
+
+  <div>
     <div class="results_mail" [ngStyle]="{'padding-bottom': errorMessage ? '20px' : '39px'}">
       <p>We’ll notify the results to your email</p>
       <div><span>nguyennguyen@bettery.io</span></div>
@@ -61,11 +39,8 @@
     </div>
     <div class="two_button">
       <button class="btn_back" (click)="change(true)">Back</button>
-      <button class="btn_bet" (click)="sendAnswer(answerForm)">Bet</button>
+      <button class="btn_bet" (click)="sendAnswer(answerForm, false)">Bet</button>
     </div>
-  </div>
-  <div *ngIf="count" class="btn_join_as_player btn_join_up">
-    <button (click)="change(false)">VIEW EVENT STATUS</button>
   </div>
 </div>
 

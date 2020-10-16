@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import _ from "lodash";
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../../app.state';
-import Contract from "../../../../../contract/contract";
-import { PostService } from '../../../../../services/post.service';
-import { Subscription } from "rxjs";
+import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import _ from 'lodash';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../../app.state';
+import Contract from '../../../../../contract/contract';
+import {PostService} from '../../../../../services/post.service';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -40,7 +40,9 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  get f() { return this.answerForm.controls; }
+  get f() {
+    return this.answerForm.controls;
+  }
 
 
   ngOnInit(): void {
@@ -51,25 +53,26 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
       this.formValid = true;
       return;
     }
-    const index = _.findIndex(this.data.answers, (el => { return el === answerForm.value.answer; }));
-    this.sendToBlockchain(index);
-    this.change(bool);
+    const index = _.findIndex(this.data.answers, (el => {
+      return el === answerForm.value.answer;
+    }));
+    this.sendToBlockchain(index, bool);
   }
 
-  async sendToBlockchain(answer) {
+  async sendToBlockchain(answer, bool) {
     this.spinnerLoading = true;
-    let id = this.data.id
-    let wallet = this.userData.wallet
-    let verifier = this.userData.verifier
+    let id = this.data.id;
+    let wallet = this.userData.wallet;
+    let verifier = this.userData.verifier;
     let contract = new Contract();
-    let contr = await contract.privateEventContract()
+    let contr = await contract.privateEventContract();
     let validator = await contr.methods.timeAnswerValidation(id).call();
     switch (Number(validator)) {
       case 0:
         try {
           let transaction = await contract.participateOnPrivateEvent(id, answer, wallet, verifier);
           if (transaction.transactionHash !== undefined) {
-            this.sendToDb(transaction.transactionHash, answer)
+            this.sendToDb(transaction.transactionHash, answer, bool);
           }
         } catch (error) {
           this.spinnerLoading = false;
@@ -78,25 +81,26 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
         break;
       case 1:
         this.spinnerLoading = false;
-        this.errorMessage = "Event not started yeat."
+        this.errorMessage = 'Event not started yeat.';
         break;
       case 2:
         this.spinnerLoading = false;
-        this.errorMessage = "Event is finished."
+        this.errorMessage = 'Event is finished.';
         break;
     }
   }
 
-  sendToDb(txHash, answer) {
+  sendToDb(txHash, answer, bool) {
     let data = {
       eventId: this.data.id,
       date: new Date(),
       answer: answer,
       transactionHash: txHash,
       from: this.userData._id,
-    }
-    this.postSub = this.postService.post("privateEvents/participate", data).subscribe(async () => {
+    };
+    this.postSub = this.postService.post('privateEvents/participate', data).subscribe(async () => {
       this.spinnerLoading = false;
+      this.change(bool);
       this.errorMessage = undefined;
     }, (err) => {
       this.spinnerLoading = false;

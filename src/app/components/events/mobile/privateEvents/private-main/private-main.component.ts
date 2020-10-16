@@ -202,7 +202,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   onExpertPage() {
     this.expertPage = true;
     const timeNow = Number((Date.now() / 1000).toFixed(0));
-    // this.join = true;
     if (this.data.endTime - timeNow > 0) {
       this.ifTimeValid = false;
     } else {
@@ -214,10 +213,8 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     this.letsGetDataFromDB();
     if (increased) {
       this.prevPage();
-      // this.hideBtn = true;
-      // this.hideTitle = false; // to do
     } else {
-      this.hideBtn = true;  // to do
+      this.hideBtn = true;
       this.hideTitle = false;
       this.prevPage();
     }
@@ -245,7 +242,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       this.condition = true;
     } else {
       this.expert = false;
-      // this.expert = true;
       this.condition = true;
     }
 
@@ -276,7 +272,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       return {
         'z-index': index[i],
         'position': 'relative',
-        'right': '20px'
+        'right': '10px'
       };
     } else {
       return {
@@ -309,7 +305,11 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   copyToClickBoard() {
     const href = window.location.hostname;
     const path = href === 'localhost' ? 'http://localhost:4200' : href;
-    this._clipboardService.copy(`${path}/private_event/${this.data._id}`); // ====== check
+    this._clipboardService.copy(`${path}/private_event/${this.data.id}`);
+  }
+
+  openSoonModal(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', centered: true});
   }
 
   ngOnDestroy() {
@@ -322,9 +322,5 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     if (this.postSub) {
       this.postSub.unsubscribe();
     }
-  }
-
-  openSoonModal(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', centered: true});
   }
 }

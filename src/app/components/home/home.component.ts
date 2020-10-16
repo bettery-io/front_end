@@ -33,7 +33,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private translateService: TranslateService,
     private store: Store<any>) {
-
   }
 
   ngOnInit() {
@@ -105,6 +104,5 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     };
   }
-
 
 }

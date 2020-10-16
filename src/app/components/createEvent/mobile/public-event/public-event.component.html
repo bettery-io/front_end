@@ -67,93 +67,28 @@
         <button type="button" class="next" (click)="createEvent()">CREATE</button>
     </div>
 </div>
-<div class="box bg-img-public" *ngIf="created">
-    <div class="titleBox">
-        <div class="imgCoin"></div>
-        <p class="title">NOW BETTING</p>
-    </div>
-    <p class="titleTwo">Event ends in <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
 
-    <div class="quizBox">
-        <p class="quizText">{{formData.question}}</p>
+<div *ngIf="created" class="box">
+  <p class="title">EVENT IS NOW LIVE</p>
+  <p class="titleTwo">Betting ends in <b>{{day}}:{{hour}}:{{minutes}}:{{seconds}}</b></p>
+  <div class="aboutBox">
+    <p class="byLink">ANYONE CAN JOIN BY THIS LINK:</p>
+    <a class="link" href="#">www.bettery.io/public_event/{{quizData._id}}</a>
+    <div class="imgBox" (click)="copyToClickBoard()">
+      <div class="listImg" style="margin-right: 8px"></div>
+      <p class="copyToClick">Copy to clipboard</p>
     </div>
+  </div>
+  <ul class="listBox">
+    <li class="list" style="padding-bottom: 20px;">Anyone can join as a Player, or become a single Expert after Players bet to validate the result.
+    </li>
+    <li class="list">Players need to join in 8 hours, otherwise the event will be cancelled. Players can’t be Expert.</li>
+  </ul>
+  <a class="linkYellow" (click)="modalAboutExpert()">How do I manage my event?</a>
 
-    <div *ngFor="let answer of formData.answers">
-        <div class="answerBoxCreated">
-            <p class="answerCreated">{{answer.name}}</p>
-        </div>
-    </div>
-
-    <div class="answerBoxResolution" *ngIf="formData.resolutionDetalis != ''">
-        <p class="resolutionText">Resolution details: <b>{{formData.resolutionDetalis}}</b></p>
-    </div>
-
-    <div class="poolBox">
-        <p class="pool">CURRENT POOL</p>
-        <p class="tokenType">0 {{tokenCharacter()}}</p>
-    </div>
-
-    <div>
-        <div class="infoLabelPos">
-            <p class="infoLabel">HOST:</p>
-            <div class="hostBox">
-                <p class="name">{{nickName}} (You)</p>
-                <ngx-avatar size="40" name="{{nickName}}"></ngx-avatar>
-            </div>
-        </div>
-        <div class="infoLabelPos">
-            <p class="infoLabel">PLAYERS joined:</p>
-            <p class="name">0</p>
-        </div>
-        <div class="infoLabelPos">
-            <p class="infoLabel">EXPERTS joined:</p>
-            <p class="name">0</p>
-        </div>
-    </div>
-
-    <div class="aboutBox">
-        <p class="byLink">share on your social media!</p>
-        <a class="link" href="#">www.bettery.io/public_event/{{quizData._id}}</a>
-        <div class="imgBox" (click)="copyToClickBoard()">
-            <div class="listImg" style="margin-right: 8px"></div>
-            <p class="copyToClick">Copy to clipboard</p>
-        </div>
-    </div>
-
-    <div class="sendCommentBox">
-        <div class="addCommentBox">
-            <p class="addCommentText">Add a comment...</p>
-        </div>
-        <div class="sendImg"></div>
-    </div>
-
-    <div class="commentBox">
-        <div class="commentHeader">
-            <div class="senderBox">
-                <div class="commentImg face1"></div>
-                <p class="commentName">Jenna Logan</p>
-            </div>
-            <div class="timeBox">1 day ago</div>
-        </div>
-        <div>
-            <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                ut labore et dolore magna aliqua.</p>
-        </div>
-    </div>
-
-    <div class="commentBox">
-        <div class="commentHeader">
-            <div class="senderBox">
-                <div class="commentImg face2"></div>
-                <p class="commentName">Terry Crews</p>
-            </div>
-            <div class="timeBox">1 day ago</div>
-        </div>
-        <div>
-            <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                ut labore et dolore magna aliqua.</p>
-        </div>
-    </div>
+  <div class="joinBox">
+    <a class="joinButton" routerLink="/public_event/{{quizData._id}}">JOIN EVENT</a>
+  </div>
 </div>
 
 <app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>

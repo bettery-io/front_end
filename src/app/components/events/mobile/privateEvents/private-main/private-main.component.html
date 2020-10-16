@@ -61,9 +61,15 @@
             </div>
           </div>
           <div class="event_ends">
-            <div *ngIf="displayTime()">Betting ends in <b>{{allTime.day}}:{{allTime.hour}}:{{allTime.minutes}}
-              :{{allTime.seconds}}</b></div>
-            <div *ngIf="!displayTime()">Betting is over. Waiting for Expert...</div>
+            <div *ngIf="displayTime()">
+              <div *ngIf="hideTitle" class="blue-text">Thank you for playing!</div>
+              Betting ends in <b>{{allTime.day}}:{{allTime.hour}}:{{allTime.minutes}}:{{allTime.seconds}}</b>
+            </div>
+            <div *ngIf="!displayTime() && hideBtn">
+              <div *ngIf="hideTitle" class="blue-text">Thank you for playing!</div>
+              Betting is over. Waiting for Expert...
+            </div>
+            <div *ngIf="!displayTime() && !hideBtn">Time left to validate <b>{{allTime.day}}:{{allTime.hour}}:{{allTime.minutes}}:{{allTime.seconds}}</b></div>
           </div>
           <div class="question_second">
             <div class="question_text">
@@ -74,9 +80,20 @@
           <div class="answers">
             <ng-container>
               <div class="answers_item" *ngFor="let a of data?.answers; index as i">
-                <li [ngClass]="{
+                <li class="corectir" [ngClass]="{
                   'participated': i == participatedIndex
-               }">{{a}}</li>
+               }">
+                  <div>{{a}}</div>
+
+                  <div  class="partBoxAvatar">
+                    <div *ngIf="participatedIndex == i">
+                      <div  class="top-7px ">
+                        <img class="partImg" referrerpolicy="no-referrer" src="{{userData?.avatar}}">
+                      </div>
+                    </div>
+                  </div>
+
+                </li>
               </div>
             </ng-container>
             <div class="resolution_details">
@@ -112,7 +129,7 @@
                     <p>PLAYERS JOINED:</p>
                   </div>
                   <div class="partBox">
-                    <div *ngFor="let part of data.parcipiantAnswers; index as i">
+                    <div *ngFor="let part of data?.parcipiantAnswers; index as i">
                       <div [ngStyle]="getPartPos(i)">
                         <img *ngIf="i <= 3" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
                       </div>

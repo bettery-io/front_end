@@ -47,8 +47,8 @@ export class CreateRoomTabComponent implements OnInit {
   // TO DO
   modalAboutExpert() {
     const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = "- Event for Friends is private and they can bet with anything like pizza or promise of a favor. The result will be validated by one person, which can be the Host or another friend.";
-    modalRef.componentInstance.name1 = "Event for Social Media is for betting with online communities using BTY tokens. The result will be validated by several people to ensure fairness.";
+    modalRef.componentInstance.name = "- Event for Friends is private and they can bet with anything like pizza or promise of a favor. The result will be validated by one Expert, which can be the Host or another friend.";
+    modalRef.componentInstance.name1 = "Event for Social Media is for betting with online communities using BTY tokens. The result will be validated by several Experts to ensure fairness.";
     modalRef.componentInstance.boldName = 'Friends vs Social Media';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }

@@ -27,7 +27,8 @@
           </div>
           <div ngbDropdown class="dropBox arowMarker">
             <button [ngClass]="{ 'is_invalid': submitted && pub.publicEndTime.errors }" type="button"
-                    class="btn" id="startPublicTime" style="padding-left: 35px;" ngbDropdownToggle>{{endPublicTime}}</button>
+                    class="btn" id="startPublicTime" style="padding-left: 35px;"
+                    ngbDropdownToggle>{{endPublicTime}}</button>
             <div class="calendarPosition">
               <div class="calendarImg" (click)="openCalendar(content)"></div>
             </div>
@@ -88,7 +89,7 @@
             get their bets back.
           </li>
         </ul>
-        <div class="d-flex justify-content-center mb-5" (click)="openHowEventsWork(content2)">
+        <div class="d-flex justify-content-center mb-5" (click)="openHowEventsWorkSocial(content2)">
           <div class="question-img"></div>
           <div><p class="infoYellow" style="margin-top: 1px;">HOW EVENTS WORK</p></div>
         </div>
@@ -135,9 +136,8 @@
       </div>
 
       <div class="cupInfo" style="padding-top: 20px;">
-        <p class="name cupName">BETTING TIME FOR PLAYERS</p>
+        <p class="name cupName">BETTING TIME</p>
       </div>
-
       <div ngbDropdown class="dropBox correctMB">
         <button [ngClass]="{ 'is_invalid': submitted && priv.privateEndTime.errors }" type="button" class="btn"
                 id="startTime" ngbDropdownToggle>{{endPrivateTime}}</button>
@@ -147,6 +147,12 @@
           </div>
         </div>
       </div>
+
+      <div class="d-flex justify-content-center mb-5" (click)="openHowEventsWorkFriend(content2)">
+        <div class="question-img"></div>
+        <div><p class="infoYellow" style="margin-top: 1px;">HOW EVENTS WORK</p></div>
+      </div>
+
       <div *ngIf="submitted && priv.privateEndTime.errors">
         <small *ngIf="priv.privateEndTime.errors.required" class="form-text quize_validation_error">End time is
           required</small>
@@ -197,29 +203,50 @@
   <div class="modal-body">
     <div class="modal-text-new">
       <h5>Who can join my event?</h5>
-      <ul>
+      <ul *ngIf="!modalTrigger">
         <li>
           <p>
-          Anyone can choose to join as a Player to bet, or as an Expert to validate the result after betting time.
-          Minimum bet is 1 BTY or 0.001 ETH. Experts can’t bet.</p>
+            Anyone can choose to join as a Player to bet, or as an Expert to validate the result after betting time.
+            Minimum bet is 1 BTY. Experts can’t bet.</p>
         </li>
         <li>
           <p>The event is cancelled if no Players join within betting time, or if there aren’t enough Experts (10% of
-          total Players by default or custom, minimum 3).
-        </p>
+            total Players by default or custom, minimum 3).
+          </p>
         </li>
         <li><p>The event ends when all Experts validate.</p></li>
       </ul>
+
+      <ul *ngIf="modalTrigger">
+        <li>
+          <p>
+            Anyone can choose to join as a Player to bet, or as an Expert to validate the result after betting time. The
+            Expert can’t bet.</p>
+        </li>
+        <li>
+          <p>The event is cancelled if no Players join within betting time, or if the Expert doesn’t validate the event
+            result within 24 hours after betting ends.
+          </p>
+        </li>
+        <li><p>The event ends after the Expert validates.</p></li>
+      </ul>
     </div>
     <div class="modal-text-new">
-      <h5>Who can join my event?</h5>
-      <ul>
+      <h5>How is the result determined?</h5>
+      <ul *ngIf="!modalTrigger">
         <li>
           <p>The outcome validated by the majority of Experts is considered the event result.</p>
         </li>
         <li>
           <p>In the future, Players will be able to “appeal” the event result before it’s accepted by the platform as
-          final if they suspect it’s incorrect.</p>
+            final if they suspect it’s incorrect.</p>
+        </li>
+      </ul>
+
+      <ul *ngIf="modalTrigger">
+        <li>
+          <p>Since the prize for winning Players and reward for Expert is a promise between friends, don’t forget to
+            remind everyone involved to deliver on their promise!</p>
         </li>
       </ul>
     </div>

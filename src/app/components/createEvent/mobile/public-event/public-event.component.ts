@@ -7,6 +7,8 @@ import { PostService } from '../../../../services/post.service'
 import maticInit from '../../../../contract/maticInit.js'
 import Contract from '../../../../contract/contract';
 import { Subscription } from 'rxjs';
+import {InfoModalComponent} from '../../../share/info-modal/info-modal.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -35,7 +37,8 @@ export class PublicEventComponent implements  OnDestroy {
     private store: Store<AppState>,
     private _clipboardService: ClipboardService,
     private getSevice: GetService,
-    private PostService: PostService
+    private PostService: PostService,
+    private modalService: NgbModal
   ) {
     this.userSub = this.store.select("user").subscribe((x) => {
       console.log(x)
@@ -241,6 +244,13 @@ export class PublicEventComponent implements  OnDestroy {
     setTimeout(() => {
       this.calculateDate()
     }, 1000);
+  }
+
+  modalAboutExpert() {
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    modalRef.componentInstance.name = '- Actually, no need to! Bettery is smart and secure enough to take care of your event. You can join to bet as a Player or become an Expert to validate the result after Players. Enjoy!';
+    modalRef.componentInstance.boldName = 'How to manage your event';
+    modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }
 
   ngOnDestroy() {

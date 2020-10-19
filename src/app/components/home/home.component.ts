@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   eventSub: Subscription;
   eventData;
   triggerPopover: boolean;
+  timerPopover: any;
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
@@ -82,7 +83,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.modalService.open(content, {centered: true, size: 'lg'});
   }
 
-  clickMain($event) {
+  @HostListener('click', ['$event'])
+  a($event) {
+
+    if (this.triggerPopover) {
+      this.triggerPopover = false;
+    }
+
     if (this.newCreateEvent.trim().length <= 0) {
       this.active = $event.target.className === 'typing' || $event.target.id === 'newEvent' || $event.target.className === 'pencil';
     }
@@ -137,15 +144,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    if (this.translateSub) {
-      this.translateSub.unsubscribe();
-    }
-    if (this.eventSub) {
-      this.eventSub.unsubscribe();
-    }
-  }
-
   styleHideMen() {
     this.flagMenu = true;
     this.scrollHideMenu = true;
@@ -154,16 +152,25 @@ export class HomeComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  doSmth() {
+  showPopover() {
     this.triggerPopover = true;
 
-    setTimeout(() => {
+    if (this.timerPopover) {
+      clearTimeout(this.timerPopover);
+    }
+
+    this.timerPopover = setTimeout(() => {
       this.triggerPopover = false;
     }, 5000);
+  }
 
-    window.addEventListener('click', () => {
-      this.triggerPopover = false;
-    });
+  ngOnDestroy() {
+    if (this.translateSub) {
+      this.translateSub.unsubscribe();
+    }
+    if (this.eventSub) {
+      this.eventSub.unsubscribe();
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 <div class="main bg-main">
-  <div class="bg-basic-img" (click)="clickMain($event)">
+  <div class="bg-basic-img">
     <nav [class]="scrollHideMenu ? 'nav-hide': 'nav-show' "
          [style]="styleHideMenu ? 'background-color: transparent;box-shadow: none' : 'background-color: #fdd92a' "
          class="container-fluid row d-flex align-items-center pb-2">
@@ -108,7 +108,7 @@
                           [typeSpeed]="60" [backSpeed]="20" [loop]="true">
               <div class="pencil">
                 <div class="text">
-                  <span class="typing" (mouseenter)="doSmth()"></span>
+                  <span class="typing" (mouseenter)="showPopover()"></span>
                 </div>
                 <div class="popover" [ngClass]=" triggerPopover && 'open'">
                   <span>{{'HEADER.POPOVER.1' | translate}} </span> <br>
@@ -126,7 +126,7 @@
 
               <div class="pencil">
                 <div class="text">
-                  <span class="typing" (mouseenter)="doSmth()"></span>
+                  <span class="typing" (mouseenter)="showPopover()"></span>
                 </div>
               </div>
 

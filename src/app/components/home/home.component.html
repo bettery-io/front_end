@@ -19,7 +19,7 @@
             <a href="#roadmap" (click)="styleHideMen()" SimpleSmoothScroll>{{'NAVBAR.ITEM_4' | translate}}</a>
           </li>
           <li class="nav_bar_item">
-            <a href="#team"  (click)="styleHideMen()" SimpleSmoothScroll>{{'NAVBAR.ITEM_5' | translate}}</a>
+            <a href="#team" (click)="styleHideMen()" SimpleSmoothScroll>{{'NAVBAR.ITEM_5' | translate}}</a>
           </li>
           <li class="nav_bar_item">
             <div (click)="open(content)">{{'NAVBAR.ITEM_6' | translate}}</div>
@@ -59,13 +59,17 @@
               <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="correct-left">
                 <a href="#" ngbDropdownItem>{{'NAVBAR.ITEM_1' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#works" (click)="styleHideMen()" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_2' | translate}}</a>
+                <a href="#works" (click)="styleHideMen()" SimpleSmoothScroll
+                   ngbDropdownItem>{{'NAVBAR.ITEM_2' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#whyBettery" (click)="styleHideMen()" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_3' | translate}}</a>
+                <a href="#whyBettery" (click)="styleHideMen()" SimpleSmoothScroll
+                   ngbDropdownItem>{{'NAVBAR.ITEM_3' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#roadmap" (click)="styleHideMen()" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_4' | translate}}</a>
+                <a href="#roadmap" (click)="styleHideMen()" SimpleSmoothScroll
+                   ngbDropdownItem>{{'NAVBAR.ITEM_4' | translate}}</a>
                 <div class="dropdown-divider"></div>
-                <a href="#team" (click)="styleHideMen()" SimpleSmoothScroll ngbDropdownItem>{{'NAVBAR.ITEM_5' | translate}}</a>
+                <a href="#team" (click)="styleHideMen()" SimpleSmoothScroll
+                   ngbDropdownItem>{{'NAVBAR.ITEM_5' | translate}}</a>
                 <div class="dropdown-divider"></div>
                 <div (click)="open(content)" ngbDropdownItem>{{'NAVBAR.ITEM_6' | translate}}</div>
                 <div class="dropdown-divider"></div>
@@ -99,19 +103,38 @@
               <p>{{'HEADER.TEXT' | translate}}</p>
             </div>
 
-            <ngx-typed-js *ngIf="!active && switchLang === 'vn'"
+            <ngx-typed-js class="ngx-typed" *ngIf="!active && switchLang === 'vn'"
                           [strings]="topQuestions"
                           [typeSpeed]="60" [backSpeed]="20" [loop]="true">
-              <div class="text">
-                <span class="typing"></span>
+              <div class="pencil">
+                <div class="text">
+                  <span class="typing" (mouseenter)="doSmth()"></span>
+                </div>
+                <div class="popover" [ngClass]=" triggerPopover && 'open'">
+                  <span>{{'HEADER.POPOVER.1' | translate}} </span> <br>
+                  <span>{{'HEADER.POPOVER.2' | translate}}</span> <br>
+                  <span>{{'HEADER.POPOVER.3' | translate}}</span> <br>
+                  <span>{{'HEADER.POPOVER.4' | translate}}</span>
+                </div>
               </div>
             </ngx-typed-js>
 
-            <ngx-typed-js *ngIf="!active && switchLang ==='en'"
+            <ngx-typed-js class="ngx-typed" *ngIf="!active && switchLang ==='en'"
                           [strings]="topQuestions"
                           [typeSpeed]="60" [backSpeed]="20" [loop]="true">
-              <div class="text">
-                <span class="typing"></span>
+
+
+              <div class="pencil">
+                <div class="text">
+                  <span class="typing" (mouseenter)="doSmth()"></span>
+                </div>
+              </div>
+
+              <div class="popover" [ngClass]=" triggerPopover && 'open'">
+                <span>{{'HEADER.POPOVER.1' | translate}} </span> <br>
+                <span>{{'HEADER.POPOVER.2' | translate}}</span> <br>
+                <span>{{'HEADER.POPOVER.3' | translate}}</span> <br>
+                <span>{{'HEADER.POPOVER.4' | translate}}</span>
               </div>
             </ngx-typed-js>
 
@@ -125,7 +148,7 @@
                 </button>
               </div>
               <div class="dropText col-lg-5 col-12 px-0">
-                <p (click)="dropDown()">or Join Bettery events ({{eventData?.length}} events)<img class="ml-1"
+                <p (click)="dropDown()">{{'HEADER.OR_JOIN.1' | translate}} ({{eventData?.length}} {{'HEADER.OR_JOIN.2' | translate}})<img class="ml-1"
                                                                                                   src="{{dropDownSwitch ? '../../../assets/landingPage/triangle-open.png' : '../../../assets/landingPage/triangle-close.png'}}"
                                                                                                   alt="triangle"></p>
               </div>
@@ -134,7 +157,7 @@
               <ul class="dropdown_list ">
                 <li *ngFor="let event of eventData">
                   <p>{{event['publicEvents/question']}}</p>
-                  <button class="btn" routerLink="public_event/{{event?._id}}">Join</button>
+                  <button class="btn" routerLink="public_event/{{event?._id}}">{{'HEADER.JOIN' | translate}}</button>
                 </li>
               </ul>
             </div>

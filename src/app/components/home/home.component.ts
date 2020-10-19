@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   dropDownSwitch: boolean;
   eventSub: Subscription;
   eventData;
+  triggerPopover: boolean;
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
@@ -83,7 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   clickMain($event) {
     if (this.newCreateEvent.trim().length <= 0) {
-      this.active = $event.target.className === 'typing' || $event.target.id === 'newEvent';
+      this.active = $event.target.className === 'typing' || $event.target.id === 'newEvent' || $event.target.className === 'pencil';
     }
   }
 
@@ -152,5 +153,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.flagMenu = false;
     }, 1000);
   }
+
+  doSmth() {
+    this.triggerPopover = true;
+
+    setTimeout(() => {
+      this.triggerPopover = false;
+    }, 5000);
+
+    window.addEventListener('click', () => {
+      this.triggerPopover = false;
+    });
+  }
+
 }
 

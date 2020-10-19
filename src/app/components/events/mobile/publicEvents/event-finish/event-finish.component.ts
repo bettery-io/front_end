@@ -67,6 +67,7 @@ export class EventFinishComponent implements OnInit, OnDestroy {
   }
 
   letsFindWinner(user) {
+    console.log(this.eventData)
     let findValidator = _.findIndex(this.eventData.validatorsAnswers, (x) => { return x.userId == user._id })
     if (findValidator !== -1) {
       this.role = "Expert"
@@ -117,31 +118,17 @@ export class EventFinishComponent implements OnInit, OnDestroy {
     winnerPool = this.pool - loserPool;
     if (from == "expert") {
       let validators = 0
-      let findPercForExpert = (loserPool * 3) / 100;
       for (let i = 0; i < this.eventData.validatorsAnswers.length; i++) {
         if (this.eventData.validatorsAnswers[i].answer == this.eventData.finalAnswer) {
           validators++;
         }
       }
-      return (findPercForExpert / validators).toFixed(2) + " " + this.currencyType
+      return (this.getPercent(loserPool, 5) / validators).toFixed(2) + " " + this.currencyType
     } else if (from == "player") {
-      let playersFee = (loserPool * 90) / 100
-      return (amount + ((playersFee * amount) / winnerPool)).toFixed(2) + " " + this.currencyType;
+      return (amount + ((this.getPercent(loserPool, 90) * amount) / winnerPool)).toFixed(2) + " " + this.currencyType;
     } else if (from == "host") {
-      return ((loserPool * 5) / 100).toFixed(2) + " " + this.currencyType;
+      return this.getPercent(loserPool, 3).toFixed(2) + " " + this.currencyType;
     }
-  }
-
-  totalBet() {
-    let count = 0
-    this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
-    if (this.eventData.parcipiantAnswers == undefined) {
-      return count;
-    }
-    this.eventData.parcipiantAnswers.forEach(x => {
-      count += x.amount;
-    });
-    return count;
   }
 
   getPartPos(i) {

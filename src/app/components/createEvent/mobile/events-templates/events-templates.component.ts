@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Subscription} from 'rxjs';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../app.state';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../app.state';
 
 @Component({
   selector: 'app-events-templates',
@@ -11,31 +11,39 @@ import {AppState} from '../../../../app.state';
 export class EventsTemplatesComponent implements OnInit {
   whichEvent = "setQuestion"
   eventFromLandingSubscr: Subscription;
-  formData = {
-    question: '',
-    answers: [],
-    resolutionDetalis: '',
-    whichRoom: "new",
-    roomName: '',
-    roomColor: 'linear-gradient(228.16deg, #54DD96 -1.47%, #6360F7 97.79%)',
-    eventType: 'public',
-    tokenType: "token",
-    winner: "",
-    losers: "",
-    privateEndTime: "",
-    publicEndTime: "",
-    expertsCountType: "company",
-    expertsCount: '',
-    exactMinutes: new Date().getMinutes(),
-    exactHour: new Date().getHours(),
-    exactDay: new Date().getDate(),
-    exactMonth: new Date().getMonth(),
-    exactYear: new Date().getFullYear(),
-    exactTimeBool: false,
+  userSub: Subscription
+  formData;
+
+
+  constructor(private store: Store<AppState>) {
+    this.userSub = this.store.select("user").subscribe((x) => {
+      if (x.length == 0) {
+        this.formData = {
+          question: '',
+          answers: [],
+          resolutionDetalis: '',
+          whichRoom: "new",
+          roomName: '',
+          roomColor: 'linear-gradient(228.16deg, #54DD96 -1.47%, #6360F7 97.79%)',
+          eventType: 'public',
+          tokenType: "token",
+          winner: "",
+          losers: "",
+          privateEndTime: "",
+          publicEndTime: "",
+          expertsCountType: "company",
+          expertsCount: '',
+          exactMinutes: new Date().getMinutes(),
+          exactHour: new Date().getHours(),
+          exactDay: new Date().getDate(),
+          exactMonth: new Date().getMonth(),
+          exactYear: new Date().getFullYear(),
+          exactTimeBool: false,
+        }
+        this.whichEvent = "setQuestion"
+      }
+    });
   }
-
-
-  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.eventFromLandingSubscr = this.store.select("createEvent").subscribe(a => {
@@ -173,6 +181,9 @@ export class EventsTemplatesComponent implements OnInit {
   ngOnDestroy() {
     if (this.eventFromLandingSubscr) {
       this.eventFromLandingSubscr.unsubscribe();
+    }
+    if (this.userSub) {
+      this.userSub.unsubscribe()
     }
   }
 

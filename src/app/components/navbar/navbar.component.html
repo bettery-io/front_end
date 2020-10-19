@@ -88,7 +88,6 @@
     <img src={{avatar}} class="avatarImg" referrerpolicy="no-referrer">
   </div>
   <div *ngIf="openNavBar" class="positionNavbar">
-    <p class="balance">Balance</p>
     <div class="balanceBox">
       <div class="balancePos">
         <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
@@ -96,14 +95,17 @@
         <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
         <div class="ethImg"></div>
       </div>
-      <div class="balancePos" style="margin-right: 48px">
+      <div class="balancePos">
         <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
           <b>{{ERC20Coins?.loomBalance | number:'1.0-2'}}</b> BTY</p>
         <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
         <div class="btyImg"></div>
       </div>
+      <div class="balancePos pr-2" style="padding-top: 14px">
+        <button class="lowOnCoins" (click)="openModal(contentModal)">Need more?</button>
+      </div>
     </div>
-    <button class="lowOnCoins" (click)="openModal(contentModal)">Low on coins?</button>
+
     <div class="arrow"></div>
     <div class="navBox">
       <button class="navLink">Event History</button>

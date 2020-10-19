@@ -1,14 +1,24 @@
 <div class="box">
     <div class="titleBox">
-        <div class="flagImg"></div>
-        <p class="title">EVENT ENDED</p>
+        <div [class]=getImgFlag()></div>
+        <p class="title" [style]="titleColor()">EVENT ENDED</p>
     </div>
     <div class="roomBox">
         <p class="roomName">ROOM: Avengers</p>
     </div>
     <div *ngIf="userData && info !== undefined">
-        <p class="status">{{status}}</p>
-        <p class="amount" [ngStyle]="getAmountColor(status)">{{amount}}</p>
+        <div class="statusContainer">
+            <div *ngIf="host" class="statusBox hostBorder">
+                <p [ngClass]="{'hostStatus': host}" class="status">YOU EARNED</p>
+                <p [ngClass]="{'hostAmount': host}" class="amount" [ngStyle]="getAmountColor(status)">{{getHostWin()}}</p>
+                <p class="host">AS <span style="color: #FFD200">HOST</span></p>
+            </div>
+            <div class="statusBox">
+                <p [ngClass]="{'hostStatus': host}" class="status">{{status}}</p>
+                <p [ngClass]="{'hostAmount': host}" class="amount" [ngStyle]="getAmountColor(status)">{{amount}}</p>
+                <p *ngIf="host" class="host">AS <span [style]="roleColor()">{{role}}</span></p>
+            </div>
+        </div>
         <p class="infoWinner" [innerHTML]="info"></p>
     </div>
     <div>
@@ -27,18 +37,18 @@
                 </div>
                 <div class="totalImg"></div>
                 <p class="name">Total Bet</p>
-                <p class="number">{{totalBet()}}</p>
+                <p class="number">{{totalBet()}} {{coinType}}</p>
             </div>
         </div>
         <div class="boxInfo">
             <div class="boxSmall">
                 <div class="infoImg"
-                    (click)="openInfoModal('Tokens Minted - Coming soon!', 'Each event on Bettery platform will generate a certain amount of BTY depending on how many participants joined, given as extra bonuses to Hosts, winning Players, and Experts.', 'Learn more about how Bettery works')">
+                    (click)="openInfoModal('Tokens Minted - Coming soon!', 'Each event on Bettery platform generates a certain amount of BTY depending on how many participants joined, given back to the Host, Players, Experts, and other roles (if any).', 'Learn more about how Bettery works')">
                 </div>
                 <div class="minedImg"></div>
                 <p class="name">Minted</p>
                 <a class="comingSoon"
-                    (click)="openInfoModal('Tokens Minted - Coming soon!', 'Each event on Bettery platform will generate a certain amount of BTY depending on how many participants joined, given as extra bonuses to Hosts, winning Players, and Experts.', 'Learn more about how Bettery works')">Coming
+                    (click)="openInfoModal('Tokens Minted - Coming soon!', 'Each event on Bettery platform generates a certain amount of BTY depending on how many participants joined, given back to the Host, Players, Experts, and other roles (if any).', 'Learn more about how Bettery works')">Coming
                     soon!</a>
             </div>
             <div class="boxBig">
@@ -47,7 +57,7 @@
                 </div>
                 <div class="bestWinImg"></div>
                 <p class="name">Biggest Wins</p>
-                <p class="number">TODO</p>
+                <p class="number">{{biggestWin()}} {{coinType}}</p>
             </div>
         </div>
     </div>
@@ -58,7 +68,26 @@
 
     <div *ngFor="let answer of eventData.answers; index as i">
         <div class="answerBoxCreated" *ngIf="eventData.finalAnswer != i">
-            <p class="answerCreated">{{answer}}</p>
+            <div class="answer_box">
+                <div class="answerAvatarBox">
+                    <p class="answerCreated">{{answer}}</p>
+                    <img *ngIf="userData && !winner" class="avatarHost partPostAvatar" src={{userData.avatar}}
+                        referrerpolicy="no-referrer">
+                </div>
+                <p class="viewMore" (click)="viewMoreToggle(i)">{{viewMore == i ? 'View less' : 'View more'}}</p>
+            </div>
+            <div class="viewMoreBox" *ngIf="viewMore == i">
+                <div class="hrloser"></div>
+                <div class="infoBox">
+                    <span class="abount loserColor"><b>{{playersBet(i)}} Players</b> bet
+                        <b>({{playersPers(i)}})</b></span>
+                    <span class="abount loserColor">Total bet:</span>
+                </div>
+                <div class="infoBox">
+                    <span class="abount loserColor"><b>{{expertsBet(i)}} Experts</b> validated</span>
+                    <span class="abount loserColor"><b>{{totalBetAmount(i)}} {{currencyType}}</b></span>
+                </div>
+            </div>
         </div>
         <div class="answer_active" *ngIf="i == eventData?.finalAnswer">
             <div class="d-flex justify-content-between">
@@ -70,11 +99,11 @@
             <div class="hr"></div>
             <div>
                 <div class="infoBox">
-                    <span class="abount"><b>{{playersBet()}} Players</b> bet <b>({{playersPers()}})</b></span>
-                    <span class="abount">Total win:</span>
+                    <span class="abount"><b>{{playersBet(i)}} Players</b> bet <b>({{playersPers(i)}})</b></span>
+                    <span class="abount">Prize pool:</span>
                 </div>
                 <div class="infoBox">
-                    <span class="abount"><b>{{expertsBet()}} Experts</b> validated <b>({{expertPers()}})</b></span>
+                    <span class="abount"><b>{{expertsBet(i)}} Experts</b> validated</span>
                     <span class="abount"><b>{{pool}} {{currencyType}}</b></span>
                 </div>
 
@@ -116,13 +145,19 @@
         </div>
     </div>
 
-    <div class="share_event">
-        <h4>What an earn! Host more events and grow your community.</h4>
-        <p style="text-align: center;"><a href="#">www.bettery.io/public_event/{{eventData.id}}</a></p>
+    <div class="ques_box" *ngIf="!userData">
+        <p class="ques_text">“Will it rain tomorrow?” - Free coffee if I’m right. Bet with friends on events that are
+            truly yours.</p>
+    </div>
+
+    <div class="share_event" *ngIf="winner">
+        <p class="shate_event_info">Had a good time? Share this memory with friends and invite them to your own event!
+        </p>
+        <p style="text-align: center;"><a class="linkWrap" href="#">www.bettery.io/public_event/{{eventData.id}}</a></p>
         <div class="share_img" (click)="copyToClickBoard()"></div>
     </div>
 
-    <a href="#" class="becomeHost">CREATE YOUR OWN EVENT</a>
+    <a routerLink="/create-event" class="becomeHost">{{createEventText()}}</a>
     <div>
         <div class="commentBox">
             <div class="commentHeader">

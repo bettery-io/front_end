@@ -14,13 +14,19 @@ import { ClipboardService } from 'ngx-clipboard'
 })
 export class EventFinishComponent implements OnInit, OnDestroy {
   @Input() eventData;
-  status = "TODO"
-  amount = "TODO"
+  status = undefined
+  hostStatus = undefined;
+  amount = undefined
   info = undefined;
   userSub: Subscription
-  userData;
+  userData = undefined;
   pool = 0;
   currencyType;
+  viewMore: number = null;
+  coinType: string = undefined;
+  host: boolean = false;
+  role: string = undefined;
+  winner: boolean = false;
 
   constructor(
     private modalService: NgbModal,
@@ -31,6 +37,18 @@ export class EventFinishComponent implements OnInit, OnDestroy {
       if (x.length != 0) {
         this.userData = x[0]
         this.letsFindWinner(x[0]);
+        if (this.eventData.host.id === x[0]._id) {
+          this.host = true;
+        }
+      } else {
+        this.status = undefined;
+        this.amount = undefined;
+        this.info = undefined;
+        this.userData = undefined;
+        this.pool = 0;
+        this.host = false;
+        this.role = undefined;
+        this.winner = false;
       }
     });
   }
@@ -42,22 +60,29 @@ export class EventFinishComponent implements OnInit, OnDestroy {
         this.pool = this.pool + Number(x.amount);
       });
     }
+  }
 
+  viewMoreToggle(i) {
+    this.viewMore == i ? this.viewMore = null : this.viewMore = i;
   }
 
   letsFindWinner(user) {
     let findValidator = _.findIndex(this.eventData.validatorsAnswers, (x) => { return x.userId == user._id })
     if (findValidator !== -1) {
-      this.status = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? "YOU WON" : "YOU WERE WRONG";
-      this.amount = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? this.letsCalcalteWinner("expert", 0) : "5% Expert rank";
-      this.info = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!` : "will be taken away from you once ranking system is in place.";
+      this.role = "Expert"
+      this.winner = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer;
+      this.status = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? "YOU EARNED" : "";
+      this.amount = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? this.letsCalcalteWinner("expert", 0) : "YOU WERE WRONG";
+      this.info = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? `Soon, users will get extra BTY minted from events.` : "You’ll lose Rep once Reputation system is added.";
     } else {
       if (this.eventData.parcipiantAnswers != undefined) {
         let findPlayer = _.findIndex(this.eventData.parcipiantAnswers, (x) => { return x.userId == user._id })
         if (findPlayer !== -1) {
+          this.role = "Player"
+          this.winner = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer;
           this.status = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? "YOU WON" : "YOU LOST";
           this.amount = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? this.letsCalcalteWinner("player", this.eventData.parcipiantAnswers[findPlayer].amount) : this.eventData.parcipiantAnswers[findPlayer].amount + " " + this.currencyType;
-          this.info = `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!`;
+          this.info = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? "Soon, users will get extra BTY minted from events." : `You didn’t win, but have 1 BTY to win next time!`;
         } else {
           this.findHost(user)
         }
@@ -71,8 +96,12 @@ export class EventFinishComponent implements OnInit, OnDestroy {
     if (this.eventData.host.id === user._id) {
       this.status = "You earned";
       this.amount = this.letsCalcalteWinner("host", 0);
-      this.info = `Bettery grows by social knowledge from events. In return, enjoy an extra <span style='color: #FFD300'>23 BTY</span> as our thanks!`;
+      this.info = `Soon, users will get extra BTY minted from events.`;
     }
+  }
+
+  getHostWin() {
+    return this.letsCalcalteWinner("host", 0);
   }
 
   letsCalcalteWinner(from, amount) {
@@ -87,8 +116,14 @@ export class EventFinishComponent implements OnInit, OnDestroy {
     }
     winnerPool = this.pool - loserPool;
     if (from == "expert") {
+      let validators = 0
       let findPercForExpert = (loserPool * 3) / 100;
-      return (findPercForExpert / this.eventData.validatorsAnswers.length).toFixed(2) + " " + this.currencyType
+      for (let i = 0; i < this.eventData.validatorsAnswers.length; i++) {
+        if (this.eventData.validatorsAnswers[i].answer == this.eventData.finalAnswer) {
+          validators++;
+        }
+      }
+      return (findPercForExpert / validators).toFixed(2) + " " + this.currencyType
     } else if (from == "player") {
       let playersFee = (loserPool * 90) / 100
       return (amount + ((playersFee * amount) / winnerPool)).toFixed(2) + " " + this.currencyType;
@@ -99,14 +134,14 @@ export class EventFinishComponent implements OnInit, OnDestroy {
 
   totalBet() {
     let count = 0
-    let coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
+    this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
     if (this.eventData.parcipiantAnswers == undefined) {
-      return count + " " + coinType;
+      return count;
     }
     this.eventData.parcipiantAnswers.forEach(x => {
       count += x.amount;
     });
-    return count + " " + coinType;
+    return count;
   }
 
   getPartPos(i) {
@@ -121,7 +156,14 @@ export class EventFinishComponent implements OnInit, OnDestroy {
   getAmountColor(text) {
     let z = text.indexOf("LOST")
     let x = text.indexOf("WRONG")
-    if (z !== -1 || x !== -1) {
+    if (text == "") {
+      return {
+        'color': '#C10000',
+        'font-size': '24px',
+        'padding-top': '25px',
+        'padding-bottom': '29px'
+      }
+    } else if (z !== -1 || x !== -1) {
       return {
         'color': '#C10000'
       }
@@ -132,31 +174,39 @@ export class EventFinishComponent implements OnInit, OnDestroy {
     }
   }
 
-  playersBet() {
+  playersBet(i) {
     if (this.eventData.parcipiantAnswers == undefined) {
       return 0
     } else {
-      let data = _.filter(this.eventData.parcipiantAnswers, (x) => { return x.answer == this.eventData.finalAnswer })
+      let data = _.filter(this.eventData.parcipiantAnswers, (x) => { return x.answer == i })
       return data.length
     }
   }
 
-  expertsBet() {
+  expertsBet(i) {
     if (this.eventData.validatorsAnswers == undefined) {
       return 0
     } else {
-      let data = _.filter(this.eventData.validatorsAnswers, (x) => { return x.answer == this.eventData.finalAnswer })
-      return data.length
+      let data = _.filter(this.eventData.validatorsAnswers, (x) => { return x.answer == i })
+      return data.length + "/" + this.eventData.validatorsAnswers.length
     }
   }
 
-  playersPers() {
-    return ((this.playersBet() * 100) / this.playersCount()) + "%";
+  playersPers(i) {
+    return ((this.playersBet(i) * 100) / this.playersCount()) + "%";
   }
 
-  expertPers() {
-    return ((this.expertsBet() * 100) / this.expertCount()) + "%";
+  totalBetAmount(i) {
+    let data = _.filter(this.eventData.parcipiantAnswers, (x) => { return x.answer == i })
+    if (data.length != 0) {
+      let amount = 0;
+      data.forEach(x => {
+        amount += x.amount
+      });
+      return amount;
+    }
   }
+
 
   playersCount() {
     return this.eventData.parcipiantAnswers == undefined ? 0 : this.eventData.parcipiantAnswers.length
@@ -173,9 +223,85 @@ export class EventFinishComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.link = link;
   }
 
+  biggestWin() {
+    let loserPool = 0;
+    let biggest = 0;
+    let winnerPool = 0;
+    let totalPart = this.eventData.parcipiantAnswers;
+    let finalAnswer = this.eventData.finalAnswer
+    for (let i = 0; i < totalPart.length; i++) {
+      // get loser pool
+      if (totalPart[i].answer != finalAnswer) {
+        loserPool += totalPart[i].amount
+      }
+      // get winner pool
+      if (totalPart[i].answer == finalAnswer) {
+        winnerPool += totalPart[i].amount
+      }
+      // fing biggest win
+      if (totalPart[i].amount > biggest && totalPart[i].answer == finalAnswer) {
+        biggest = totalPart[i].amount;
+      }
+    }
+    let percent = this.getPercent(loserPool, 90)
+    return (biggest + ((percent * biggest) / winnerPool)).toFixed(2)
+  }
+
+  getPercent(from, percent) {
+    return (from * percent) / 100;
+  }
+
   ngOnDestroy() {
     if (this.userSub) {
       this.userSub.unsubscribe();
+    }
+  }
+
+  createEventText() {
+    if (!this.userData) {
+      return 'CREATE YOUR OWN EVENT'
+    } else {
+      if (this.host) {
+        return 'HOST ANOTHER EVENT'
+      } else {
+        return 'HOST YOUR OWN EVENT'
+      }
+    }
+  }
+
+  getImgFlag() {
+    if (!this.userData) {
+      return "flagImg hostFlag"
+    } else {
+      if (this.host) {
+        return "flagImg hostFlag"
+      } else if (this.role == "Expert") {
+        return "flagImg expertFlag"
+      } else if (this.role == "Player") {
+        return "flagImg playerFlag"
+      }
+    }
+  }
+
+  titleColor() {
+    if (!this.userData) {
+      return "color: #FFD300"
+    } else {
+      if (this.host) {
+        return "color: #FFD300"
+      } else if (this.role == "Expert") {
+        return "color: #BF94E4"
+      } else if (this.role == "Player") {
+        return "color: #34DDDD"
+      }
+    }
+  }
+
+  roleColor() {
+    if (this.role == "Expert") {
+      return "color: #BF94E4"
+    } else if (this.role == "Player") {
+      return "color: #34DDDD"
     }
   }
 

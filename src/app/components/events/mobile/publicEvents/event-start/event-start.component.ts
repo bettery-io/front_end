@@ -67,7 +67,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes) {
     if (changes['eventData'] !== undefined) {
-      console.log(this.eventData)
       if (changes['eventData'].currentValue !== undefined) {
         const timeNow = Number((Date.now() / 1000).toFixed(0));
         if (!(this.eventData.endTime - timeNow > 0)) {

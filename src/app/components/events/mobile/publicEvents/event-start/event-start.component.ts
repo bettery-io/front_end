@@ -58,9 +58,24 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   getUsers() {
     this.storeSub = this.store.select("user").subscribe((x) => {
       if (x.length != 0) {
+        this.currentPool = 0;
+        this.playersJoinde = 0;
+        this.expertJoinned = 0;
+        this.created = false;
         this.userData = x[0]
         this.letsFindActivites(x[0]);
         this.calculatePool()
+      } else {
+        this.userData = undefined;
+        this.letsJoin = false;
+        this.joinedAs = undefined;
+        this.currentPool = 0;
+        this.playersJoinde = 0;
+        this.expertJoinned = 0;
+        this.participatedAnswer = [];
+        this.validatedAnswer = []
+        this.goToAction = false;
+        this.created = false;
       }
     });
   }
@@ -177,6 +192,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
         return true;
       } catch (error) {
         this.spinnerLoading = false;
+        await web3Obj.torus.cleanUp()
         console.error(error)
         return false;
       }
@@ -303,7 +319,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     this.letsJoin = true;
     this.info = false;
     this.goToAction = false;
-    this.joinedAs = undefined;  
+    this.joinedAs = undefined;
     //  this.getUsers();
     this.interacDone.next(data);
   }

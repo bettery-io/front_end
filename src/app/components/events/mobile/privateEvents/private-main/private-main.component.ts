@@ -115,6 +115,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
         return true;
       } catch (error) {
         this.spinnerLoading = false;
+        await web3Obj.torus.cleanUp()
         console.error(error);
         return false;
       }

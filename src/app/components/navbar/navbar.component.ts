@@ -399,6 +399,8 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
       this.setTorusInfoToDB()
       this.spinnerLoading = false;
     } catch (error) {
+      await web3Obj.torus.cleanUp()
+      this.spinnerLoading = false;
       console.error(error)
     }
   }

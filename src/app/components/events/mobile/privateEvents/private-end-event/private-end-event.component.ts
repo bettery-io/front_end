@@ -36,7 +36,7 @@ export class PrivateEndEventComponent implements OnInit, OnDestroy {
       return o.userId == id;
     });
     if (find) {
-      if (find.answer == Number(this.eventData.validatorAnswer.answer)) {
+      if (find.answer == this.eventData.finalAnswerNumber) {
         this.award = 'winner';
       } else {
         this.award = 'loser';
@@ -49,7 +49,7 @@ export class PrivateEndEventComponent implements OnInit, OnDestroy {
     if (this.eventData.parcipiantAnswers) {
 
       for (let i = 0; i < this.eventData.parcipiantAnswers.length; i++) {
-        if (this.eventData.parcipiantAnswers[i].answer == Number(this.eventData.validatorAnswer.answer)) {
+        if (this.eventData.parcipiantAnswers[i].answer == this.eventData.finalAnswerNumber) {
           this.winners.push(this.eventData.parcipiantAnswers[i]);
         } else {
           this.losers.push(this.eventData.parcipiantAnswers[i]);

@@ -48,7 +48,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  sendAnswer(answerForm: any, bool: boolean) {
+  sendAnswer(answerForm: any) {
     if (answerForm.status === 'INVALID') {
       this.formValid = true;
       return;
@@ -56,10 +56,10 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     const index = _.findIndex(this.data.answers, (el => {
       return el === answerForm.value.answer;
     }));
-    this.sendToBlockchain(index, bool);
+    this.sendToBlockchain(index);
   }
 
-  async sendToBlockchain(answer, bool) {
+  async sendToBlockchain(answer) {
     this.spinnerLoading = true;
     let id = this.data.id;
     let wallet = this.userData.wallet;
@@ -72,7 +72,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
         try {
           let transaction = await contract.participateOnPrivateEvent(id, answer, wallet, verifier);
           if (transaction.transactionHash !== undefined) {
-            this.sendToDb(transaction.transactionHash, answer, bool);
+            this.sendToDb(transaction.transactionHash, answer);
           }
         } catch (error) {
           this.spinnerLoading = false;
@@ -90,7 +90,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  sendToDb(txHash, answer, bool) {
+  sendToDb(txHash, answer) {
     let data = {
       eventId: this.data.id,
       date: new Date(),
@@ -100,7 +100,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     };
     this.postSub = this.postService.post('privateEvents/participate', data).subscribe(async () => {
       this.spinnerLoading = false;
-      this.change(bool);
+      this.betOrBackBtn(false);
       this.errorMessage = undefined;
     }, (err) => {
       this.spinnerLoading = false;
@@ -108,7 +108,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  change(increased: any) {
+  betOrBackBtn(increased: any) {
     this.changed.emit(increased);
   }
 

@@ -31,6 +31,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   dropDownSwitch: boolean;
   eventSub: Subscription;
   eventData;
+  triggerPopover: boolean;
+  timerPopover: any;
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
@@ -81,9 +83,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.modalService.open(content, {centered: true, size: 'lg'});
   }
 
-  clickMain($event) {
+  @HostListener('click', ['$event'])
+  a($event) {
+
+    if (this.triggerPopover) {
+      this.triggerPopover = false;
+    }
+
     if (this.newCreateEvent.trim().length <= 0) {
-      this.active = $event.target.className === 'typing' || $event.target.id === 'newEvent';
+      this.active = $event.target.className === 'typing' || $event.target.id === 'newEvent' || $event.target.className === 'pencil';
     }
   }
 
@@ -136,6 +144,26 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  styleHideMen() {
+    this.flagMenu = true;
+    this.scrollHideMenu = true;
+    setTimeout(() => {
+      this.flagMenu = false;
+    }, 1000);
+  }
+
+  showPopover() {
+    this.triggerPopover = true;
+
+    if (this.timerPopover) {
+      clearTimeout(this.timerPopover);
+    }
+
+    this.timerPopover = setTimeout(() => {
+      this.triggerPopover = false;
+    }, 5000);
+  }
+
   ngOnDestroy() {
     if (this.translateSub) {
       this.translateSub.unsubscribe();
@@ -145,12 +173,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  styleHideMen() {
-    this.flagMenu = true;
-    this.scrollHideMenu = true;
-    setTimeout(() => {
-      this.flagMenu = false;
-    }, 1000);
-  }
 }
 

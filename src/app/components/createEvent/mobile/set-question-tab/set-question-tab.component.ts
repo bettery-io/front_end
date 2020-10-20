@@ -109,6 +109,7 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
       this.setTorusInfoToDB()
     } catch (error) {
       this.spinnerLoading = false;
+      await web3Obj.torus.cleanUp()
       console.error(error)
     }
   }

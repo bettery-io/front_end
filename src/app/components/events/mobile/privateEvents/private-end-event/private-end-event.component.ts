@@ -1,27 +1,26 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ClipboardService } from 'ngx-clipboard'
-import _ from "lodash";
-import { Subscription } from "rxjs";
-import { Store } from '@ngrx/store';
-import { AppState } from "../../../../../app.state";
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import _ from 'lodash';
+import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../../app.state';
 
 @Component({
   selector: 'app-private-end-event',
   templateUrl: './private-end-event.component.html',
   styleUrls: ['./private-end-event.component.sass']
 })
-export class PrivateEndEventComponent implements OnInit {
+export class PrivateEndEventComponent implements OnInit, OnDestroy {
   @Input() eventData;
-  winners = []
-  losers = []
+  winners = [];
+  losers = [];
   userSub: Subscription;
-  award = "none";
+  award = 'none';
 
 
   constructor(
-    private _clipboardService: ClipboardService,
     private store: Store<AppState>
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.userSub = this.store.select('user').subscribe((x) => {
@@ -33,34 +32,31 @@ export class PrivateEndEventComponent implements OnInit {
   }
 
   letsFindActivites(id) {
-    let find = _.find(this.eventData.parcipiantAnswers, (o) => { return o.userId == id });
+    let find = _.find(this.eventData.parcipiantAnswers, (o) => {
+      return o.userId == id;
+    });
     if (find) {
-      if (find.answer == Number(this.eventData.finalAnswer)) {
-        this.award = "winner"
+      if (find.answer == this.eventData.finalAnswerNumber) {
+        this.award = 'winner';
       } else {
-        this.award = "loser"
+        this.award = 'loser';
       }
     }
 
   }
 
   letsFindWinner() {
-    if(this.eventData.parcipiantAnswers){
+    if (this.eventData.parcipiantAnswers) {
+
       for (let i = 0; i < this.eventData.parcipiantAnswers.length; i++) {
-        if (this.eventData.parcipiantAnswers[i].answer == Number(this.eventData.finalAnswer)) {
-          this.winners.push(this.eventData.parcipiantAnswers[i])
+        if (this.eventData.parcipiantAnswers[i].answer == this.eventData.finalAnswerNumber) {
+          this.winners.push(this.eventData.parcipiantAnswers[i]);
         } else {
-          this.losers.push(this.eventData.parcipiantAnswers[i])
+          this.losers.push(this.eventData.parcipiantAnswers[i]);
         }
       }
     }
 
-  }
-
-  copyToClickBoard() {
-    let href = window.location.hostname
-    let path = href == "localhost" ? 'http://localhost:4200' : href
-    this._clipboardService.copy(`${path}/public_event/${this.eventData.id}`)
   }
 
   ngOnDestroy() {

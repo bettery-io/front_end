@@ -7,15 +7,15 @@
         <h1>EVENT ENDED</h1>
       </div>
     </div>
-    <div class="roomBox">
+    <div *ngIf="award == 'none'" class="title-text">
+      <p>Winners appreciate your expertise! Chase them for a reward, maybe?</p>
+    </div>
+    <div *ngIf="award == 'loser' || award == 'winner'" class="roomBox">
       <p class="roomName">ROOM: Avengers</p>
     </div>
     <div *ngIf="award == 'none'">
-      <div class="title_text">
-        <p>What a ride! Did you have a good time? Host more events and have more fun!</p>
-      </div>
       <div class="title_btn">
-        <button>HOST YOUR OWN EVENT</button>
+        <button>HOST AN EVENT</button>
       </div>
     </div>
     <div *ngIf="award == 'winner'">
@@ -32,7 +32,8 @@
     <div class="left col">
       <div class="left-img"></div>
       <div class="img-text">
-        <h4>Winners get</h4>
+        <h4 *ngIf="award == 'loser' || award == 'winner'">Winners get</h4>
+        <h4 *ngIf="award == 'none'">Winners</h4>
       </div>
       <div>
         <p style="text-transform: uppercase; font-size: 16px;">{{eventData?.winner}}</p>
@@ -47,7 +48,8 @@
     <div class="right col">
       <div class="right-img"></div>
       <div class="img-text">
-        <h4>Losers agree to</h4>
+        <h4 *ngIf="award == 'loser' || award == 'winner'">Losers agree to</h4>
+        <h4 *ngIf="award == 'none'">Losers</h4>
       </div>
       <div class="loserBox">
         <p class="loserBox">{{eventData?.loser}}</p>
@@ -73,7 +75,7 @@
             <div class="check_img"></div>
           </div>
           <div class="hr"></div>
-          <div class="d-flex mt-2">
+          <div class="d-flex mt-2 align-items-center">
             <div><span>Validated by:</span></div>
             <img src="{{eventData?.validatorAnswer.avatar}}" class="experAvatar" referrerpolicy="no-referrer">
             <div>
@@ -85,11 +87,6 @@
           <p>{{answer}}</p>
         </div>
       </div>
-    </div>
-    <div class="share_event" *ngIf="award == 'none'">
-      <h4>share YOUR event with friends!</h4>
-      <p><a href="#">www.bettery.io/public_event/{{eventData.id}}</a></p>
-      <div class="share_img" (click)="copyToClickBoard()"></div>
     </div>
     <div style="margin-top: 36px;" class="title_btn" *ngIf="award != 'none'">
       <button>HOST YOUR OWN EVENT</button>

@@ -48,6 +48,7 @@ export class MakeRulesTabComponent implements OnInit {
   endPublicTime;
   timeData: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
   exactTimeBool: boolean;
+  modalTrigger: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -112,14 +113,20 @@ export class MakeRulesTabComponent implements OnInit {
     this.populatedropdown('daydropdown', 'monthdropdown', 'yeardropdown');
   }
 
-  openHowEventsWork(content) {
+  openHowEventsWorkSocial(content) {
     this.modalService.open(content, {centered: true});
+    this.modalTrigger = false;
+  }
+
+  openHowEventsWorkFriend(content) {
+    this.modalService.open(content, {centered: true});
+    this.modalTrigger = true;
   }
 
   openLearnMore() {
     const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
-    modalRef.componentInstance.name = '- Right now, Players can bet with BTY, the digital token of Bettery platform. Users need BTY to participate in events and grow their Reputation, which is required to access commercial events to earn money.';
-    modalRef.componentInstance.name1 = 'Betting with ETH is coming along the roadmap.';
+    modalRef.componentInstance.name = '- Right now, Players can bet with BTY, the digital token of Bettery platform. Users need BTY to participate in events and (coming soon) grow their Reputation, which is required to access commercial events to earn money.';
+    modalRef.componentInstance.name1 = 'Betting with ETH is coming later along our roadmap.';
     modalRef.componentInstance.boldName = 'What to bet with';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }

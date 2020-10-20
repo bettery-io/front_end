@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import _ from "lodash";
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../../app.state';
-import Contract from "../../../../../contract/contract";
-import { PostService } from '../../../../../services/post.service';
-import { Subscription } from "rxjs";
+import {Component, EventEmitter, Input, OnInit, Output, OnDestroy} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import _ from 'lodash';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../../app.state';
+import Contract from '../../../../../contract/contract';
+import {PostService} from '../../../../../services/post.service';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -16,14 +16,13 @@ import { Subscription } from "rxjs";
 export class PrivateFormComponent implements OnInit, OnDestroy {
   answerForm: FormGroup;
   @Input() data: any;
-  count: boolean;
   formValid: boolean;
   @Output() changed = new EventEmitter<boolean>();
   userData;
   errorMessage = undefined;
   userSub: Subscription;
   postSub: Subscription;
-  spinnerLoading: boolean = false;
+  spinnerLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,7 +40,9 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  get f() { return this.answerForm.controls; }
+  get f() {
+    return this.answerForm.controls;
+  }
 
 
   ngOnInit(): void {
@@ -52,25 +53,26 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
       this.formValid = true;
       return;
     }
-    const index = _.findIndex(this.data.answers, (el => { return el === answerForm.value.answer; }));
+    const index = _.findIndex(this.data.answers, (el => {
+      return el === answerForm.value.answer;
+    }));
     this.sendToBlockchain(index);
-
   }
 
   async sendToBlockchain(answer) {
     this.spinnerLoading = true;
-    let id = this.data.id
-    let wallet = this.userData.wallet
-    let verifier = this.userData.verifier
+    let id = this.data.id;
+    let wallet = this.userData.wallet;
+    let verifier = this.userData.verifier;
     let contract = new Contract();
-    let contr = await contract.privateEventContract()
+    let contr = await contract.privateEventContract();
     let validator = await contr.methods.timeAnswerValidation(id).call();
     switch (Number(validator)) {
       case 0:
         try {
           let transaction = await contract.participateOnPrivateEvent(id, answer, wallet, verifier);
           if (transaction.transactionHash !== undefined) {
-            this.sendToDb(transaction.transactionHash, answer)
+            this.sendToDb(transaction.transactionHash, answer);
           }
         } catch (error) {
           this.spinnerLoading = false;
@@ -79,11 +81,11 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
         break;
       case 1:
         this.spinnerLoading = false;
-        this.errorMessage = "Event not started yeat."
+        this.errorMessage = 'Event not started yeat.';
         break;
       case 2:
         this.spinnerLoading = false;
-        this.errorMessage = "Event is finished."
+        this.errorMessage = 'Event is finished.';
         break;
     }
   }
@@ -95,18 +97,18 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
       answer: answer,
       transactionHash: txHash,
       from: this.userData._id,
-    }
-    this.postSub = this.postService.post("privateEvents/participate", data).subscribe(async () => {
+    };
+    this.postSub = this.postService.post('privateEvents/participate', data).subscribe(async () => {
       this.spinnerLoading = false;
+      this.betOrBackBtn(false);
       this.errorMessage = undefined;
-      this.count = true;
     }, (err) => {
       this.spinnerLoading = false;
-      console.log(err)
-    })
+      console.log(err);
+    });
   }
 
-  change(increased: any) {
+  betOrBackBtn(increased: any) {
     this.changed.emit(increased);
   }
 

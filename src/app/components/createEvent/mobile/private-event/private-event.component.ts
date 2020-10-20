@@ -186,7 +186,7 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     // TO DO
     modalAboutExpert() {
       const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-      modalRef.componentInstance.name = "- Actually, no need to! Bettery is smart and secure enough to take care of it for you. Now just join to bet with friends as a Player or become the Expert to validate the result after Players. Enjoy!";
+      modalRef.componentInstance.name = '- Actually, no need to! Bettery is smart and secure enough to take care of your event. You can join to bet as a Player or become an Expert to validate the result after Players. Enjoy!';
       modalRef.componentInstance.boldName = 'How to manage your event';
       modalRef.componentInstance.link = 'Learn more about how Bettery works';
     }

@@ -1,15 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PostService } from "../../../../../services/post.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
-import web3Obj from "../../../../../helpers/torus";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {PostService} from '../../../../../services/post.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import web3Obj from '../../../../../helpers/torus';
 import * as UserActions from '../../../../../actions/user.actions';
-import { Store } from '@ngrx/store';
-import { AppState } from "../../../../../app.state";
+import {Store} from '@ngrx/store';
+import {ClipboardService} from 'ngx-clipboard';
+import {AppState} from '../../../../../app.state';
 import _ from 'lodash';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component'
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component';
 
 @Component({
   selector: 'app-private-main',
@@ -25,7 +26,8 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   counts: any = 1;
   expert: boolean;
   expertPage: boolean;
-  hideBtn: boolean;
+  hideBtn = false;
+  hideTitle = true;
   ifTimeValid: boolean;
   participatedIndex: number;
   finised: boolean = false;
@@ -33,7 +35,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
 
   routeSub: Subscription;
   userSub: Subscription;
-  postSub: Subscription
+  postSub: Subscription;
   userData;
   id: any;
   allTime: any = {
@@ -48,6 +50,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private store: Store<AppState>,
+    private _clipboardService: ClipboardService,
     private modalService: NgbModal
   ) {
     this.answerForm = formBuilder.group({
@@ -74,13 +77,13 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
 
   letsGetDataFromDB() {
     this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: any) => {
-      console.log(value)
+      console.log(value);
       if (value.finalAnswer !== '') {
         this.finised = true;
       }
       this.data = value;
       if (this.userData) {
-        this.letsFindActivites(this.userData._id)
+        this.letsFindActivites(this.userData._id);
       }
     }, (err) => {
       console.log(err);
@@ -92,7 +95,9 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
 
   letsFindActivites(userID) {
     if (this.data.parcipiantAnswers) {
-      let findParts = _.find(this.data.parcipiantAnswers, (o) => { return o.userId == userID; });
+      let findParts = _.find(this.data.parcipiantAnswers, (o) => {
+        return o.userId == userID;
+      });
       if (findParts) {
         this.participatedIndex = findParts.answer;
         this.hideBtn = true;
@@ -196,18 +201,30 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
 
   onExpertPage() {
     this.expertPage = true;
+    const timeNow = Number((Date.now() / 1000).toFixed(0));
+    if (this.data.endTime - timeNow > 0) {
+      this.ifTimeValid = false;
+    } else {
+      this.ifTimeValid = true;
+    }
   }
 
   onChanged(increased: boolean) {
+    this.letsGetDataFromDB();
     if (increased) {
       this.prevPage();
     } else {
       this.hideBtn = true;
-      this.expertPage = false;
-      this.expert = false;
+      this.hideTitle = false;
       this.prevPage();
     }
-    this.letsGetDataFromDB();
+  }
+
+  returnWithStatus($event) {
+    if ($event) {
+      this.expertPage = false;
+      this.expert = false;
+    }
   }
 
   onChanged2($event: boolean) {
@@ -250,34 +267,49 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
 
   getPartPos(i) {
     let size = this.data.parcipiantAnswers ? this.data.parcipiantAnswers.length : 0;
-    let index = [4, 3, 2, 1]
+    let index = [4, 3, 2, 1];
     if (size === 1) {
       return {
         'z-index': index[i],
         'position': 'relative',
-        'right': "20px"
-      }
+        'right': '10px'
+      };
     } else {
       return {
         'z-index': index[i],
         'position': 'relative',
-        'right': (i * 10) + "px"
-      }
+        'right': (i * 10) + 'px'
+      };
     }
   }
 
   modalAboutExpert() {
-    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = 'Validate the result of the event, what actually happened. Depending on event type and how many Players joined, you can earn BTY tokens for being an Expert.';
+    const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
+    modalRef.componentInstance.name = 'Validate the event result, confirming what actually happened. For Social Media events, several Experts share a portion of the prize pool. For Friends events, the Expert has 24 hours to validate and gets a custom reward from the Host.';
     modalRef.componentInstance.boldName = 'Expert - ';
-    modalRef.componentInstance.link = 'Learn more about roles on Bettery';
+    modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }
 
   modalAboutPlayers() {
-    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-    modalRef.componentInstance.name = ' Bet on the event outcome. The prize pool is taken from the losers pot which is shared to all winning Players, the Host, and Experts. The higher your bet is, the bigger amount you will win.';
+    const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
+    modalRef.componentInstance.name = 'Bet on the event outcome. The prize pool is taken from loser bets and shared to winners, Host, Experts, and other roles.';
     modalRef.componentInstance.boldName = 'Player - ';
-    modalRef.componentInstance.link = 'Learn more about roles on Bettery';
+    modalRef.componentInstance.link = 'Learn more about how Bettery works';
+  }
+
+  displayTime() {
+    const timeNow = Number((Date.now() / 1000).toFixed(0));
+    return this.data.endTime - timeNow > 0;
+  }
+
+  copyToClickBoard() {
+    const href = window.location.hostname;
+    const path = href === 'localhost' ? 'http://localhost:4200' : href;
+    this._clipboardService.copy(`${path}/private_event/${this.data.id}`);
+  }
+
+  openSoonModal(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', centered: true});
   }
 
   ngOnDestroy() {

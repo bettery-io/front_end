@@ -5,19 +5,20 @@ import { Coins } from '../../models/Coins.model';
 import * as CoinsActios from '../../actions/coins.actions';
 import * as UserActions from '../../actions/user.actions';
 import * as InvitesAction from '../../actions/invites.actions';
-import {RegistrationComponent} from '../registration/registration.component';
+import { RegistrationComponent } from '../registration/registration.component';
 import maticInit from '../../contract/maticInit.js'
 
 import Web3 from 'web3';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import {PostService} from '../../services/post.service';
-import {GetService} from '../../services/get.service';
-import {faReply, faShare} from '@fortawesome/free-solid-svg-icons';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { PostService } from '../../services/post.service';
+import { GetService } from '../../services/get.service';
+import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
 import Contract from '../../contract/contract';
 import web3Obj from '../../helpers/torus'
-import {Subscription} from 'rxjs';
-import {WelcomePageComponent} from "../share/welcome-page/welcome-page.component";
+import { Subscription } from 'rxjs';
+import { WelcomePageComponent } from "../share/welcome-page/welcome-page.component";
+import { IfStmt } from '@angular/compiler';
 
 
 @Component({
@@ -41,7 +42,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   activeTab: string = undefined;
   userWallet: string = undefined;
   userId: number;
-  UserSubscribe: Subscription;
   userSub: Subscription;
   coinsSub: Subscription;
   invitesSub: Subscription;
@@ -150,7 +150,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     this.postSub = this.postService.post("my_activites/invites", data)
       .subscribe(async (x: any) => {
         let amount = x.length
-        this.store.dispatch(new InvitesAction.UpdateInvites({amount: amount}));
+        this.store.dispatch(new InvitesAction.UpdateInvites({ amount: amount }));
       })
   }
 
@@ -243,7 +243,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
     this.updateBalance()
   }
 
@@ -291,7 +291,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
         let web3 = new Web3()
         var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
         let contract = new Contract()
-        let {withdrawal, sign} = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier)
+        let { withdrawal, sign } = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier)
         console.log(withdrawal);
         if (withdrawal.transactionHash !== undefined) {
           let data = {
@@ -485,18 +485,31 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     }
   }
 
+  openWallet() {
+    web3Obj.torus.showWallet("home");
+  }
+
   ngOnDestroy() {
     document.removeEventListener('click', this.onDocumentClick);
-    this.UserSubscribe.unsubscribe();
-    this.userSub.unsubscribe();
-  //  this.coinsSub.unsubscribe();
-    this.invitesSub.unsubscribe();
-    this.postSub.unsubscribe();
-    this.getSub.unsubscribe();
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
+    if (this.coinsSub) {
+      this.coinsSub.unsubscribe();
+    }
+    if (this.invitesSub) {
+      this.invitesSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
+    if (this.getSub) {
+      this.getSub.unsubscribe();
+    }
   }
 
   openModal(contentModal) {
-    this.modalService.open(contentModal, {size: 'sm', centered: true});
+    this.modalService.open(contentModal, { size: 'sm', centered: true });
     this.openNavBar = false;
   }
 

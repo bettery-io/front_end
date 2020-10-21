@@ -1,5 +1,5 @@
 <nav class="navbar navbar-light bg-light" *ngIf="display">
-  <div class="logo">
+  <div class="logo"  routerLink="/">
     <h3 style="padding-left: 20px; padding-top: 10px">Logo</h3>
   </div>
   <div *ngIf="nickName === undefined">
@@ -79,7 +79,7 @@
 
 <div class="mobileNavbar" *ngIf="display" #insideElement>
   <div class="logoBox">
-    <div class="logo"></div>
+    <div class="logo" routerLink="/"></div>
   </div>
   <div *ngIf="nickName === undefined" class="loginBox" (click)="loginWithTorus()">
     <div class="enter"></div>
@@ -114,7 +114,7 @@
     </div>
     <div class="arrow"></div>
     <div class="navBox">
-      <button class="navLink">My Wallet</button>
+      <button class="navLink" (click)="openWallet()">My Wallet</button>
     </div>
     <div class="arrow"></div>
     <div class="navBox">

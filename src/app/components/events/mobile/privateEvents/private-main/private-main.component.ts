@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PostService} from '../../../../../services/post.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PostService } from '../../../../../services/post.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import web3Obj from '../../../../../helpers/torus';
 import * as UserActions from '../../../../../actions/user.actions';
-import {Store} from '@ngrx/store';
-import {ClipboardService} from 'ngx-clipboard';
-import {AppState} from '../../../../../app.state';
+import { Store } from '@ngrx/store';
+import { ClipboardService } from 'ngx-clipboard';
+import { AppState } from '../../../../../app.state';
 import _ from 'lodash';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component';
 
 @Component({
   selector: 'app-private-main',
@@ -32,6 +32,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   participatedIndex: number;
   finised: boolean = false;
   spinnerLoading: boolean = false;
+  calculateDateTimer;
 
   routeSub: Subscription;
   userSub: Subscription;
@@ -53,6 +54,24 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     private _clipboardService: ClipboardService,
     private modalService: NgbModal
   ) {
+    this.userSub = this.store.select('user').subscribe((x) => {
+      if (x.length != 0) {
+        this.userData = x[0];
+        this.letsFindActivites(x[0]._id);
+      } else {
+        clearTimeout(this.calculateDateTimer);
+        this.userData = undefined;
+        this.condition = undefined;
+        this.counts = 1;
+        this.expert = undefined;
+        this.expertPage = undefined;
+        this.hideBtn = false;
+        this.hideTitle = true;
+        this.ifTimeValid = undefined;
+        this.participatedIndex = undefined;
+      }
+    });
+
     this.answerForm = formBuilder.group({
       answer: ['', Validators.required]
     });
@@ -65,23 +84,16 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       };
     });
 
-    this.userSub = this.store.select('user').subscribe((x) => {
-      if (x.length != 0) {
-        this.userData = x[0];
-        this.letsFindActivites(x[0]._id);
-      }
-    });
-
     this.letsGetDataFromDB();
   }
 
   letsGetDataFromDB() {
     this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: any) => {
-      console.log(value);
       if (value.finalAnswer !== '') {
         this.finised = true;
       }
       this.data = value;
+      console.log(this.userData);
       if (this.userData) {
         this.letsFindActivites(this.userData._id);
       }
@@ -94,7 +106,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   letsFindActivites(userID) {
-    if (this.data.parcipiantAnswers) {
+    if (this.data && this.data.parcipiantAnswers) {
       let findParts = _.find(this.data.parcipiantAnswers, (o) => {
         return o.userId == userID;
       });
@@ -261,7 +273,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     } else {
       this.allTime.seconds = second > 9 ? second : '0' + second;
     }
-    setTimeout(() => {
+    this.calculateDateTimer = setTimeout(() => {
       this.calculateDate();
     }, 1000);
   }
@@ -285,7 +297,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   modalAboutExpert() {
-    const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
     modalRef.componentInstance.name = 'Validate the event result, confirming what actually happened. For Social Media events, several Experts share a portion of the prize pool. For Friends events, the Expert has 24 hours to validate and gets a custom reward from the Host.';
     modalRef.componentInstance.boldName = 'Expert - ';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
@@ -310,7 +322,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   openSoonModal(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', centered: true});
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true });
   }
 
   ngOnDestroy() {

@@ -3,6 +3,29 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 
+const init = {
+  question: '',
+  answers: [],
+  resolutionDetalis: '',
+  whichRoom: "new",
+  roomName: '',
+  roomColor: 'linear-gradient(228.16deg, #54DD96 -1.47%, #6360F7 97.79%)',
+  eventType: 'public',
+  tokenType: "token",
+  winner: "",
+  losers: "",
+  privateEndTime: "",
+  publicEndTime: "",
+  expertsCountType: "company",
+  expertsCount: '',
+  exactMinutes: new Date().getMinutes(),
+  exactHour: new Date().getHours(),
+  exactDay: new Date().getDate(),
+  exactMonth: new Date().getMonth(),
+  exactYear: new Date().getFullYear(),
+  exactTimeBool: false,
+};
+
 @Component({
   selector: 'app-events-templates',
   templateUrl: './events-templates.component.html',
@@ -12,7 +35,7 @@ export class EventsTemplatesComponent implements OnInit {
   whichEvent = "setQuestion"
   eventFromLandingSubscr: Subscription;
   userSub: Subscription
-  formData;
+  formData = init;
 
 
   constructor(private store: Store<AppState>) {
@@ -39,7 +62,7 @@ export class EventsTemplatesComponent implements OnInit {
           exactMonth: new Date().getMonth(),
           exactYear: new Date().getFullYear(),
           exactTimeBool: false,
-        }
+        };
         this.whichEvent = "setQuestion"
       }
     });

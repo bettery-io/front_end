@@ -65,11 +65,10 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
         this.counts = 1;
         this.expert = undefined;
         this.expertPage = undefined;
-        this.hideBtn = undefined;
+        this.hideBtn = false;
         this.hideTitle = true;
         this.ifTimeValid = undefined;
         this.participatedIndex = undefined;
-        this.finised = false;
       }
     });
 

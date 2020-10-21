@@ -83,10 +83,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes) {
     if (changes['eventData'] !== undefined) {
       if (changes['eventData'].currentValue !== undefined) {
-        const timeNow = Number((Date.now() / 1000).toFixed(0));
-        if (!(this.eventData.endTime - timeNow > 0)) {
-          this.validation = true;
-        }
         this.coinType = this.eventData.currencyType == "token" ? "BTY" : "ETH"
         this.currentPool = 0;
         this.playersJoinde = 0;
@@ -339,6 +335,11 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
       this.seconds = "00"
     } else {
       this.seconds = second > 9 ? second : "0" + second;
+    }
+
+    const timeNow = Number((Date.now() / 1000).toFixed(0));
+    if (!(this.eventData.endTime - timeNow > 0)) {
+      this.validation = true;
     }
     setTimeout(() => {
       this.calculateDate()

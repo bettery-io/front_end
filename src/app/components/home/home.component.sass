@@ -53,15 +53,29 @@ nav
       color: #000000
 
 .tgr-img:before
-  content: url("../../../assets/landingPage/telegramNav.png")
+  content: ''
+  background: url("../../../assets/landingPage/Path-yellowe.png") center center no-repeat #000
+  background-size: 14px 12px
   width: 24px
   height: 24px
+  border-radius: 100%
   position: absolute
   top: 1%
   left: -28px
 
 .dropdown-toggle:empty::after
   display: none
+
+.mobile_img_path
+  border-radius: 100%
+  width: 24px
+  height: 24px
+  background: #000
+  padding-left: 4px
+  & img
+    width: 14px
+    height: 12px
+    margin-bottom: 3px
 
 .icon-bar-img
   background: url("../../../assets/landingPage/btn-nav.png") left center no-repeat
@@ -820,8 +834,9 @@ footer
   margin-top: 5px
 
 .img_telegram
-  background: url("../../../assets/landingPage/telegram.png") left center no-repeat
-  background-size: contain
+  background: url("../../../assets/landingPage/Path.png") center center no-repeat #FDD92A
+  background-size: 18px 15px
+  border-radius: 100%
   width: 32px
   height: 32px
   margin-top: 5px
@@ -1082,13 +1097,15 @@ footer
   content: ""
 
 .pencil:after
-  content: url("../../../assets/landingPage/pencil.png")
+  content: ""
+  position: absolute
   display: none
+  right: -1%
+  top: 8%
+  background: url("../../../assets/landingPage/pencil.png") center center no-repeat
+  background-size: contain
   width: 12px
   height: 12px
-  position: absolute
-  right: -1%
-  top: 0
 
 .pencil
   padding-right: 10px

@@ -293,7 +293,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
 
   modalAboutPlayers() {
     const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
-    modalRef.componentInstance.name = 'Bet on the event outcome. The prize pool is taken from loser bets and shared to winners, Host, Experts, and other roles.';
+    modalRef.componentInstance.name = 'Bet on the event outcome. The prize pool is taken from loser bets and shared to winning Players, Host, Experts, and other roles.';
     modalRef.componentInstance.boldName = 'Player - ';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }

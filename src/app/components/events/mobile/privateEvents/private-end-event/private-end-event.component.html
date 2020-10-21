@@ -1,10 +1,12 @@
 <div class="containe">
   <div>
     <div class="title d-flex justify-content-center">
-      <div class="flag_img2"></div>
-      <div class="flag_img"></div>
+<!--      <div class="flag_img2"></div>-->
+<!--      <div class="flag_img"></div>-->
       <div>
-        <h1>EVENT ENDED</h1>
+        <div *ngIf="award == 'none'" class="img_event_end_fio"></div>
+        <div class="img_event_end_yell" *ngIf="award == 'loser' || award == 'winner'"></div>
+<!--        <h1 *ngIf="award == 'none'">EVENT ENDED fio</h1>-->
       </div>
     </div>
     <div *ngIf="award == 'none'" class="title-text">
@@ -15,7 +17,7 @@
     </div>
     <div *ngIf="award == 'none'">
       <div class="title_btn">
-        <button>HOST AN EVENT</button>
+        <button routerLink="/create-event">HOST AN EVENT</button>
       </div>
     </div>
     <div *ngIf="award == 'winner'">
@@ -66,7 +68,7 @@
       <p>{{eventData?.question}}</p>
     </div>
     <div class="answer_block">
-      <div *ngFor="let answer of eventData?.answers">
+      <div *ngFor="let answer of eventData?.answers; index as i">
         <div class="answer_active" *ngIf="answer == eventData?.finalAnswer">
           <div class="d-flex justify-content-between">
             <div class="mb-2">
@@ -85,22 +87,31 @@
         </div>
         <div class="answer_item" *ngIf="answer != eventData?.finalAnswer">
           <p>{{answer}}</p>
+
+          <div *ngIf="eventData.parcipiantAnswers">
+            <div *ngIf="participatedIndex == i">
+              <div  class="top-7px ">
+                <img class="partImg" referrerpolicy="no-referrer" src="{{userData?.avatar}}">
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
     <div style="margin-top: 36px;" class="title_btn" *ngIf="award != 'none'">
-      <button>HOST YOUR OWN EVENT</button>
+      <button routerLink="/create-event">HOST AN EVENT</button>
     </div>
   </div>
   <div class="hr-grey"></div>
   <div>
 
-    <div class="sendCommentBox">
-      <div class="addCommentBox">
-        <p class="addCommentText">Add a comment...</p>
-      </div>
-      <div class="sendImg"></div>
-    </div>
+<!--    <div class="sendCommentBox">-->
+<!--      <div class="addCommentBox">-->
+<!--        <p class="addCommentText">Add a comment...</p>-->
+<!--      </div>-->
+<!--      <div class="sendImg"></div>-->
+<!--    </div>-->
 
     <div class="commentBox">
       <div class="commentHeader">

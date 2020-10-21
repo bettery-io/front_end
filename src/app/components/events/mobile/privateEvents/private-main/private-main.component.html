@@ -49,7 +49,7 @@
       </ng-container>
       <ng-container *ngIf="condition">
         <ng-container *ngIf="counts == 1">
-          <div *ngIf="hideBtn && !hideTitle" class="blue-text">Thank you for playing!</div>
+          <div *ngIf=" displayTime() && hideBtn && hideTitle" class="blue-text">Thank you for playing!</div>
           <div *ngIf="!hideBtn && hideTitle" class="now_batting__title">
             <div *ngIf="displayTime()">
               <div class="img_yellow_hand"></div>
@@ -62,13 +62,14 @@
           </div>
           <div class="event_ends">
             <div *ngIf="displayTime()">
-<!--              <div *ngIf="hideTitle" class="blue-text">Thank you for playing!</div>-->
+              <div *ngIf="!hideTitle" class="blue-text">Thank you for playing!</div>
               Betting ends in <b>{{allTime.day}}:{{allTime.hour}}:{{allTime.minutes}}:{{allTime.seconds}}</b>
             </div>
             <div *ngIf="!displayTime() && hideBtn">
               <div *ngIf="hideTitle" class="blue-text">Thank you for playing!</div>
               Betting is over. Waiting for Expert...
             </div>
+
             <div *ngIf="!displayTime() && !hideBtn">Time left to validate <b>{{allTime.day}}:{{allTime.hour}}:{{allTime.minutes}}:{{allTime.seconds}}</b></div>
           </div>
           <div class="question_second">

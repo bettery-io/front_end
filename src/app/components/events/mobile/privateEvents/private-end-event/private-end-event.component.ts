@@ -15,6 +15,8 @@ export class PrivateEndEventComponent implements OnInit, OnDestroy {
   losers = [];
   userSub: Subscription;
   award = 'none';
+  participatedIndex: any;
+  userData: any;
 
 
   constructor(
@@ -25,10 +27,12 @@ export class PrivateEndEventComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userSub = this.store.select('user').subscribe((x) => {
       if (x.length != 0) {
+        this.userData = x[0];
         this.letsFindActivites(x[0]._id);
       }
     });
     this.letsFindWinner();
+    console.log(this.eventData);
   }
 
   letsFindActivites(id) {
@@ -41,8 +45,8 @@ export class PrivateEndEventComponent implements OnInit, OnDestroy {
       } else {
         this.award = 'loser';
       }
+      this.participatedIndex = find.answer;
     }
-
   }
 
   letsFindWinner() {

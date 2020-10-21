@@ -10,7 +10,8 @@
         <div class="statusContainer">
             <div *ngIf="host" class="statusBox hostBorder">
                 <p [ngClass]="{'hostStatus': host}" class="status">YOU EARNED</p>
-                <p [ngClass]="{'hostAmount': host}" class="amount" [ngStyle]="getAmountColor(status)">{{getHostWin()}}</p>
+                <p [ngClass]="{'hostAmount': host}" class="amount" [ngStyle]="getAmountColor(status)">{{getHostWin()}}
+                </p>
                 <p class="host">AS <span style="color: #FFD200">HOST</span></p>
             </div>
             <div class="statusBox">
@@ -71,8 +72,8 @@
             <div class="answer_box">
                 <div class="answerAvatarBox">
                     <p class="answerCreated">{{answer}}</p>
-                    <img *ngIf="userData && !winner" class="avatarHost partPostAvatar" src={{userData.avatar}}
-                        referrerpolicy="no-referrer">
+                    <img *ngIf="userData && !winner && playerIndex == i" class="avatarHost partPostAvatar"
+                        src={{userData.avatar}} referrerpolicy="no-referrer">
                 </div>
                 <p class="viewMore" (click)="viewMoreToggle(i)">{{viewMore == i ? 'View less' : 'View more'}}</p>
             </div>

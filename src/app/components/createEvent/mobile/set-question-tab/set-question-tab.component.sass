@@ -62,7 +62,7 @@
     padding-left: 19px
 
 .adapting::placeholder
-  font-size: 12px
+  font-size: 10px
   font-weight: 500
 
 .iconBox
@@ -120,12 +120,10 @@
 
 .buttonBox
     margin-top: 23px
-    margin-left: 16px
-    margin-right: 16px
     display: flex
     overflow: auto
     text-align: center
-    padding-bottom: 14px
+    padding: 0 15px 14px 15px
 
 .quize_validation_error
     font-family: 'Open Sans', sans-serif
@@ -156,3 +154,25 @@
 .deleteButton
     background-color: transparent
     border: none
+
+@media (max-height: 850px)
+  .buttonBox
+    position: absolute
+    bottom: 0
+    width: 100%
+    padding: 0 15px 10px 15px
+
+@media (max-height: 667px)
+  .buttonBox
+    position: relative
+    margin: 23px auto 0 auto
+    width: 100%
+    padding: 0 15px 10px 15px
+
+@media (max-height: 568px)
+  .buttonBox
+    width: 100%
+    padding: 0 15px 10px 15px
+
+
+

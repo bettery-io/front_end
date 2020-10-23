@@ -1,9 +1,7 @@
 .box
-    padding-left: 16px
-    padding-right: 16px
     background: #242521
-    padding-top: 20px
     margin-top: -20px
+    padding: 20px 16px
 
 .comfirm
     font-family: 'Open Sans', sans-serif
@@ -482,8 +480,6 @@
 
 .joinBox
   background: #FFD300
-  width: 100%
-  margin-top: 180px
 
 .linkYellow
   font-family: 'Open Sans', sans-serif
@@ -493,7 +489,6 @@
   line-height: 16px
   text-decoration-line: underline !important
   color: #FFD300 !important
-  //color: #FFD300
   justify-content: center
   display: flex
   margin-top: 30px
@@ -507,3 +502,16 @@
   color: #C4C4C4
 .listBox
   margin-top: 32px
+@media (max-height: 850px)
+  .joinBox
+    width: 91%
+    position: absolute
+    bottom: 20px
+
+@media (max-height: 568px)
+  .joinBox
+    position: relative
+    width: 100%
+    bottom: 0
+    margin-top: 20px
+

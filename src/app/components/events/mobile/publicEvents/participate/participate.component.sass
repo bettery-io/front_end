@@ -124,10 +124,10 @@
     flex: 1
 
 .buttonBox
-    margin-top: 23px
+    margin-top: 40px
     display: flex
     text-align: center
-    padding-bottom: 14px
+    padding-bottom: 10px
 
 .inputBox
     width: 100%
@@ -327,3 +327,21 @@
     justify-content: center
     text-transform: uppercase
     color: #34DDDD
+
+
+.buttonBox
+  position: absolute
+  bottom: 0
+  width: 91%
+
+@media (max-height: 568px)
+  .buttonBox
+    position: relative
+    width: 100%
+    padding-bottom: 0
+
+@media (min-width: 768px)
+  .buttonBox
+    position: relative
+    width: 100%
+    padding-bottom: 0

@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   translateSub: Subscription;
   active: boolean;
   newCreateEvent = '';
+  typedCreateEvent = '';
   switchLang = 'en';
   topQuestions = EN.HEADER.TOP_QUESTIONS;
   scrollHideMenu: boolean;
@@ -96,8 +97,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   sendEvent() {
-    const data = this.newCreateEvent;
-    this.store.dispatch(createEventAction({data}));
+    let data = this.newCreateEvent;
+    if (data) {
+      this.store.dispatch(createEventAction({data}));
+    } else {
+      data = this.typedCreateEvent;
+      this.store.dispatch(createEventAction({data}));
+    }
+  }
+
+  sendDefaultEvent($event) {
+    setTimeout(() => {
+      if ($event >= 0 && $event < this.topQuestions.length - 1) {
+        this.typedCreateEvent = this.topQuestions[$event + 1];
+      }
+      if ($event === this.topQuestions.length - 1) {
+        this.typedCreateEvent = this.topQuestions[0];
+      }
+    }, 2000);
+  }
+
+  renovationDefaultEvent() {
+    this.typedCreateEvent = this.topQuestions[0];
   }
 
   scrollMenuSetting(): void {
@@ -172,6 +193,5 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.eventSub.unsubscribe();
     }
   }
-
 }
 

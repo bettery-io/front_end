@@ -106,7 +106,10 @@
 
               <ngx-typed-js class="ngx-typed" *ngIf="!active && switchLang === 'vn'"
                             [strings]="topQuestions"
-                            [typeSpeed]="60" [backSpeed]="20" [loop]="true">
+                            [typeSpeed]="60" [backSpeed]="20" [loop]="true"
+                            (stringTyped)="sendDefaultEvent($event)"
+                            (preStringTyped)="renovationDefaultEvent()"
+              >
                 <div class="pencil">
                   <div class="text">
                     <span class="typing" (mouseenter)="showPopover()"></span>
@@ -122,9 +125,10 @@
 
               <ngx-typed-js class="ngx-typed" *ngIf="!active && switchLang ==='en'"
                             [strings]="topQuestions"
-                            [typeSpeed]="60" [backSpeed]="20" [loop]="true">
-
-
+                            [typeSpeed]="60" [backSpeed]="20" [loop]="true"
+                            (stringTyped)="sendDefaultEvent($event)"
+                            (preStringTyped)="renovationDefaultEvent()"
+              >
                 <div class="pencil">
                   <div class="text">
                     <span class="typing" (mouseenter)="showPopover()"></span>

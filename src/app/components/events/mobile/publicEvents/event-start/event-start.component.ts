@@ -151,7 +151,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
       return {
         'z-index': index[i],
         'position': 'relative',
-        'right': "20px"
+        'right': "5px"
       }
     } else {
       return {

@@ -94,6 +94,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.newCreateEvent.trim().length <= 0) {
       this.active = $event.target.className === 'typing' || $event.target.id === 'newEvent' || $event.target.className === 'pencil';
     }
+
+    if ($event.target.className === 'typing') {
+      this.typedCreateEvent = '';
+    }
   }
 
   sendEvent() {

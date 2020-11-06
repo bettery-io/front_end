@@ -13,4 +13,5 @@ window.web3 = window.web3 || {};
 })
 export class AppComponent {
   title = 'Quiz';
+
 }

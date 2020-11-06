@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-light bg-light" *ngIf="display">
   <div class="logo"  routerLink="/">
     <h3 style="padding-left: 20px; padding-top: 10px">Logo</h3>
@@ -76,7 +77,7 @@
     </ul>
   </div>
 </nav>
-
+<div>
 <div class="mobileNavbar" *ngIf="display" #insideElement>
   <div class="logoBox">
     <div class="logo" routerLink="/"></div>
@@ -123,7 +124,7 @@
   </div>
 
 </div>
-
+</div>
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Deposit and Withdrawal</h4>
@@ -296,3 +297,4 @@
 </ng-template>
 
 <app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>
+<app-spinner-loading *ngIf="openNavBar" [withoutSpinner]="true"></app-spinner-loading>

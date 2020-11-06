@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-spinner-loading',
@@ -12,6 +12,9 @@ export class SpinnerLoadingComponent implements OnInit {
     'active3',
     'active4'
   ];
+
+  @Input()
+  withoutSpinner: boolean;
   constructor() {
 
 

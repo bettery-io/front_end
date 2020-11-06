@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PostService } from '../../../../../services/post.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {PostService} from '../../../../../services/post.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
 import web3Obj from '../../../../../helpers/torus';
 import * as UserActions from '../../../../../actions/user.actions';
-import { Store } from '@ngrx/store';
-import { ClipboardService } from 'ngx-clipboard';
-import { AppState } from '../../../../../app.state';
+import {Store} from '@ngrx/store';
+import {ClipboardService} from 'ngx-clipboard';
+import {AppState} from '../../../../../app.state';
 import _ from 'lodash';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component';
 
 @Component({
   selector: 'app-private-main',
@@ -33,6 +33,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   finised: boolean = false;
   spinnerLoading: boolean = false;
   calculateDateTimer;
+  themeChat = 'dark';
 
   routeSub: Subscription;
   userSub: Subscription;
@@ -132,7 +133,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
         return true;
       } catch (error) {
         this.spinnerLoading = false;
-        await web3Obj.torus.cleanUp()
+        await web3Obj.torus.cleanUp();
         console.error(error);
         return false;
       }
@@ -297,7 +298,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   modalAboutExpert() {
-    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
     modalRef.componentInstance.name = 'Validate the event result, confirming what actually happened. For Social Media events, several Experts share a portion of the prize pool. For Friends events, the Expert has 24 hours to validate and gets a custom reward from the Host.';
     modalRef.componentInstance.boldName = 'Expert - ';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
@@ -322,7 +323,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   openSoonModal(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true });
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', centered: true});
   }
 
   ngOnDestroy() {

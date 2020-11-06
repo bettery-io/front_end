@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import {SpinnerLoadingComponent} from "./spinner-loading/spinner-loading.component";
 import { InfoModalComponent } from './info-modal/info-modal.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { ChatComponent } from './chat/chat.component';
+import {FormsModule} from '@angular/forms';
+import { TimeAgoPipe } from './chat/pipe/time-ago.pipe';
 
 
 
@@ -10,13 +13,17 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
   declarations: [
     SpinnerLoadingComponent,
     InfoModalComponent,
-    WelcomePageComponent
+    WelcomePageComponent,
+    ChatComponent,
+    TimeAgoPipe,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
-    SpinnerLoadingComponent
+    SpinnerLoadingComponent,
+    ChatComponent
   ]
 })
 

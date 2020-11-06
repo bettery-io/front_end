@@ -17,6 +17,7 @@ const web3Obj = {
                 chainId: 5
             }
         })
+        web3Obj.torus.hideTorusButton()
         await web3Obj.torus.login({})
         web3Obj.setWeb3(web3Obj.torus.provider)
     }

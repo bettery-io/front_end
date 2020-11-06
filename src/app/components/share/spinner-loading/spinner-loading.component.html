@@ -1,5 +1,5 @@
-<div class="block_spinner_box">
-  <div class="main1">
+<div class="block_spinner_box" [ngClass]="withoutSpinner && 'top70'">
+  <div *ngIf="!withoutSpinner" class="main1">
     <div class="div all" [ngClass]="activated[0]"></div>
     <div class="div2 all" [ngClass]="activated[0]"></div>
     <div class="div3 all" [ngClass]="activated[0]"></div>

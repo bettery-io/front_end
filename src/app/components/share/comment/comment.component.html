@@ -1,11 +1,17 @@
 <div [className]="checkTheme() ? 'bgWhite' : 'bgDark'">
 
-  <div class="sendCommentBox">
-    <input [(ngModel)]="newComment" class="addCommentBox" type="text"
+  <div class="sendCommentBox" *ngIf="!withoutSend">
+    <input (keyup)="typingEffect()" [(ngModel)]="newComment" class="addCommentBox" type="text"
            name="newComment"
            placeholder="Add a comment...">
     <div (click)="sendComment()" class="sendImg"></div>
   </div>
+
+    <div class="sortHeadDark">
+      <div class="sortHead-item-dark" [ngClass]="sortComment === 'newest' && 'activeDark'" (click)="letsSortComment('newest', null)">Newest</div>
+      <div class="sortHead-item-dark" [ngClass]="sortComment === 'hottest' && 'activeDark'" (click)="letsSortComment('hottest', null)">Hottest</div>
+      <div class="sortHead-item-dark" [ngClass]="sortComment === 'friends' && 'activeDark'" (click)="letsSortComment('friends', soon)">Friends</div>
+    </div>
 
   <div class="comment-warp">
     <div class="commentBox" *ngFor="let comment of allComments">
@@ -52,21 +58,6 @@
 
     </div>
   </div>
-
-  <!--  <div class="commentBox">-->
-  <!--    <div class="commentHeader">-->
-  <!--      <div class="senderBox">-->
-  <!--        <div class="commentImg face2"></div>-->
-  <!--        <p class="commentName">Terry Crews</p>-->
-  <!--      </div>-->
-  <!--      <div class="timeBox">1 day ago</div>-->
-  <!--    </div>-->
-  <!--    <div>-->
-  <!--      <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor-->
-  <!--        incididunt-->
-  <!--        ut labore et dolore magna aliqua.</p>-->
-  <!--    </div>-->
-  <!--  </div>-->
 </div>
 
 <!--<div [className]="'bgWhite'">-->
@@ -172,3 +163,13 @@
 <!--    <div (click)="sendComment()" class="sendImg"></div>-->
 <!--  </div>-->
 <!--</div>-->
+
+<ng-template #soon let-modal>
+  <button type="button" class=" soonClose close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-body pb-5">
+    <p class="title-soon">Coming Soon</p>
+<!--    <p class="text-soon">In the next updates, you can check more details about the event host here.</p>-->
+  </div>
+</ng-template>

@@ -40,6 +40,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   storeSub: Subscription
   postSub: Subscription
   spinnerLoading: boolean = false;
+  themeChat = 'dark';
 
   saveUserLocStorage = [];
 

@@ -131,15 +131,25 @@ export class MakeRulesTabComponent implements OnInit {
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }
 
-  chosePrivateEndTime(value) {
-    let name = value.name.replace(/minutes|hours|hour/gi, '');
+  chosePrivateEndTime() {
+    let name = this.privateForm.controls.privateEndTime.value.replace(/minutes|hours|hour/gi, '');
     this.endPrivateTime = name;
-    this.privateForm.controls.privateEndTime.setValue(value);
+
+    let findEl = _.find(this.times, (x) => {
+      return x.name.replace(/minutes|hours|hour/gi, '') == name;
+    });
+
+    this.privateForm.controls.privateEndTime.setValue(findEl);
+    console.log(this.privateForm);
   }
 
-  chosePublicEndTime(value) {
-    this.endPublicTime = value.name;
-    this.publicForm.controls.publicEndTime.setValue(value);
+  chosePublicEndTime() {
+    this.endPublicTime = this.publicForm.controls.publicEndTime.value;
+    console.log(this.endPublicTime);
+    let findEl = _.find(this.times, (x) => {
+      return x.name == this.endPublicTime;
+    });
+    this.publicForm.controls.publicEndTime.setValue(findEl);
     this.exactTimeBool = false;
   }
 

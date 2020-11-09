@@ -195,7 +195,19 @@ ul
     color: #FFFFFF
 
 .dropBox
-    width: 100%
+  width: 100%
+  position: relative
+
+.dropBox:after
+  content: 'Hours'
+  font-style: normal
+  font-weight: normal
+  font-size: 16px
+  line-height: 22px
+  color: #FFFFFF
+  position: absolute
+  top: 14px
+  right: 12px
 
 #startTime
     width: 100%
@@ -204,6 +216,16 @@ ul
     border-radius: 8px
     height: 48px
     color: #FFFFFF
+.startTime
+  width: 100%
+  text-align: left
+  background: rgba(50, 58, 64, 0.96)
+  border-radius: 8px
+  height: 48px
+  color: #FFFFFF
+  -webkit-appearance: none
+  -moz-appearance: none
+  appearance: none
 
 #startPublicTime.dropdown-toggle.btn:after
     content: "" !important
@@ -223,6 +245,10 @@ ul
     border-radius: 8px
     height: 48px
     color: #FFFFFF
+    padding-left: 30px
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
 
 .dropdown-menu.show
     width: 100%
@@ -456,6 +482,7 @@ ul
   position: absolute
   top: 21px
   left: 15px
+  width: max-content
 @media (max-height: 850px)
   .buttonBox
     position: absolute
@@ -468,3 +495,16 @@ ul
     width: 100%
   .correctMB
     margin-bottom: 36px
+
+#labelC
+  color: #fff !important
+  position: absolute
+  top: 12px
+  left: 15px
+  z-index: 1
+#labelC2
+  color: #fff !important
+  position: absolute
+  top: 12px
+  left: 40px
+  z-index: 1

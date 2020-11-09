@@ -104,43 +104,7 @@
     </div>
   </div>
   <div class="hr-grey"></div>
-  <div>
 
-<!--    <div class="sendCommentBox">-->
-<!--      <div class="addCommentBox">-->
-<!--        <p class="addCommentText">Add a comment...</p>-->
-<!--      </div>-->
-<!--      <div class="sendImg"></div>-->
-<!--    </div>-->
+  <app-comment [withoutSend]="true" [theme] = "'dark'"  [userData] = userData [data] = eventData></app-comment>
 
-    <div class="commentBox">
-      <div class="commentHeader">
-        <div class="senderBox">
-          <div class="commentImg face1"></div>
-          <p class="commentName">Jenna Logan</p>
-        </div>
-        <div class="timeBox">1 day ago</div>
-      </div>
-      <div>
-        <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt
-          ut labore et dolore magna aliqua.</p>
-      </div>
-    </div>
-
-    <div class="commentBox">
-      <div class="commentHeader">
-        <div class="senderBox">
-          <div class="commentImg face2"></div>
-          <p class="commentName">Terry Crews</p>
-        </div>
-        <div class="timeBox">1 day ago</div>
-      </div>
-      <div>
-        <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt
-          ut labore et dolore magna aliqua.</p>
-      </div>
-    </div>
-  </div>
 </div>

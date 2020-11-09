@@ -25,19 +25,15 @@
           <div class="labelTime">
             <p style="margin-bottom: 8px">betting time</p>
           </div>
-          <div ngbDropdown class="dropBox arowMarker">
-            <button [ngClass]="{ 'is_invalid': submitted && pub.publicEndTime.errors }" type="button"
-                    class="btn" id="startPublicTime" style="padding-left: 35px;"
-                    ngbDropdownToggle>{{endPublicTime}}</button>
+          <div class="dropBox arowMarker">
+            <label for="startPublicTime" id="labelC2">{{endPublicTime}}</label>
+            <select (change)="chosePublicEndTime()" [ngClass]="{ 'is_invalid': submitted && pub.publicEndTime.errors }" formControlName="publicEndTime"  class="btn" name="startPublicTime" id="startPublicTime">
+              <option *ngFor="let time of times" value="{{time.name}}">{{time.name}}</option>
+            </select>
             <div class="calendarPosition">
               <div class="calendarImg" (click)="openCalendar(content)"></div>
             </div>
-            <div ngbDropdownMenu aria-labelledby="startPublicTime">
-              <div *ngFor="let time of times">
-                <button (click)="chosePublicEndTime(time)" type="button"
-                        ngbDropdownItem>{{time.name}}</button>
-              </div>
-            </div>
+
           </div>
           <div *ngIf="submitted && pub.publicEndTime.errors">
             <small *ngIf="pub.publicEndTime.errors.required" class="form-text quize_validation_error">Time
@@ -138,14 +134,12 @@
       <div class="cupInfo" style="padding-top: 20px;">
         <p class="name cupName">BETTING TIME</p>
       </div>
-      <div ngbDropdown class="dropBox correctMB">
-        <button [ngClass]="{ 'is_invalid': submitted && priv.privateEndTime.errors }" type="button" class="btn"
-                id="startTime" ngbDropdownToggle>{{endPrivateTime}}</button>
-        <div ngbDropdownMenu aria-labelledby="startTime">
-          <div *ngFor="let time of times">
-            <button (click)="chosePrivateEndTime(time)" type="button" ngbDropdownItem>{{time.name}}</button>
-          </div>
-        </div>
+
+      <div class="dropBox correctMB label">
+        <label for="startTime" id="labelC">{{endPrivateTime}}</label>
+        <select (change)="chosePrivateEndTime()" formControlName="privateEndTime" class=" pl-2 dropBox correctMB startTime" [ngClass]="{ 'is_invalid': submitted && priv.privateEndTime.errors }" name="startTime" id="startTime">
+          <option *ngFor="let time of times"   value="{{time.name}}">{{time.name}}</option>
+        </select>
       </div>
 
       <div class="d-flex justify-content-center mb-3" (click)="openHowEventsWorkFriend(content2)">

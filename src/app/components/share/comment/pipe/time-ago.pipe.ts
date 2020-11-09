@@ -76,7 +76,7 @@ export class TimeAgoPipe implements PipeTransform {
       text,
       timeToUpdate
     };
-  };
+  }
 
   public transform = (value: string | Date): Observable<string> => {
     let d: Date;
@@ -113,5 +113,5 @@ export class TimeAgoPipe implements PipeTransform {
       };
       return teardownFunction;
     });
-  };
+  }
 }

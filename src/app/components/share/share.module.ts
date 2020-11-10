@@ -6,6 +6,7 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { CommentComponent } from './comment/comment.component';
 import {FormsModule} from '@angular/forms';
 import { TimeAgoPipe } from './comment/pipe/time-ago.pipe';
+import {SimpleSmoothScrollModule} from 'ng2-simple-smooth-scroll';
 
 
 
@@ -20,6 +21,7 @@ import { TimeAgoPipe } from './comment/pipe/time-ago.pipe';
     imports: [
         CommonModule,
         FormsModule,
+        SimpleSmoothScrollModule
     ],
   exports: [
     SpinnerLoadingComponent,

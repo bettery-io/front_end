@@ -34,6 +34,16 @@ export class CommentSocketService {
     });
   }
 
+  newReply(eventId, userId, commentId, comment) {
+    const reply = {
+      eventId: Number(eventId),
+      userId: Number(userId),
+      commentId: Number(commentId),
+      comment: String(comment)
+    };
+    this.socket.emit('reply', reply);
+  }
+
   gettingComments(eventID: number) {
     this.socket.emit('get comments', Number(eventID));
   }

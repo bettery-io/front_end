@@ -3,17 +3,16 @@
   border-radius: 8px
   width: 100%
   border: none
-
+  height: 45px
   font-style: normal
   font-weight: 600
-  font-size: 14px
+  font-size: 16px
   line-height: 19px
   text-align: left
   color: #FFFFFF
-  padding-top: 14px
-  padding-bottom: 14px
-  padding-left: 19px
+  padding: 13px 40px 13px 10px
   margin-bottom: 0
+  resize: none
 
 .addCommentBoxWhite
   background-color: #F0F0F0
@@ -27,8 +26,8 @@
   line-height: 19px
   text-align: left
   color: #FFFFFF
-  padding-top: 14px
-  padding-bottom: 14px
+  //padding-top: 14px
+  //padding-bottom: 14px
   padding-left: 19px
   margin-bottom: 0
 
@@ -42,7 +41,9 @@
 .sendCommentBox
   display: flex
   margin-top: 16px
-  margin-bottom: 35px
+  margin-bottom: 22px
+  position: relative
+  width: 100%
 
 .sendImg
   background: url(../../../../assets/share/send.png) left center no-repeat
@@ -52,6 +53,8 @@
   margin-left: 20px
   margin-right: 5px
   margin-top: 10px
+  position: absolute
+  right: 5px
 
 .senderBox
   display: flex
@@ -291,3 +294,68 @@
   align-items: center
   text-align: center
   color: #0B1511
+
+.angryBorder
+  background-color: #FF8B8B
+  height: 2px
+  width: 71%
+  border-radius: 3px
+  margin-top: 5px
+
+.starBorder
+  background-color: #54DD96
+  height: 2px
+  width: 71%
+  border-radius: 3px
+  margin-top: 5px
+
+.winkBorder
+  background-color: #34DDDD
+  height: 2px
+  width: 71%
+  border-radius: 3px
+  margin-top: 5px
+
+
+.smileBorder
+  background-color: #FFD300
+  height: 2px
+  width: 71%
+  border-radius: 3px
+  margin-top: 5px
+
+//====typing spinner====
+
+.someoneTyping
+  display: flex
+
+.typeCircle-1
+  border-radius: 100%
+  width: 11px
+  height: 11px
+  margin-right: 5px
+
+.active1
+  background-color: #54A3DD
+  transition: 0.3s
+
+.active2
+  background-color: #8BCEFF
+  transition: 0.3s
+
+.active3
+  background-color: #BFE4FF
+  transition: 0.3s
+
+//====================================
+.arrowImg
+  background: url("../../../../assets/share/commentArrowUp.png") left center no-repeat
+  background-size: contain
+  width: 16px
+  height: 16px
+  margin-right: 8px
+
+.wrapCommentDown
+  display: flex
+  justify-content: space-between
+  margin-bottom: 18px

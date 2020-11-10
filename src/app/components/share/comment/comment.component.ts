@@ -2,7 +2,6 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CommentSocketService} from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
 import {NgxTypedJsComponent} from 'ngx-typed-js';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-comment',
@@ -19,13 +18,27 @@ export class CommentComponent implements OnInit {
   allComments: any;
   someoneTyping = 'Someone is typing';
   flag: boolean;
+  activated = [
+    'active1',
+    'active2',
+    'active3'
+  ];
+  timeoutTyping: any;
+  isReply = {
+    isReply: false,
+    commentId: null,
+    user: null
+  };
+
+  comingSoon: boolean;
+
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
   constructor(
-    private socketService: CommentSocketService,
-    private modalService: NgbModal
+    private socketService: CommentSocketService
   ) {
+
   }
 
   ngOnInit(): void {
@@ -39,20 +52,14 @@ export class CommentComponent implements OnInit {
       this.socketService.gettingComments(this.data.id);
     }
 
-    // this.socketService.getTyping().subscribe(el => {
-    //   if (el) {
-    //     this.flag = true;
-    //   }
-    //   setTimeout(() => {
-    //     this.flag = false;
-    //   }, 3000);
-    // });
-
-    setTimeout(() => {
-      console.log(this.data);
-      console.log(this.userData);
-    }, 3000);
-
+    this.socketService.getTyping().subscribe(el => {
+      if (el) {
+        this.flag = true;
+      }
+      setTimeout(() => {
+        this.flag = false;
+      }, 5000);
+    });
 
     this.socketService.newComment().subscribe(comments => {
       if (this.sortComment === 'newest') {
@@ -85,10 +92,28 @@ export class CommentComponent implements OnInit {
   }
 
   sendComment() {
-    if (this.data.id && this.userData?._id && this.newComment && this.newComment.length > 1) {
-      this.socketService.send(this.data.id, this.userData._id, this.newComment);
+    if ( this.isReply.user && !this.newComment.includes('@' + this.isReply.user[1])) {
+      this.isReply.isReply = false;
     }
-    this.newComment = '';
+
+    if (!this.isReply.isReply) {
+      if (this.data.id && this.userData?._id && this.newComment && this.newComment.length >= 1) {
+        this.socketService.send(this.data.id, this.userData._id, this.newComment);
+        console.log('comment send');
+      }
+      this.newComment = '';
+    }
+
+    if (this.isReply.isReply &&
+      this.data.id &&
+      this.userData?._id &&
+      this.newComment &&
+      this.newComment.length >= 1 && this.newComment.includes('@' + this.isReply.user[1])) {
+      console.log('reply send');
+      this.socketService.newReply(this.data.id, this.userData._id, this.isReply.commentId, this.newComment);
+    }
+
+
   }
 
   sendIcon(text: string, commentId: number) {
@@ -97,7 +122,8 @@ export class CommentComponent implements OnInit {
     }
   }
 
-  letsSortComment(sort, soon): void {
+  letsSortComment(sort): void {
+    this.comingSoon = false;
     this.sortComment = sort;
     if (sort === 'hottest') {
       this.allComments = _.sortBy(this.allComments, (item) => {
@@ -105,24 +131,86 @@ export class CommentComponent implements OnInit {
       }).reverse();
     }
     if (sort === 'newest') {
+      this.comingSoon = false;
       this.allComments = _.sortBy(this.allComments, (item) => {
         return item.date;
       }).reverse();
     }
 
     if (sort === 'friends') {
-      this.modalService.open(soon, {ariaLabelledBy: 'modal-basic-title', centered: true});
+      this.comingSoon = true;
     }
   }
 
   typingEffect() {
-  //   let timeout;
-  //   clearTimeout(timeout);
-  //   timeout = setTimeout(() => {
-  //     if (this.data.id) {
-  //       this.socketService.doTyping(this.data.id, 'Someone is typing');
-  //       console.log('id', this.data.id);
-  //     }
-  //   }, 500);
+    if (this.timeoutTyping) {
+      clearTimeout(this.timeoutTyping);
+    }
+    this.timeoutTyping = setTimeout(() => {
+      if (this.data.id) {
+        this.socketService.doTyping(this.data.id, 'Someone is typing');
+      }
+    }, 500);
+
+    this.resizeSendComment();
+
+    this.forActiveAll();
+    setInterval(() => {
+      this.forActiveAll();
+    }, 700);
+  }
+
+  findCCurrentUserReview(arr) {
+    if (this.userData) {
+      const findUser = _.findIndex(arr, (el) => {
+        return el.user.id === this.userData._id;
+      });
+      return findUser !== -1;
+    }
+  }
+
+  resizeSendComment() {
+    const el = document.getElementById('textarea');
+    setTimeout(() => {
+      if (this.newComment.length === 0) {
+        el.style.cssText = 'height: 45px;';
+      } else {
+        el.style.cssText = 'height: 45px;';
+        el.style.cssText = 'height:' + el.scrollHeight + 'px';
+      }
+    }, 1);
+  }
+
+
+  forActive(num, el1, el2, el3): void {
+    setTimeout(() => {
+      this.activated[num] = el1;
+    }, 100);
+    setTimeout(() => {
+      this.activated[num] = el2;
+    }, 300);
+    setTimeout(() => {
+      this.activated[num] = el3;
+    }, 500);
+  }
+
+  forActiveAll(): void {
+    this.forActive(0, 'active1', 'active2', 'active3');
+    this.forActive(1, 'active2', 'active3', 'active1');
+    this.forActive(2, 'active3', 'active1', 'active2');
+  }
+
+  replySend(commentID, user) {   // to do !!!
+    const name = user.nickName.match(/([a-zа-яё]+)/i);
+
+    this.isReply.commentId = commentID;
+    this.isReply.user = name;
+    this.newComment = '@' + name[1];
+
+    if (this.newComment.includes('@' + this.isReply.user[1])) {
+      this.isReply.isReply = true;
+    } else {
+      this.isReply.isReply = false;
+    }
   }
 }

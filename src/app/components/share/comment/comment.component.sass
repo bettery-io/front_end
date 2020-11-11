@@ -81,7 +81,7 @@
   align-items: center
   color: #FFFFFF
   margin-left: 8px
-  margin-bottom: 7px
+  margin-bottom: 0px
 
 .commentNameWhite
   font-style: normal
@@ -110,11 +110,14 @@
   font-weight: normal
   font-size: 14px
   line-height: 19px
-  display: flex
   align-items: center
   color: #C4C4C4
-  margin-left: 37px
+  margin-left: 2px
+  margin-top: 6px
   text-align: left !important
+  overflow-wrap: anywhere
+  & a
+    color: #54A3DD
 
 .commentWhite
   font-style: normal
@@ -173,7 +176,7 @@
   margin: 0 9px 0 7px
 
 .icon-wrap
-  margin-left: 5px
+  //margin-left: 5px
   margin-bottom: 14px
   display: flex
 
@@ -187,7 +190,7 @@
   color: #54A3DD
   justify-content: center
 
-.comment-warp .commentBox:not(:last-child)
+.comment-warp .commentBox:nth-last-child(n+2)
   border-bottom: 0.5px solid #585858
   margin-bottom: 24px
 
@@ -246,8 +249,9 @@
   line-height: 16px
   display: flex
   align-items: center
-  color: #54A3DD
   justify-content: flex-end
+  & a
+    color: #54A3DD
 
 .darkSize
   width: 16px
@@ -359,3 +363,13 @@
   display: flex
   justify-content: space-between
   margin-bottom: 18px
+
+.showMore
+  font-weight: normal
+  font-size: 12px
+  line-height: 16px
+  display: flex
+  align-items: center
+  color: #54A3DD
+  & p
+    margin: auto

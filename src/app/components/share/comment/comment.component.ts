@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CommentSocketService} from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
-import {NgxTypedJsComponent} from 'ngx-typed-js';
+import {log} from 'util';
 
 @Component({
   selector: 'app-comment',
@@ -31,9 +31,6 @@ export class CommentComponent implements OnInit {
   };
 
   comingSoon: boolean;
-
-
-  @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
   constructor(
     private socketService: CommentSocketService
@@ -92,7 +89,7 @@ export class CommentComponent implements OnInit {
   }
 
   sendComment() {
-    if ( this.isReply.user && !this.newComment.includes('@' + this.isReply.user[1])) {
+    if (this.isReply.user && !this.newComment.includes('@' + this.isReply.user[1])) {
       this.isReply.isReply = false;
     }
 
@@ -110,14 +107,19 @@ export class CommentComponent implements OnInit {
       this.newComment &&
       this.newComment.length >= 1 && this.newComment.includes('@' + this.isReply.user[1])) {
       console.log('reply send');
-      this.socketService.newReply(this.data.id, this.userData._id, this.isReply.commentId, this.newComment);
-    }
 
+      const regex = new RegExp('@' + this.isReply.user[1]);
+
+      this.socketService.newReply(this.data.id, this.userData._id, this.isReply.commentId, this.newComment.replace(regex, ''));
+      this.newComment = '';
+    }
+    const el = document.getElementById('textarea');
+    el.style.cssText = 'height: 45px;';
 
   }
 
   sendIcon(text: string, commentId: number) {
-    if (text && commentId) {
+    if (this.userData && text && commentId) {
       this.socketService.sendSelectedIcon(text, this.data.id, this.userData._id, commentId);
     }
   }
@@ -154,9 +156,8 @@ export class CommentComponent implements OnInit {
 
     this.resizeSendComment();
 
-    this.forActiveAll();
     setInterval(() => {
-      this.forActiveAll();
+      this.forAnimationType();
     }, 700);
   }
 
@@ -182,7 +183,7 @@ export class CommentComponent implements OnInit {
   }
 
 
-  forActive(num, el1, el2, el3): void {
+  animationType(num, el1, el2, el3): void {
     setTimeout(() => {
       this.activated[num] = el1;
     }, 100);
@@ -194,10 +195,10 @@ export class CommentComponent implements OnInit {
     }, 500);
   }
 
-  forActiveAll(): void {
-    this.forActive(0, 'active1', 'active2', 'active3');
-    this.forActive(1, 'active2', 'active3', 'active1');
-    this.forActive(2, 'active3', 'active1', 'active2');
+  forAnimationType(): void {
+    this.animationType(0, 'active1', 'active2', 'active3');
+    this.animationType(1, 'active2', 'active3', 'active1');
+    this.animationType(2, 'active3', 'active1', 'active2');
   }
 
   replySend(commentID, user) {   // to do !!!
@@ -207,10 +208,6 @@ export class CommentComponent implements OnInit {
     this.isReply.user = name;
     this.newComment = '@' + name[1];
 
-    if (this.newComment.includes('@' + this.isReply.user[1])) {
-      this.isReply.isReply = true;
-    } else {
-      this.isReply.isReply = false;
-    }
+    this.isReply.isReply = this.newComment.includes('@' + this.isReply.user[1]);
   }
 }

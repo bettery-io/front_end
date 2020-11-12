@@ -13,7 +13,8 @@
   </div>
 
   <div *ngIf="!comingSoon" class="comment-warp">
-    <div id="{{comment?.id}}" class="commentBox" *ngFor="let comment of allComments">
+    <div id="{{comment?.id}}" class="commentBox" [ngClass]="allComments?.length < showLength && 'commentBoxChange'"
+         *ngFor="let comment of showOnScreen">
       <div class="commentHeader">
         <div class="senderBox">
           <div><img class="commentImg" src="{{comment?.user.avatar}}" alt="ava"></div>
@@ -23,7 +24,9 @@
       </div>
       <div>
         <p class="comment">
-          <a class="mr-1" SimpleSmoothScroll href="#{{comment.replies[0].id}}" *ngIf="comment?.replies.length > 0">
+          <a (mousedown)="additionToAnchorLink(comment.replies[0].id)" class="mr-1"
+             (pageScrollFinish) = "finishScrollAnimation($event, comment.replies[0].id )"
+             pageScroll href="#{{comment.replies[0].id}}" *ngIf="comment?.replies.length > 0">
             {{comment?.replies[0].user.nickName}}</a>
         {{comment?.comment}}
         </p>
@@ -68,13 +71,13 @@
         </div>
 
         <div  class="replyDark col-5">
-          <a href="#sendBox" SimpleSmoothScroll (click)="replySend(comment?.id, comment?.user)">Reply</a>
+          <a href="#sendBox" pageScroll (click)="replySend(comment?.id, comment?.user)">Reply</a>
         </div>
 
       </div>
 
     </div>
-    <div class="showMore"><p>View 10 more comments</p></div>
+    <div *ngIf="allComments?.length > showLength" (click)="showMoreComments()" class="showMore"><p>View 10 more comments</p></div>
   </div>
 
 
@@ -92,7 +95,7 @@
     <div class="wrapCommentDown">
       <div class="arrowUp d-flex">
         <div class="arrowImg"></div>
-        <div><a style="color: #fff" SimpleSmoothScroll href="#up">Go to top</a></div>
+        <div><a style="color: #fff" pageScroll href="#up">Go to top</a></div>
       </div>
       <div *ngIf="this.flag" class="someoneTyping">
         <div class="typeCircle-1" [ngClass]="activated[0]"></div>
@@ -102,107 +105,3 @@
     </div>
   </div>
 </div>
-
-<!--<div [className]="'bgWhite'">-->
-<!--  <div class="sortHead">-->
-<!--    <div class="sortHead-item" [ngClass]="sortComment === 'newest' && 'active'" (click)="letsSortComment('newest')">Newest</div>-->
-<!--    <div class="sortHead-item" [ngClass]="sortComment === 'hottest' && 'active'" (click)="letsSortComment('hottest')">Hottest</div>-->
-<!--    <div class="sortHead-item" [ngClass]="sortComment === 'friends' && 'active'" (click)="letsSortComment('friends')">Friends</div>-->
-<!--  </div>-->
-<!--  <div class="comment-warp">-->
-<!--    <div class="commentBox mt-4">-->
-<!--      <div class="commentHeader">-->
-<!--        <div class="senderBox">-->
-<!--          <div class="commentImg face1"></div>-->
-<!--          <p class="commentNameWhite">Jenna Logan</p>-->
-<!--        </div>-->
-<!--        <div class="timeBox timeBoxWhite">1 day ago</div>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <p class="commentWhite">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor-->
-<!--          incididunt-->
-<!--          ut labore et dolore magna aliqua.</p>-->
-<!--      </div>-->
-
-<!--      <div class="icon-wrap row">-->
-
-<!--        <div class="d-flex col-2 pr-0 pl-0">-->
-<!--          <div class="angryIcon"></div>-->
-<!--          <span class="countIcon">11</span>-->
-<!--        </div>-->
-
-<!--        <div class="d-flex col-2 pr-0 pl-0">-->
-<!--          <div class="starIcon"></div>-->
-<!--          <span class="countIcon">11</span>-->
-<!--        </div>-->
-
-<!--        <div class="d-flex col-2 pr-0 pl-0">-->
-<!--          <div class="smileIcon"></div>-->
-<!--          <span class="countIcon">11</span>-->
-<!--        </div>-->
-
-<!--        <div class="d-flex col-2 pr-0 pl-0">-->
-<!--          <div class="winkyIcon"></div>-->
-<!--          <span class="countIcon">11</span>-->
-<!--        </div>-->
-
-<!--        <div class="reply col-4 pr-0 pl-0">-->
-<!--          <p>Reply</p>-->
-<!--        </div>-->
-
-<!--      </div>-->
-
-<!--    </div>-->
-
-<!--    <div class="commentBox mt-4">-->
-<!--      <div class="commentHeader">-->
-<!--        <div class="senderBox">-->
-<!--          <div class="commentImg face2"></div>-->
-<!--          <p class="commentNameWhite">Terry Crews</p>-->
-<!--        </div>-->
-<!--        <div class="timeBox timeBoxWhite">1 day ago</div>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <p class="commentWhite">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor-->
-<!--          incididunt-->
-<!--          ut labore et dolore magna aliqua.</p>-->
-<!--      </div>-->
-
-<!--      <div class="icon-wrap row">-->
-
-<!--        <div class="d-flex col-2 pr-0 pl-0">-->
-<!--          <div class="angryIcon"></div>-->
-<!--          <span class="countIcon">11</span>-->
-<!--        </div>-->
-
-<!--        <div class="d-flex col-2 pr-0 pl-0">-->
-<!--          <div class="starIcon"></div>-->
-<!--          <span class="countIcon">11</span>-->
-<!--        </div>-->
-
-<!--        <div class="d-flex col-2 pr-0 pl-0">-->
-<!--          <div class="smileIcon"></div>-->
-<!--          <span class="countIcon">11</span>-->
-<!--        </div>-->
-
-<!--        <div class="d-flex col-2 pr-0 pl-0">-->
-<!--          <div class="winkyIcon"></div>-->
-<!--          <span class="countIcon">11</span>-->
-<!--        </div>-->
-
-<!--        <div class="reply col-4 pr-0 pl-0">-->
-<!--          <p>Reply</p>-->
-<!--        </div>-->
-
-<!--      </div>-->
-<!--    </div>-->
-
-<!--  </div>-->
-
-<!--  <div class="sendCommentBox hr">-->
-<!--    <input [(ngModel)]="newComment" class="addCommentBox addCommentBoxWhite" type="text"-->
-<!--           name="newComment"-->
-<!--           placeholder="Add a comment...">-->
-<!--    <div (click)="sendComment()" class="sendImg"></div>-->
-<!--  </div>-->
-<!--</div>-->

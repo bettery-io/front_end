@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CommentSocketService} from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
-import {log} from 'util';
+
 
 @Component({
   selector: 'app-comment',
@@ -23,19 +23,20 @@ export class CommentComponent implements OnInit {
     'active2',
     'active3'
   ];
-  timeoutTyping: any;
+  timeOutTyping: any;
   isReply = {
     isReply: false,
     commentId: null,
     user: null
   };
+  showLength = 10;
+  showOnScreen: any;
 
   comingSoon: boolean;
 
   constructor(
     private socketService: CommentSocketService
   ) {
-
   }
 
   ngOnInit(): void {
@@ -43,8 +44,6 @@ export class CommentComponent implements OnInit {
   }
 
   initializeSocket(): void {
-    this.socketService.initSocket();
-
     if (this.data.id) {
       this.socketService.gettingComments(this.data.id);
     }
@@ -63,6 +62,7 @@ export class CommentComponent implements OnInit {
         this.allComments = _.sortBy(comments, (item) => {
           return item.date;
         }).reverse();
+        this.showOnScreen = this.allComments.slice(0, this.showLength);
         console.log(this.allComments);
       }
 
@@ -70,6 +70,7 @@ export class CommentComponent implements OnInit {
         this.allComments = _.sortBy(comments, (item) => {
           return item.activites;
         }).reverse();
+        this.showOnScreen = this.allComments.slice(0, this.showLength);
         console.log(this.allComments);
       }
 
@@ -94,28 +95,27 @@ export class CommentComponent implements OnInit {
     }
 
     if (!this.isReply.isReply) {
-      if (this.data.id && this.userData?._id && this.newComment && this.newComment.length >= 1) {
+      if (this.data.id && this.userData?._id && this.newComment && this.newComment.trim().length >= 1) {
         this.socketService.send(this.data.id, this.userData._id, this.newComment);
         console.log('comment send');
       }
       this.newComment = '';
     }
 
-    if (this.isReply.isReply &&
-      this.data.id &&
-      this.userData?._id &&
-      this.newComment &&
-      this.newComment.length >= 1 && this.newComment.includes('@' + this.isReply.user[1])) {
-      console.log('reply send');
+    if (this.isReply.isReply && this.data.id && this.userData?._id && this.newComment &&
+      this.newComment.includes('@' + this.isReply.user[1])) {
 
       const regex = new RegExp('@' + this.isReply.user[1]);
+      const comments = this.newComment.replace(regex, '');
 
-      this.socketService.newReply(this.data.id, this.userData._id, this.isReply.commentId, this.newComment.replace(regex, ''));
-      this.newComment = '';
+      if (comments.trim().length >= 1) {
+        this.socketService.newReply(this.data.id, this.userData._id, this.isReply.commentId, comments);
+        this.newComment = '';
+        console.log('reply send');
+      }
     }
     const el = document.getElementById('textarea');
     el.style.cssText = 'height: 45px;';
-
   }
 
   sendIcon(text: string, commentId: number) {
@@ -131,12 +131,14 @@ export class CommentComponent implements OnInit {
       this.allComments = _.sortBy(this.allComments, (item) => {
         return item.activites;
       }).reverse();
+      this.showOnScreen = this.allComments.slice(0, this.showLength);
     }
     if (sort === 'newest') {
       this.comingSoon = false;
       this.allComments = _.sortBy(this.allComments, (item) => {
         return item.date;
       }).reverse();
+      this.showOnScreen = this.allComments.slice(0, this.showLength);
     }
 
     if (sort === 'friends') {
@@ -145,10 +147,10 @@ export class CommentComponent implements OnInit {
   }
 
   typingEffect() {
-    if (this.timeoutTyping) {
-      clearTimeout(this.timeoutTyping);
+    if (this.timeOutTyping) {
+      clearTimeout(this.timeOutTyping);
     }
-    this.timeoutTyping = setTimeout(() => {
+    this.timeOutTyping = setTimeout(() => {
       if (this.data.id) {
         this.socketService.doTyping(this.data.id, 'Someone is typing');
       }
@@ -172,16 +174,11 @@ export class CommentComponent implements OnInit {
 
   resizeSendComment() {
     const el = document.getElementById('textarea');
-    setTimeout(() => {
-      if (this.newComment.length === 0) {
-        el.style.cssText = 'height: 45px;';
-      } else {
-        el.style.cssText = 'height: 45px;';
-        el.style.cssText = 'height:' + el.scrollHeight + 'px';
-      }
-    }, 1);
-  }
 
+    if (el.scrollTop > 0) {
+      el.style.height = el.scrollHeight + 'px';
+    }
+  }
 
   animationType(num, el1, el2, el3): void {
     setTimeout(() => {
@@ -201,13 +198,57 @@ export class CommentComponent implements OnInit {
     this.animationType(2, 'active3', 'active1', 'active2');
   }
 
-  replySend(commentID, user) {   // to do !!!
+  replySend(commentID, user) {
     const name = user.nickName.match(/([a-zа-яё]+)/i);
-
     this.isReply.commentId = commentID;
     this.isReply.user = name;
-    this.newComment = '@' + name[1];
-
+    this.newComment = '@' + name[1] + ' ';
     this.isReply.isReply = this.newComment.includes('@' + this.isReply.user[1]);
   }
+
+  showMoreComments() {
+    if (this.showLength > this.allComments.length) {
+      return;
+    }
+    this.showLength = this.showLength + 10;
+    this.showOnScreen = this.allComments.slice(0, this.showLength);
+  }
+
+  additionToAnchorLink(id) {
+    const index = _.findIndex(this.allComments, (el) => {
+      return el.id === id;
+    });
+    if (this.showLength < (index + 1)) {
+      this.showLength = (index + 1);
+      this.showOnScreen = this.allComments.slice(0, this.showLength);
+    }
+  }
+
+  finishScrollAnimation($event: any, id) {
+    const el = document.getElementById(id);
+    const styleStart = 'background-color: rgba(68, 68, 68, 0.7); border-radius: 8px; transition: all 200ms;';
+    const styleFinish = 'background-color: none ; transition: all 200ms; ';
+
+    if ($event) {
+      el.style.cssText = styleStart;
+    }
+    // if (el) {
+    //   setTimeout(() => {
+    //     el.style.cssText = styleFinish; // one blink
+    //   }, 1000);
+    // }
+
+    if (el) {
+      setTimeout(() => {
+        el.style.cssText = styleFinish;
+        setTimeout(() => {
+          el.style.cssText = styleStart;   // two blink
+          setTimeout(() => {
+            el.style.cssText = styleFinish;
+          }, 150);
+        }, 150);
+      }, 300);
+    }
+  }
+
 }

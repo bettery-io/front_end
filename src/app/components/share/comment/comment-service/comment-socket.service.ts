@@ -12,9 +12,6 @@ export class CommentSocketService {
   private socket;
 
   constructor() {
-  }
-
-  initSocket(): void {
     this.socket = socketIo(this.url);
   }
 

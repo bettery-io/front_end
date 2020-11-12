@@ -115,7 +115,7 @@
   margin-left: 2px
   margin-top: 6px
   text-align: left !important
-  overflow-wrap: anywhere
+  overflow-wrap: break-word
   & a
     color: #54A3DD
 
@@ -176,8 +176,6 @@
   margin: 0 9px 0 7px
 
 .icon-wrap
-  //margin-left: 5px
-  margin-bottom: 14px
   display: flex
 
 .reply
@@ -190,9 +188,11 @@
   color: #54A3DD
   justify-content: center
 
-.comment-warp .commentBox:nth-last-child(n+2)
+.comment-warp .commentBox:nth-last-child(n+3)
   border-bottom: 0.5px solid #585858
-  margin-bottom: 24px
+
+.commentBoxChange:nth-last-child(n+2)
+  border-bottom: 0.5px solid #585858
 
 .hr
   border-bottom: 0.5px solid #EEEEEE
@@ -371,5 +371,9 @@
   display: flex
   align-items: center
   color: #54A3DD
+  padding-top: 5px
   & p
     margin: auto
+
+.commentBox
+  padding: 16px 5px 24px 5px

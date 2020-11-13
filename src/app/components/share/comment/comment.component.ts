@@ -17,7 +17,7 @@ export class CommentComponent implements OnInit {
   sortComment = 'newest';
   allComments: any;
   someoneTyping = 'Someone is typing';
-  flag: boolean;
+  typingSpynner: boolean;
   activated = [
     'active1',
     'active2',
@@ -50,10 +50,10 @@ export class CommentComponent implements OnInit {
 
     this.socketService.getTyping().subscribe(el => {
       if (el) {
-        this.flag = true;
+        this.typingSpynner = true;
       }
       setTimeout(() => {
-        this.flag = false;
+        this.typingSpynner = false;
       }, 5000);
     });
 
@@ -163,7 +163,7 @@ export class CommentComponent implements OnInit {
     }, 700);
   }
 
-  findCCurrentUserReview(arr) {
+  findUserActivites(arr) {
     if (this.userData) {
       const findUser = _.findIndex(arr, (el) => {
         return el.user.id === this.userData._id;

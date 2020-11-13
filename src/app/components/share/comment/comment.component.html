@@ -17,7 +17,7 @@
          *ngFor="let comment of showOnScreen">
       <div class="commentHeader">
         <div class="senderBox">
-          <div><img class="commentImg" src="{{comment?.user.avatar}}" alt="ava"></div>
+          <div><img class="commentImg" src="{{comment?.user.avatar}}" alt="ava" referrerpolicy="no-referrer"></div>
           <p class="commentName">{{comment?.user.nickName}}</p>
         </div>
         <div class="timeBox">{{comment?.date | timeAgo | async}}</div>
@@ -41,7 +41,7 @@
               <span class="countIcon darkSize"
                     [ngClass]="!checkTheme() && 'colorWhite'">{{comment?.angry.length}}</span>
             </div>
-            <div *ngIf="findCCurrentUserReview(comment?.angry)" class="angryBorder"></div>
+            <div *ngIf="findUserActivites(comment?.angry)" class="angryBorder"></div>
           </div>
 
           <div (click)="sendIcon('star', comment?.id)">
@@ -49,7 +49,7 @@
               <div class="starIcon darkSize"></div>
               <span class="countIcon darkSize" [ngClass]="!checkTheme() && 'colorWhite'">{{comment?.star.length}}</span>
             </div>
-            <div *ngIf="findCCurrentUserReview(comment?.star)" class="starBorder"></div>
+            <div *ngIf="findUserActivites(comment?.star)" class="starBorder"></div>
           </div>
 
           <div (click)="sendIcon('smile', comment?.id)">
@@ -58,7 +58,7 @@
               <span class="countIcon darkSize"
                     [ngClass]="!checkTheme() && 'colorWhite'">{{comment?.smile.length}}</span>
             </div>
-            <div *ngIf="findCCurrentUserReview(comment?.smile)" class="smileBorder"></div>
+            <div *ngIf="findUserActivites(comment?.smile)" class="smileBorder"></div>
           </div>
 
           <div (click)="sendIcon('wink', comment?.id)">
@@ -66,7 +66,7 @@
               <div class="winkyIcon darkSize"></div>
               <span class="countIcon darkSize" [ngClass]="!checkTheme() && 'colorWhite'">{{comment?.wink.length}}</span>
             </div>
-            <div *ngIf="findCCurrentUserReview(comment?.wink)" class="winkBorder"></div>
+            <div *ngIf="findUserActivites(comment?.wink)" class="winkBorder"></div>
           </div>
         </div>
 
@@ -97,7 +97,7 @@
         <div class="arrowImg"></div>
         <div><a style="color: #fff" pageScroll href="#up">Go to top</a></div>
       </div>
-      <div *ngIf="this.flag" class="someoneTyping">
+      <div *ngIf="typingSpynner" class="someoneTyping">
         <div class="typeCircle-1" [ngClass]="activated[0]"></div>
         <div class="typeCircle-1" [ngClass]="activated[1]"></div>
         <div class="typeCircle-1" [ngClass]="activated[2]"></div>

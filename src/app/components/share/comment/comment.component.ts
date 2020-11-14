@@ -1,6 +1,14 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CommentSocketService} from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
+import {Subscription} from 'rxjs';
+import web3Obj from '../../../helpers/torus';
+import * as UserActions from '../../../actions/user.actions';
+import {PostService} from '../../../services/post.service';
+import {Store} from '@ngrx/store';
+
+import {CommentModel} from './model/сomment.model';
+import {User} from '../../../models/User.model';
 
 
 @Component({
@@ -8,14 +16,17 @@ import * as _ from 'lodash';
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.sass']
 })
-export class CommentComponent implements OnInit {
-  @Input() theme: any;
+export class CommentComponent implements OnInit, OnDestroy {
+  @Input() theme: string;
   @Input() data: any;
-  @Input() userData: any;
+  @Input() userData: User;
   @Input() withoutSend: boolean;
+  newCommentSub: Subscription;
+  getTypingSub: Subscription;
+  postSub: Subscription;
   newComment = '';
   sortComment = 'newest';
-  allComments: any;
+  allComments: CommentModel[];
   someoneTyping = 'Someone is typing';
   typingSpynner: boolean;
   activated = [
@@ -29,13 +40,16 @@ export class CommentComponent implements OnInit {
     commentId: null,
     user: null
   };
-  showLength = 10;
-  showOnScreen: any;
+  showLength = this.allComments?.length < 10 ? this.allComments?.length : 10;
+  showOnScreen: CommentModel[];
 
   comingSoon: boolean;
+  spinnerLoading: boolean;
 
   constructor(
-    private socketService: CommentSocketService
+    private socketService: CommentSocketService,
+    private postService: PostService,
+    private store: Store<any>
   ) {
   }
 
@@ -44,39 +58,28 @@ export class CommentComponent implements OnInit {
   }
 
   initializeSocket(): void {
-    if (this.data.id) {
+    if (this.data?.id) {
       this.socketService.gettingComments(this.data.id);
+    } else {
+      console.error('data error');
     }
 
-    this.socketService.getTyping().subscribe(el => {
+    this.getTypingSub = this.socketService.getTyping().subscribe(el => {
       if (el) {
+        if (this.timeOutTyping) {
+          clearTimeout(this.timeOutTyping);
+        }
         this.typingSpynner = true;
       }
-      setTimeout(() => {
+      this.timeOutTyping = setTimeout(() => {
         this.typingSpynner = false;
-      }, 5000);
+      }, 3000);
     });
 
-    this.socketService.newComment().subscribe(comments => {
-      if (this.sortComment === 'newest') {
-        this.allComments = _.sortBy(comments, (item) => {
-          return item.date;
-        }).reverse();
-        this.showOnScreen = this.allComments.slice(0, this.showLength);
-        console.log(this.allComments);
-      }
-
-      if (this.sortComment === 'hottest') {
-        this.allComments = _.sortBy(comments, (item) => {
-          return item.activites;
-        }).reverse();
-        this.showOnScreen = this.allComments.slice(0, this.showLength);
-        console.log(this.allComments);
-      }
-
-      if (this.sortComment === 'friends') {
-        return;
-      }
+    this.newCommentSub = this.socketService.newComment().subscribe((comments: CommentModel[]) => {
+      this.allComments = comments;
+      console.log(this.allComments);
+      this.letsSort();
     });
   }
 
@@ -89,33 +92,37 @@ export class CommentComponent implements OnInit {
     }
   }
 
-  sendComment() {
-    if (this.isReply.user && !this.newComment.includes('@' + this.isReply.user[1])) {
-      this.isReply.isReply = false;
-    }
-
-    if (!this.isReply.isReply) {
-      if (this.data.id && this.userData?._id && this.newComment && this.newComment.trim().length >= 1) {
-        this.socketService.send(this.data.id, this.userData._id, this.newComment);
-        console.log('comment send');
+  async sendComment() {
+    if (this.userData?._id === undefined) {
+      await this.loginWithTorus();
+    } else {
+      if (this.isReply.user && !this.newComment.includes('@' + this.isReply.user[1])) {
+        this.isReply.isReply = false;
       }
-      this.newComment = '';
-    }
 
-    if (this.isReply.isReply && this.data.id && this.userData?._id && this.newComment &&
-      this.newComment.includes('@' + this.isReply.user[1])) {
-
-      const regex = new RegExp('@' + this.isReply.user[1]);
-      const comments = this.newComment.replace(regex, '');
-
-      if (comments.trim().length >= 1) {
-        this.socketService.newReply(this.data.id, this.userData._id, this.isReply.commentId, comments);
+      if (!this.isReply.isReply) {
+        if (this.data.id && this.userData?._id && this.newComment && this.newComment.trim().length >= 1) {
+          this.socketService.send(this.data.id, this.userData._id, this.newComment);
+          console.log('comment send');
+        }
         this.newComment = '';
-        console.log('reply send');
       }
+
+      if (this.isReply.isReply && this.data.id && this.userData?._id && this.newComment &&
+        this.newComment.includes('@' + this.isReply.user[1])) {
+
+        const regex = new RegExp('@' + this.isReply.user[1]);
+        const comments = this.newComment.replace(regex, '');
+
+        if (comments.trim().length >= 1) {
+          this.socketService.newReply(this.data.id, this.userData._id, this.isReply.commentId, comments);
+          this.newComment = '';
+          console.log('reply send');
+        }
+      }
+      const el = document.getElementById('textarea');
+      el.style.cssText = 'height: 45px;';
     }
-    const el = document.getElementById('textarea');
-    el.style.cssText = 'height: 45px;';
   }
 
   sendIcon(text: string, commentId: number) {
@@ -124,16 +131,21 @@ export class CommentComponent implements OnInit {
     }
   }
 
-  letsSortComment(sort): void {
+  clickSortComment(sort): void {
     this.comingSoon = false;
     this.sortComment = sort;
-    if (sort === 'hottest') {
+
+    this.letsSort();
+  }
+
+  letsSort(): void {
+    if (this.sortComment === 'hottest') {
       this.allComments = _.sortBy(this.allComments, (item) => {
         return item.activites;
       }).reverse();
       this.showOnScreen = this.allComments.slice(0, this.showLength);
     }
-    if (sort === 'newest') {
+    if (this.sortComment === 'newest') {
       this.comingSoon = false;
       this.allComments = _.sortBy(this.allComments, (item) => {
         return item.date;
@@ -141,20 +153,27 @@ export class CommentComponent implements OnInit {
       this.showOnScreen = this.allComments.slice(0, this.showLength);
     }
 
-    if (sort === 'friends') {
+    if (this.sortComment === 'friends') {
       this.comingSoon = true;
+      return;
+    }
+  }
+
+  forSortHead(sort: string) {
+    if (this.sortComment === sort && this.checkTheme()) {
+      return 'activeWhite';
+    }
+    if (this.sortComment === sort && !this.checkTheme()) {
+      return 'activeDark';
     }
   }
 
   typingEffect() {
-    if (this.timeOutTyping) {
-      clearTimeout(this.timeOutTyping);
-    }
-    this.timeOutTyping = setTimeout(() => {
-      if (this.data.id) {
+    setTimeout(() => {
+      if (this.data?.id) {
         this.socketService.doTyping(this.data.id, 'Someone is typing');
       }
-    }, 500);
+    }, 300);
 
     this.resizeSendComment();
 
@@ -177,6 +196,10 @@ export class CommentComponent implements OnInit {
 
     if (el.scrollTop > 0) {
       el.style.height = el.scrollHeight + 'px';
+    }
+
+    if (this.newComment.length === 0) {
+      el.style.height = '45px';
     }
   }
 
@@ -232,11 +255,6 @@ export class CommentComponent implements OnInit {
     if ($event) {
       el.style.cssText = styleStart;
     }
-    // if (el) {
-    //   setTimeout(() => {
-    //     el.style.cssText = styleFinish; // one blink
-    //   }, 1000);
-    // }
 
     if (el) {
       setTimeout(() => {
@@ -251,4 +269,96 @@ export class CommentComponent implements OnInit {
     }
   }
 
+  async loginWithTorus() {
+    if (!this.userData) {
+      try {
+        this.spinnerLoading = true;
+        await web3Obj.initialize();
+        this.setTorusInfoToDB();
+        return true;
+      } catch (error) {
+        this.spinnerLoading = false;
+        await web3Obj.torus.cleanUp();
+        console.error(error);
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  async setTorusInfoToDB() {
+    const userInfo = await web3Obj.torus.getUserInfo('');
+    const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
+    const data: object = {
+      _id: null,
+      wallet: userWallet,
+      nickName: userInfo.name,
+      email: userInfo.email,
+      avatar: userInfo.profileImage,
+      verifier: userInfo.verifier,
+      verifierId: userInfo.verifierId,
+    };
+    this.postSub = this.postService.post('user/torus_regist', data)
+      .subscribe(
+        (x: any) => {
+          this.spinnerLoading = false;
+          this.addUser(
+            x.email,
+            x.nickName,
+            x.wallet,
+            x.listHostEvents,
+            x.listParticipantEvents,
+            x.listValidatorEvents,
+            x.historyTransaction,
+            x.invitationList,
+            x.avatar,
+            x._id,
+            x.verifier
+          );
+        }, (err) => {
+          console.log(err);
+        });
+  }
+
+  addUser(
+    email: string,
+    nickName: string,
+    wallet: string,
+    listHostEvents: object,
+    listParticipantEvents: object,
+    listValidatorEvents: object,
+    historyTransaction: object,
+    invitationList: object,
+    color: string,
+    _id: number,
+    verifier: string
+  ) {
+
+    this.store.dispatch(new UserActions.AddUser({
+      _id: _id,
+      email: email,
+      nickName: nickName,
+      wallet: wallet,
+      listHostEvents: listHostEvents,
+      listParticipantEvents: listParticipantEvents,
+      listValidatorEvents: listValidatorEvents,
+      historyTransaction: historyTransaction,
+      invitationList: invitationList,
+      avatar: color,
+      verifier: verifier
+    }));
+  }
+
+  ngOnDestroy() {
+    if (this.newCommentSub) {
+      this.newCommentSub.unsubscribe();
+    }
+    if (this.getTypingSub) {
+      this.getTypingSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
+  }
 }

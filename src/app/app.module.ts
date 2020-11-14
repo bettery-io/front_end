@@ -7,7 +7,6 @@ import {RouterModule} from '@angular/router';
 import {ClipboardModule} from 'ngx-clipboard';
 import {AvatarModule} from 'ngx-avatar';
 import {RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module} from 'ng-recaptcha';
-import {SimpleSmoothScrollModule} from 'ng2-simple-smooth-scroll';
 
 import {userReducer} from './reducers/user.reducer';
 import {coinsReducer} from './reducers/coins.reducer';
@@ -35,6 +34,7 @@ import {LandingFormComponent} from './components/home/landing-form/landing-form.
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxTypedJsModule} from 'ngx-typed-js';
+import {NgxPageScrollModule} from 'ngx-page-scroll';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/locale/', '.json');
@@ -51,41 +51,41 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     NumericDirective,
     LandingFormComponent
   ],
-  imports: [
-    ShareModule,
-    RecaptchaV3Module,
-    AvatarModule,
-    ClipboardModule,
-    CreateEventModule,
-    EventsModule,
-    BrowserModule,
-    HttpClientModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    SimpleSmoothScrollModule,
-    NgxTypedJsModule,
-    StoreModule.forRoot({
-      user: userReducer,
-      coins: coinsReducer,
-      invites: invitesReducer,
-      createEvent: createEventReducer
-    }),
-    NgbModule,
-    FormsModule,
-    RouterModule.forRoot([
-      { path: "", component: HomeComponent },
-      { path: 'history', component: HistoryComponent },
-      { path: 'erc20', component: ErcCoinSaleComponent }
-    ]),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-      useDefaultLang: false,
-    })
-  ],
+    imports: [
+        ShareModule,
+        RecaptchaV3Module,
+        AvatarModule,
+        ClipboardModule,
+        CreateEventModule,
+        EventsModule,
+        BrowserModule,
+        HttpClientModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        NgxTypedJsModule,
+        StoreModule.forRoot({
+            user: userReducer,
+            coins: coinsReducer,
+            invites: invitesReducer,
+            createEvent: createEventReducer
+        }),
+        NgbModule,
+        FormsModule,
+        RouterModule.forRoot([
+            {path: '', component: HomeComponent},
+            {path: 'history', component: HistoryComponent},
+            {path: 'erc20', component: ErcCoinSaleComponent}
+        ]),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient],
+            },
+            useDefaultLang: false,
+        }),
+        NgxPageScrollModule
+    ],
   providers: [
     PostService,
     GetService,

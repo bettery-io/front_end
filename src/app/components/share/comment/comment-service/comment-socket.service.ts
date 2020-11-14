@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 
 import * as socketIo from 'socket.io-client';
 import {observable, Observable} from 'rxjs';
+import { CommentModel } from '../model/сomment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,8 @@ export class CommentSocketService {
     this.socket.emit('create comment', {eventId, userId, comment});
   }
 
-  newComment() {
-    return new Observable<any>(observer => {
+  newComment(): Observable<CommentModel[]> {
+    return new Observable<CommentModel[]>(observer => {
       this.socket.on('receive comments', comment => {
         if (typeof comment === 'string') {
           console.error(comment);
@@ -57,8 +58,8 @@ export class CommentSocketService {
     this.socket.emit('typing in', data);
   }
 
-  getTyping() {
-    return new Observable<any>(observer => {
+  getTyping(): Observable<string> {
+    return new Observable<string>(observer => {
       this.socket.on('typing out', msg => {
         observer.next(msg);
       });

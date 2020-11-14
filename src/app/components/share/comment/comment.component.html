@@ -1,19 +1,19 @@
 <div [className]="checkTheme() ? 'bgWhite' : 'bgDark'">
 
   <div class="sortHeadDark" id="up">
-    <div class="sortHead-item-dark" [ngClass]="sortComment === 'newest' && 'activeDark'"
-         (click)="letsSortComment('newest')">Newest
+    <div class="sortHead-item-dark" [ngClass]="forSortHead('newest')"
+         (click)="clickSortComment('newest')">Newest
     </div>
-    <div class="sortHead-item-dark" [ngClass]="sortComment === 'hottest' && 'activeDark'"
-         (click)="letsSortComment('hottest')">Hottest
+    <div class="sortHead-item-dark" [ngClass]="forSortHead('hottest')"
+         (click)="clickSortComment('hottest')">Hottest
     </div>
-    <div class="sortHead-item-dark" [ngClass]="sortComment === 'friends' && 'activeDark'"
-         (click)="letsSortComment('friends')">Friends
+    <div class="sortHead-item-dark" [ngClass]="forSortHead('friends')"
+         (click)="clickSortComment('friends')">Friends
     </div>
   </div>
 
   <div *ngIf="!comingSoon" class="comment-warp">
-    <div id="{{comment?.id}}" class="commentBox" [ngClass]="allComments?.length < showLength && 'commentBoxChange'"
+    <div id="{{comment?.id}}" class="commentBox" [ngClass]="allComments?.length <= showLength && 'commentBoxChange'"
          *ngFor="let comment of showOnScreen">
       <div class="commentHeader">
         <div class="senderBox">
@@ -82,12 +82,12 @@
 
 
   <div *ngIf="comingSoon" class="comment-warp">
-    <p>Coming soon</p>
+    <p class="comingSoon">Coming soon</p>
   </div>
 
   <div>
     <div id="sendBox" class="sendCommentBox" *ngIf="!withoutSend">
-    <textarea id="textarea" (keyup)="typingEffect()" [(ngModel)]="newComment" class="addCommentBox" type="text"
+    <textarea id="textarea" (keyup)="typingEffect()" [(ngModel)]="newComment" class="addCommentBox" [ngClass]="checkTheme() && 'addCommentBoxWhite'" type="text"
               name="newComment"
               placeholder="Add a comment..."></textarea>
       <div (click)="sendComment()" class="sendImg"></div>
@@ -105,3 +105,5 @@
     </div>
   </div>
 </div>
+
+<app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>

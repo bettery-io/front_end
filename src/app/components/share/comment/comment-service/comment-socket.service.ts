@@ -8,7 +8,7 @@ import { CommentModel } from '../model/сomment.model';
   providedIn: 'root'
 })
 export class CommentSocketService {
-  url = 'http://13.229.200.135';
+  url = 'https://13.229.200.135';
 
   private socket;
 

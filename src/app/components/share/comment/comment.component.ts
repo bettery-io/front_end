@@ -40,7 +40,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     commentId: null,
     user: null
   };
-  showLength = this.allComments?.length < 10 ? this.allComments?.length : 10;
+  showLength: number;
   showOnScreen: CommentModel[];
 
   comingSoon: boolean;
@@ -51,6 +51,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     private postService: PostService,
     private store: Store<any>
   ) {
+    this.showLength = this.allComments?.length < 10 ? this.allComments?.length : 10;
   }
 
   ngOnInit(): void {

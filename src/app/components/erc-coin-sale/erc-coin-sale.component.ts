@@ -76,7 +76,6 @@ export class ErcCoinSaleComponent implements OnInit {
       if (err) {
         console.log(err)
       } else {
-        console.log(event)
         this.sellContract(wallet);
         this.tokenContract(wallet);
       }

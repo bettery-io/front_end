@@ -21,24 +21,28 @@
   <div class="borderLine"></div>
 
   <div *ngIf="r.createNewRoom.value == 'exist'">
-    <p class="name">CHOOSE ROOM</p>
-    <div ngbDropdown class="d-inline-block dropWidth">
-      <button class="btn btn-outline-primary dropWidth" id="dropdownBasic1" ngbDropdownToggle>Tony’s room</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button ngbDropdownItem class="dropDownTab">In progress</button>
+    <form [formGroup]="existRoom">
+      <p class="name">CHOOSE ROOM</p>
+      <select [ngClass]="{ 'is_invalid': submitted && e.roomId.errors }"
+        formControlName="roomId" class="btn" name="roomId" id="roomId">
+        <option *ngFor="let room of allRooms" value="{{room.id}}">{{room.name}}</option>
+      </select>
+      <div *ngIf="submitted && e.roomId.errors">
+        <small *ngIf="e.roomId.errors.required" class="form-text quize_validation_error">Choose room is
+          required</small>
       </div>
-    </div>
-    <div class="buttonBox buttonBox_2">
-      <button type="button" class="cancel" (click)="cancel()">BACK</button>
-      <button type="button" class="next" (click)="chooseRoom()">NEXT</button>
-    </div>
+      <div class="buttonBox buttonBox_2">
+        <button type="button" class="cancel" (click)="cancel()">BACK</button>
+        <button type="button" class="next" (click)="chooseRoom()">NEXT</button>
+      </div>
+    </form>
   </div>
   <div *ngIf="r.createNewRoom.value == 'new'">
     <p class="name">ROOM NAME AND COLOR</p>
     <form [formGroup]="roomForm">
       <div class="form-group position-relative">
-        <input type="text" formControlName="roomName" class="answer" id="roomName"
-               placeholder="Tony Stark’s room" [ngClass]="{ 'is_invalid': submitted && f.roomName.errors }">
+        <input type="text" formControlName="roomName" class="answer" id="roomName" placeholder="Tony Stark’s room"
+          [ngClass]="{ 'is_invalid': submitted && f.roomName.errors }">
         <div>
           <div class="gradientPicker" [ngStyle]="{'background': f.roomColor.value}">
             <div class="reloadImg" (click)="generateGradient()"></div>
@@ -48,6 +52,9 @@
           <small *ngIf="f.roomName.errors.required" class="form-text quize_validation_error">Room name is
             required</small>
         </div>
+      </div>
+      <div *ngIf="roomError">
+        <small class="form-text quize_validation_error">Room with this name already exist</small>
       </div>
       <div>
         <p class="name paddingName">WHO IS THIS ROOM FOR?

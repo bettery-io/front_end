@@ -24,6 +24,7 @@ const init = {
   exactMonth: new Date().getMonth(),
   exactYear: new Date().getFullYear(),
   exactTimeBool: false,
+  roomId: ""
 };
 
 @Component({
@@ -62,6 +63,7 @@ export class EventsTemplatesComponent implements OnInit {
           exactMonth: new Date().getMonth(),
           exactYear: new Date().getFullYear(),
           exactTimeBool: false,
+          roomId: ''
         };
         this.whichEvent = "setQuestion"
       }
@@ -97,6 +99,7 @@ export class EventsTemplatesComponent implements OnInit {
     this.formData.roomName = data.roomName;
     this.formData.roomColor = data.roomColor;
     this.formData.eventType = data.eventType;
+    this.formData.roomId = data.roomId;
   }
 
   swithToCreateRoomTab(data) {

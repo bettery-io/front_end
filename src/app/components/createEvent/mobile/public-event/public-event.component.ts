@@ -41,7 +41,6 @@ export class PublicEventComponent implements  OnDestroy {
     private modalService: NgbModal
   ) {
     this.userSub = this.store.select("user").subscribe((x) => {
-      console.log(x)
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.host = x;
@@ -194,7 +193,11 @@ export class PublicEventComponent implements  OnDestroy {
       transactionHash: transactionHash,
       showDistribution: true, // TO DO
       getCoinsForHold: 0,
-      currencyType: this.formData.tokenType
+      currencyType: this.formData.tokenType,
+      roomName: this.formData.roomName,
+      roomColor: this.formData.roomColor,
+      whichRoom: this.formData.whichRoom,
+      roomId: this.formData.roomId
     }
 
     this.postSub = this.PostService.post("publicEvents/set", this.quizData)

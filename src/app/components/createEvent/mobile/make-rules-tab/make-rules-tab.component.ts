@@ -140,12 +140,10 @@ export class MakeRulesTabComponent implements OnInit {
     });
 
     this.privateForm.controls.privateEndTime.setValue(findEl);
-    console.log(this.privateForm);
   }
 
   chosePublicEndTime() {
     this.endPublicTime = this.publicForm.controls.publicEndTime.value;
-    console.log(this.endPublicTime);
     let findEl = _.find(this.times, (x) => {
       return x.name == this.endPublicTime;
     });

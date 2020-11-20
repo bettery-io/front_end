@@ -87,7 +87,6 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
   }
 
   async sendToContract(id) {
-    console.log(this.host)
     this.spinner = true;
     let matic = new maticInit(this.host[0].verifier);
     let userWallet = await matic.getUserAccount()
@@ -142,7 +141,11 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
       endTime: this.getEndTime(),
       transactionHash: transactionHash,
       winner: this.formData.winner,
-      loser: this.formData.losers
+      loser: this.formData.losers,
+      roomName: this.formData.roomName,
+      roomColor: this.formData.roomColor,
+      whichRoom: this.formData.whichRoom,
+      roomId: this.formData.roomId
     }
 
     this.createSub = this.postService.post("privateEvents/createEvent", this.eventData)

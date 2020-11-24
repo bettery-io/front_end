@@ -35,6 +35,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxTypedJsModule} from 'ngx-typed-js';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
+import { RoomsComponent } from './components/rooms/rooms.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/locale/', '.json');
@@ -49,7 +50,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     HistoryComponent,
     ErcCoinSaleComponent,
     NumericDirective,
-    LandingFormComponent
+    LandingFormComponent,
+    RoomsComponent
   ],
     imports: [
         ShareModule,

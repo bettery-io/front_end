@@ -76,7 +76,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         RouterModule.forRoot([
             {path: '', component: HomeComponent},
             {path: 'history', component: HistoryComponent},
-            {path: 'erc20', component: ErcCoinSaleComponent}
+            {path: 'erc20', component: ErcCoinSaleComponent},
+            {path: 'rooms', component: RoomsComponent}
         ]),
         TranslateModule.forRoot({
             loader: {
@@ -93,7 +94,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     GetService,
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF' }
   ],
-  exports: [],
+    exports: [
+        RoomsComponent
+    ],
   bootstrap: [
     AppComponent
   ]

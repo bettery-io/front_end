@@ -4,19 +4,25 @@
   </div>
   <div *ngIf="nickName === undefined">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
+<!--      <li class="nav-item">-->
+<!--        <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}" routerLink="/event-group"-->
+<!--           (click)="setActiveTab('add')">Create event</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}" routerLink="/eventFeed"-->
+<!--           (click)="setActiveTab('eventFeed')">Event Feed</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <div class="registration">-->
+<!--          <button type="button" class="btn btn-success" (click)="registrationModal()">Login /-->
+<!--            Registration-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </li>-->
       <li class="nav-item">
-        <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}" routerLink="/event-group"
-           (click)="setActiveTab('add')">Create event</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}" routerLink="/eventFeed"
-           (click)="setActiveTab('eventFeed')">Event Feed</a>
-      </li>
-      <li class="nav-item">
-        <div class="registration">
-          <button type="button" class="btn btn-success" (click)="registrationModal()">Login /
-            Registration
-          </button>
+        <div class="loginBox mt-3" (click)="registrationModal()">
+          <div class="enter-black"></div>
+          <p class="login" style="color: #0B1511; font-size: 22px; margin-right: 5px">Login</p>
         </div>
       </li>
     </ul>
@@ -79,7 +85,7 @@
   <div *ngIf="nickName !== undefined">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
       <li class="nav-item">
-        <div class="balanceBox">
+        <div (click)="open(content)" class="balanceBox">
 
           <div class="balancePos mr-4">
             <p *ngIf="!amountSpinner" class="balance colorBl" style="font-weight: 500;">
@@ -96,10 +102,10 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
+      <li (click)="logOut()" class="nav-item">
         <div class="user_email"> {{nickName}}</div>
       </li>
-      <li class="nav-item">
+      <li (click)="logOut()" class="nav-item">
         <img class="circle-img" src="{{avatar}}" alt="avatar">
       </li>
       <li class="nav-item">

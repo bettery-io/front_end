@@ -2,10 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GetService} from '../../services/get.service';
 import {Subscription} from 'rxjs';
 import {PostService} from '../../services/post.service';
-import {writeErrorToLogFile} from '@angular/cli/utilities/log-file';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
 import {createEventAction} from '../../actions/newEvent.actions';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-rooms',
@@ -15,6 +15,7 @@ import {createEventAction} from '../../actions/newEvent.actions';
 export class RoomsComponent implements OnInit, OnDestroy {
   roomsSub: Subscription;
   roomById: Subscription;
+  eventById: Subscription;
   userSub: Subscription;
 
   allRooms: any;
@@ -24,11 +25,16 @@ export class RoomsComponent implements OnInit, OnDestroy {
   roomsSort: any;
   pageRoom = 1;
 
-  activeRoom = 0;
+  activeRoom: number;
 
   userData;
   usersRoom;
   newCreateEvent = '';
+  searchWord: string;
+
+  forEventId;
+  comSoon: boolean;
+  showInput: boolean;
 
   constructor(
     private getService: GetService,
@@ -62,6 +68,13 @@ export class RoomsComponent implements OnInit, OnDestroy {
     });
   }
 
+  getEventById(path, id) {
+    this.eventById = this.postService.post(path, {id}).subscribe(ev => {
+      console.log(ev);
+      this.forEventId = ev;
+    });
+  }
+
   prevRooms() {
     if (this.pageRoom <= 1) {
       return;
@@ -71,7 +84,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.showLength = this.showLength - 8;
 
     this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
-    this.activeRoom = 0;
+    this.activeRoom = null;
   }
 
   nextRooms() {
@@ -83,15 +96,32 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.pageRoom = this.pageRoom + 1;
 
     this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
-    this.activeRoom = 0;
+    this.activeRoom = null;
   }
 
   letsFindRoomsLength() {
-    return Math.ceil(this.allRooms?.length / 8);
+    if (!this.usersRoom) {
+      return Math.ceil(this.allRooms?.length / 8);
+    } else {
+      return Math.ceil(this.usersRoom?.length / 8);
+    }
+
   }
 
   activeCard(index) {
+    if (this.activeRoom === index) {
+      this.activeRoom = null;
+      return;
+    }
     this.activeRoom = index;
+
+    if (this.roomsSort[index].privateEventsId.length > 0) {
+      this.getEventById('privateEvents/get_by_id', this.roomsSort[index].privateEventsId[0]._id);
+    }
+
+    if (this.roomsSort[this.activeRoom].publicEventsId.length > 0) {
+      this.getEventById('publicEvents/get_by_id', this.roomsSort[index].publicEventsId[0]._id);
+    }
   }
 
   findCurrentUser(): void {
@@ -103,12 +133,15 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showUsersRoom() {
+    this.comSoon = false;
     if (this.userData) {
       this.getUsersRoomById(this.userData._id);
     }
   }
 
   showAllRooms() {
+    this.comSoon = false;
+    this.usersRoom = null;
     this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
   }
 
@@ -122,6 +155,31 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.newCreateEvent = '';
   }
 
+  comingSoon() {
+    this.comSoon = true;
+  }
+
+  showSearchInput() {
+    this.showInput = !this.showInput;
+  }
+
+  letsFindRooms(e) {
+    let arr;
+    if (this.searchWord.length > 3) {
+      arr = _.filter(this.allRooms, o => {
+        return o.name.includes(this.searchWord);
+      });
+      console.log(arr);
+      if (arr.length > 0) {
+        this.roomsSort = arr;
+      }
+    }
+
+    if (e.code === 'Backspace') {
+      this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.roomsSub) {
       this.roomsSub.unsubscribe();
@@ -133,6 +191,10 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
     if (this.userSub) {
       this.userSub.unsubscribe();
+    }
+
+    if (this.eventById) {
+      this.eventById.unsubscribe();
     }
   }
 }

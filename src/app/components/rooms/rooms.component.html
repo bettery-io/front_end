@@ -6,14 +6,14 @@
         <h1>What question do you have in mind now?</h1>
       </div>
       <div class="input-box row">
-        <input [(ngModel)]="newCreateEvent" placeholder="Enter the question..." class="col-6 mr-4" type="text">
-        <button (click)="sendNewEvent()" routerLink="/create-event">Create Event</button>
+        <input [(ngModel)]="newCreateEvent" placeholder="Enter the question..." class="col-10 col-xl-6 col-md-10 mr-lg-4 mb-4 mb-xl-0" type="text">
+        <button class=" col-10 col-xl-3 col-md-4" (click)="sendNewEvent()" routerLink="/create-event">Create Event</button>
       </div>
     </div>
   </div>
 
   <div class="middle row">
-    <div class="d-flex col-xl-8 col-lg-9 ">
+    <div class=" middle-wrap d-flex col-xl-8 col-lg-8">
       <div (click)="showAllRooms()" class="btn-middle btn-middle-active">
         <div class="square-9-img mr-3"></div>
         <span>Discover</span>
@@ -22,14 +22,15 @@
         <div class="deactivate-2"></div>
         <span>My Rooms</span>
       </div>
-      <div class="btn-middle">
+      <div (click)="comingSoon()" class="btn-middle">
         <span>Joined Rooms</span>
       </div>
       <div class="btn-middle">
-        <div class="search-img"></div>
+        <div (click)="showSearchInput()" class="search-img"></div>
+        <input [(ngModel)]="searchWord" (keyup)="letsFindRooms($event)" class="search-input" [ngClass]="showInput && 'search-input-active'" type="text">
       </div>
     </div>
-    <div class="col-xl-4 col-lg-3  d-flex justify-content-end">
+    <div class="col-lg-3 d-flex justify-content-end media-pagination">
       <div class="pagination">
         <div (click)="prevRooms()" class="left-img-1"></div>
         <div class="ml-3 mr-3 count">{{pageRoom}} / <span>{{letsFindRoomsLength()}}</span></div>
@@ -40,7 +41,7 @@
 
   <div class="bottom">
 
-    <div n class="card-wrap row">
+    <div *ngIf="!comSoon" class="card-wrap row">
       <div (click)="activeCard(i)" *ngFor="let room of roomsSort; let i = index"
            class="card-item col-xl-3 col-lg-6 col-md-12">
         <div class="inside">
@@ -74,7 +75,10 @@
           <div *ngIf="i === activeRoom" class="activeCardButton">
             <div class="insid">
               <div class="card-question">
-                This celebrity will break up with the lover by the end of the month
+                {{forEventId?.question}}
+                <span
+                  class="nameUser">(+{{room?.privateEventsId.length > 0 ? room?.privateEventsId.length - 1 : room?.publicEventsId.length - 1}}
+                  events)</span>
               </div>
               <div class="join-room">
                 <button>JOIN ROOM</button>
@@ -84,6 +88,11 @@
         </div>
 
 
+      </div>
+    </div>
+    <div *ngIf="comSoon">
+      <div class="comingSoon">
+        <h1>Coming soon</h1>
       </div>
     </div>
   </div>

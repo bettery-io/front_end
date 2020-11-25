@@ -6,9 +6,11 @@
     border-radius: 40%
     color: white
 
+.mobileNavbar
+  display: none
+
 .navbar
-    //display: flex !important
-    display: none !important
+    display: flex !important
     padding-top: 0
     padding-bottom: 0
 
@@ -166,14 +168,18 @@
 .erc20
     padding-left: 10px
 
-.mobileNavbar
-    display: flex !important
-    background-color: #151514 !important
-    justify-content: space-between
-    color: #ffffff
-    position: relative
-    width: 100%
-    z-index: 9
+@media(max-width: 1023px)
+  .mobileNavbar
+      display: flex !important
+      background-color: #151514 !important
+      justify-content: space-between
+      color: #ffffff
+      position: relative
+      width: 100%
+      z-index: 9
+
+  .navbar
+    display: none !important
 
 .logo
     background: url(../../../assets/share/Bettery.png) left 15px no-repeat
@@ -192,6 +198,14 @@
     width: 24px
     background-size: contain
     margin-right: 8px
+
+.enter-black
+  background: url(../../../assets/share/enter-black.png) left center no-repeat
+  height: 30px
+  width: 30px
+  background-size: contain
+  margin-right: 14px
+  margin-bottom: 14px
 
 .login
     font-family: 'Open Sans', sans-serif

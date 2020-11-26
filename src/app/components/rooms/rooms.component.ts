@@ -34,7 +34,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   forEventId;
   comSoon: boolean;
-  showInput: boolean;
+  testAnimation: number;
+  btnMiddleActive = 1;
 
   constructor(
     private getService: GetService,
@@ -64,7 +65,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.roomById = this.postService.post(path, data).subscribe(list => {
       console.log(list);
       this.usersRoom = list;
-      this.roomsSort = this.usersRoom.slice(0, this.showLength);
+      this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
     });
   }
 
@@ -83,11 +84,16 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.startLength = this.startLength - 8;
     this.showLength = this.showLength - 8;
 
-    this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
+    if (this.btnMiddleActive === 2) {
+      this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
+    } else {
+      this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
+    }
     this.activeRoom = null;
   }
 
   nextRooms() {
+
     if (this.pageRoom > Math.round(this.allRooms?.length / 8)) {
       return;
     }
@@ -95,13 +101,21 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.showLength = this.showLength + 8;
     this.pageRoom = this.pageRoom + 1;
 
-    this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
+    if (this.btnMiddleActive === 2) {
+      this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
+    } else {
+      this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
+    }
+
+
     this.activeRoom = null;
   }
 
   letsFindRoomsLength() {
     if (!this.usersRoom) {
       return Math.ceil(this.allRooms?.length / 8);
+    } else if (this.roomsSort?.length > 0) {
+      return Math.ceil(this.roomsSort?.length / 8);
     } else {
       return Math.ceil(this.usersRoom?.length / 8);
     }
@@ -113,6 +127,24 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.activeRoom = null;
       return;
     }
+    console.log(index);
+    if ((index === 4 || index === 5 || index === 6 || index === 7) && window.screen.width > 1199) {
+      this.testAnimation = index;
+    } else {
+      this.testAnimation = null;
+    }
+
+    // animation test adapting , to do =================
+    // if ((index === 4 || index === 5 || index === 6 || index === 7 || index === this.roomsSort.length - 1) && window.screen.width > 1199) {
+    //   this.testAnimation = index;
+    // } else if ((index === 6 || index === 7 || index === this.roomsSort.length - 1) && window.screen.width < 1199 && window.screen.width > 991) {
+    //   this.testAnimation = index;
+    // } else if (index === 7 || index === this.roomsSort.length - 1 && window.screen.width < 992) {
+    //   this.testAnimation = index;
+    // } else {
+    //   this.testAnimation = null;
+    // }
+
     this.activeRoom = index;
 
     if (this.roomsSort[index].privateEventsId.length > 0) {
@@ -133,13 +165,17 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showUsersRoom() {
-    this.comSoon = false;
     if (this.userData) {
       this.getUsersRoomById(this.userData._id);
+      this.btnMiddleActive = 2;
+      this.comSoon = false;
+    } else {
+      return;
     }
   }
 
   showAllRooms() {
+    this.btnMiddleActive = 1;
     this.comSoon = false;
     this.usersRoom = null;
     this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
@@ -156,22 +192,23 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   comingSoon() {
+    this.btnMiddleActive = 3;
     this.comSoon = true;
   }
 
   showSearchInput() {
-    this.showInput = !this.showInput;
+    this.btnMiddleActive = 4;
   }
 
   letsFindRooms(e) {
     let arr;
     if (this.searchWord.length > 3) {
       arr = _.filter(this.allRooms, o => {
-        return o.name.includes(this.searchWord);
+        return o.name.toLowerCase().includes(this.searchWord.toLowerCase());
       });
       console.log(arr);
       if (arr.length > 0) {
-        this.roomsSort = arr;
+        this.roomsSort = arr.slice(this.startLength, this.showLength);
       }
     }
 

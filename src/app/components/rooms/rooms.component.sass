@@ -1,6 +1,7 @@
 .main
   background: #FFFFFF
   margin-top: -20px
+  overflow: hidden
 
 .top
   padding: 70px 8% 80px 8%
@@ -149,7 +150,7 @@
 .btn-middle
   display: flex
   align-items: center
-  padding: 8px 15px 8px 8px
+  padding: 12px 15px 8px 8px
   box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.1)
   cursor: pointer
   margin-right: 21px
@@ -246,15 +247,25 @@
   position: absolute
   top: 12%
   left: 0
-
   padding: 0 21px 10px 21px
   width: 100%
   transition: top 1s
+
+
 
 .test
   opacity: 1
   top: 84%
   z-index: 1
+
+@media (max-width: 991px)
+  .activeCardButton
+    display: none
+    position: static
+  .test
+    display: block
+  .insid
+    box-shadow: none !important
 
 .insid
   box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.1)
@@ -274,14 +285,12 @@
   border: none
   padding: 0
   width: 0
-  visibility: hidden
   opacity: 0
   transition: all 1s
 
 
 .search-input-active
-  visibility: visible
-  width: 250px
+  width: 150px
   opacity: 1
   padding-left: 10px
   border-bottom: 1px solid #cacaca
@@ -290,6 +299,16 @@
 @media (max-width: 1140px)
   .media-pagination
     justify-content: center !important
+
+@media (max-width: 1117px)
+  .middle
+    & span
+      font-size: 12px
+  .btn-middle
+    margin-right: 10px
+  .media-pagination
+    padding-left: 0
+    padding-right: 0
 
 
 @media (max-width: 992px)
@@ -304,3 +323,5 @@
 .card-item-down
   position: relative
   bottom: 232px
+
+

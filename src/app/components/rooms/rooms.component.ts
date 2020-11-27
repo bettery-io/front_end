@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {GetService} from '../../services/get.service';
 import {Subscription} from 'rxjs';
 import {PostService} from '../../services/post.service';
@@ -35,7 +35,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
   forEventId;
   comSoon: boolean;
   testAnimation: number;
-  btnMiddleActive = 1;
+  btnMiddleActive = 'showAllRoom';
+  showInputFlag: boolean;
 
   constructor(
     private getService: GetService,
@@ -47,6 +48,13 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllRoomsFromServer();
+  }
+
+  @HostListener('click', ['$event'])
+  a($event) {
+    if (!$event.target.classList.contains('search-img') && !$event.target.classList.contains('search-input')) {
+      this.showInputFlag = false;
+    }
   }
 
   getAllRoomsFromServer() {
@@ -84,7 +92,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.startLength = this.startLength - 8;
     this.showLength = this.showLength - 8;
 
-    if (this.btnMiddleActive === 2) {
+    if (this.btnMiddleActive === 'showUsersRoom') {
       this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
     } else {
       this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
@@ -93,16 +101,20 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   nextRooms() {
+    if (this.pageRoom > Math.round(this.usersRoom?.length / 8)) {
+      return;
+    }
 
-    if (this.pageRoom > Math.round(this.allRooms?.length / 8)) {
+    if (this.pageRoom >= Math.round(this.allRooms?.length / 8)) {
       return;
     }
     this.startLength = this.startLength + 8;
     this.showLength = this.showLength + 8;
     this.pageRoom = this.pageRoom + 1;
 
-    if (this.btnMiddleActive === 2) {
+    if (this.btnMiddleActive === 'showUsersRoom') {
       this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
+
     } else {
       this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
     }
@@ -112,6 +124,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   letsFindRoomsLength() {
+    if (this.btnMiddleActive === 'showUsersRoom') {
+      return Math.ceil(this.usersRoom?.length / 8);
+    }
     if (!this.usersRoom) {
       return Math.ceil(this.allRooms?.length / 8);
     } else if (this.roomsSort?.length > 0) {
@@ -127,7 +142,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.activeRoom = null;
       return;
     }
-    console.log(index);
+
     if ((index === 4 || index === 5 || index === 6 || index === 7) && window.screen.width > 1199) {
       this.testAnimation = index;
     } else {
@@ -135,16 +150,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
     }
 
     // animation test adapting , to do =================
-    // if ((index === 4 || index === 5 || index === 6 || index === 7 || index === this.roomsSort.length - 1) && window.screen.width > 1199) {
-    //   this.testAnimation = index;
-    // } else if ((index === 6 || index === 7 || index === this.roomsSort.length - 1) && window.screen.width < 1199 && window.screen.width > 991) {
-    //   this.testAnimation = index;
-    // } else if (index === 7 || index === this.roomsSort.length - 1 && window.screen.width < 992) {
-    //   this.testAnimation = index;
-    // } else {
-    //   this.testAnimation = null;
-    // }
-
+    if ((index === 6 || index === 7 || index === this.roomsSort.length - 1) && window.screen.width < 1199 && window.screen.width > 991) {
+      this.testAnimation = index;
+    }
     this.activeRoom = index;
 
     if (this.roomsSort[index].privateEventsId.length > 0) {
@@ -167,7 +175,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   showUsersRoom() {
     if (this.userData) {
       this.getUsersRoomById(this.userData._id);
-      this.btnMiddleActive = 2;
+      this.btnMiddleActive = 'showUsersRoom';
       this.comSoon = false;
     } else {
       return;
@@ -175,7 +183,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showAllRooms() {
-    this.btnMiddleActive = 1;
+    this.btnMiddleActive = 'showAllRoom';
     this.comSoon = false;
     this.usersRoom = null;
     this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
@@ -192,12 +200,13 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   comingSoon() {
-    this.btnMiddleActive = 3;
+    this.btnMiddleActive = 'joinedRoom';
     this.comSoon = true;
   }
 
   showSearchInput() {
-    this.btnMiddleActive = 4;
+    this.showInputFlag = !this.showInputFlag;
+    this.btnMiddleActive = 'searchInput';
   }
 
   letsFindRooms(e) {

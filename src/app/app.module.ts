@@ -74,7 +74,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         RouterModule.forRoot([
             {path: '', component: HomeComponent},
             {path: 'history', component: HistoryComponent},
-            {path: 'erc20', component: ErcCoinSaleComponent}
+            {path: 'tokensale', component: ErcCoinSaleComponent}
         ]),
         TranslateModule.forRoot({
             loader: {

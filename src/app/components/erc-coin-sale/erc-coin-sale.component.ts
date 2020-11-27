@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
 import Web3 from 'web3';
 import Contract from '../../contract/contract.js'
-import { Router } from "@angular/router";
 import maticInit from '../../contract/maticInit'
 
 
@@ -17,7 +13,6 @@ export class ErcCoinSaleComponent implements OnInit {
   private tokenPricePrivate: number = 0;
 
   tokenPrice: number = 0.001;
-  tokenOwner: any = 0;
   progressToken: number = 0
   tokenSold: number = 0;
   metamaskError: string = undefined
@@ -32,27 +27,15 @@ export class ErcCoinSaleComponent implements OnInit {
   transferButton: boolean = false;
   verifier: string = undefined;
 
-  constructor(
-    config: NgbProgressbarConfig,
-    private store: Store<AppState>,
-    private router: Router
-  ) {
-    config.max = 100;
-    config.striped = true;
-    config.animated = true;
-    this.store.select("user").subscribe((x) => {
-      if (x.length === 0) {
-        this.router.navigate(['home'])
-      } else {
-        this.userWallet = x[0].wallet;
-        this.verifier = x[0].verifier;
-        this.sellContract(this.userWallet);
-        this.tokenContract(this.userWallet);
-      }
-    })
-  }
+  constructor() { }
 
-  async ngOnInit() {
+  async ngOnInit() { }
+
+  async initToken() {
+    this.userWallet = "TODO";
+    this.verifier = "metamask";
+    this.sellContract(this.userWallet);
+    this.tokenContract();
     let matic = new maticInit(this.verifier);
     let account = await matic.getUserAccount();
     this.transferButton = account === "0xF02B362cBEFC2d5bD5f7C3dBdbD0DE84508525D5";
@@ -77,18 +60,14 @@ export class ErcCoinSaleComponent implements OnInit {
         console.log(err)
       } else {
         this.sellContract(wallet);
-        this.tokenContract(wallet);
+        this.tokenContract();
       }
     })
   }
 
-  async tokenContract(wallet) {
-    let web3 = new Web3();
+  async tokenContract() {
     let contract = new Contract();
     this.token = await contract.tokenContractMainETH(this.verifier)
-    let avaliableTokens = await this.token.methods.balanceOf(wallet).call();
-    let tokens = web3.utils.fromWei(avaliableTokens, 'ether');
-    this.tokenOwner = tokens;
     this.spinner = false;
     this.buyTokensMessage = false;
   }

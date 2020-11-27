@@ -35,6 +35,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxTypedJsModule} from 'ngx-typed-js';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
+import { RoomsComponent } from './components/rooms/rooms.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/locale/', '.json');
@@ -49,7 +50,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     HistoryComponent,
     ErcCoinSaleComponent,
     NumericDirective,
-    LandingFormComponent
+    LandingFormComponent,
+    RoomsComponent
   ],
     imports: [
         ShareModule,
@@ -74,7 +76,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         RouterModule.forRoot([
             {path: '', component: HomeComponent},
             {path: 'history', component: HistoryComponent},
-            {path: 'tokensale', component: ErcCoinSaleComponent}
+            {path: 'tokensale', component: ErcCoinSaleComponent},
+            {path: 'rooms', component: RoomsComponent}
         ]),
         TranslateModule.forRoot({
             loader: {
@@ -91,7 +94,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     GetService,
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF' }
   ],
-  exports: [],
+    exports: [
+        RoomsComponent
+    ],
   bootstrap: [
     AppComponent
   ]

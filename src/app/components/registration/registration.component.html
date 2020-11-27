@@ -1,13 +1,13 @@
-<div *ngIf="!loginWithMetamsk">
+<div class="pb-3" *ngIf="!loginWithMetamsk">
     <div>
-        <h4 class="registration_title">Login</h4>
         <fa-icon (click)="closeModal()" class="modal_close" [icon]="faTimes"></fa-icon>
     </div>
+<!--    <div class="login_button">-->
+<!--        <button class="btn btn-primary" (click)="loginMetamask()">Login with Metamask</button>-->
+<!--    </div>-->
     <div class="login_button">
-        <button class="btn btn-primary" (click)="loginMetamask()">Login with Metamask</button>
-    </div>
-    <div class="login_button">
-        <button class="btn btn-primary" (click)="loginWithTorus()">Login with Torus</button>
+<!--        <button class="btn btn-primary" (click)="loginWithTorus()">Login with Torus</button>-->
+      <div  (click)="loginWithTorus()" class="torus-img"></div>
     </div>
 </div>
 <div *ngIf="loginWithMetamsk">

@@ -6,8 +6,13 @@
     border-radius: 40%
     color: white
 
+.mobileNavbar
+  display: none
+
 .navbar
-    display: none !important
+    display: flex !important
+    padding-top: 0
+    padding-bottom: 0
 
 .loom_balance:hover
     text-decoration: underline
@@ -73,6 +78,7 @@
 .navbar_row
     flex-direction: row !important
     justify-content: flex-end
+    align-items: center
 
 .loom_balance
     display: inline-block
@@ -154,22 +160,36 @@
     position: relative
     top: 7px
 
+.circle-img
+    width: 62px
+    height: 62px
+    border-radius: 100%
+
 .erc20
     padding-left: 10px
 
-.mobileNavbar
-    display: flex !important
-    background-color: #151514 !important
-    justify-content: space-between
-    color: #ffffff
-    position: relative
-    width: 100%
-    z-index: 9
+@media(max-width: 1023px)
+  .mobileNavbar
+      display: flex !important
+      background-color: #151514 !important
+      justify-content: space-between
+      color: #ffffff
+      position: relative
+      width: 100%
+      z-index: 9
+
+  .navbar
+    display: none !important
 
 .logo
     background: url(../../../assets/share/Bettery.png) left 15px no-repeat
     height: 49px
     width: 94px
+    background-size: contain
+.logo-desc
+    background: url("../../../assets/share/Logo.png") left center no-repeat
+    height: 63px
+    width: 123px
     background-size: contain
 
 .enter
@@ -178,6 +198,14 @@
     width: 24px
     background-size: contain
     margin-right: 8px
+
+.enter-black
+  background: url(../../../assets/share/enter-black.png) left center no-repeat
+  height: 30px
+  width: 30px
+  background-size: contain
+  margin-right: 14px
+  margin-bottom: 14px
 
 .login
     font-family: 'Open Sans', sans-serif
@@ -246,6 +274,11 @@
     left: 8px
     top: 5px
 
+.ethImgNew
+    width: 22px
+    height: 37px
+
+
 .btyImg
     background: url(../../../assets/share/BTY.png) left center no-repeat
     background-size: contain
@@ -254,6 +287,10 @@
     position: relative
     top: 4px
     left: 8px
+
+.btyImgNew
+    width: 40px
+    height: 40px
 
 .balancePos
     display: flex
@@ -374,3 +411,18 @@
   background:  rgba(0, 0, 0, 0.75)
   height: 100%
   width: 100%
+
+.colorBl
+  color: #0B1511
+  padding-top: 15px
+  b
+    font-weight: bold
+    font-size: 20px
+    line-height: 27px
+
+.colocol
+  background: url(../../../assets/rooms/notification.png) left center no-repeat
+  background-size: contain
+  width: 24px
+  height: 24px
+  margin-left: 24px

@@ -1,0 +1,101 @@
+<div class="main">
+
+  <div class="top">
+    <div class="top-box">
+      <div class="question-title">
+        <h1>What question do you have in mind now?</h1>
+      </div>
+      <div class="input-box row">
+        <input [(ngModel)]="newCreateEvent" placeholder="Enter the question..."
+               class="col-10 col-xl-6 col-md-10 mr-lg-4 mb-4 mb-xl-0" type="text">
+        <button class=" col-10 col-xl-3 col-md-4" (click)="sendNewEvent()" routerLink="/create-event">Create Event
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="middle row">
+    <div class=" middle-wrap d-flex col-xl-9 col-lg-9">
+      <div (click)="showAllRooms()" class="btn-middle" [ngClass]="btnMiddleActive === 'showAllRoom' && 'btn-middle-active'">
+        <div class="square-9-img mr-3"></div>
+        <span>Discover</span>
+      </div>
+      <div (click)="showUsersRoom()" class="btn-middle" [ngClass]="btnMiddleActive === 'showUsersRoom' && 'btn-middle-active'">
+        <div class="deactivate-2"></div>
+        <span>My Rooms</span>
+      </div>
+      <div (click)="comingSoon()" class="btn-middle" [ngClass]="btnMiddleActive === 'joinedRoom' && 'btn-middle-active'">
+        <span>Joined Rooms</span>
+      </div>
+      <div class="btn-middle" [ngClass]="btnMiddleActive === 'searchInput' && 'btn-middle-active'">
+        <div (click)="showSearchInput()" class="search-img"></div>
+        <input [(ngModel)]="searchWord" (keyup)="letsFindRooms($event)" class="search-input"
+               [ngClass]="showInputFlag && 'search-input-active'" type="text">
+      </div>
+    </div>
+    <div class="col-lg-3 d-flex justify-content-end media-pagination">
+      <div class="pagination">
+        <div (click)="prevRooms()" class="left-img-1"></div>
+        <div class="ml-3 mr-3 count">{{pageRoom}} / <span>{{letsFindRoomsLength()}}</span></div>
+        <div (click)="nextRooms()" class="right-img-1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+
+    <div *ngIf="!comSoon" class="card-wrap row">
+      <div (click)="activeCard(i)" *ngFor="let room of roomsSort; let i = index"
+           class="card-item col-xl-3 col-lg-6 col-md-12"
+           [ngClass]="i === activeRoom && testAnimation === i && 'card-item-down'">
+        <div class="inside">
+          <div class="avatar-wrap" [ngStyle]="{'background': room?.color}">
+            <div class="avatar">
+              <img src="{{room?.user.avatar}}" alt="#">
+            </div>
+          </div>
+          <div class="name-wrap">
+            <div class="nameRoom">{{room?.name}}</div>
+            <div class="nameUser pl-3 pr-3">{{room?.user.nickName}}</div>
+          </div>
+          <div class="icon-wrap">
+            <div class="d-flex">
+              <div class="desc-parcip-img mr-2"></div>
+              <span>11</span>
+            </div>
+            <div class="d-flex">
+              <div class="desc-list-img mr-2"></div>
+              <span>{{room?.privateEventsId.length > 0 ? room?.privateEventsId.length : room?.publicEventsId.length}}</span>
+            </div>
+            <div class="d-flex">
+              <div class="desc-rating-img mr-2"></div>
+              <span>11</span>
+            </div>
+            <div class="d-flex">
+              <div class="desc-social-img"></div>
+            </div>
+          </div>
+
+          <div *ngIf="i === activeRoom" class="activeCardButton" [ngClass]="i === activeRoom && 'test'">
+            <div class="insid">
+              <div class="card-question">
+                {{forEventId?.question}}
+                <span *ngIf="!(room?.privateEventsId.length === 1 || room?.publicEventsId.length === 1)"
+                      class="nameUser">(+{{room?.privateEventsId.length > 0 ? room?.privateEventsId.length - 1 : room?.publicEventsId.length - 1}}
+                  events)</span>
+              </div>
+              <div class="join-room">
+                <button>JOIN ROOM</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="comSoon">
+      <div class="comingSoon">
+        <h1>Coming soon</h1>
+      </div>
+    </div>
+  </div>
+</div>

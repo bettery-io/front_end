@@ -21,19 +21,19 @@ import {ShareModule} from "../../share/share.module";
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    BrowserModule,
-    FontAwesomeModule,
-    NgbModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forChild([
-      {path: "private_event/:id", component: PrivateMainComponent},
-      {path: 'public_event/:id', component: PublicMainComponent},
-    ]),
-    ShareModule
-  ],
+    imports: [
+        CommonModule,
+        BrowserModule,
+        FontAwesomeModule,
+        NgbModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule.forChild([
+            {path: 'private_event/:id', component: PrivateMainComponent},
+            {path: 'public_event/:id', component: PublicMainComponent},
+        ]),
+        ShareModule,
+    ],
   exports: [
   ],
   declarations: [

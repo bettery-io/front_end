@@ -1,33 +1,702 @@
 .lds-ripple
-    margin-top: 150px
-    position: relative
-    width: 80px
-    height: 80px
-    display: block
-    margin-left: auto
-    margin-right: auto
+  margin-top: 150px
+  position: relative
+  width: 80px
+  height: 80px
+  display: block
+  margin-left: auto
+  margin-right: auto
 
 .lds-ripple div
-    position: absolute
-    border: 4px solid #5682e2
-    opacity: 1
-    border-radius: 50%
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite
+  position: absolute
+  border: 4px solid #5682e2
+  opacity: 1
+  border-radius: 50%
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite
 
 .lds-ripple div:nth-child(2)
-    animation-delay: -0.5s
+  animation-delay: -0.5s
 
 @keyframes lds-ripple
-    0%
-        top: 36px
-        left: 36px
-        width: 0
-        height: 0
-        opacity: 1
+  0%
+    top: 36px
+    left: 36px
+    width: 0
+    height: 0
+    opacity: 1
 
-    100%
-        top: 0px
-        left: 0px
-        width: 72px
-        height: 72px
-        opacity: 0
+  100%
+    top: 0px
+    left: 0px
+    width: 72px
+    height: 72px
+    opacity: 0
+
+//=============== new style ======================
+main
+  font-family: 'Montserrat', sans-serif
+  align-items: center
+  display: flex
+  background: url("../../../assets/tokenSale/MaskMain.png") center -98px no-repeat, url("../../../assets/tokenSale/yellowBg.png") center -97px no-repeat #2C2C2C
+  background-size: 1920px
+  max-width: 1920px
+  margin: auto
+
+.wrapper
+  margin: auto
+  background: url("../../../assets/tokenSale/bg/vertical-points.png") 29px 1210px no-repeat
+  background-size: 53px 233px
+  max-width: 1440px
+
+.main-title
+  padding-top: 105px
+
+  & h2
+    font-style: normal
+    font-weight: bold
+    font-size: 32px
+    line-height: 44px
+    text-transform: uppercase
+    color: #151514
+
+  & h1
+    color: #277D37
+    font-style: normal
+    font-weight: bold
+    font-size: 42px
+    line-height: 44px
+    text-transform: uppercase
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    color: #FFFFFF
+
+header
+  padding-bottom: 350px
+  ///временно
+
+  //background: url("../../../assets/tokenSale/polygon6-1th.png") no-repeat
+  //background-size: 645px 645px
+  //background-position: right center
+
+.header-wrap
+  display: flex
+
+.first-img
+  background: url("../../../assets/tokenSale/polygon6-1th.png") 68px 70px no-repeat
+  background-size: contain
+  width: 645px
+  height: 645px
+
+.second-wrap
+  & h3
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFD300
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    color: #FFFFFF
+
+  & h3:before
+    content: ''
+    background: url("../../../assets/tokenSale/white6-big.png") left center no-repeat
+    background-size: contain
+    display: block
+    width: 42px
+    height: 42px
+    position: absolute
+    left: -45px
+
+  & h3:after
+    content: ''
+    background: url("../../../assets/tokenSale/bg/points.png") left center no-repeat
+    background-size: contain
+    display: block
+    width: 233px
+    height: 53px
+    position: absolute
+    left: 560px
+    top: -5px
+
+  a
+    font-weight: bold
+    color: #FFFFFF
+    text-decoration: underline
+
+.main-button
+  & button
+    background: #54DD96
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.16)
+    border-radius: 49px
+    border: none
+    font-style: normal
+    font-weight: bold
+    font-size: 24px
+    line-height: 56px
+    text-align: center
+    color: #1E1E1E
+
+.second-bottom
+  display: flex
+  text-align: center
+  margin-bottom: 110px
+
+  & h4
+    font-style: normal
+    font-weight: 800
+    font-size: 24px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFFFFF
+
+  & p
+    font-style: normal
+    font-weight: 600
+    font-size: 16px
+    line-height: 30px
+    text-align: center
+    color: #FFFFFF
+
+.item-color-1
+  background: linear-gradient(180deg, #DB00FF 0%, #FF0099 100%)
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15)
+  border-radius: 30px
+  padding: 59px 10px 30px 10px
+  margin-top: 160px
+
+.item-color-2
+  background: linear-gradient(180deg, #40D186 0%, #00A3C7 100%)
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15)
+  border-radius: 30px
+  padding: 59px 15px 30px 15px
+  margin-top: 84px
+
+.item-color-3
+  background: linear-gradient(180deg, #0094FF 0%, #AD00FF 100%)
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15)
+  border-radius: 30px
+  padding: 59px 10px 30px 10px
+
+.bottom-item
+  padding: 0 40px
+  position: relative
+
+.white6-img
+  background: url("../../../assets/tokenSale/white6-small.png") left center no-repeat
+  background-size: contain
+  width: 120px
+  height: 120px
+  position: absolute
+
+.white6-img-1
+  top: 95px
+  left: 176px
+
+.white6-img-2
+  top: 20px
+  left: 176px
+
+.white6-img-3
+  top: -65px
+  left: 176px
+
+.gramophone-img
+  background: url("../../../assets/tokenSale/second-icon-1.png") left center no-repeat
+  background-size: contain
+  width: 52px
+  height: 59px
+  position: absolute
+  top: 125px
+  left: 206px
+
+.stars-img
+  background: url("../../../assets/tokenSale/second-icon-2.png") left center no-repeat
+  background-size: contain
+  width: 60px
+  height: 57px
+  position: absolute
+  top: 50px
+  left: 202px
+
+.bag-img
+  background: url("../../../assets/tokenSale/second-icon-3.png") left center no-repeat
+  background-size: contain
+  width: 48px
+  height: 43px
+  position: absolute
+  top: -27px
+  left: 208px
+
+.third-title
+  text-align: center
+  padding-bottom: 65px
+
+  & h3
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFFFFF
+
+.third-bottom
+  display: flex
+
+.timerr
+  display: flex
+  justify-content: center
+  color: #FFFFFF
+  padding-top: 100px
+  padding-bottom: 205px
+
+  & a
+    font-style: normal
+    font-weight: 600
+    font-size: 18px
+    line-height: 30px
+    text-decoration-line: underline
+    color: #FFD300
+  & h4
+    font-style: normal
+    font-weight: 500
+    font-size: 32px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFFFFF
+
+
+.time-wrap
+  display: flex
+  line-height: 65px
+
+  & span
+    font-size: 32px
+    font-weight: bold
+
+.time-el
+  display: flex
+  background: url("../../../assets/tokenSale/time-black.png") left center no-repeat, url("../../../assets/tokenSale/time-black.png") right center no-repeat
+  background-size: contain
+  width: 108px
+  height: 68px
+  letter-spacing: 40px
+  padding-left: 15px
+  position: relative
+
+  & div
+    font-size: 32px
+    font-weight: bold
+    width: 146px
+    height: 90px
+
+.time-point
+  margin-left: 6px
+  margin-right: 6px
+
+#el-1:after
+  content: 'Day'
+  position: absolute
+  font-size: 16px
+  color: #FFFFFF
+  letter-spacing: 2px
+  bottom: -47px
+  left: 36px
+
+#el-2:after
+  content: 'Hours'
+  position: absolute
+  font-size: 16px
+  color: #FFFFFF
+  letter-spacing: 2px
+  bottom: -47px
+  left: 26px
+
+#el-3:after
+  content: 'Minutes'
+  position: absolute
+  font-size: 16px
+  color: #FFFFFF
+  letter-spacing: 2px
+  bottom: -47px
+  left: 14px
+
+#el-4:after
+  content: 'Seconds'
+  position: absolute
+  font-size: 16px
+  color: #FFFFFF
+  letter-spacing: 2px
+  bottom: -47px
+  left: 13px
+
+
+.tokenomics-img
+  background: url("../../../assets/tokenSale/tokenomicsIMG.png") left top no-repeat
+  background-size: contain
+  width: 769px
+  height: 545px
+
+.tokenomics-list
+  list-style: none
+  font-style: normal
+  font-weight: 600
+  font-size: 16px
+  line-height: 30px
+  color: #FFFFFF
+
+  & span
+    font-style: normal
+    font-weight: 800
+    font-size: 24px
+    line-height: 44px
+    text-transform: uppercase
+
+  & li
+    margin-bottom: 30px
+
+  & a
+    font-style: normal
+    font-weight: 600
+    font-size: 18px
+    line-height: 30px
+    text-decoration-line: underline
+    color: #FFD300
+
+.input-box
+  display: flex
+  padding-bottom: 172px
+
+  & span
+    color: #FFD300
+    font-size: 28px
+    font-weight: bold
+
+  & input
+    background: #FFFFFF
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16)
+    border-top-left-radius: 49px
+    border-bottom-left-radius: 49px
+    padding: 30.4px 89px 26px 26px
+    border: none
+
+  & input::placeholder
+    font-style: normal
+    font-weight: 600
+    font-size: 24px
+    line-height: 56px
+    color: #DCDCDC
+
+  & button
+    font-style: normal
+    font-weight: bold
+    font-size: 20px
+    line-height: 56px
+    color: #1E1E1E
+    background: #54DD96
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16)
+    border-top-right-radius: 49px
+    border-bottom-right-radius: 49px
+    padding: 13px 17px 12px 17px
+    border: none
+
+.input-left
+  & h3
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFD300
+    margin-bottom: 31px
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    color: #FFFFFF
+    margin-bottom: 28px
+
+.box
+  background: #202020
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25)
+  border-radius: 30px
+  padding: 23px 43px 26px 43px
+
+  & ul
+    list-style: none
+    color: #FFFFFF
+
+  & span
+    font-style: normal
+    font-weight: bold
+    font-size: 18px
+    line-height: 44px
+    color: #54DD96
+
+.bettery6-img
+  background: url("../../../assets/tokenSale/bettery6.png") left center no-repeat
+  background-size: contain
+  width: 79px
+  height: 77px
+  margin: auto
+
+.road-map-warp
+  display: flex
+  justify-content: space-between
+
+.road-map-item
+  margin: 20px 60px
+  background: #202020
+  border-radius: 14px
+  text-align: center
+  padding: 20px 10px
+  border-right: 2px solid #FFD300
+  border-bottom: 2px solid #FFD300
+
+  & span
+    font-weight: bold
+    font-size: 24px
+    line-height: 44px
+    text-align: center
+    text-transform: uppercase
+    color: #FFFFFF
+
+  & p
+    font-style: normal
+    font-weight: normal
+    font-size: 16px
+    line-height: 25px
+    text-align: center
+    color: #FFFFFF
+
+  & span:before
+    content: ''
+    background: url("../../../assets/tokenSale/white6-big.png") left center no-repeat
+    background-size: contain
+    display: block
+    width: 77px
+    height: 77px
+    position: absolute
+    left: 26px
+    top: -19px
+    transform: rotate(119deg)
+
+.road-item-active
+  & span
+    color: #54DD96
+
+  & p
+    font-weight: bold
+
+.road-map-title
+  text-align: center
+
+  & h2
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFFFFF
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15)
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    text-align: center
+    color: #FFFFFF
+    padding-top: 31px
+    padding-bottom: 40px
+
+.road-details
+  text-align: center
+  padding-top: 41px
+
+  & a
+    font-weight: bold
+    font-size: 18px
+    line-height: 30px
+    text-align: center
+    text-decoration-line: underline
+    color: #FFD300
+
+.resources-footer
+  padding-top: 184px
+
+.resources
+  display: flex
+
+  & h2
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFD300
+    margin-bottom: 24px
+
+  & h2:before
+    content: ''
+    background: url("../../../assets/tokenSale/white6-big.png") right center no-repeat
+    background-size: contain
+    display: block
+    width: 43px
+    height: 43px
+    position: absolute
+    left: -45px
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    color: #FFFFFF
+    margin-bottom: 24px
+
+  & ul
+    width: 80%
+
+  & li
+    font-style: normal
+    font-weight: 600
+    font-size: 18px
+    line-height: 26px
+    color: #54DD96
+    list-style: none
+    margin-bottom: 16px
+
+  & li:before
+    content: ''
+    background: url("../../../assets/tokenSale/white6-big.png") right center no-repeat
+    background-size: contain
+    display: block
+    width: 23px
+    height: 23px
+    position: absolute
+    left: 20px
+
+.res-icon-wrap
+  display: flex
+  justify-content: space-between
+  width: 80%
+
+  & p
+    font-weight: bold
+    text-decoration: underline
+    font-size: 16px
+
+.group-telegram-img
+  background: url("../../../assets/tokenSale/GroupTelegram.png") center center no-repeat
+  background-size: contain
+  width: 52px
+  height: 52px
+
+.group-world-img
+  background: url("../../../assets/tokenSale/GroupWorld.png") center center no-repeat
+  background-size: contain
+  width: 52px
+  height: 52px
+
+.group-mail-img
+  background: url("../../../assets/tokenSale/GroupMail.png") center center no-repeat
+  background-size: contain
+  width: 52px
+  height: 52px
+
+.group-letter-img
+  background: url("../../../assets/tokenSale/GroupLetter1.png") center center no-repeat
+  background-size: contain
+  width: 52px
+  height: 52px
+  position: relative
+
+.group-letter-img:after
+  content: ''
+  background: url("../../../assets/tokenSale/GroupLetter2.png") left center no-repeat
+  background-size: contain
+  width: 24px
+  height: 20px
+  position: absolute
+  left: 15px
+  top: 16px
+
+.icon-set
+  display: flex
+  align-items: center
+  flex-direction: column
+  text-align: center
+
+.footer-logo-img
+  background: url("../../../assets/share/Bettery.png") center center no-repeat
+  background-size: contain
+  width: 180px
+  height: 48px
+
+.subscribe-input
+  background: rgba(253, 217, 42, 0.0464926)
+  border: 1px solid #FDD92A
+  box-sizing: border-box
+  border-top-left-radius: 20px
+  border-bottom-left-radius: 20px
+  padding-bottom: 9px
+
+  &::placeholder
+    font-style: italic
+    font-weight: normal
+    font-size: 14px
+    line-height: 20px
+    color: #9E9E9E
+
+  &:focus
+    background-color: #ffffff
+    color: #111213
+
+.btn-sub
+  & button
+    background: #FDD92A
+    border-radius: 0 100px 100px 0
+    font-style: normal
+    font-weight: 600
+    font-size: 16px
+    line-height: 24px
+    color: #111213
+
+
+.btn-sub:focus
+  border: none
+  outline: none
+
+.footer
+  padding-top: 155px
+  padding-bottom: 50px
+  display: flex
+  justify-content: space-between
+
+  & h4
+  font-style: normal
+  font-weight: bold
+  font-size: 18px
+  line-height: 22px
+  color: #E6E6E6
+  margin-bottom: 13px
+
+  & p
+    font-weight: normal
+    font-size: 14px
+    line-height: 20px
+    color: #9E9E9E
+    margin-bottom: 13px
+

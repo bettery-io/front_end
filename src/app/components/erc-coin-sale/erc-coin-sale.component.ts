@@ -31,10 +31,10 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
 
   async connectToMetamask() {
     // Check if MetaMask is installed
+    this.errorMessage = undefined;
     if (!(window as any).ethereum) {
       this.errorMessage = "For buying coins you must have Metamask installed.";
     } else {
-
       if (!this.web3) {
         try {
           await (window as any).ethereum.enable();
@@ -44,7 +44,6 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
           this.errorMessage = "You need to allow MetaMask.";
         }
       }
-
       const coinbase = await this.web3.eth.getCoinbase();
       if (!coinbase) {
         this.errorMessage = "Please activate MetaMask first.";

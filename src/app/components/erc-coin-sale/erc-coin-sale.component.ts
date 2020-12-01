@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import Web3 from 'web3';
-import { GetService } from '../../services/get.service';
+import { PostService } from '../../services/post.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,14 +15,17 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   // new variable 
   web3: Web3 | undefined = null;
   errorMessage: string = undefined
-  getServiceSub: Subscription
+  postServiceSub: Subscription
   numberOfTokens = undefined;
 
 
-  constructor(public getService: GetService) { }
+  constructor(public postService: PostService) { }
 
   async ngOnInit() {
-    this.getServiceSub = this.getService.get("tokensale/info").subscribe((x) => {
+    let data = {
+      from: "dev"
+    }
+    this.postServiceSub = this.postService.post("tokensale/info", data).subscribe((x) => {
       console.log(x);
     }, (err) => {
       console.log(err)
@@ -86,8 +89,8 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.getServiceSub) {
-      this.getServiceSub.unsubscribe();
+    if (this.postServiceSub) {
+      this.postServiceSub.unsubscribe();
     }
   }
 }

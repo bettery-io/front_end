@@ -4,6 +4,7 @@ import { PostService } from '../../services/post.service';
 import { Subscription } from 'rxjs';
 import USDTToken from '../../../../build/contracts/IERC20.json';
 import TokenSale from '../../../../build/contracts/QuizeTokenSale.json';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'erc-coin-sale',
@@ -22,6 +23,7 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   constructor(public postService: PostService) { }
 
   async ngOnInit() {
+    console.log(environment.production);
     this.getDataFromDb();
   }
 

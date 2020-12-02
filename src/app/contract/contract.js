@@ -1,6 +1,5 @@
 import web3Obj from '../helpers/torus';
 import Web3 from 'web3';
-import TokenSaleJSON from '../../../build/contracts/QuizeTokenSale.json';
 import BetteryToken from '../../../build/contracts/BetteryToken.json'
 import TokenJSON from '../../../build/contracts/EthERC20Coin.json';
 import networkConfiguration from '../config/network.json'
@@ -36,23 +35,11 @@ export default class Contract {
         return new web3.eth.Contract(abi, "0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74")
     }
 
-
-    async tokenSaleMainETH(from) {
-        let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider)
-        let abiTokenSale = TokenSaleJSON.abi
-        return new web3.eth.Contract(abiTokenSale,
-            TokenSaleJSON.networks[networkConfiguration.goerli].address)
-    }
-
     async tokenContractMainETH(from) {
         let web3 = new Web3(from === "metamask" ? window.web3.currentProvider : web3Obj.web3.currentProvider)
         let abiTokenSale = TokenJSON.abi
         return new web3.eth.Contract(abiTokenSale,
             TokenJSON.networks[networkConfiguration.goerli].address)
-    }
-
-    tokenContractAddressMainETH() {
-        return TokenSaleJSON.networks[networkConfiguration.goerli].address
     }
 
     async getWETHContract() {

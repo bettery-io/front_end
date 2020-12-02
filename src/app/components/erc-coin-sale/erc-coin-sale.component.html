@@ -208,8 +208,8 @@
               while BTY supply is deccelerated, increasing its value for Users and Investors.
             </p>
             <div class="input-xl">
-              <input type="text" placeholder="Enter BTY Amount">
-              <button>BUY WITH METAMASK</button>
+              <input type="text" placeholder="Enter BTY Amount" [(ngModel)]="numberOfTokens">
+              <button (click)="connectToMetamask()">BUY WITH METAMASK</button>
               <p class="mt-3"><span>*</span>You will immediately receive BTY to your purchasing address directly.</p>
             </div>
           </div>

@@ -101,13 +101,13 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   nextRooms() {
-    if (this.pageRoom > Math.round(this.usersRoom?.length / 8)) {
+    if (this.pageRoom > Math.round(this.usersRoom?.length / 8) ||
+      this.pageRoom >= Math.round(this.allRooms?.length / 8) ||
+      this.pageRoom >= Math.round(this.roomsSort?.length / 8) && this.btnMiddleActive === 'searchInput'
+    ) {
       return;
     }
 
-    if (this.pageRoom >= Math.round(this.allRooms?.length / 8)) {
-      return;
-    }
     this.startLength = this.startLength + 8;
     this.showLength = this.showLength + 8;
     this.pageRoom = this.pageRoom + 1;
@@ -118,23 +118,34 @@ export class RoomsComponent implements OnInit, OnDestroy {
     } else {
       this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
     }
-
-
     this.activeRoom = null;
+  }
+
+  forLetsFindRoomsLength(currentList) {
+    if (isNaN(Math.ceil(currentList / 8))) {
+      return 1;
+    } else {
+      return Math.ceil(currentList / 8);
+    }
+
   }
 
   letsFindRoomsLength() {
     if (this.btnMiddleActive === 'showUsersRoom') {
-      return Math.ceil(this.usersRoom?.length / 8);
+      return this.forLetsFindRoomsLength(this.usersRoom?.length);
     }
+
+    if (this.btnMiddleActive === 'searchInput') {
+      return this.forLetsFindRoomsLength(this.roomsSort?.length);
+    }
+
     if (!this.usersRoom) {
-      return Math.ceil(this.allRooms?.length / 8);
+      return this.forLetsFindRoomsLength(this.allRooms?.length);
     } else if (this.roomsSort?.length > 0) {
       return Math.ceil(this.roomsSort?.length / 8);
     } else {
       return Math.ceil(this.usersRoom?.length / 8);
     }
-
   }
 
   activeCard(index) {
@@ -173,6 +184,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showUsersRoom() {
+    this.pageRoom = 1;
+    this.startLength = 0;
+    this.showLength = 8;
     if (this.userData) {
       this.getUsersRoomById(this.userData._id);
       this.btnMiddleActive = 'showUsersRoom';
@@ -211,6 +225,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   letsFindRooms(e) {
     let arr;
+    this.pageRoom = 1;
+    this.startLength = 0;
+    this.showLength = 8;
     if (this.searchWord.length > 3) {
       arr = _.filter(this.allRooms, o => {
         return o.name.toLowerCase().includes(this.searchWord.toLowerCase());

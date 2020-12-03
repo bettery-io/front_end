@@ -1,12 +1,12 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import Web3 from 'web3';
-import {PostService} from '../../services/post.service';
-import {Subscription} from 'rxjs';
+import { PostService } from '../../services/post.service';
+import { Subscription } from 'rxjs';
 import USDTToken from '../../../../build/contracts/IERC20.json';
 import TokenSale from '../../../../build/contracts/QuizeTokenSale.json';
-import {environment} from '../../../environments/environment';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {MetaMaskModalComponent} from '../share/meta-mask-modal/meta-mask-modal.component';
+import { environment } from '../../../environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MetaMaskModalComponent } from '../share/meta-mask-modal/meta-mask-modal.component';
 
 @Component({
   selector: 'erc-coin-sale',
@@ -15,7 +15,6 @@ import {MetaMaskModalComponent} from '../share/meta-mask-modal/meta-mask-modal.c
 })
 export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   web3: Web3 | undefined = null;
-  errorMessage: string = undefined;
   postServiceSub: Subscription;
   numberOfTokens = undefined;
 
@@ -56,10 +55,8 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   async connectToMetamask() {
     // Check if MetaMask is installed
     this.spinner = true;
-    this.errorMessage = undefined;
     if (!(window as any).ethereum) {
-      this.errorMessage = 'For buying coins you must have Metamask installed.';
-      this.openMetamaskModal('Metamask required!');
+      this.openMetamaskModal("Please install Metamask in your browser to proceed.", "Metamask required!");
       this.spinner = false;
     } else {
       if (!this.web3) {
@@ -68,64 +65,57 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
           window.web3 = new Web3(window.web3.currentProvider);
           this.web3 = new Web3(window.web3.currentProvider);
         } catch (error) {
-          this.errorMessage = 'You need to allow MetaMask.';
-          this.openMetamaskModal('access needed');
+          this.openMetamaskModal("Please allow Metamask to access to the webpage.", 'access needed');
           this.spinner = false;
         }
       }
       const coinbase = await this.web3.eth.getCoinbase();
       if (!coinbase) {
-        this.errorMessage = 'Please activate MetaMask first.';
+        this.openMetamaskModal('Please activate MetaMask first.', 'access needed');
         this.spinner = false;
         return;
       } else {
         let checkNetwork = await window.web3._provider.networkVersion;
         if (checkNetwork != '5') {
-          this.errorMessage = 'Plaese switch your network in MetaMask to the Main network.';
+          this.openMetamaskModal('Plaese switch your network in MetaMask to the Goerli network.', 'access needed');
           this.spinner = false;
         } else {
           this.buyToken(coinbase);
         }
       }
     }
-    console.log(this.errorMessage);
   }
 
 
   async buyToken(wallet) {
-    if (this.numberOfTokens <= 0) {
-      this.errorMessage = 'The value must be bigger than 0';
+    try {
+      let networkId = 5;
+      let tokenSaleAddress = TokenSale.networks[networkId].address;
+      let tokenAddress = '0xFCf9F99D135D8a78ab60CC59CcCF3108E813bA35';
+      let number = (Number(this.numberOfTokens) * Number(this.tokensaleInfo.price)).toFixed(4)
+      console.log(number)
+      let usdtContract = await this.connectToContract(wallet, USDTToken, tokenAddress);
+      let approveAmount = this.web3.utils.toWei(String(number), 'mwei');
+      let approve = await usdtContract.methods.approve(tokenSaleAddress, approveAmount).send();
+      console.log(approve);
+
+      let tokenSaleContract = await this.connectToContract(wallet, TokenSale, tokenSaleAddress);
+      let tokensAmount = this.web3.utils.toWei(String(this.numberOfTokens), 'ether');
+      let buy = await tokenSaleContract.methods.buyTokens(tokensAmount).send();
+      console.log(buy);
+      this.numberOfTokens = 0;
+      this.getDataFromDb();
       this.spinner = false;
-    } else {
-      this.errorMessage = undefined;
-      try {
-        let networkId = 5;
-        let tokenSaleAddress = TokenSale.networks[networkId].address;
-        let tokenAddress = '0xFCf9F99D135D8a78ab60CC59CcCF3108E813bA35';
-
-        let usdtContract = await this.connectToContract(wallet, USDTToken, tokenAddress);
-        let approveAmount = this.web3.utils.toWei(String(Number(this.numberOfTokens) * Number(this.tokensaleInfo.price)), 'mwei');
-        let approve = await usdtContract.methods.approve(tokenSaleAddress, approveAmount).send();
-        console.log(approve);
-
-        let tokenSaleContract = await this.connectToContract(wallet, TokenSale, tokenSaleAddress);
-        let tokensAmount = this.web3.utils.toWei(String(this.numberOfTokens), 'ether');
-        let buy = await tokenSaleContract.methods.buyTokens(tokensAmount).send();
-        console.log(buy);
-        this.numberOfTokens = 0;
-        this.getDataFromDb();
-        this.spinner = false;
-      } catch (err) {
-        this.errorMessage = err.message;
-        this.spinner = false;
-        console.log(err);
-      }
+    } catch (err) {
+      this.openMetamaskModal(err.message, 'Network error');
+      this.spinner = false;
+      console.log(err);
     }
   }
 
   async connectToContract(account, contract, address) {
     let abi: any = contract.abi;
-    return new this.web3.eth.Contract(abi, address, {from: account});
+    return new this.web3.eth.Contract(abi, address, { from: account });
   }
 
   ngOnDestroy() {
@@ -146,16 +136,17 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   }
 
   showPercentSlid() {
-    return {'left': this.percent + '%'};
+    return { 'left': this.percent + '%' };
   }
 
   yellowLineW() {
-    return {'width': this.percent + '%'};
+    return { 'width': this.percent + '%' };
   }
 
-  openMetamaskModal(num) {
-    const modalRef = this.modalService.open(MetaMaskModalComponent, {centered: true});
-    modalRef.componentInstance.modal = num;
+  openMetamaskModal(message, title) {
+    const modalRef = this.modalService.open(MetaMaskModalComponent, { centered: true });
+    modalRef.componentInstance.message = message;
+    modalRef.componentInstance.title = title;
   }
 
 

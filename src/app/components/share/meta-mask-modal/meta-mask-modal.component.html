@@ -1,5 +1,4 @@
-
-<div *ngIf="modal === 'Metamask required!'">
+<div>
   <div>
     <button type="button" class=" soonClose close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -7,34 +6,13 @@
     <div class="metaMaskFox-img"></div>
   </div>
   <div>
-    <h3 class="modal-title">Metamask required!</h3>
+    <h3 class="modal-title">{{title}}</h3>
   </div>
   <div>
-    <p class="modal-text">Please install Metamask in your browser to proceed.
-    </p>
+    <p class="modal-text">{{message}}</p>
   </div>
-  <div class="modal-two-btn">
+  <div class="modal-two-btn" *ngIf="title === 'Metamask required!'">
     <button class="btn-1" (click)="activeModal.dismiss('Cross click')">CANCEL</button>
     <a target="_blank" href="https://metamask.io/" class="btn-2">INSTALL</a>
   </div>
 </div>
-
-
-  <div *ngIf="modal === 'access needed'">
-    <div>
-      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <div class="metaMaskFox-img"></div>
-    </div>
-    <div>
-      <h3 class="modal-title">access needed</h3>
-    </div>
-    <div>
-      <p class="modal-text">Please allow Metamask to access to the webpage.</p>
-    </div>
-    <div class="modal-two-btn">
-      <button class="btn-2">ALLOW</button>
-    </div>
-  </div>
-

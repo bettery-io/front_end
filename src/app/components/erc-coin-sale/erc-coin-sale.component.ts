@@ -18,11 +18,14 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   errorMessage: string = undefined;
   postServiceSub: Subscription;
   numberOfTokens = undefined;
+
   tokensaleInfo: any;
   spinner: boolean = false;
 
   percent;
-
+  time;
+  timer;
+  timeInterval;
 
   constructor(
     public postService: PostService,
@@ -32,6 +35,10 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     console.log(environment.production);
     this.getDataFromDb();
+
+    this.setClock(1609227850);
+
+
   }
 
   getDataFromDb() {
@@ -149,5 +156,41 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   openMetamaskModal(num) {
     const modalRef = this.modalService.open(MetaMaskModalComponent, {centered: true});
     modalRef.componentInstance.modal = num;
+  }
+
+
+  updateClock(endTime) {
+    this.time = new Date();
+    this.time = Date.parse(this.time) / 1000;
+
+    let t = endTime - this.time,
+      days = Math.floor(t / (60 * 60 * 24)),
+      seconds = Math.floor(t % 60),
+      minutes = Math.floor((t / 60 % 60)),
+      hours = Math.floor(t / (60 * 60) % 24);
+    this.timer = {
+      'total': t,
+      days,
+      seconds,
+      minutes,
+      hours
+    };
+
+    if (this.timer?.total <= 0) {
+      clearInterval(this.timeInterval);
+    }
+  }
+
+  setClock(endTime) {
+    this.timeInterval = setInterval(() => this.updateClock(endTime), 1000);
+    this.updateClock(endTime);
+  }
+
+  getZero = (num) => {
+    return num >= 0 && num < 10 ? '0' + num : num;
+  }
+
+  checkValidBtn() {
+    return this.numberOfTokens === undefined || this.numberOfTokens <= 0;
   }
 }

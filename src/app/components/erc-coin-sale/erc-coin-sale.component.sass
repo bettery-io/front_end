@@ -81,7 +81,6 @@ nav
   left: 1px
   top: -14px
 
-
 .nav-img-letter:before
   content: ''
   background: url("../../../assets/tokenSale/tok-icon-letter.png")  left center no-repeat
@@ -102,6 +101,7 @@ nav
   position: absolute
   left: -21px
   bottom: 2px
+  cursor: pointer
 
 .nav-icon
   display: flex
@@ -119,6 +119,48 @@ nav
       cursor: pointer
       font-size: 16px
 
+.mob-menu-img
+  background: url("../../../assets/tokenSale/mob-menu.png") left center no-repeat
+  background-size: contain
+  width: 24px
+  height: 20px
+
+.mob-platform
+  position: relative
+
+.mob-platform:before
+  content: ''
+  background: url("../../../assets/tokenSale/ar.png") left center no-repeat
+  background-size: contain
+  width: 14px
+  height: 14px
+  position: absolute
+  left: 13%
+  top: 28%
+
+
+#dropdownBasic1:before
+  border: none
+  content: none
+
+#dropdownBasic1:after
+  border: none
+  content: none
+
+.mobile-menu
+  display: none
+
+  & a
+    font-style: normal
+    font-weight: bold
+    font-size: 14px
+    line-height: 20px
+    color: #0B1511
+.nav-icon2
+  position: absolute
+  left: -130px
+  top: 13px
+  display: none
 //=============== new style ======================
 .pl-9
   padding-left: 9px
@@ -997,6 +1039,7 @@ main
     display: block
   .input-box
     & input
+      margin-left: 0
       border-radius: 49px
       width: 100%
     & button
@@ -1013,6 +1056,7 @@ main
       text-align: center
   .res-icon-wrap
     width: 100%
+
 
 
 
@@ -1174,11 +1218,48 @@ main
       &  a
         font-size: 14px
 
-@media (max-width: 1250px)
+@media (max-width: 1328px)
+  .nav-list
+    & a
+      margin-right: 25px
+  .logo
+    margin-right: 59px
+
+
+@media (max-width: 1177px)
+  .nav-list
+    & li
+      & a
+        font-size: 12px
+        margin-right: 18px
+
+@media (max-width: 1023px)
   .nav-list
     display: none
   .logo
     margin-right: 59px
+  .mobile-menu
+    display: inline-block
+  nav
+    justify-content: space-between
+    padding-left: 16px
+    padding-right: 16px
+    height: 48px
+  .nav-icon
+    display: none
+  .nav-icon2
+    display: block
+  .logo
+    width: 66px
+    height: 18px
+  .nav-img-mail:before, .nav-img-telegram:before, .nav-img-letter:before
+    width: 24px
+    height: 20px
+
+.correct-left
+  left: -139px !important
+  width: 180px
+  text-align: right
 
 .test-bg
   background: url("../../../assets/tokenSale/bg/GroupPeople.png") 100% 88% no-repeat
@@ -1189,4 +1270,3 @@ main
   background-size: 100%
   max-width: 1920px
   margin: auto
-

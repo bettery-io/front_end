@@ -1,33 +1,1272 @@
 .lds-ripple
-    margin-top: 150px
-    position: relative
-    width: 80px
-    height: 80px
-    display: block
-    margin-left: auto
-    margin-right: auto
+  margin-top: 150px
+  position: relative
+  width: 80px
+  height: 80px
+  display: block
+  margin-left: auto
+  margin-right: auto
 
 .lds-ripple div
-    position: absolute
-    border: 4px solid #5682e2
-    opacity: 1
-    border-radius: 50%
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite
+  position: absolute
+  border: 4px solid #5682e2
+  opacity: 1
+  border-radius: 50%
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite
 
 .lds-ripple div:nth-child(2)
-    animation-delay: -0.5s
+  animation-delay: -0.5s
 
 @keyframes lds-ripple
-    0%
-        top: 36px
-        left: 36px
-        width: 0
-        height: 0
-        opacity: 1
+  0%
+    top: 36px
+    left: 36px
+    width: 0
+    height: 0
+    opacity: 1
 
-    100%
-        top: 0px
-        left: 0px
-        width: 72px
-        height: 72px
-        opacity: 0
+  100%
+    top: 0px
+    left: 0px
+    width: 72px
+    height: 72px
+    opacity: 0
+//====== nav menu =====
+nav
+  display: flex
+  justify-content: center
+  align-items: center
+  background: #151514
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15)
+  font-style: normal
+  font-weight: bold
+  font-size: 14px
+  line-height: 20px
+  color: #FFFFFF
+  height: 100px
+  max-width: 1920px
+  margin: auto
+  & a
+    font-style: normal
+    font-weight: bold
+    font-size: 14px
+    line-height: 20px
+    color: #FFFFFF
+.logo
+  background: url("../../../assets/share/Bettery.png") left center no-repeat
+  background-size: contain
+  width: 145px
+  height: 39px
+  margin-right: 210px
+
+.nav-img-telegram:before
+  content: ''
+  background: url("../../../assets/tokenSale/tok-icon-telegram.png")  left center no-repeat
+  background-size: contain
+  width: 38px
+  height: 32px
+  cursor: pointer
+  position: absolute
+  left: 38px
+  top: -14px
+
+.nav-img-mail:before
+  content: ''
+  background: url("../../../assets/tokenSale/tok-mail-icon.png")  left center no-repeat
+  background-size: contain
+  width: 38px
+  height: 32px
+  cursor: pointer
+  position: absolute
+  left: 1px
+  top: -14px
+
+.nav-img-letter:before
+  content: ''
+  background: url("../../../assets/tokenSale/tok-icon-letter.png")  left center no-repeat
+  background-size: contain
+  width: 38px
+  height: 32px
+  cursor: pointer
+  position: absolute
+  left: 75px
+  top: -14px
+
+.ar-img:before
+  content: ''
+  background: url("../../../assets/tokenSale/ar.png") left center no-repeat
+  width: 18px
+  height: 15px
+  background-size: contain
+  position: absolute
+  left: -21px
+  bottom: 2px
+  cursor: pointer
+
+.nav-icon
+  display: flex
+  width: 160px
+
+.nav-list
+  & ul
+    display: flex
+    list-style: none
+    margin: 0
+    padding: 0
+  & li
+    & a
+      margin-right: 32px
+      cursor: pointer
+      font-size: 16px
+
+.mob-menu-img
+  background: url("../../../assets/tokenSale/mob-menu.png") left center no-repeat
+  background-size: contain
+  width: 24px
+  height: 20px
+
+.mob-platform
+  position: relative
+
+.mob-platform:before
+  content: ''
+  background: url("../../../assets/tokenSale/ar.png") left center no-repeat
+  background-size: contain
+  width: 14px
+  height: 14px
+  position: absolute
+  left: 13%
+  top: 28%
+
+
+#dropdownBasic1:before
+  border: none
+  content: none
+
+#dropdownBasic1:after
+  border: none
+  content: none
+
+.mobile-menu
+  display: none
+
+  & a
+    font-style: normal
+    font-weight: bold
+    font-size: 14px
+    line-height: 20px
+    color: #0B1511
+.nav-icon2
+  position: absolute
+  left: -130px
+  top: 13px
+  display: none
+//=============== new style ======================
+.pl-9
+  padding-left: 9px
+
+main
+  font-family: 'Montserrat', sans-serif
+  align-items: center
+  display: flex
+  background: url("../../../assets/tokenSale/MaskMain.png") center -98px no-repeat, url("../../../assets/tokenSale/yellowBg.png") center -97px no-repeat, url("../../../assets/tokenSale/bg/bg-down.png") bottom center no-repeat
+  background-size: 1920px
+  max-width: 1920px
+  margin: 0 auto 0 auto
+  padding: 0 60px
+
+
+.wrapper
+  margin: auto
+  background: url("../../../assets/tokenSale/bg/vertical-points.png") 29px 1210px no-repeat
+  background-size: 53px 233px
+  max-width: 1440px
+
+.main-title
+  padding-top: 105px
+
+  & h2
+    font-style: normal
+    font-weight: bold
+    font-size: 32px
+    line-height: 44px
+    text-transform: uppercase
+    color: #151514
+
+  & h1
+    color: #277D37
+    font-style: normal
+    font-weight: bold
+    font-size: 49px
+    line-height: 44px
+    text-transform: uppercase
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 20px
+    line-height: 30px
+    color: #151514
+
+.slid-box
+  padding-top: 145px
+  padding-bottom: 125px
+  padding-left: 30px
+  padding-right: 18px
+
+.header-wrap
+  display: flex
+  justify-content: center
+  //padding-bottom: 75px
+
+.first-img
+  background: url("../../../assets/tokenSale/polygon6-1th.png") 68px 70px no-repeat
+  background-size: contain
+  width: 645px
+  height: 645px
+
+.second-wrap
+  background: url("../../../assets/tokenSale/bg/bg.png") 10% top no-repeat
+  background-size: 25%
+  & h3
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFD300
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    color: #FFFFFF
+
+  & h3:after
+    content: ''
+    background: url("../../../assets/tokenSale/bg/points.png") left center no-repeat
+    background-size: contain
+    display: block
+    width: 233px
+    height: 53px
+    position: absolute
+    left: 560px
+    top: -5px
+
+  a
+    font-weight: bold
+    color: #FFFFFF
+    text-decoration: underline
+
+.test-img
+      background: url("../../../assets/tokenSale/white6-big.png") left center no-repeat
+      background-size: contain
+      width: 49px
+      height: 42px
+      margin-right: 12px
+.yellow6
+    background: url("../../../assets/tokenSale/yellow6.png") left center no-repeat
+    background-size: contain
+    width: 49px
+    height: 42px
+    margin-right: 12px
+
+
+.tokSale-Progress
+  margin-left: 14%
+  & h3
+    font-style: normal
+    font-weight: bold
+    font-size: 24px
+    line-height: 30px
+    text-align: center
+    color: #FFD300
+
+
+.slider
+  text-align: center
+  color: #FFFFFF
+  font-weight: bold
+  margin-bottom: 35px
+  padding-top: 20px
+  padding-bottom: 15px
+  margin-left: 14%
+
+  & span
+    font-weight: bold
+    font-size: 16px
+    line-height: 30px
+    text-align: center
+    color: #FFD300
+
+.line-box
+  background: #1E1E1E
+  border-radius: 10px
+  padding: 20px 20px 10px 20px
+
+.line
+  background: #E3E3E3
+  border-radius: 10px
+  height: 9px
+  margin: 0 0 8px 0
+
+.yellow-line
+  background: #FFD300
+  border-radius: 10px
+  height: 9px
+  width: 47%
+  position: absolute
+  top: 0
+  left: 0
+
+.line-circle
+  background: url("../../../assets/tokenSale/white6-big.png") left center no-repeat
+  background-size: contain
+  width: 19px
+  height: 19px
+  position: absolute
+  top: -50%
+  left: 47%
+
+.bg-hard
+  //background: url("../../../assets/tokenSale/polygon6-1th.png") -16px -66px no-repeat
+  background: url("../../../assets/tokenSale/polygon6-1th.png") center -66px no-repeat
+  background-size: 760px
+
+.main-button
+  display: flex
+  justify-content: center
+  margin-left: 14%
+
+  & button
+    background: #54DD96
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.16)
+    border-radius: 49px
+    border: none
+    font-style: normal
+    font-weight: bold
+    font-size: 24px
+    line-height: 56px
+    text-align: center
+    color: #1E1E1E
+    padding: 5px 83px
+    outline: none
+
+.token-left
+  margin-left: 14%
+  & h4
+    font-style: normal
+    font-weight: bold
+    font-size: 18px
+    line-height: 30px
+    text-align: center
+    color: #54DD96
+
+.tk-left
+  background: #1E1E1E
+  border-radius: 10px
+  font-style: normal
+  font-weight: bold
+  font-size: 40px
+  line-height: 30px
+  text-align: center
+  color: #FFFFFF
+  margin-bottom: 46px
+  padding-top: 15px
+  padding-bottom: 15px
+
+
+.second-bottom
+  display: flex
+  text-align: center
+  margin-bottom: 110px
+
+  & h4
+    font-style: normal
+    font-weight: 800
+    font-size: 24px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFFFFF
+
+  & p
+    font-style: normal
+    font-weight: 600
+    font-size: 16px
+    line-height: 30px
+    text-align: center
+    color: #FFFFFF
+
+.item-color-1
+  background: linear-gradient(180deg, #DB00FF 0%, #FF0099 100%)
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15)
+  border-radius: 30px
+  padding: 59px 10px 30px 10px
+  margin-top: 160px
+  position: relative
+
+.item-color-2
+  background: linear-gradient(180deg, #40D186 0%, #00A3C7 100%)
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15)
+  border-radius: 30px
+  padding: 59px 15px 30px 15px
+  margin-top: 84px
+
+.item-color-3
+  background: linear-gradient(180deg, #0094FF 0%, #AD00FF 100%)
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15)
+  border-radius: 30px
+  padding: 59px 10px 30px 10px
+
+.bottom-item
+  padding: 0 40px
+  position: relative
+
+.white6-img
+  background: url("../../../assets/tokenSale/white6-small.png") left center no-repeat
+  background-size: contain
+  width: 120px
+  height: 120px
+  position: absolute
+
+.white6-test
+  top: 0
+  left: 50%
+
+.white6-img-1
+  top: 22%
+  left: 40%
+
+.white6-img-2
+  top: 5%
+  left: 37%
+
+.white6-img-3
+  top: -15%
+  left: 37%
+
+.gramophone-img
+  background: url("../../../assets/tokenSale/second-icon-1.png") left center no-repeat
+  background-size: contain
+  width: 120px
+  height: 120px
+  position: absolute
+  top: 23%
+  left: 38%
+
+.stars-img
+  background: url("../../../assets/tokenSale/second-icon-2.png") left center no-repeat
+  background-size: contain
+  width: 120px
+  height: 120px
+  position: absolute
+  top: 5%
+  left: 38%
+
+.bag-img
+  background: url("../../../assets/tokenSale/second-icon-3.png") left center no-repeat
+  background-size: contain
+  width: 120px
+  height: 120px
+  position: absolute
+  top: -14%
+  left: 38%
+
+.third-title
+  display: flex
+  justify-content: center
+  text-align: center
+  padding-bottom: 65px
+
+  & h3
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFFFFF
+
+.third-bottom
+  display: flex
+
+.timerr
+  display: flex
+  justify-content: center
+  color: #FFFFFF
+  padding-top: 100px
+  padding-bottom: 205px
+  text-align: center
+
+  & a
+    font-style: normal
+    font-weight: 600
+    font-size: 18px
+    line-height: 30px
+    text-decoration-line: underline
+    color: #FFD300
+
+  & h4
+    font-style: normal
+    font-weight: 500
+    font-size: 32px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFFFFF
+
+.learMore-li-new
+  display: none
+
+.time-wrap
+  display: flex
+  line-height: 65px
+  justify-content: center
+
+  & span
+    font-size: 32px
+    font-weight: bold
+
+.time-el
+  display: flex
+  background: url("../../../assets/tokenSale/time-black.png") left center no-repeat, url("../../../assets/tokenSale/time-black.png") right center no-repeat
+  background-size: contain
+  width: 108px
+  height: 68px
+  letter-spacing: 38px
+  padding-left: 15px
+  position: relative
+
+  & div
+    font-size: 32px
+    font-weight: bold
+    width: 146px
+    height: 90px
+
+.time-point
+  margin-left: 6px
+  margin-right: 6px
+
+#el-1:after
+  content: 'Day'
+  position: absolute
+  font-size: 16px
+  color: #FFFFFF
+  letter-spacing: 2px
+  bottom: -47px
+  left: 36px
+
+#el-2:after
+  content: 'Hours'
+  position: absolute
+  font-size: 16px
+  color: #FFFFFF
+  letter-spacing: 2px
+  bottom: -47px
+  left: 26px
+
+#el-3:after
+  content: 'Minutes'
+  position: absolute
+  font-size: 16px
+  color: #FFFFFF
+  letter-spacing: 2px
+  bottom: -47px
+  left: 14px
+
+#el-4:after
+  content: 'Seconds'
+  position: absolute
+  font-size: 16px
+  color: #FFFFFF
+  letter-spacing: 2px
+  bottom: -47px
+  left: 13px
+
+
+.tokenomics-img
+  background: url("../../../assets/tokenSale/tokenomicsIMG.png") center top no-repeat
+  background-size: contain
+  width: 100%
+  height: 545px
+
+.tokenomics-list
+  list-style: none
+  font-style: normal
+  font-weight: 600
+  font-size: 16px
+  line-height: 30px
+  color: #FFFFFF
+
+  & span
+    font-style: normal
+    font-weight: 800
+    font-size: 24px
+    line-height: 44px
+    text-transform: uppercase
+
+  & li
+    margin-bottom: 30px
+
+.input-sm
+  display: none
+
+.input-box
+  display: flex
+  padding-bottom: 172px
+
+  & span
+    color: #FFD300
+    font-size: 28px
+    font-weight: bold
+
+  & input
+    margin-left: 60px
+    background: #FFFFFF
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16)
+    border-top-left-radius: 49px
+    border-bottom-left-radius: 49px
+    padding: 31px 89px 26px 26px
+    border: none
+    outline: none
+    -moz-appearance: textfield !important
+  & input::-webkit-inner-spin-button
+      -webkit-appearance: none !important
+      -moz-appearance: textfield !important
+      appearance: none
+
+
+
+
+  & input::placeholder
+    font-style: normal
+    font-weight: 600
+    font-size: 24px
+    line-height: 56px
+    color: #DCDCDC
+
+  & button
+    font-style: normal
+    font-weight: bold
+    font-size: 20px
+    line-height: 56px
+    color: #1E1E1E
+    background: #54DD96
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16)
+    border-top-right-radius: 49px
+    border-bottom-right-radius: 49px
+    padding: 13px 17px 12px 17px
+    border: none
+    outline: none
+
+.input-left
+  & h3
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFD300
+    margin-bottom: 31px
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    color: #FFFFFF
+    margin-bottom: 28px
+    padding-left: 60px
+
+.box
+  background: #202020
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25)
+  border-radius: 30px
+  padding: 23px 15px 26px 32px
+
+  & ul
+    list-style: none
+    color: #FFFFFF
+    letter-spacing: 1px
+    padding: 0
+
+  & span
+    font-style: normal
+    font-weight: bold
+    font-size: 18px
+    line-height: 44px
+    color: #54DD96
+
+.bettery6-img
+  background: url("../../../assets/tokenSale/bettery6.png") left center no-repeat
+  background-size: contain
+  width: 79px
+  height: 77px
+  margin: auto
+
+.road-map-warp
+  display: flex
+  justify-content: space-between
+  //overflow: hidden
+
+.road-map-item
+  margin: 20px 60px
+  background: #202020
+  border-radius: 14px
+  text-align: center
+  padding: 20px 10px
+  border-right: 2px solid #FFD300
+  border-bottom: 2px solid #FFD300
+  min-height: 202px
+
+  & span
+    font-weight: bold
+    font-size: 24px
+    line-height: 44px
+    text-align: center
+    text-transform: uppercase
+    color: #FFFFFF
+
+  & p
+    font-style: normal
+    font-weight: normal
+    font-size: 16px
+    line-height: 25px
+    text-align: center
+    color: #FFFFFF
+
+  & span:before
+    content: ''
+    background: url("../../../assets/tokenSale/white6-big.png") left center no-repeat
+    background-size: contain
+    display: block
+    width: 60px
+    height: 67px
+    position: absolute
+    left: 36px
+    top: -19px
+    transform: rotate(119deg)
+
+  & #active:before
+    content: ''
+    background: url("../../../assets/tokenSale/activ-card.png") left center no-repeat
+    background-size: contain
+    display: block
+    width: 77px
+    height: 77px
+    position: absolute
+    left: 26px
+    top: -19px
+    transform: rotate(119deg)
+
+.road-item-active
+  & span
+    color: #54DD96
+
+  & p
+    font-weight: bold
+
+.road-map-title
+  text-align: center
+
+  & h2
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFFFFF
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15)
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    text-align: center
+    color: #FFFFFF
+    padding-top: 31px
+    padding-bottom: 40px
+    width: 70%
+    margin: auto
+
+.road-details
+  text-align: center
+  padding-top: 41px
+
+  & a
+    font-weight: bold
+    font-size: 18px
+    line-height: 30px
+    text-align: center
+    text-decoration-line: underline
+    color: #FFD300
+
+.resources-footer
+  padding-top: 184px
+  background: url("../../../assets/tokenSale/bg/points.png") 200px 100px no-repeat
+  background-size: 13% 5%
+
+.bg-square
+  background: url("../../../assets/tokenSale/bg/square-points.png") 64% 97% no-repeat
+  background-size: 20%
+
+.wrap-for-bg
+  background: url("../../../assets/tokenSale/bg/people-bg.png") 112% 8% no-repeat
+  background-size: 75%
+
+.resources
+  display: flex
+
+  & h2
+    font-style: normal
+    font-weight: normal
+    font-size: 40px
+    line-height: 44px
+    text-transform: uppercase
+    color: #FFD300
+    margin-bottom: 24px
+
+  & p
+    font-style: normal
+    font-weight: 500
+    font-size: 18px
+    line-height: 30px
+    color: #FFFFFF
+    margin-bottom: 24px
+
+  & ul
+    width: 80%
+
+  & li
+    font-style: normal
+    font-weight: 600
+    font-size: 18px
+    line-height: 26px
+    color: #54DD96
+    list-style: none
+    margin-bottom: 16px
+
+  & li:before
+    content: ''
+    background: url("../../../assets/tokenSale/white6-big.png") right center no-repeat
+    background-size: contain
+    display: block
+    width: 23px
+    height: 23px
+    position: absolute
+    left: 20px
+
+.res-icon-wrap
+  display: flex
+  justify-content: space-between
+  width: 90%
+
+  & p
+    font-weight: bold
+    text-decoration: underline
+    font-size: 16px
+
+.group-telegram-img
+  background: url("../../../assets/tokenSale/GroupTelegram.png") center center no-repeat
+  background-size: contain
+  width: 52px
+  height: 52px
+
+.group-world-img
+  background: url("../../../assets/tokenSale/GroupWorld.png") center center no-repeat
+  background-size: contain
+  width: 52px
+  height: 52px
+
+.group-mail-img
+  background: url("../../../assets/tokenSale/GroupMail.png") center center no-repeat
+  background-size: contain
+  width: 52px
+  height: 52px
+
+.group-letter-img
+  background: url("../../../assets/tokenSale/GroupLetter1.png") center center no-repeat
+  background-size: contain
+  width: 52px
+  height: 52px
+  position: relative
+
+.group-letter-img:after
+  content: ''
+  background: url("../../../assets/tokenSale/GroupLetter2.png") left center no-repeat
+  background-size: contain
+  width: 24px
+  height: 20px
+  position: absolute
+  left: 15px
+  top: 16px
+
+.icon-set
+  display: flex
+  align-items: center
+  flex-direction: column
+  text-align: center
+
+.footer-logo-img
+  background: url("../../../assets/share/Bettery.png") 15px center no-repeat
+  background-size: contain
+  width: 180px
+  height: 48px
+
+.subscribe-input
+  background: rgba(253, 217, 42, 0.0464926)
+  border: 1px solid #FDD92A
+  box-sizing: border-box
+  border-top-left-radius: 20px
+  border-bottom-left-radius: 20px
+  padding-bottom: 9px
+
+  &::placeholder
+    font-style: italic
+    font-weight: normal
+    font-size: 14px
+    line-height: 20px
+    color: #9E9E9E
+
+  &:focus
+    background-color: #ffffff
+    color: #111213
+
+.btn-sub
+  & button
+    background: #FDD92A
+    border-radius: 0 100px 100px 0
+    font-style: normal
+    font-weight: 600
+    font-size: 16px
+    line-height: 24px
+    color: #111213
+
+
+.btn-sub:focus
+  border: none
+  outline: none
+
+.footer
+  padding-top: 155px
+  padding-bottom: 50px
+  display: flex
+  justify-content: space-between
+
+  & h4
+    font-style: normal
+    font-weight: bold
+    font-size: 18px
+    line-height: 22px
+    color: #E6E6E6
+    margin-bottom: 13px
+
+  & p
+    font-weight: normal
+    font-size: 14px
+    line-height: 20px
+    color: #9E9E9E
+    margin-bottom: 13px
+
+@media (max-width: 1439px)
+  main
+    padding: 0 16px
+  .tokSale-Progress
+    & h3
+      font-size: 20px
+      font-weight: bold
+  .slider
+    & span
+      font-size: 14px
+  .token-left
+    & h4
+      font-size: 16px
+  .tk-left
+    font-size: 30px
+  .main-button
+    & button
+      font-size: 20px
+      padding: 5px 53px
+      cursor: pointer
+@media (max-width: 1300px)
+  .bg-hard
+    background: url('../../../assets/tokenSale/polygon6-1th.png') -66px -86px no-repeat
+    background-size: 760px
+
+  .input-box
+    & input::placeholder
+      font-size: 18px
+    & button
+      font-size: 18px
+    & input
+      padding: 30.4px 67px 26px 26px
+
+@media (max-width: 1024px)
+  .main-title
+    & h2
+      font-size: 26px
+    & h1
+      font-size: 36px
+    & p
+      font-size: 16px
+  .tokenomics-img
+    height: 300px
+
+//===================
+
+@media (max-width: 1199px)
+  .second-bottom
+    justify-content: center
+  .item-color-1
+    margin-top: 73px
+  .item-color-2
+    margin-top: 73px
+  .item-color-3
+    margin-top: 73px
+  .white6-img-1,.white6-img-2,.white6-img-3
+    top: 4%
+    left: 44%
+  //  =========
+
+  .timerr
+    padding-top: 48px
+  .time-wrap
+    padding-top: 16px
+    margin-bottom: 60px
+  .learMore-li
+      display: none
+  .learMore-li-new
+    display: block
+  .input-box
+    & input
+      margin-left: 0
+      border-radius: 49px
+      width: 100%
+    & button
+      border-radius: 49px
+      width: 100%
+      margin-top: 16px
+  .input-sm
+    display: block
+  .input-xl
+    display: none
+  .box
+    & ul
+      padding-left: 0
+      text-align: center
+  .res-icon-wrap
+    width: 100%
+
+
+
+
+@media (max-width: 800px)
+  .tokSale-Progress h3, .time-wrap span, .timerr h4
+      font-size: 16px
+
+  .second-wrap h3, .third-title h3, .input-left h3, .road-map-title h2, .resources h2
+    font-size: 24px
+
+  .second-wrap p, .tokenomics-list, .timerr a, .input-left p, .road-map-title p, .road-details a, .resources p, .resources li
+    font-size: 14px
+
+  .second-wrap
+    & h3:after
+      display: none
+  .stars-img,.bag-img,.gramophone-img
+      width: 100px
+      height: 100px
+
+  .tokenomics-list
+    & span
+      font-size: 20px
+  .timerr
+    & h4
+      line-height: 20px
+  .time-el
+    width: 66px
+    height: 41px
+    padding-left: 13px
+    letter-spacing: 25px
+  .time-wrap
+    line-height: 30px
+
+  .time-point
+    margin-left: 3px
+    margin-right: 3px
+    line-height: 37px
+
+  #el-1:after,#el-2:after,#el-3:after,#el-4:after
+    font-size: 12px
+    bottom: -28px
+    letter-spacing: 2px
+
+  #el-1:after
+    left: 19px
+
+  #el-2:after
+   left: 12px
+
+  #el-3:after, #el-4:after
+    left: 4px
+
+  .footer
+    & h4
+      font-size: 18px
+    & p
+      font-size: 12px
+
+@media (max-width: 320px)
+  .white6-img-1,.white6-img-2,.white6-img-3
+    left: 36%
+
+@media(max-width: 991px)
+  .main-title
+    padding-top: 0
+  .second-bottom
+    margin-bottom: 70px
+  .tokenomics-list
+    & li
+      margin-bottom: 30px
+  .timerr
+    padding-bottom: 70px
+  .input-box
+    padding-bottom: 111px
+  .resources-footer
+    padding-top: 64px
+  .footer
+    padding-top: 118px
+  .pl-9
+    padding-left: 2px
+
+  main
+    background: url("../../../assets/tokenSale/MaskMain.png") center 408px no-repeat, url("../../../assets/tokenSale/yellowBg.png") center -97px no-repeat #2C2C2C
+    background-size: 1920px
+  .second
+    margin-top: 160px
+  .slid-box
+    padding-bottom: 127px
+
+  //===
+
+  .adap-hard
+    width: 64%
+    margin-left: 116px
+
+  .solid-box
+    padding-top: 90px
+
+  .bg-hard
+    background: url("../../../assets/tokenSale/polygon6-1th.png") 33px -136px no-repeat
+    background-size: 877px
+
+@media(max-width: 800px)
+  .adap-hard
+    width: 100%
+    margin-left: 0
+  .tokSale-Progress, .slider, .token-left, .main-button
+    margin: auto
+  .bg-hard
+    background: url("../../../assets/tokenSale/polygon6-1th.png") center center no-repeat
+    background-size: 877px
+  .slid-box
+    padding-left: 0
+    padding-right: 0
+
+
+@media (max-width: 500px)
+  .white6-img-1,.white6-img-2,.white6-img-3
+    left: 39%
+  .bottom-item
+    padding: 0 16px
+  .bettery6-img
+    width: 66px
+  .box
+    padding: 23px
+    & span
+      font-size: 16px
+      line-height: 27px
+  .input-box
+    & input
+      font-size: 16px
+      padding: 17px 26px 16px 26px
+    & button
+      font-size: 16px
+      line-height: 32px
+    .road-map-item
+      margin: 20px
+  .main-button
+    & button
+      font-size: 14px
+      padding: 5px 44px
+  .bg-hard
+    background: url("../../../assets/tokenSale/polygon6-1th.png") center center no-repeat
+    background-size: 700px
+
+@media (max-width: 767px)
+  .second
+    margin-top: 115px
+
+.disabled
+  color: rgba(30, 30, 30, 0.31) !important
+  background: #A4A4A4 !important
+  cursor: not-allowed
+
+@media (max-width: 1500px)
+  .nav-list
+    & li
+      &  a
+        font-size: 14px
+
+@media (max-width: 1328px)
+  .nav-list
+    & a
+      margin-right: 25px
+  .logo
+    margin-right: 59px
+
+
+@media (max-width: 1177px)
+  .nav-list
+    & li
+      & a
+        font-size: 12px
+        margin-right: 18px
+
+@media (max-width: 1023px)
+  .nav-list
+    display: none
+  .logo
+    margin-right: 59px
+  .mobile-menu
+    display: inline-block
+  nav
+    justify-content: space-between
+    padding-left: 16px
+    padding-right: 16px
+    height: 48px
+  .nav-icon
+    display: none
+  .nav-icon2
+    display: block
+  .logo
+    width: 66px
+    height: 18px
+  .nav-img-mail:before, .nav-img-telegram:before, .nav-img-letter:before
+    width: 24px
+    height: 20px
+
+.correct-left
+  left: -139px !important
+  width: 180px
+  text-align: right
+
+.test-bg
+  background: url("../../../assets/tokenSale/bg/GroupPeople.png") 100% 88% no-repeat
+  background-size: 63%
+
+.test-bg2
+  background:  url("../../../assets/tokenSale/bg/biger.png") 50% 100% no-repeat #323231
+  background-size: 100%
+  max-width: 1920px
+  margin: auto

@@ -7,6 +7,7 @@ import { CommentComponent } from './comment/comment.component';
 import {FormsModule} from '@angular/forms';
 import { TimeAgoPipe } from './comment/pipe/time-ago.pipe';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
+import { MetaMaskModalComponent } from './meta-mask-modal/meta-mask-modal.component';
 
 
 
@@ -17,6 +18,7 @@ import {NgxPageScrollModule} from 'ngx-page-scroll';
     WelcomePageComponent,
     CommentComponent,
     TimeAgoPipe,
+    MetaMaskModalComponent,
   ],
     imports: [
         CommonModule,

@@ -1,114 +1,187 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import Web3 from 'web3';
-import Contract from '../../contract/contract.js'
-import maticInit from '../../contract/maticInit'
-
+import { PostService } from '../../services/post.service';
+import { Subscription } from 'rxjs';
+import USDTToken from '../../../../build/contracts/IERC20.json';
+import TokenSale from '../../../../build/contracts/QuizeTokenSale.json';
+import { environment } from '../../../environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MetaMaskModalComponent } from '../share/meta-mask-modal/meta-mask-modal.component';
 
 @Component({
   selector: 'erc-coin-sale',
   templateUrl: './erc-coin-sale.component.html',
   styleUrls: ['./erc-coin-sale.component.sass']
 })
-export class ErcCoinSaleComponent implements OnInit {
-  private tokenPricePrivate: number = 0;
+export class ErcCoinSaleComponent implements OnInit, OnDestroy {
+  web3: Web3 | undefined = null;
+  postServiceSub: Subscription;
+  numberOfTokens = undefined;
 
-  tokenPrice: number = 0.001;
-  progressToken: number = 0
-  tokenSold: number = 0;
-  metamaskError: string = undefined
-  token: any = null;
-  tokensAvailable: number = 750000000;
-  tokenSale: any = null;
-  numberOfTokens = 1;
-  numberError: boolean = false
-  spinner: boolean = true;
-  userWallet = null;
-  buyTokensMessage: boolean = false;
-  transferButton: boolean = false;
-  verifier: string = undefined;
+  tokensaleInfo: any;
+  spinner: boolean = false;
 
-  constructor() { }
+  percent;
+  time;
+  timer;
+  timeInterval;
 
-  async ngOnInit() { }
-
-  async initToken() {
-    this.userWallet = "TODO";
-    this.verifier = "metamask";
-    this.sellContract(this.userWallet);
-    this.tokenContract();
-    let matic = new maticInit(this.verifier);
-    let account = await matic.getUserAccount();
-    this.transferButton = account === "0xF02B362cBEFC2d5bD5f7C3dBdbD0DE84508525D5";
+  constructor(
+    public postService: PostService,
+    private modalService: NgbModal) {
   }
 
-  async sellContract(wallet) {
-    let contract = new Contract();
-    this.tokenSale = await contract.tokenSaleMainETH(this.verifier)
-    let tokenSold = await this.tokenSale.methods.tokensSold().call();
-    let web3 = new Web3();
-    this.tokenSold = Number(web3.utils.fromWei(tokenSold, 'ether'));
+  async ngOnInit() {
+    console.log(environment.production);
+    this.getDataFromDb();
 
-    this.progressToken = (Math.ceil(this.tokenSold) / this.tokensAvailable) * 100;
+    this.setClock(1609227850);
 
-    let price = await this.tokenSale.methods.tokenPrice().call();
-    this.tokenPricePrivate = Number(price);
-    this.tokenPrice = Number(web3.utils.fromWei(price, "ether"));
 
-    // Detect Sell event
-    this.tokenSale.events.Sell(async (err, event) => {
-      if (err) {
-        console.log(err)
-      } else {
-        this.sellContract(wallet);
-        this.tokenContract();
-      }
-    })
   }
 
-  async tokenContract() {
-    let contract = new Contract();
-    this.token = await contract.tokenContractMainETH(this.verifier)
-    this.spinner = false;
-    this.buyTokensMessage = false;
+  getDataFromDb() {
+    let data = {
+      from: 'dev'
+    };
+    this.postServiceSub = this.postService.post('tokensale/info', data).subscribe((x) => {
+      this.tokensaleInfo = x;
+      console.log(this.tokensaleInfo);
+    }, (err) => {
+      console.log(err);
+    });
   }
 
-  async buyToken() {
-    if (this.numberOfTokens <= 0) {
-      this.numberError = true
+  async connectToMetamask() {
+    // Check if MetaMask is installed
+    this.spinner = true;
+    if (!(window as any).ethereum) {
+      this.openMetamaskModal("Please install Metamask in your browser to proceed.", "Metamask required!");
+      this.spinner = false;
     } else {
-      this.numberError = false
-      try {
-        this.buyTokensMessage = true;
-        this.spinner = true;
-        let web3 = new Web3()
-        let amount = web3.utils.toWei(String(this.numberOfTokens), 'ether');
-        await this.tokenSale.methods.buyTokens(amount).send({
-          from: this.userWallet,
-          value: this.numberOfTokens * this.tokenPricePrivate,
-          gas: 500000
-        })
-
-      } catch (err) {
-        this.spinner = false;
-        this.buyTokensMessage = false;
-        if (err.code !== 4001) {
-          this.metamaskError = 'Something went wrong check console';
+      if (!this.web3) {
+        try {
+          await (window as any).ethereum.enable();
+          window.web3 = new Web3(window.web3.currentProvider);
+          this.web3 = new Web3(window.web3.currentProvider);
+        } catch (error) {
+          this.openMetamaskModal("Please allow Metamask to access to the webpage.", 'access needed');
+          this.spinner = false;
         }
-        console.log(err);
+      }
+      const coinbase = await this.web3.eth.getCoinbase();
+      if (!coinbase) {
+        this.openMetamaskModal('Please activate MetaMask first.', 'access needed');
+        this.spinner = false;
+        return;
+      } else {
+        let checkNetwork = await window.web3._provider.networkVersion;
+        if (checkNetwork != '5') {
+          this.openMetamaskModal('Plaese switch your network in MetaMask to the Goerli network.', 'access needed');
+          this.spinner = false;
+        } else {
+          this.buyToken(coinbase);
+        }
       }
     }
   }
 
-  // transfer tokens. Avaliable only for owners
-  async transferToken() {
-    let web3 = new Web3()
-    let amount = web3.utils.toWei('750000000', 'ether');
-    let contract = new Contract();
-    let address = contract.tokenContractAddressMainETH()
-    let test = await this.token.methods.transfer(address, amount).send({
-      from: this.userWallet,
-    })
-    console.log(test);
+
+  async buyToken(wallet) {
+    try {
+      let networkId = 5;
+      let tokenSaleAddress = TokenSale.networks[networkId].address;
+      let tokenAddress = '0xFCf9F99D135D8a78ab60CC59CcCF3108E813bA35';
+      let number = (Number(this.numberOfTokens) * Number(this.tokensaleInfo.price)).toFixed(4)
+      console.log(number)
+      let usdtContract = await this.connectToContract(wallet, USDTToken, tokenAddress);
+      let approveAmount = this.web3.utils.toWei(String(number), 'mwei');
+      let approve = await usdtContract.methods.approve(tokenSaleAddress, approveAmount).send();
+      console.log(approve);
+
+      let tokenSaleContract = await this.connectToContract(wallet, TokenSale, tokenSaleAddress);
+      let tokensAmount = this.web3.utils.toWei(String(this.numberOfTokens), 'ether');
+      let buy = await tokenSaleContract.methods.buyTokens(tokensAmount).send();
+      console.log(buy);
+      this.numberOfTokens = 0;
+      this.getDataFromDb();
+      this.spinner = false;
+    } catch (err) {
+      this.openMetamaskModal(err.message, 'Network error');
+      this.spinner = false;
+      console.log(err);
+    }
   }
 
+  async connectToContract(account, contract, address) {
+    let abi: any = contract.abi;
+    return new this.web3.eth.Contract(abi, address, { from: account });
+  }
+
+  ngOnDestroy() {
+    if (this.postServiceSub) {
+      this.postServiceSub.unsubscribe();
+    }
+  }
+
+  calculatePercenta(num1, num2) {
+    const ver = (num1 / num2) * 100;
+    if (isNaN(Math.round(ver))) {
+      this.percent = 0;
+      return this.percent;
+    } else {
+      this.percent = Math.round(ver);
+      return this.percent;
+    }
+  }
+
+  showPercentSlid() {
+    return { 'left': this.percent + '%' };
+  }
+
+  yellowLineW() {
+    return { 'width': this.percent + '%' };
+  }
+
+  openMetamaskModal(message, title) {
+    const modalRef = this.modalService.open(MetaMaskModalComponent, { centered: true });
+    modalRef.componentInstance.message = message;
+    modalRef.componentInstance.title = title;
+  }
+
+
+  updateClock(endTime) {
+    this.time = new Date();
+    this.time = Date.parse(this.time) / 1000;
+
+    let t = endTime - this.time,
+      days = Math.floor(t / (60 * 60 * 24)),
+      seconds = Math.floor(t % 60),
+      minutes = Math.floor((t / 60 % 60)),
+      hours = Math.floor(t / (60 * 60) % 24);
+    this.timer = {
+      'total': t,
+      days,
+      seconds,
+      minutes,
+      hours
+    };
+
+    if (this.timer?.total <= 0) {
+      clearInterval(this.timeInterval);
+    }
+  }
+
+  setClock(endTime) {
+    this.timeInterval = setInterval(() => this.updateClock(endTime), 1000);
+    this.updateClock(endTime);
+  }
+
+  getZero = (num) => {
+    return num >= 0 && num < 10 ? '0' + num : num;
+  }
+
+  checkValidBtn() {
+    return this.numberOfTokens === undefined || this.numberOfTokens <= 0;
+  }
 }

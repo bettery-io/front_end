@@ -256,9 +256,16 @@
                     while BTY supply is deccelerated, increasing its value for Users and Investors.
                   </p>
                   <div class="input-xl">
-                    <input type="number" placeholder="Enter BTY Amount" [(ngModel)]="numberOfTokens">
-                    <button [disabled]="checkValidBtn()" [ngClass]="checkValidBtn() && 'disabled'"
-                            (click)="connectToMetamask()">BUY WITH METAMASK
+                    <input [ngStyle]="spinner && {'padding': '31px 67px 21px 26px'}" type="number" placeholder="Enter BTY Amount" [(ngModel)]="numberOfTokens">
+                    <button [ngStyle]="spinner && {'padding' :'9.5px 16px 12px 17px', 'background': '#a4a4a4'}" [disabled]="checkValidBtn()"
+                            [ngClass]="checkValidBtn() && 'disabled'"
+                            (click)="connectToMetamask()">
+                      <span *ngIf="!spinner" style=" color: #1E1E1E; font-size: 20px">BUY WITH METAMASK</span>
+                      <div *ngIf="spinner" class="d-flex align-items-center">
+                        <div  class="spinner spinner--steps icon-spinner1" aria-hidden="true"></div>
+                        <span id="spinner-text">
+                        Processing your request</span>
+                      </div>
                     </button>
                     <p class="mt-4"><span>*</span>You will immediately receive BTY to your purchasing address directly.
                     </p>

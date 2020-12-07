@@ -13,8 +13,8 @@ import _ from 'lodash';
   styleUrls: ['./eventFeed.component.sass']
 })
 export class EventFeedComponent implements OnDestroy {
-  private spinner: boolean = true;
-  private questions: any;
+  public spinner: boolean = true;
+  public questions: any;
   myAnswers: Answer[] = [];
   userId: number = null ;
   coinInfo = null;

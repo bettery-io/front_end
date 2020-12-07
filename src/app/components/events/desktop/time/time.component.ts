@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class TimeComponent implements OnInit {
 
-  @Input() timer: any
+  @Input() public timer: any
 
   day;
   hour: any;

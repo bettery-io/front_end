@@ -16,10 +16,10 @@ import Web3 from 'web3';
   styleUrls: ['./question.component.sass']
 })
 export class QuestionComponent implements OnInit, OnDestroy {
-  private spinner: boolean = true;
-  private empty: boolean = false;
-  private registError: boolean = false;
-  private question: any;
+  public spinner: boolean = true;
+  public empty: boolean = false;
+  public registError: boolean = false;
+  public question: any;
   myAnswers: Answer;
   userId: any = undefined;
   infoData: any = undefined;

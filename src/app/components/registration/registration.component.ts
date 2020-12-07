@@ -23,7 +23,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   submitted: boolean = false;
   faTimes = faTimes;
-  registerError: string = undefined;
+  registerError: any = undefined;
   web3: Web3 | undefined = null;
   metamaskError: string = undefined;
   userWallet: string = undefined;

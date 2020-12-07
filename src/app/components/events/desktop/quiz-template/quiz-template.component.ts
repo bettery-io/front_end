@@ -37,7 +37,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   ) { }
 
 
-  @Input() question: Object[];
+  @Input() question: any;
   @Input("userData") userData: User;
   @Input() myAnswers: Answer;
   @Input() coinInfo: any;
@@ -396,6 +396,13 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   deleteInvitation(data) {
     let id = data.id;
     this.deleteInvitationId.next(id)
+  }
+
+  makeMultyAnswer(question, i, event){
+    // TODO
+  }
+  getMultyIcon(anser, i){
+    // TODO
   }
 
   whichComponent() {

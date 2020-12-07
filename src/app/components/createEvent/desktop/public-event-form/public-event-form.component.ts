@@ -24,9 +24,9 @@ import maticInit from '../../../../contract/maticInit.js'
 
 
 
-type Time = { name: string, date: any, value: number };
+type Times = { name: string, date: any, value: number };
 
-const times: Time[] = [
+const times: Times[] = [
   { name: "Now", date: new Date().setHours(new Date().getHours() + 0), value: null },
   { name: "5 minutes", date: new Date().setMinutes(new Date().getMinutes() + 5), value: 0.083 },
   { name: "1 hour", date: new Date().setHours(new Date().getHours() + 1), value: 1 },
@@ -221,12 +221,12 @@ export class PublicEventFormComponent implements OnInit, OnDestroy {
     this[type] = !this[type];
   }
 
-  choseStartTime(value: Time) {
+  choseStartTime(value: Times) {
     this.startTimeValue = value.name;
     this.questionForm.controls.startDate.setValue(value.date)
   }
 
-  choseEndTime(value: Time) {
+  choseEndTime(value: Times) {
     this.endTimeValue = value.name;
     this.questionForm.controls.endDate.setValue(value.value);
   }

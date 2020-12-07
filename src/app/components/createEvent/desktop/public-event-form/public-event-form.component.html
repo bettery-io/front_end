@@ -18,7 +18,7 @@
 
             <div class="form-group">
                 <label for="Question">Hashtags <b style="font-size: 12px">*optional</b></label>
-                <input id="hashtags" type="text" class="form-control" (keyup.enter)="addNewHash($event)"
+                <input id="hashtags" type="text" class="form-control" (keyup.enter)="addNewHash()"
                     (selectItem)="selectedHasgtags($event)" placeholder="Choose hashtag or press enter to add hashtag"
                     [ngbTypeahead]="searchHashtags" [editable]='false' />
                 <div style="padding-top:10px">
@@ -341,13 +341,13 @@
                             <p class="label">{{answer}}</p>
                         </div>
                     </div>
-                    <div class="time">
+                    <!-- <div class="time">
                         <p style="height: 25px"> </p>
                         <p style="display: flex">Participation <time [timer]="quizData.startTime"></time></p>
                         <p style="display: flex">Validation <time [timer]="quizData.endTime"></time></p>
                         <p style="display: flex">Validation over <time [timer]="this.getEndValidation(quizData)"></time>
                         </p>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="socialBox">
                     <fa-icon size="2x" [icon]="faFacebook"></fa-icon>

@@ -514,6 +514,9 @@ main
     text-transform: uppercase
     color: #FFFFFF
 
+.title-time
+  text-align: left
+
 .learMore-li-new
   display: none
 
@@ -527,24 +530,29 @@ main
     font-weight: bold
 
 .time-el
-  display: flex
-  background: url("../../../assets/tokenSale/time-black.png") left center no-repeat, url("../../../assets/tokenSale/time-black.png") right center no-repeat
-  background-size: contain
-  width: 108px
-  height: 68px
-  letter-spacing: 38px
-  padding-left: 15px
   position: relative
 
   & div
     font-size: 32px
     font-weight: bold
-    width: 146px
-    height: 90px
+
+.time-number
+    padding: 13px 23px
+    background: #1e1e1e
+    border-radius: 10px
+    align-items: center
+    display: flex
+    justify-content: center
+    min-width: 68px
+    margin-left: 0.25rem
+    margin-right: 0.25rem
 
 .time-point
   margin-left: 6px
   margin-right: 6px
+  display: flex
+  justify-content: center
+  align-items: center
 
 #el-1:after
   content: 'Day'
@@ -553,7 +561,7 @@ main
   color: #FFFFFF
   letter-spacing: 2px
   bottom: -47px
-  left: 36px
+  left: 56px
 
 #el-2:after
   content: 'Hours'
@@ -562,7 +570,7 @@ main
   color: #FFFFFF
   letter-spacing: 2px
   bottom: -47px
-  left: 26px
+  left: 47px
 
 #el-3:after
   content: 'Minutes'
@@ -571,7 +579,7 @@ main
   color: #FFFFFF
   letter-spacing: 2px
   bottom: -47px
-  left: 14px
+  left: 34px
 
 #el-4:after
   content: 'Seconds'
@@ -580,7 +588,7 @@ main
   color: #FFFFFF
   letter-spacing: 2px
   bottom: -47px
-  left: 13px
+  left: 34px
 
 
 .tokenomics-img
@@ -625,7 +633,7 @@ main
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16)
     border-top-left-radius: 49px
     border-bottom-left-radius: 49px
-    padding: 31px 89px 21px 26px
+    padding: 40px 89px 37px 26px
     border: none
     outline: none
     -moz-appearance: textfield !important
@@ -649,12 +657,13 @@ main
     font-weight: bold
     font-size: 20px
     line-height: 56px
+    letter-spacing: 1px
     color: #1E1E1E
     background: #54DD96
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16)
     border-top-right-radius: 49px
     border-bottom-right-radius: 49px
-    padding: 13px 17px 7px 17px
+    padding: 10px 17px 7px 10px
     border: none
     outline: none
 
@@ -997,8 +1006,9 @@ main
       font-size: 18px
     & button
       font-size: 18px
-    & input
-      padding: 31px 67px 22px 26px
+  .time-number
+    padding: 11px 20px
+    min-width: 60px
 
 @media (max-width: 1024px)
   .main-title
@@ -1029,6 +1039,8 @@ main
 
   .timerr
     padding-top: 48px
+  .title-time
+    text-align: center
   .time-wrap
     padding-top: 16px
     margin-bottom: 60px
@@ -1041,6 +1053,7 @@ main
       margin-left: 0
       border-radius: 49px
       width: 100%
+      padding: 26px 89px 23px 26px
     & button
       border-radius: 49px
       width: 100%
@@ -1082,11 +1095,10 @@ main
   .timerr
     & h4
       line-height: 20px
-  .time-el
-    width: 66px
-    height: 41px
-    padding-left: 13px
-    letter-spacing: 25px
+  .time-number
+    padding: 15px 20px
+    min-width: 51px
+
   .time-wrap
     line-height: 30px
 
@@ -1107,7 +1119,7 @@ main
    left: 12px
 
   #el-3:after, #el-4:after
-    left: 4px
+    left: 28px
 
   .footer
     & h4
@@ -1172,6 +1184,18 @@ main
     padding-left: 0
     padding-right: 0
 
+@media (max-width: 530px)
+  .time-number
+    padding: 14px 15px
+    min-width: 42px
+  #el-1:after
+    left: 37px
+  #el-2:after
+    left: 28px
+  #el-3:after
+    left: 20px
+  #el-4:after
+    left: 20px
 
 @media (max-width: 500px)
   .white6-img-1,.white6-img-2,.white6-img-3
@@ -1201,6 +1225,29 @@ main
   .bg-hard
     background: url("../../../assets/tokenSale/polygon6-1th.png") center center no-repeat
     background-size: 700px
+
+@media (max-width: 460px)
+  #el-1::after, #el-2::after, #el-3::after, #el-4::after
+    font-size: 10px
+  .time-point
+    margin-left: 1px !important
+    margin-right: 1px !important
+  .time-number
+    padding: 6px 9px
+    min-width: 30px
+    border-radius: 7px
+    margin-left: 0.1rem
+    margin-right: 0.1rem
+  #el-1:after
+    left: 22px
+  #el-2:after
+    left: 14px
+  #el-3:after
+    left: 8px
+  #el-4:after
+    left: 6px
+
+
 
 @media (max-width: 767px)
   .second
@@ -1292,8 +1339,11 @@ main
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
 
-.icon-spinner:before
-  content: "\e900"
+.img
+  background: url("../../../assets/tokenSale/spinner.png") center center no-repeat
+  background-size: contain
+  width: 27px
+  height: 27px
 
 @keyframes anim-rotate
   0%
@@ -1310,11 +1360,11 @@ main
   height: 1em
   line-height: 1
   margin: .5em
-  animation: anim-rotate 2s infinite linear
+  animation: anim-rotate 1.5s infinite linear
   color: #fff
 
 .spinner--steps
-  animation: anim-rotate 1s infinite steps(8)
+  animation: anim-rotate 1s infinite steps(10)
 
 .spinner--steps2
   animation: anim-rotate 1s infinite steps(12)

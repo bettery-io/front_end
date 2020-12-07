@@ -161,10 +161,10 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
       hours = Math.floor(t / (60 * 60) % 24);
     this.timer = {
       'total': t,
-      days,
-      seconds,
-      minutes,
-      hours
+      days: this.getZero(days),
+      seconds: this.getZero(seconds),
+      minutes: this.getZero(minutes),
+      hours: this.getZero(hours)
     };
 
     if (this.timer?.total <= 0) {
@@ -178,7 +178,7 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   }
 
   getZero = (num) => {
-    return num >= 0 && num < 10 ? '0' + num : num;
+    return num >= 0 && num < 10 ? '0' + num : num.toString();
   }
 
   checkValidBtn() {

@@ -193,46 +193,46 @@
                 </div>
 
                 <div class="timerr row">
-                  <div class="text-left col-12 col-xl-6">
+                  <div class="title-time col-12 col-xl-6">
                     <h4>Bettery full tokenomics
                       will be launched in:</h4>
                     <a href="#" class="learMore-li"> Learn tokenomics details >></a>
                   </div>
 
-
                   <div class="col-12 col-xl-6">
                     <div class="time-wrap">
                       <div id="el-1" class="time-el">
-                        <div [ngClass]="(timer.days >= 10 && timer.days < 19) ? 'pl-9' : 'pl-0'">
-                          <span>{{getZero(timer.days)}}</span>
+                        <div style="display: flex; position: relative">
+                          <div class="time-number"><span>{{timer?.days[0]}}</span></div>
+                          <div class="time-number"><span>{{timer?.days[1]}}</span></div>
                         </div>
                       </div>
 
                       <span class="time-point">:</span>
 
                       <div id="el-2" class="time-el">
-                        <div [ngClass]="(timer.hours >= 10 && timer.hours < 19) ? 'pl-9' : 'pl-0'">
-                          <span>{{getZero(timer.hours)}}</span>
+                        <div style="display: flex; position: relative">
+                          <div class="time-number"><span>{{timer?.hours[0]}}</span></div>
+                          <div class="time-number"><span>{{timer?.hours[1]}}</span></div>
                         </div>
-
                       </div>
 
                       <span class="time-point">:</span>
 
                       <div id="el-3" class="time-el">
-                        <div [ngClass]="(timer.minutes >= 10 && timer.minutes < 19) ? 'pl-9' : 'pl-0'">
-                          <span>{{getZero(timer.minutes)}}</span>
+                        <div style="display: flex; position: relative">
+                          <div class="time-number"><span>{{timer?.minutes[0]}}</span></div>
+                          <div class="time-number"><span>{{timer?.minutes[1]}}</span></div>
                         </div>
-
                       </div>
 
                       <span class="time-point">:</span>
 
                       <div id="el-4" class="time-el">
-                        <div [ngClass]="(timer.seconds >= 10 && timer.seconds < 19) ? 'pl-9' : 'pl-0'">
-                          <span>{{getZero(timer.seconds)}}</span>
+                        <div style="display: flex; position: relative">
+                          <div class="time-number"><span>{{timer?.seconds[0]}}</span></div>
+                          <div class="time-number"><span>{{timer?.seconds[1]}}</span></div>
                         </div>
-
                       </div>
                     </div>
 
@@ -255,14 +255,14 @@
                     up
                     while BTY supply is deccelerated, increasing its value for Users and Investors.
                   </p>
-                  <div class="input-xl">
-                    <input [ngStyle]="spinner && {'padding': '31px 67px 21px 26px'}" type="number" placeholder="Enter BTY Amount" [(ngModel)]="numberOfTokens">
-                    <button [ngStyle]="spinner && {'padding' :'9.5px 16px 12px 17px', 'background': '#a4a4a4'}" [disabled]="checkValidBtn()"
+                  <div class="input-xl input-group">
+                    <input id="buyInput" class="form-control" type="number" placeholder="Enter BTY Amount" [(ngModel)]="numberOfTokens">
+                    <button [ngStyle]="spinner && {'background': '#a4a4a4'}" [disabled]="checkValidBtn()"
                             [ngClass]="checkValidBtn() && 'disabled'"
                             (click)="connectToMetamask()">
                       <span *ngIf="!spinner" style=" color: #1E1E1E; font-size: 20px">BUY WITH METAMASK</span>
                       <div *ngIf="spinner" class="d-flex align-items-center">
-                        <div  class="spinner spinner--steps icon-spinner1" aria-hidden="true"></div>
+                        <div  class="spinner spinner--steps icon-spinner img" aria-hidden="true"></div>
                         <span id="spinner-text">
                         Processing your request</span>
                       </div>

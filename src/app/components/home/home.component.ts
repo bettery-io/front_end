@@ -35,6 +35,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   triggerPopover: boolean;
   timerPopover: any;
 
+  time: any;
+  timer: any;
+  timeInterval: any;
+
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
   constructor(
@@ -43,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private store: Store<any>,
     private postService: PostService
   ) {
+    this.setClock(1609227850);
   }
 
   ngOnInit() {
@@ -187,6 +192,35 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.timerPopover = setTimeout(() => {
       this.triggerPopover = false;
     }, 5000);
+  }
+
+  updateClock(endTime) {
+    this.time = new Date();
+    this.time = Date.parse(this.time) / 1000;
+    console.log(this.time);
+
+    const total = endTime - this.time;
+    const days = Math.floor(total / (60 * 60 * 24));
+    const hours = Math.floor(total / (60 * 60) % 24);
+    this.timer = {
+      total,
+      days: this.getZero(days),
+      hours: this.getZero(hours)
+    };
+
+    if (this.timer?.total <= 0) {
+      clearInterval(this.timeInterval);
+    }
+  }
+
+  setClock(endTime) {
+    this.timeInterval = setInterval(() => this.updateClock(endTime), 60000);
+    this.updateClock(endTime);
+    console.log(this.timer);
+  }
+
+  getZero = (num) => {
+    return num >= 0 && num < 10 ? '0' + num : num.toString();
   }
 
   ngOnDestroy() {

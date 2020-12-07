@@ -153,9 +153,10 @@
                   </button>
                 </div>
                 <div class="dropText col-lg-5 col-12 px-0">
-                  <p (click)="dropDown()">{{'HEADER.OR_JOIN.1' | translate}} ({{eventData?.length}} {{'HEADER.OR_JOIN.2' | translate}})<img class="ml-1"
-                                                                                                                                            src="{{dropDownSwitch ? '../../../assets/landingPage/triangle-open.png' : '../../../assets/landingPage/triangle-close.png'}}"
-                                                                                                                                            alt="triangle"></p>
+                  <p (click)="dropDown()">{{'HEADER.OR_JOIN.1' | translate}}
+                    ({{eventData?.length}} {{'HEADER.OR_JOIN.2' | translate}})<img class="ml-1"
+                                                                                   src="{{dropDownSwitch ? '../../../assets/landingPage/triangle-open.png' : '../../../assets/landingPage/triangle-close.png'}}"
+                                                                                   alt="triangle"></p>
                 </div>
               </div>
               <div [class]="dropDownSwitch ? 'dropdown_box_show' : ''" class="dropdown_box col-lg-7 col-12 mt-3">
@@ -397,6 +398,43 @@
         </div>
 
 
+      </section>
+
+      <section class="tokenSale">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-7 col-xs-12 tokenSale-left">
+              <div>
+                <h2>{{'TOKEN_SALE.TITLE' | translate}}</h2>
+              </div>
+              <div>
+                <p>{{'TOKEN_SALE.TEXT' | translate}}</p>
+              </div>
+              <div class="tokenSale-btn">
+                <button routerLink="/tokensale">{{'TOKEN_SALE.JOIN_TOKEN_SALE' | translate}}</button>
+                <a class="mt-1" href="#">{{'TOKEN_SALE.MORE_ON_BETTERY' | translate}} >></a>
+              </div>
+            </div>
+            <div class="col-lg-5 col-xs-12 tokenSale-right">
+              <div>
+                <p>{{'TOKEN_SALE.FULL_TOKENOMICS' | translate}}</p>
+              </div>
+              <div class="token-timer">
+                <div class="day">
+                  <div class="mx-1"><span>{{timer?.days[0]}}</span></div>
+                  <div class="mx-1"><span>{{timer?.days[1]}}</span></div>
+                </div>
+                <div>
+                  <span class="point">:</span>
+                </div>
+                <div class="hours">
+                  <div class="mx-1"><span>{{timer?.hours[0]}}</span></div>
+                  <div class="mx-1"><span>{{timer?.hours[1]}}</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section class="road-map container-fluid" id="roadmap">

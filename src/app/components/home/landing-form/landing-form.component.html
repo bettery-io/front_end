@@ -9,7 +9,7 @@
 
         <form action="#" [formGroup]="form" (ngSubmit)="sendForm(form, $event)">
           <div class="row">
-            <div class="form-group col-lg-6 col-xs-12">
+            <div class="form-group col-6">
               <label for="firstName">{{'FORM.FIRST_NAME' | translate}}</label>
               <input type="text" formControlName="firstName" name="firstName" class="form-control"
                      [ngClass]="submitted && f.firstName.errors && 'validator'"
@@ -19,7 +19,7 @@
               </div>
             </div>
 
-            <div class="form-group col-lg-6 col-xs-12">
+            <div class="form-group col-6">
               <label for="lastName">{{'FORM.LAST_NAME' | translate}}</label>
               <input type="text" formControlName="lastName" name="lastName" class="form-control"
                      [ngClass]="submitted && f.lastName.errors && 'validator'" id="lastName"

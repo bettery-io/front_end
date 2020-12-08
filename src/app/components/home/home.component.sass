@@ -507,14 +507,12 @@ header
   width: 69px
   height: 79px
 
-//========== five ================
-
-
 //============ TokenSale ======================
 .tokenSale
   padding-bottom: 146px
   background: url("../../../assets/landingPage/bg3.png") 90% bottom no-repeat
   background-size: 80px 69px
+  padding-left: 60px
 
 .tokenSale-left
   & h2
@@ -609,6 +607,19 @@ header
 .point
   color: #54DD96
 
+.semi-bg
+  position: relative
+
+.semi-bg:after
+  content: ''
+  background: rgba(78, 78, 78, 0.1)
+  border-bottom-left-radius: 10px
+  border-bottom-right-radius: 10px
+  position: absolute
+  bottom: 0
+  width: 100%
+  height: 50%
+  left: 0
 
 //============= Road map ======================
 .road-map
@@ -754,49 +765,49 @@ header
   margin: auto
 
 .img_team_avatar
-  background: url("../../../assets/landingPage/Fedor.png") left center no-repeat
+  background: url("../../../assets/landingPage/Fedor.png") center center no-repeat
   background-size: contain
   width: 150px
   height: 150px
   margin: auto
 
 .img_team_avatar2
-  background: url("../../../assets/landingPage/Sim.png") left center no-repeat
+  background: url("../../../assets/landingPage/Sim.png") center center no-repeat
   background-size: contain
   width: 150px
   height: 150px
   margin: auto
 
 .img_team_avatar3
-  background: url("../../../assets/landingPage/Max.png") left center no-repeat
+  background: url("../../../assets/landingPage/Max.png") center center no-repeat
   background-size: contain
   width: 150px
   height: 150px
   margin: auto
 
 .img_team_avatar4
-  background: url("../../../assets/landingPage/Shane.png") left center no-repeat
+  background: url("../../../assets/landingPage/Shane.png") center center no-repeat
   background-size: contain
   width: 150px
   height: 150px
   margin: auto
 
 .img_team_avatar5
-  background: url("../../../assets/landingPage/Nelson.png") left center no-repeat
+  background: url("../../../assets/landingPage/Nelson.png") center center no-repeat
   background-size: contain
   width: 150px
   height: 150px
   margin: auto
 
 .img_team_avatar6
-  background: url("../../../assets/landingPage/Ken.png") left center no-repeat
+  background: url("../../../assets/landingPage/Ken.png") center center no-repeat
   background-size: contain
   width: 150px
   height: 150px
   margin: auto
 
 .img_team_avatar7
-  background: url("../../../assets/landingPage/SecretAdvisor.png") left center no-repeat
+  background: url("../../../assets/landingPage/SecretAdvisor.png") center center no-repeat
   background-size: contain
   width: 150px
   height: 150px
@@ -1057,8 +1068,19 @@ footer
     margin-top: 50px
   .tokenSale-left
     text-align: center
+    margin: auto
   .tokenSale-btn
     justify-content: center
+  .tokenSale
+    padding-left: 0
+  .modal_right
+    & p
+      font-size: 14px
+  .modal_left
+    & p
+      font-size: 14px
+    & a
+      font-size: 20px
 
 @media (max-width: 550px)
   .title
@@ -1111,6 +1133,17 @@ footer
       font-weight: 700
 
 //=============================
+@media (max-width: 1315px)
+  .logo
+    padding-left: 0 !important
+    padding-right: 0 !important
+  .pl-pr-0
+    padding-left: 0 !important
+    padding-right: 0 !important
+@media (max-width: 1275px)
+  .nav_bar
+    & li
+      margin-right: 25px
 
 @media (max-width: 1023px)
   nav
@@ -1219,5 +1252,3 @@ footer
 
   .ngx-typed
     padding-right: 0
-
-

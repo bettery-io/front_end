@@ -113,7 +113,7 @@
               <section id="usage" class="second">
                 <div class="second-wrap">
                   <div class="row justify-content-center justify-content-xl-start">
-                    <div class="col-10 col-xl-6">
+                    <div class="col-10 col-xl-6 pl-0 pr-0">
                       <div class="d-flex">
                         <div>
                           <div class="test-img"></div>
@@ -167,7 +167,7 @@
 
                 <div class="third-title">
                   <div class="yellow6"></div>
-                  <h3>bty tokenomics explained</h3>
+                  <h3>bettery tokenomics explained</h3>
                 </div>
                 <div class="third-bottom row">
                   <div class="tokenomics-img col-12  col-xl-6"></div>
@@ -245,24 +245,27 @@
             <section id="Buy" class="input-box">
               <div class="row">
                 <div class="input-left col-12 col-xl-7">
-                  <div class="d-flex">
-                    <div class="test-img"></div>
-                    <h3>HOW TO BUY BTY AND WHY?</h3>
+                  <div>
+                    <div class="d-flex">
+                      <div class="test-img test-img-buy"></div>
+                      <h3>HOW TO BUY BTY AND WHY?</h3>
+                    </div>
+                    <p>BTY assigns real-world value to opinions. As Bettery grows, demand for more engagements and
+                      opinions
+                      goes
+                      up
+                      while BTY supply is deccelerated, increasing its value for Users and Investors.
+                    </p>
                   </div>
-                  <p>BTY assigns real-world value to opinions. As Bettery grows, demand for more engagements and
-                    opinions
-                    goes
-                    up
-                    while BTY supply is deccelerated, increasing its value for Users and Investors.
-                  </p>
                   <div class="input-xl input-group">
-                    <input id="buyInput" class="form-control" type="number" placeholder="Enter BTY Amount" [(ngModel)]="numberOfTokens">
+                    <input id="buyInput" class="form-control" type="number" placeholder="Enter BTY Amount"
+                           [(ngModel)]="numberOfTokens">
                     <button [ngStyle]="spinner && {'background': '#a4a4a4'}" [disabled]="checkValidBtn()"
                             [ngClass]="checkValidBtn() && 'disabled'"
                             (click)="connectToMetamask()">
                       <span *ngIf="!spinner" style=" color: #1E1E1E; font-size: 20px">BUY WITH METAMASK</span>
                       <div *ngIf="spinner" class="d-flex align-items-center">
-                        <div  class="spinner spinner--steps icon-spinner img" aria-hidden="true"></div>
+                        <div class="spinner spinner--steps icon-spinner img" aria-hidden="true"></div>
                         <span id="spinner-text">
                         Processing your request</span>
                       </div>
@@ -296,7 +299,7 @@
 
             <section id="Roadmap" class="road-map">
               <div class="road-map-title">
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center j-content-start">
                   <div class="yellow6"></div>
                   <h2>Bettery ROADMAP</h2>
                 </div>
@@ -343,11 +346,12 @@
               <div class="resources row">
 
                 <div class="col-12 col-xl-6">
-                  <div class="d-flex justify-content-center">
-                    <div class="test-img"></div>
+                  <div class="d-flex">
+                    <div class="test-img  test-img-resources"></div>
                     <h2>Bettery Resources</h2>
                   </div>
-                  <p>Instead of a lengthy, brain-numbing whitepaper filled with marketing bluffs, we cover all info
+                  <p class="p-60">Instead of a lengthy, brain-numbing whitepaper filled with marketing bluffs, we cover
+                    all info
                     about
                     Bettery and BTY tokens through meaningful articles that’ll give you a pleasant read.</p>
                   <div class="res-icon-wrap row">

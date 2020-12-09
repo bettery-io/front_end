@@ -7,6 +7,7 @@ import TokenSale from '../../../../build/contracts/QuizeTokenSale.json';
 import { environment } from '../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetaMaskModalComponent } from '../share/meta-mask-modal/meta-mask-modal.component';
+import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'erc-coin-sale',
@@ -28,7 +29,10 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
 
   constructor(
     public postService: PostService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private config: NgbCarouselConfig
+    ) {
+    config.showNavigationArrows = false;
   }
 
   async ngOnInit() {

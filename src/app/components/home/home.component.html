@@ -609,14 +609,20 @@
               <p>{{'FOOTER.TEXT_2' | translate}}</p>
             </div>
 
-            <form action="#">
+            <form [formGroup]="form" (ngSubmit)="subscribe()">
               <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="{{'FOOTER.PLACE_HOLDER'  | translate}}"
+                      formControlName="email"
+                      [ngClass]="submitted && f.email.errors && 'subscibeError'" 
                        aria-label="Recipient's username"
                        aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">{{'FOOTER.BUTTON_TEXT' | translate}}</button>
+                  <button [disabled]="subscribed" class="btn btn-outline-secondary" type="submit">{{'FOOTER.BUTTON_TEXT' | translate}}</button>
                 </div>
+              </div>
+              <div *ngIf="submitted && f.email.errors">
+                <small *ngIf="f.email.errors.required" class="valid_text quize_validation_error">{{'FORM.VALIDATOR' | translate}}</small>
+                <small *ngIf="f.email.errors.email" class="valid_text quize_validation_error">{{'FORM.EMAIL_ERROR' | translate}}</small>
               </div>
             </form>
 

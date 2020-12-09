@@ -1,15 +1,16 @@
-import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {NgxTypedJsComponent} from 'ngx-typed-js';
-import {Store} from '@ngrx/store';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { NgxTypedJsComponent } from 'ngx-typed-js';
+import { Store } from '@ngrx/store';
 
-import {createEventAction} from '../../actions/newEvent.actions';
-import {environment} from '../../../environments/environment';
+import { createEventAction } from '../../actions/newEvent.actions';
+import { environment } from '../../../environments/environment';
 import * as EN from '../../../assets/locale/en.json';
 import * as VN from '../../../assets/locale/vn.json';
-import {PostService} from '../../services/post.service';
+import { PostService } from '../../services/post.service';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 
 @Component({
@@ -38,15 +39,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   time: any;
   timer: any;
   timeInterval: any;
+  form: FormGroup;
+  submitted: boolean = false;
+  subscribed: boolean = false;
+  subscribedPost: Subscription;
 
-  @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
+  @ViewChild(NgxTypedJsComponent, { static: true }) typed: NgxTypedJsComponent;
 
   constructor(
     private modalService: NgbModal,
     private translateService: TranslateService,
     private store: Store<any>,
-    private postService: PostService
+    private postService: PostService,
+    private formBuilder: FormBuilder
   ) {
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
     this.setClock(1609227850);
   }
 
@@ -61,7 +70,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   changeLocale() {
     this.translateService.use(this.selectedLanguage);
-    console.log(this.selectedLanguage);
 
     if (this.selectedLanguage === 'vn') {
       this.switchLang = 'vn';
@@ -86,7 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   open(content) {
-    this.modalService.open(content, {centered: true, size: 'lg'});
+    this.modalService.open(content, { centered: true, size: 'lg' });
   }
 
   @HostListener('click', ['$event'])
@@ -108,10 +116,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   sendEvent() {
     let data = this.newCreateEvent;
     if (data) {
-      this.store.dispatch(createEventAction({data}));
+      this.store.dispatch(createEventAction({ data }));
     } else {
       data = this.typedCreateEvent;
-      this.store.dispatch(createEventAction({data}));
+      this.store.dispatch(createEventAction({ data }));
     }
   }
 
@@ -197,7 +205,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   updateClock(endTime) {
     this.time = new Date();
     this.time = Date.parse(this.time) / 1000;
-    console.log(this.time);
 
     const total = endTime - this.time;
     const days = Math.floor(total / (60 * 60 * 24));
@@ -216,11 +223,32 @@ export class HomeComponent implements OnInit, OnDestroy {
   setClock(endTime) {
     this.timeInterval = setInterval(() => this.updateClock(endTime), 60000);
     this.updateClock(endTime);
-    console.log(this.timer);
   }
 
   getZero = (num) => {
     return num >= 0 && num < 10 ? '0' + num : num.toString();
+  }
+
+  get f() {
+    return this.form.controls;
+  }
+
+  subscribe() {
+    this.submitted = true;
+    if (this.form.status === 'INVALID') {
+      return;
+    }
+    let data = {
+      email: this.form.value.email,
+      from: "landing"
+    }
+    this.subscribedPost = this.postService.post("subscribe", data).subscribe((x) => {
+      this.form.controls.email.setValue("")
+      this.submitted = false;
+      this.subscribed = true;
+    }, (err) => {
+      console.log(err);
+    })
   }
 
   ngOnDestroy() {
@@ -229,6 +257,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     if (this.eventSub) {
       this.eventSub.unsubscribe();
+    }
+    if (this.subscribedPost) {
+      this.subscribedPost.unsubscribe();
     }
   }
 }

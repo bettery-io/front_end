@@ -7,6 +7,7 @@ import TokenSale from '../../../../build/contracts/QuizeTokenSale.json';
 import { environment } from '../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetaMaskModalComponent } from '../share/meta-mask-modal/meta-mask-modal.component';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'erc-coin-sale',
@@ -26,18 +27,25 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   timer;
   timeInterval;
 
+  form: FormGroup;
+  submitted: boolean = false;
+  subscribed: boolean = false;
+  subscribedPost: Subscription;
+
   constructor(
     public postService: PostService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private formBuilder: FormBuilder
+  ) {
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
   }
 
   async ngOnInit() {
     console.log(environment.production);
     this.getDataFromDb();
-
     this.setClock(1609227850);
-
-
   }
 
   getDataFromDb() {
@@ -46,7 +54,6 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
     };
     this.postServiceSub = this.postService.post('tokensale/info', data).subscribe((x) => {
       this.tokensaleInfo = x;
-      console.log(this.tokensaleInfo);
     }, (err) => {
       console.log(err);
     });
@@ -93,7 +100,6 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
       let tokenSaleAddress = TokenSale.networks[networkId].address;
       let tokenAddress = '0xFCf9F99D135D8a78ab60CC59CcCF3108E813bA35';
       let number = (Number(this.numberOfTokens) * Number(this.tokensaleInfo.price)).toFixed(4)
-      console.log(number)
       let usdtContract = await this.connectToContract(wallet, USDTToken, tokenAddress);
       let approveAmount = this.web3.utils.toWei(String(number), 'mwei');
       let approve = await usdtContract.methods.approve(tokenSaleAddress, approveAmount).send();
@@ -184,4 +190,27 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   checkValidBtn() {
     return this.numberOfTokens === undefined || this.numberOfTokens <= 0;
   }
+
+  get f() {
+    return this.form.controls;
+  }
+
+  subscribe() {
+    this.submitted = true;
+    if (this.form.status === 'INVALID') {
+      return;
+    }
+    let data = {
+      email: this.form.value.email,
+      from: "tokensale"
+    }
+    this.subscribedPost = this.postService.post("subscribe", data).subscribe((x) => {
+      this.form.controls.email.setValue("")
+      this.submitted = false;
+      this.subscribed = true;
+    }, (err) => {
+      console.log(err);
+    })
+  }
+
 }

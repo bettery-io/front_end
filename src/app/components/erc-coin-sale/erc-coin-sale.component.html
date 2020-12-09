@@ -396,14 +396,20 @@
                   <p>Subscribe to our monthly newsletter. No spam. No ads.
                     Just valuable content that’s a pleasure to read.</p>
 
-                  <form action="#">
+                  <form [formGroup]="form" (ngSubmit)="subscribe()">
                     <div class="input-group mb-3">
                       <input type="text" class="form-control subscribe-input" placeholder="Enter email address"
                              aria-label="Recipient's username"
+                             formControlName="email"
+                             [ngClass]="submitted && f.email.errors && 'subscibeError'" 
                              aria-describedby="basic-addon2">
                       <div class="input-group-append btn-sub">
-                        <button class="btn btn-outline-secondary" type="button">Subscribe</button>
+                        <button class="btn btn-outline-secondary" type="submit" [disabled]="subscribed">Subscribe</button>
                       </div>
+                    </div>
+                    <div *ngIf="submitted && f.email.errors">
+                      <small *ngIf="f.email.errors.required" class="valid_text quize_validation_error">Email is required</small>
+                      <small *ngIf="f.email.errors.email" class="valid_text quize_validation_error">This is not email</small>
                     </div>
                   </form>
                 </div>

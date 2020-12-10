@@ -8,10 +8,10 @@
         <div class="d-flex align-items-center col-lg-9 mt-4 pl-pr-0">
           <ul class="nav_bar">
             <li class="nav_bar_item">
-              <a href="#header" pageScroll>{{'NAVBAR.ITEM_1' | translate}}</a>
+              <a href="#social" pageScroll>{{'NAVBAR.ITEM_1' | translate}}</a>
             </li>
             <li class="nav_bar_item">
-              <a href="#works" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_2' | translate}}</a>
+              <a href="#getStarted" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_2' | translate}}</a>
             </li>
             <li class="nav_bar_item">
               <a href="#whyBettery" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_3' | translate}}</a>
@@ -26,13 +26,16 @@
               <a href="#team" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_6' | translate}}</a>
             </li>
             <li class="nav_bar_item">
-              <div (click)="open(content)">{{'NAVBAR.ITEM_7' | translate}}</div>
+              <a href="#BusinessDemo" pageScroll>{{'NAVBAR.ITEM_7' | translate}}</a>
             </li>
             <li class="nav_bar_item">
               <a href="#">{{'NAVBAR.ITEM_8' | translate}}</a>
             </li>
+            <li (click)="open(content)" class="nav_bar_item position-relative ml-3">
+              <a  class="questionMark-img" href="#">{{'NAVBAR.ITEM_9' | translate}}</a>
+            </li>
             <li class="nav_bar_item position-relative ml-3">
-              <a class="tgr-img" target="_blank" href="https://web.telegram.org">{{'NAVBAR.ITEM_9' | translate}}</a>
+              <a class="tgr-img" target="_blank" href="https://web.telegram.org">{{'NAVBAR.ITEM_10' | translate}}</a>
             </li>
           </ul>
         </div>
@@ -51,8 +54,12 @@
 
           <div class="btn_short col-4 d-flex justify-content-end">
             <div class="d-flex align-items-center">
+              <div (click)="open(content)" class="mr-3">
+                <a href="#"><img style="width: 24px; height: 26px"
+                  src="../../../assets/landingPage/questionMark.png" alt="tel"></a>
+              </div>
               <div class="mobile_img_path mr-3"><a href="https://web.telegram.org" target="_blank"><img
-                src="../../../assets/landingPage/Path-yellowe.png" alt="tel"></a></div>
+                src="../../../assets/landingPage/Path-yellowe2.png" alt="tel"></a></div>
               <div class="mr-2">
                 <select id="language" (change)="changeLocale()" [(ngModel)]="selectedLanguage">
                   <option *ngFor="let language of languages" [value]="language.id">{{ language.id }}</option>
@@ -61,9 +68,9 @@
               <div ngbDropdown class="d-inline-block">
                 <div class="icon-bar-img" id="dropdownBasic1" ngbDropdownToggle></div>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="correct-left">
-                  <a href="#header" ngbDropdownItem pageScroll>{{'NAVBAR.ITEM_1' | translate}}</a>
+                  <a href="#social2" ngbDropdownItem pageScroll>{{'NAVBAR.ITEM_1' | translate}}</a>
                   <div class="dropdown-divider"></div>
-                  <a href="#works" (click)="styleHideMen()" pageScroll
+                  <a href="#getStarted" (click)="styleHideMen()" pageScroll
                      ngbDropdownItem>{{'NAVBAR.ITEM_2' | translate}}</a>
                   <div class="dropdown-divider"></div>
                   <a href="#whyBettery" (click)="styleHideMen()" pageScroll
@@ -79,7 +86,7 @@
                   <a href="#team" (click)="styleHideMen()" pageScroll
                      ngbDropdownItem>{{'NAVBAR.ITEM_6' | translate}}</a>
                   <div class="dropdown-divider"></div>
-                  <div (click)="open(content)" ngbDropdownItem>{{'NAVBAR.ITEM_7' | translate}}</div>
+                  <a href="#BusinessDemo" pageScroll ngbDropdownItem>{{'NAVBAR.ITEM_7' | translate}}</a>
                   <div class="dropdown-divider"></div>
                   <a href="#" ngbDropdownItem>{{'NAVBAR.ITEM_8' | translate}}</a>
                 </div>
@@ -88,7 +95,7 @@
           </div>
         </div>
       </div>
-      <header  id="header" class="row mr-0 ml-0">
+      <header id="header" class="row mr-0 ml-0">
         <div class="container-fluid m-2">
           <div class="row d-flex">
             <div class="title_block col-lg-9 col-12 pr-0 pl-0">
@@ -178,14 +185,14 @@
             </div>
             <div class="player col-lg-4 col-md-12">
             </div>
-            <div class="mobile_img col-12">
+            <div id="social2" class="mobile_img col-12">
               <div class="bg_header"></div>
             </div>
           </div>
         </div>
       </header>
 
-      <section id="works" class="bettery_work row container-fluid ml-0 mr-0">
+      <section id="social" class="bettery_work row container-fluid ml-0 mr-0">
         <div class="bettery_work_box col-lg-6 col-12 row order-lg-first">
           <div class="box_left col-12 col-lg-6">
             <div class="row">
@@ -227,18 +234,20 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-5 col-12  bettery_work_title order-first mb-5 text-center text-lg-left ml-lg-5">
+        <div  class="col-lg-5 col-12  bettery_work_title order-first mb-5 text-center text-lg-left ml-lg-5">
           <div>
             <div class="mb-3">
               <h2>{{'SECOND.TITLE' | translate}}</h2>
             </div>
-            <div><p>{{'SECOND.TEXT' | translate}}</p>
+            <div>
+              <p>{{'SECOND.TEXT_1' | translate}}</p> <br>
+              <p>{{'SECOND.TEXT_2' | translate}}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="third">
+      <section id="getStarted" class="third">
         <div class="container-fluid">
           <div class="row">
             <div class="third-left col-lg-7 col-xs-12">
@@ -261,7 +270,8 @@
               <h2 class="pb-3">{{'FOUR.TITLE' | translate}}</h2>
             </div>
             <div class="px-lg-5">
-              <p>{{'FOUR.TEXT' | translate}}</p>
+              <p>{{'FOUR.TEXT_1' | translate}}</p> <br>
+              <p>{{'FOUR.TEXT_2' | translate}}</p>
             </div>
           </div>
         </div>
@@ -390,7 +400,7 @@
                 <div class="pr-2">{{'ROADMAP.ROADMAP_UP_TEXT-1' | translate}}</div>
               </div>
               <div class="text-center"><p><span>{{'ROADMAP.DATE_1' | translate}}</span></p></div>
-              <div class="green-box">{{'ROADMAP.ROADMAP_TEXT-1' | translate}}</div>
+              <div class="green-box before-correct" style="color: #ffffff">{{'ROADMAP.ROADMAP_TEXT-1' | translate}}</div>
             </div>
 
             <div class="col-lg-3 col-xs-12 col-sm-6">
@@ -398,23 +408,23 @@
                 <div class="pr-2">{{'ROADMAP.ROADMAP_UP_TEXT-2' | translate}}</div>
               </div>
               <div class="text-center"><p>{{'ROADMAP.DATE_2' | translate}}</p></div>
-              <div class="green-box">{{'ROADMAP.ROADMAP_TEXT-1' | translate}}</div>
+              <div class="green-box before-correct">{{'ROADMAP.ROADMAP_TEXT-2' | translate}}</div>
             </div>
 
             <div class="col-lg-3 col-xs-12 col-sm-6">
               <div class="img-yellow_5 mb-2">
-                <div class="pr-2">{{'ROADMAP.ROADMAP_UP_TEXT-1' | translate}}</div>
+                <div class="pr-3 pl-2">{{'ROADMAP.ROADMAP_UP_TEXT-3' | translate}}</div>
               </div>
               <div class="text-center"><p>{{'ROADMAP.DATE_3' | translate}}</p></div>
-              <div class="green-box">{{'ROADMAP.ROADMAP_TEXT-2' | translate}}</div>
+              <div class="green-box">{{'ROADMAP.ROADMAP_TEXT-3' | translate}}</div>
             </div>
 
             <div class="col-lg-3 col-xs-12 col-sm-6">
               <div class="img-yellow_5 mb-2">
-                <div class="pr-2">{{'ROADMAP.ROADMAP_UP_TEXT-2' | translate}}</div>
+                <div class="pr-2">{{'ROADMAP.ROADMAP_UP_TEXT-4' | translate}}</div>
               </div>
               <div class="text-center"><p>{{'ROADMAP.DATE_4' | translate}}</p></div>
-              <div class="green-box">{{'ROADMAP.ROADMAP_TEXT-1' | translate}}</div>
+              <div class="green-box">{{'ROADMAP.ROADMAP_TEXT-4' | translate}}</div>
             </div>
             <div class="hr"></div>
             <div class="hr-green"></div>
@@ -434,7 +444,7 @@
               </div>
               <div class="card-mob-text pt-4  pb-1">
                 <div>
-                  <p>{{'ROADMAP.ROADMAP_UP_TEXT-2' | translate}}</p>
+                  <b><p>{{'ROADMAP.ROADMAP_UP_TEXT-1' | translate}}</p></b>
                 </div>
                 <div class="p-3 ">
                   <p>{{'ROADMAP.ROADMAP_TEXT-1' | translate}}</p>
@@ -447,7 +457,7 @@
               </div>
               <div class="card-mob-text pt-4  pb-1">
                 <div>
-                  <p>{{'ROADMAP.ROADMAP_UP_TEXT-1' | translate}}</p>
+                  <b><p>{{'ROADMAP.ROADMAP_UP_TEXT-2' | translate}}</p></b>
                 </div>
                 <div class="p-3 ">
                   <p>{{'ROADMAP.ROADMAP_TEXT-2' | translate}}</p>
@@ -460,10 +470,10 @@
               </div>
               <div class="card-mob-text pt-4  pb-1">
                 <div>
-                  <p>{{'ROADMAP.ROADMAP_UP_TEXT-1' | translate}}</p>
+                  <b><p>{{'ROADMAP.ROADMAP_UP_TEXT-3' | translate}}</p></b>
                 </div>
                 <div class="p-3 ">
-                  <p>{{'ROADMAP.ROADMAP_TEXT-1' | translate}}</p>
+                  <p>{{'ROADMAP.ROADMAP_TEXT-3' | translate}}</p>
                 </div>
               </div>
             </div>
@@ -473,10 +483,10 @@
               </div>
               <div class="card-mob-text pt-4  pb-1">
                 <div>
-                  <p>{{'ROADMAP.ROADMAP_UP_TEXT-2' | translate}}</p>
+                  <b><p>{{'ROADMAP.ROADMAP_UP_TEXT-4' | translate}}</p></b>
                 </div>
                 <div class="p-3 ">
-                  <p>{{'ROADMAP.ROADMAP_TEXT-2' | translate}}</p>
+                  <p>{{'ROADMAP.ROADMAP_TEXT-4' | translate}}</p>
                 </div>
               </div>
             </div>
@@ -497,11 +507,12 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME' | translate}}</h4>
-                <p>{{'TEAM.STATUS' | translate}}</p>
+                <h4>{{'TEAM.FEDOR.NAME' | translate}}</h4>
+                <p>{{'TEAM.FEDOR.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p>{{'TEAM.TEXT' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.FEDOR.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.FEDOR.PASSION' | translate}}</p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -509,11 +520,12 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar2"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME_2' | translate}}</h4>
-                <p>{{'TEAM.STATUS_2' | translate}}</p>
+                <h4>{{'TEAM.SIM.NAME' | translate}}</h4>
+                <p>{{'TEAM.SIM.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p>{{'TEAM.TEXT' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.SIM.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.SIM.PASSION' | translate}}</p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -521,11 +533,12 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar3"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME_3' | translate}}</h4>
-                <p>{{'TEAM.STATUS_3' | translate}}</p>
+                <h4>{{'TEAM.MAXIM.NAME' | translate}}</h4>
+                <p>{{'TEAM.MAXIM.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p>{{'TEAM.TEXT' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.MAXIM.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.MAXIM.PASSION' | translate}}</p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -533,11 +546,12 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar4"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME_4' | translate}}</h4>
-                <p>{{'TEAM.STATUS_4' | translate}}</p>
+                <h4>{{'TEAM.SHANE.NAME' | translate}}</h4>
+                <p>{{'TEAM.SHANE.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p>{{'TEAM.TEXT' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.SHANE.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.SHANE.PASSION' | translate}}</p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -545,11 +559,12 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar5"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME_5' | translate}}</h4>
-                <p>{{'TEAM.STATUS_5' | translate}}</p>
+                <h4>{{'TEAM.NELSON.NAME' | translate}}</h4>
+                <p>{{'TEAM.NELSON.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p>{{'TEAM.TEXT' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.NELSON.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.NELSON.PASSION' | translate}}</p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -557,11 +572,12 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar6"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME_6' | translate}}</h4>
-                <p>{{'TEAM.STATUS_5' | translate}}</p>
+                <h4>{{'TEAM.KEN.NAME' | translate}}</h4>
+                <p>{{'TEAM.KEN.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p>{{'TEAM.TEXT' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.KEN.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.KEN.PASSION' | translate}}</p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -582,7 +598,7 @@
         </div>
       </section>
 
-      <app-landing-form></app-landing-form>
+      <app-landing-form id="BusinessDemo"></app-landing-form>
 
       <footer class="container-fluid">
         <div class="row justify-content-around footer-left">
@@ -619,17 +635,20 @@
             <form [formGroup]="form" (ngSubmit)="subscribe()">
               <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="{{'FOOTER.PLACE_HOLDER'  | translate}}"
-                      formControlName="email"
-                      [ngClass]="submitted && f.email.errors && 'subscibeError'" 
+                       formControlName="email"
+                       [ngClass]="submitted && f.email.errors && 'subscibeError'"
                        aria-label="Recipient's username"
                        aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button [disabled]="subscribed" class="btn btn-outline-secondary" type="submit">{{'FOOTER.BUTTON_TEXT' | translate}}</button>
+                  <button [disabled]="subscribed" class="btn btn-outline-secondary"
+                          type="submit">{{'FOOTER.BUTTON_TEXT' | translate}}</button>
                 </div>
               </div>
               <div *ngIf="submitted && f.email.errors">
-                <small *ngIf="f.email.errors.required" class="valid_text quize_validation_error">{{'FORM.VALIDATOR' | translate}}</small>
-                <small *ngIf="f.email.errors.email" class="valid_text quize_validation_error">{{'FORM.EMAIL_ERROR' | translate}}</small>
+                <small *ngIf="f.email.errors.required"
+                       class="valid_text quize_validation_error">{{'FORM.VALIDATOR' | translate}}</small>
+                <small *ngIf="f.email.errors.email"
+                       class="valid_text quize_validation_error">{{'FORM.EMAIL_ERROR' | translate}}</small>
               </div>
             </form>
 

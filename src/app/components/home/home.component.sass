@@ -41,7 +41,7 @@ nav
   padding-left: 0
   & li
     display: inline-block
-    margin-right: 32px
+    margin-right: 24px
     cursor: pointer
 
     & a
@@ -57,10 +57,21 @@ nav
       line-height: 20px
       color: #000000
 
+.questionMark-img:before
+  content: ''
+  background: url("../../../assets/landingPage/questionMark.png") center center no-repeat
+  background-size: 24px 24px
+  width: 24px
+  height: 24px
+  border-radius: 100%
+  position: absolute
+  top: 1%
+  left: -28px
+
 .tgr-img:before
   content: ''
-  background: url("../../../assets/landingPage/Path-yellowe.png") center center no-repeat #000
-  background-size: 14px 12px
+  background: url("../../../assets/landingPage/Path-yellowe.png.png") center center no-repeat
+  background-size: 24px 24px
   width: 24px
   height: 24px
   border-radius: 100%
@@ -666,12 +677,33 @@ header
   background: #54DD96
   border-radius: 8px
   padding: 28px 16px 24px 16px
-  margin-top: 49px
+  margin-top: 65px
+  position: relative
 
   font-weight: 600
   font-size: 16px
   line-height: 20px
   text-align: center
+
+.green-box:before
+  content: ''
+  background: url("../../../assets/landingPage/small-triangle.png") center center no-repeat
+  background-size: contain
+  width: 10px
+  height: 20px
+  position: absolute
+  top: -14px
+  left: 47%
+
+.before-correct:before
+  content: ''
+  background: url("../../../assets/landingPage/small-triangle.png") center center no-repeat
+  background-size: contain
+  width: 10px
+  height: 20px
+  position: absolute
+  top: -14px
+  left: 46%
 
 .road-map-mobile
   text-align: center
@@ -705,7 +737,7 @@ header
   background: #E0E4F3
   border-radius: 4px
   position: absolute
-  top: 58%
+  top: 54.5%
   left: 0
 
 .hr-green
@@ -715,7 +747,7 @@ header
   border-radius: 4px
   position: absolute
   left: 0
-  top: 58%
+  top: 54.5%
 
 .green-ball
   width: 16px
@@ -724,7 +756,7 @@ header
   border-radius: 100%
   position: absolute
   left: 11.4%
-  top: 56%
+  top: 53%
 
 .balls
   width: 16px
@@ -733,15 +765,15 @@ header
   border-radius: 100%
   position: absolute
   left: 36.4%
-  top: 56%
+  top: 53%
 
 .balls-rest :nth-child(7)
   left: 61.5%
-  top: 56%
+  top: 53%
 
 .balls-rest :nth-child(8)
   left: 86.5%
-  top: 56%
+  top: 53%
 
 @media (max-width: 995px)
   .road-map-mobile
@@ -841,6 +873,10 @@ header
   line-height: 20px
   text-align: center
   color: #0B1511
+
+.team-span
+  color: #54DD96
+  text-decoration: underline
 
 //======== footer ===========
 
@@ -1009,6 +1045,11 @@ footer
     & h1
       font-size: 46px
       line-height: 46px
+  .nav_bar
+    & :last-child
+      margin-right: 0
+    & li
+      margin-right: 16px
 
 @media (max-width: 768px)
   .logo
@@ -1133,17 +1174,13 @@ footer
       font-weight: 700
 
 //=============================
-@media (max-width: 1315px)
+@media (max-width: 1326px)
   .logo
     padding-left: 0 !important
     padding-right: 0 !important
   .pl-pr-0
     padding-left: 0 !important
     padding-right: 0 !important
-@media (max-width: 1275px)
-  .nav_bar
-    & li
-      margin-right: 25px
 
 @media (max-width: 1023px)
   nav
@@ -1161,22 +1198,15 @@ footer
     padding-right: 0
 
 @media (max-width: 1260px)
-  .nav_bar
-    & :last-child
-      margin-right: 0
-    & li
-      margin-right: 18px
-
   .tokenSale-right
     & p
       padding: 0 80px
 
-@media (max-width: 1100px)
+@media (max-width: 1157px)
   .nav_bar
     & li
+      margin-right: 15px
       & a
-        font-size: 12px
-      & div
         font-size: 12px
 
 @keyframes popoverOpen
@@ -1254,12 +1284,12 @@ footer
     padding-right: 0
 
 .subscibeError
-  border: 2px solid #C10000 !important 
+  border: 2px solid #C10000 !important
 
 .valid_text
   color: #C10000
   font-size: 12px
   font-weight: 600
-  text-align: right  
+  text-align: right
 
 

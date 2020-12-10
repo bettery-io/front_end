@@ -4,11 +4,11 @@
       <nav [class]="scrollHideMenu ? 'nav-hide': 'nav-show' "
            [style]="styleHideMenu ? 'background-color: transparent;box-shadow: none' : 'background-color: #fdd92a' "
            class="container-fluid row d-flex align-items-center pb-2">
-        <div class="logo col-3 col-lg-2"></div>
-        <div class="d-flex align-items-center col-lg-9 mt-4">
+        <div class="col-3 col-lg-2 logo"></div>
+        <div class="d-flex align-items-center col-lg-9 mt-4 pl-pr-0">
           <ul class="nav_bar">
             <li class="nav_bar_item">
-              <a href="#">{{'NAVBAR.ITEM_1' | translate}}</a>
+              <a href="#header" pageScroll>{{'NAVBAR.ITEM_1' | translate}}</a>
             </li>
             <li class="nav_bar_item">
               <a href="#works" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_2' | translate}}</a>
@@ -17,19 +17,22 @@
               <a href="#whyBettery" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_3' | translate}}</a>
             </li>
             <li class="nav_bar_item">
-              <a href="#roadmap" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_4' | translate}}</a>
+              <a href="#tokenSale" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_4' | translate}}</a>
             </li>
             <li class="nav_bar_item">
-              <a href="#team" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_5' | translate}}</a>
+              <a href="#roadmap" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_5' | translate}}</a>
             </li>
             <li class="nav_bar_item">
-              <div (click)="open(content)">{{'NAVBAR.ITEM_6' | translate}}</div>
+              <a href="#team" (click)="styleHideMen()" pageScroll>{{'NAVBAR.ITEM_6' | translate}}</a>
             </li>
             <li class="nav_bar_item">
-              <a href="#">{{'NAVBAR.ITEM_7' | translate}}</a>
+              <div (click)="open(content)">{{'NAVBAR.ITEM_7' | translate}}</div>
+            </li>
+            <li class="nav_bar_item">
+              <a href="#">{{'NAVBAR.ITEM_8' | translate}}</a>
             </li>
             <li class="nav_bar_item position-relative ml-3">
-              <a class="tgr-img" target="_blank" href="https://web.telegram.org">{{'NAVBAR.ITEM_8' | translate}}</a>
+              <a class="tgr-img" target="_blank" href="https://web.telegram.org">{{'NAVBAR.ITEM_9' | translate}}</a>
             </li>
           </ul>
         </div>
@@ -58,30 +61,34 @@
               <div ngbDropdown class="d-inline-block">
                 <div class="icon-bar-img" id="dropdownBasic1" ngbDropdownToggle></div>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="correct-left">
-                  <a href="#" ngbDropdownItem>{{'NAVBAR.ITEM_1' | translate}}</a>
+                  <a href="#header" ngbDropdownItem pageScroll>{{'NAVBAR.ITEM_1' | translate}}</a>
                   <div class="dropdown-divider"></div>
                   <a href="#works" (click)="styleHideMen()" pageScroll
                      ngbDropdownItem>{{'NAVBAR.ITEM_2' | translate}}</a>
                   <div class="dropdown-divider"></div>
                   <a href="#whyBettery" (click)="styleHideMen()" pageScroll
                      ngbDropdownItem>{{'NAVBAR.ITEM_3' | translate}}</a>
+
                   <div class="dropdown-divider"></div>
-                  <a href="#roadmap" (click)="styleHideMen()" pageScroll
+                  <a href="#tokenSale" (click)="styleHideMen()" pageScroll
                      ngbDropdownItem>{{'NAVBAR.ITEM_4' | translate}}</a>
                   <div class="dropdown-divider"></div>
-                  <a href="#team" (click)="styleHideMen()" pageScroll
+                  <a href="#roadmap" (click)="styleHideMen()" pageScroll
                      ngbDropdownItem>{{'NAVBAR.ITEM_5' | translate}}</a>
                   <div class="dropdown-divider"></div>
-                  <div (click)="open(content)" ngbDropdownItem>{{'NAVBAR.ITEM_6' | translate}}</div>
+                  <a href="#team" (click)="styleHideMen()" pageScroll
+                     ngbDropdownItem>{{'NAVBAR.ITEM_6' | translate}}</a>
                   <div class="dropdown-divider"></div>
-                  <a href="#" ngbDropdownItem>{{'NAVBAR.ITEM_7' | translate}}</a>
+                  <div (click)="open(content)" ngbDropdownItem>{{'NAVBAR.ITEM_7' | translate}}</div>
+                  <div class="dropdown-divider"></div>
+                  <a href="#" ngbDropdownItem>{{'NAVBAR.ITEM_8' | translate}}</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <header class="row mr-0 ml-0">
+      <header  id="header" class="row mr-0 ml-0">
         <div class="container-fluid m-2">
           <div class="row d-flex">
             <div class="title_block col-lg-9 col-12 pr-0 pl-0">
@@ -327,10 +334,10 @@
         </div>
       </section>
 
-      <section class="tokenSale">
+      <section id="tokenSale" class="tokenSale">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-7 col-xs-12 tokenSale-left">
+            <div class="col-lg-7 col-md-10 col-xs-12 tokenSale-left">
               <div>
                 <h2>{{'TOKEN_SALE.TITLE' | translate}}</h2>
               </div>
@@ -348,15 +355,15 @@
               </div>
               <div class="token-timer">
                 <div class="day">
-                  <div class="mx-1"><span>{{timer?.days[0]}}</span></div>
-                  <div class="mx-1"><span>{{timer?.days[1]}}</span></div>
+                  <div class="mx-1 semi-bg"><span>{{timer?.days[0]}}</span></div>
+                  <div class="mx-1 semi-bg"><span>{{timer?.days[1]}}</span></div>
                 </div>
                 <div>
                   <span class="point">:</span>
                 </div>
                 <div class="hours">
-                  <div class="mx-1"><span>{{timer?.hours[0]}}</span></div>
-                  <div class="mx-1"><span>{{timer?.hours[1]}}</span></div>
+                  <div class="mx-1 semi-bg"><span>{{timer?.hours[0]}}</span></div>
+                  <div class="mx-1 semi-bg"><span>{{timer?.hours[1]}}</span></div>
                 </div>
               </div>
             </div>
@@ -502,7 +509,7 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar2"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME' | translate}}</h4>
+                <h4>{{'TEAM.NAME_2' | translate}}</h4>
                 <p>{{'TEAM.STATUS_2' | translate}}</p>
               </div>
               <div class="team_card_text">
@@ -514,7 +521,7 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar3"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME' | translate}}</h4>
+                <h4>{{'TEAM.NAME_3' | translate}}</h4>
                 <p>{{'TEAM.STATUS_3' | translate}}</p>
               </div>
               <div class="team_card_text">
@@ -526,7 +533,7 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar4"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME' | translate}}</h4>
+                <h4>{{'TEAM.NAME_4' | translate}}</h4>
                 <p>{{'TEAM.STATUS_4' | translate}}</p>
               </div>
               <div class="team_card_text">
@@ -538,7 +545,7 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar5"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME' | translate}}</h4>
+                <h4>{{'TEAM.NAME_5' | translate}}</h4>
                 <p>{{'TEAM.STATUS_5' | translate}}</p>
               </div>
               <div class="team_card_text">
@@ -550,7 +557,7 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar6"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME' | translate}}</h4>
+                <h4>{{'TEAM.NAME_6' | translate}}</h4>
                 <p>{{'TEAM.STATUS_5' | translate}}</p>
               </div>
               <div class="team_card_text">
@@ -562,7 +569,7 @@
             <div class="item_team mb-5 col-lg-3 col-9 col-sm-6">
               <div class="img_team_avatar7"></div>
               <div class="team_card_name">
-                <h4>{{'TEAM.NAME' | translate}}</h4>
+                <h4>{{'TEAM.NAME_7' | translate}}</h4>
                 <p>{{'TEAM.STATUS_7' | translate}}</p>
               </div>
               <div class="team_card_text">
@@ -642,16 +649,18 @@
       <h4 class="modal-title text-center" id="modal-basic-title">{{'MODAL.TITLE' | translate}}</h4>
     </div>
     <div class="row d-flex justify-content-center">
-      <div class="col-10 col-sm-8 modal_left">
-        <div class="modal-body">
+      <div class="col-12 col-sm-8 modal_left">
+        <div class="modal-body" style="padding-top: 29px">
           <p><span>{{'MODAL.TEXT' | translate}}</span> {{'MODAL.TEXT-2' | translate}}</p>
         </div>
         <div class="text-center">
           <a href="#">info-investor@bettery.io</a>
         </div>
       </div>
-      <div class="vertical-hr col-10 col-sm-1"></div>
-      <div class="col-10 col-sm-3 modal_right d-flex align-items-center flex-column">
+      <div class="col-12 col-sm-1 d-flex justify-content-center">
+        <div class="vertical-hr h-100"></div>
+      </div>
+      <div class="col-12 col-sm-3 modal_right d-flex align-items-center flex-column">
         <div><p>Bettery Pitch Deck</p></div>
         <div class="slide_img mt-3 mb-3"></div>
         <div><a href="#">{{'MODAL.DOWNLOAD' | translate}}</a></div>

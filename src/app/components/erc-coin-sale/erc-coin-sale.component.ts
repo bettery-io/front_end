@@ -31,9 +31,7 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
     public postService: PostService,
     private modalService: NgbModal,
     private config: NgbCarouselConfig
-    ) {
-    config.showNavigationArrows = false;
-  }
+    ) {}
 
   async ngOnInit() {
     console.log(environment.production);

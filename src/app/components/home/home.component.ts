@@ -1,16 +1,16 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { NgxTypedJsComponent } from 'ngx-typed-js';
-import { Store } from '@ngrx/store';
+import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateService} from '@ngx-translate/core';
+import {Subscription} from 'rxjs';
+import {NgxTypedJsComponent} from 'ngx-typed-js';
+import {Store} from '@ngrx/store';
 
-import { createEventAction } from '../../actions/newEvent.actions';
-import { environment } from '../../../environments/environment';
+import {createEventAction} from '../../actions/newEvent.actions';
+import {environment} from '../../../environments/environment';
 import * as EN from '../../../assets/locale/en.json';
 import * as VN from '../../../assets/locale/vn.json';
-import { PostService } from '../../services/post.service';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {PostService} from '../../services/post.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -43,8 +43,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   subscribed: boolean = false;
   subscribedPost: Subscription;
+  slideIndex = 0;
 
-  @ViewChild(NgxTypedJsComponent, { static: true }) typed: NgxTypedJsComponent;
+  @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
   constructor(
     private modalService: NgbModal,
@@ -94,7 +95,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   open(content) {
-    this.modalService.open(content, { centered: true, size: 'lg' });
+    this.modalService.open(content, {centered: true, size: 'lg'});
   }
 
   @HostListener('click', ['$event'])
@@ -116,10 +117,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   sendEvent() {
     let data = this.newCreateEvent;
     if (data) {
-      this.store.dispatch(createEventAction({ data }));
+      this.store.dispatch(createEventAction({data}));
     } else {
       data = this.typedCreateEvent;
-      this.store.dispatch(createEventAction({ data }));
+      this.store.dispatch(createEventAction({data}));
     }
   }
 
@@ -227,7 +228,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getZero = (num) => {
     return num >= 0 && num < 10 ? '0' + num : num.toString();
-  }
+  };
 
   get f() {
     return this.form.controls;
@@ -240,15 +241,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     let data = {
       email: this.form.value.email,
-      from: "landing"
-    }
-    this.subscribedPost = this.postService.post("subscribe", data).subscribe((x) => {
-      this.form.controls.email.setValue("")
+      from: 'landing'
+    };
+    this.subscribedPost = this.postService.post('subscribe', data).subscribe((x) => {
+      this.form.controls.email.setValue('');
       this.submitted = false;
       this.subscribed = true;
     }, (err) => {
       console.log(err);
-    })
+    });
+  }
+
+
+  onSwiper($event: any) {
+    this.slideIndex = $event.activeIndex;
   }
 
   ngOnDestroy() {

@@ -188,7 +188,9 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   }
 
   checkValidBtn() {
-    return this.numberOfTokens === undefined || this.numberOfTokens <= 0;
+    return this.numberOfTokens === undefined ||
+      this.numberOfTokens <= 0 ||
+      this.numberOfTokens > Number(this.tokensaleInfo.balance);
   }
 
   get f() {

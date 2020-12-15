@@ -80,7 +80,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
             {path: 'history', component: HistoryComponent},
             {path: 'tokensale', component: ErcCoinSaleComponent},
             {path: 'rooms', component: RoomsComponent}
-        ]),
+        ], { scrollPositionRestoration: 'top'}),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

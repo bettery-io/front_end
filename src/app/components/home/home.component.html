@@ -32,7 +32,7 @@
               <a href="#">{{'NAVBAR.ITEM_8' | translate}}</a>
             </li>
             <li (click)="open(content)" class="nav_bar_item position-relative ml-3">
-              <a  class="questionMark-img" href="#">{{'NAVBAR.ITEM_9' | translate}}</a>
+              <a class="questionMark-img" href="#">{{'NAVBAR.ITEM_9' | translate}}</a>
             </li>
             <li class="nav_bar_item position-relative ml-3">
               <a class="tgr-img" target="_blank" href="https://web.telegram.org">{{'NAVBAR.ITEM_10' | translate}}</a>
@@ -56,7 +56,7 @@
             <div class="d-flex align-items-center">
               <div (click)="open(content)" class="mr-3">
                 <a href="#"><img style="width: 24px; height: 26px"
-                  src="../../../assets/landingPage/questionMark.png" alt="tel"></a>
+                                 src="../../../assets/landingPage/questionMark.png" alt="tel"></a>
               </div>
               <div class="mobile_img_path mr-3"><a href="https://web.telegram.org" target="_blank"><img
                 src="../../../assets/landingPage/Path-yellowe2.png" alt="tel"></a></div>
@@ -234,7 +234,7 @@
             </div>
           </div>
         </div>
-        <div  class="col-lg-5 col-12  bettery_work_title order-first mb-5 text-center text-lg-left ml-lg-5">
+        <div class="col-lg-5 col-12  bettery_work_title order-first mb-5 text-center text-lg-left ml-lg-5">
           <div>
             <div class="mb-3">
               <h2>{{'SECOND.TITLE' | translate}}</h2>
@@ -243,6 +243,51 @@
               <p>{{'SECOND.TEXT_1' | translate}}</p> <br>
               <p>{{'SECOND.TEXT_2' | translate}}</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="social-media">
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-12 social-media-title">
+              <h2>Made for all your social media</h2>
+              <p>Bring more fun into every post you make. Enjoy social betting with friends and all your online
+                communities.</p>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+              <div class="phone-img"></div>
+            </div>
+
+              <swiper class="slide-bg" (slideChange)="onSwiper($event)">
+                <ng-template swiperSlide>
+                  <div class="d-flex justify-content-center">
+                    <div class="phone1-img"></div>
+                  </div>
+                </ng-template>
+
+                <ng-template swiperSlide>
+                  <div class="d-flex justify-content-center">
+                    <div class="phone2-img"></div>
+                  </div>
+                </ng-template>
+
+                <ng-template swiperSlide>
+                  <div class="d-flex justify-content-center">
+                    <div class="phone3-img"></div>
+                  </div>
+                </ng-template>
+
+              </swiper>
+
+              <div class="pagin">
+                <ul>
+                  <li [ngClass]="slideIndex === 0 ? 'activeSlide' : ''"></li>
+                  <li [ngClass]="slideIndex === 1 ? 'activeSlide' : ''"></li>
+                  <li [ngClass]="slideIndex === 2 ? 'activeSlide' : ''"></li>
+                </ul>
+              </div>
+
           </div>
         </div>
       </section>
@@ -400,7 +445,8 @@
                 <div class="pr-2">{{'ROADMAP.ROADMAP_UP_TEXT-1' | translate}}</div>
               </div>
               <div class="text-center"><p><span>{{'ROADMAP.DATE_1' | translate}}</span></p></div>
-              <div class="green-box before-correct" style="color: #ffffff">{{'ROADMAP.ROADMAP_TEXT-1' | translate}}</div>
+              <div class="green-box before-correct"
+                   style="color: #ffffff">{{'ROADMAP.ROADMAP_TEXT-1' | translate}}</div>
             </div>
 
             <div class="col-lg-3 col-xs-12 col-sm-6">
@@ -511,8 +557,10 @@
                 <p>{{'TEAM.FEDOR.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.FEDOR.EXPERTISE' | translate}}</p>
-                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.FEDOR.PASSION' | translate}}</p>
+                <p><span
+                  class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.FEDOR.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.FEDOR.PASSION' | translate}}
+                </p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -524,7 +572,8 @@
                 <p>{{'TEAM.SIM.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.SIM.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.SIM.EXPERTISE' | translate}}
+                </p>
                 <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.SIM.PASSION' | translate}}</p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
@@ -537,8 +586,10 @@
                 <p>{{'TEAM.MAXIM.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.MAXIM.EXPERTISE' | translate}}</p>
-                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.MAXIM.PASSION' | translate}}</p>
+                <p><span
+                  class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.MAXIM.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.MAXIM.PASSION' | translate}}
+                </p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -550,8 +601,10 @@
                 <p>{{'TEAM.SHANE.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.SHANE.EXPERTISE' | translate}}</p>
-                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.SHANE.PASSION' | translate}}</p>
+                <p><span
+                  class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.SHANE.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.SHANE.PASSION' | translate}}
+                </p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -563,8 +616,10 @@
                 <p>{{'TEAM.NELSON.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.NELSON.EXPERTISE' | translate}}</p>
-                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.NELSON.PASSION' | translate}}</p>
+                <p><span
+                  class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.NELSON.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.NELSON.PASSION' | translate}}
+                </p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img
                 src="../../../assets/landingPage/linkedin-square.png" alt="linkedin"></a></div>
@@ -576,7 +631,8 @@
                 <p>{{'TEAM.KEN.STATUS' | translate}}</p>
               </div>
               <div class="team_card_text">
-                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.KEN.EXPERTISE' | translate}}</p>
+                <p><span class="team-span">{{'TEAM.EXPERTISE' | translate}}</span> {{'TEAM.KEN.EXPERTISE' | translate}}
+                </p>
                 <p><span class="team-span">{{'TEAM.PASSION' | translate}}</span> {{'TEAM.KEN.PASSION' | translate}}</p>
               </div>
               <div class="img_team_linkedin"><a href="https://www.linkedin.com/" target="_blank"><img

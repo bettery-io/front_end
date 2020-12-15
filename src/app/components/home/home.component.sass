@@ -1060,6 +1060,7 @@ footer
     margin-bottom: 27px
   .third
     padding-bottom: 40px
+    padding-top: 50px
   .four
     padding-bottom: 140px
   .five
@@ -1292,4 +1293,91 @@ footer
   font-weight: 600
   text-align: right
 
+//=============social-media ==================
+#social-media
+  margin-top: 85px
 
+.social-media-title
+  text-align: center
+  padding-bottom: 50px
+  & h2
+    font-style: normal
+    font-weight: 600
+    font-size: 50px
+    line-height: 56px
+    text-align: center
+    color: #0B1511
+    padding-bottom: 19px
+  & p
+    font-style: normal
+    font-weight: normal
+    font-size: 18px
+    line-height: 28px
+
+.phone-img
+  background: url("../../../assets/landingPage/phone-img.png") center center no-repeat
+  background-size: contain
+  width: 1139px
+  height: 429px
+  margin-bottom: 140px
+
+.phone1-img
+  background: url("../../../assets/landingPage/phone-1.png") center center no-repeat
+  background-size: contain
+  width: 165px
+  height: 326px
+
+.phone2-img
+  background: url("../../../assets/landingPage/phone-2.png") center center no-repeat
+  background-size: contain
+  width: 223px
+  height: 326px
+
+.phone3-img
+  background: url("../../../assets/landingPage/phone-3.png") center center no-repeat
+  background-size: contain
+  width: 165px
+  height: 326px
+
+.slide-bg
+  background: url("../../../assets/landingPage/yellowForSlide.png") center 83% no-repeat, url("../../../assets/landingPage/greenForSlide.png") center 86% no-repeat
+  background-size: 281px, 281px
+  display: none
+
+.pagin
+  display: none
+  & ul
+    display: flex
+    justify-content: center
+    list-style: none
+    padding: 0
+  & li
+    background: #C4C4C4
+    width: 12px
+    height: 12px
+    border-radius: 100%
+
+  & li:not(:last-child)
+      margin-right: 16px
+
+.activeSlide
+  background: #FDD92A !important
+
+@media (max-width: 1200px)
+  .phone-img
+    height: 350px
+    margin-bottom: 120px
+
+@media (max-width: 1024px)
+  .phone-img
+    margin-bottom: 10px
+@media (max-width: 766px)
+  .phone-img
+    display: none
+  .third-left
+    padding-top: 0px
+  .slide-bg
+    display: block
+    padding-bottom: 95px
+  .pagin
+    display: block

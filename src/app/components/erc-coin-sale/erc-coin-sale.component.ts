@@ -31,6 +31,7 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   subscribed: boolean = false;
   subscribedPost: Subscription;
+  slideIndex = 0;
 
   constructor(
     public postService: PostService,
@@ -215,4 +216,7 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
     })
   }
 
+  onSwiper($event: any) {
+    this.slideIndex = $event.activeIndex;
+  }
 }

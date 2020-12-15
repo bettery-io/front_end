@@ -178,6 +178,7 @@ main
   max-width: 1920px
   margin: 0 auto 0 auto
   padding: 100px 60px 0 60px
+  position: relative
 
 
 .wrapper
@@ -740,24 +741,6 @@ main
   justify-content: space-between
   //overflow: hidden
 
-.mobile-carousel
-  outline: none
-  display: none !important
-  & ::ng-deep
-    & .carousel-indicators
-      bottom: -23px
-    & .carousel-indicators
-      & li
-        width: 8px
-        height: 8px
-        border-radius: 100%
-        margin-right: 8px
-    .carousel-indicators
-      & .active
-        background-color: #FFD300
-
-
-
 .road-map-item
   margin: 20px 60px
   background: #202020
@@ -940,7 +923,7 @@ main
 .group-letter-img
   background: url("../../../assets/tokenSale/GroupLetter1.png") center center no-repeat
   background-size: contain
-  width: 52px
+  width: 42px
   height: 52px
   position: relative
 
@@ -948,10 +931,10 @@ main
   content: ''
   background: url("../../../assets/tokenSale/GroupLetter2.png") left center no-repeat
   background-size: contain
-  width: 24px
+  width: 20px
   height: 20px
   position: absolute
-  left: 15px
+  left: 11px
   top: 16px
 
 .icon-set
@@ -1196,8 +1179,6 @@ main
   .resources
     & ul
       width: 100%
-  .mobile-carousel
-    display: block !important
   .road-map-warp
     display: none
   .wrap-for-bg
@@ -1207,6 +1188,16 @@ main
   .test-bg2
     background: url("../../../assets/tokenSale/bg/biger.png") 108% 100% no-repeat !important
     background-size: 121% !important
+
+  .road-map-item
+    & span:before
+      left: 6%
+      top: -13%
+
+    & #active:before, #active2:before
+      left: 4%
+      top: -15%
+
 
 @media(max-width: 800px)
   .adap-hard
@@ -1513,7 +1504,7 @@ main
       margin-left: 53px
       width: 90%
   .road-map-item
-    margin: 20px 30px
+    margin: 20px 20px
   #spinner-text2
     font-size: 14px
     line-height: 14px
@@ -1539,6 +1530,8 @@ main
   .line
     height: 5px
     margin: 0
+  .yellow-line
+    height: 5px
   .line-circle
     width: 10px
     height: 10px
@@ -1644,4 +1637,34 @@ main
   font-weight: 600
   text-align: right
 
-//========
+//===== swipe card =====
+
+.slide-bg
+  display: none
+
+.pagin
+  display: none
+  & ul
+    display: flex
+    justify-content: center
+    list-style: none
+    padding: 0
+  & li
+    background: #C4C4C4
+    width: 8px
+    height: 8px
+    border-radius: 100%
+
+  & li:not(:last-child)
+    margin-right: 16px
+
+.activeSlide
+  background: #FDD92A !important
+
+@media (max-width: 991px)
+  .slide-bg
+    display: block
+  .pagin
+    display: block
+  .road-details
+    padding-top: 24px

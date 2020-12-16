@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 declare global {
-  interface Window { web3: any; }
+  interface Window {
+    web3: any;
+  }
 }
 
 window.web3 = window.web3 || {};
@@ -13,5 +15,19 @@ window.web3 = window.web3 || {};
 })
 export class AppComponent {
   title = 'Quiz';
+
+  constructor() {
+  }
+
+  detectPath() {
+    const href = window.location.pathname;
+    if (href === '/create-event' || href.includes('/private_event') || href.includes('/public_event')) {
+      return {
+        'background': '#242521'
+      };
+    } else {
+      return;
+    }
+  }
 
 }

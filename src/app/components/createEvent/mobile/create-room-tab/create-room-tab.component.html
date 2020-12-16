@@ -1,5 +1,5 @@
 <div class="box">
-  <form [formGroup]="createRoomForm">
+  <form *ngIf="allRooms?.length > 0" [formGroup]="createRoomForm">
     <div class="checkBoxPos">
       <div class="pretty p-default p-round inline">
         <input type="radio" value="exist" formControlName="createNewRoom">
@@ -31,7 +31,7 @@
         <small *ngIf="e.roomId.errors.required" class="form-text quize_validation_error">Choose room is
           required</small>
       </div>
-      <div class="buttonBox buttonBox_2">
+      <div class="buttonBox buttonBox_1">
         <button type="button" class="cancel" (click)="cancel()">BACK</button>
         <button type="button" class="next" (click)="chooseRoom()">NEXT</button>
       </div>

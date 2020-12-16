@@ -61,7 +61,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
     const path = 'room/get_all';
     this.roomsSub = this.getService.get(path).subscribe(rooms => {
       this.allRooms = rooms;
-      console.log(rooms, 'all rooms');
       this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
     });
   }
@@ -71,7 +70,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
     const data = {id};
 
     this.roomById = this.postService.post(path, data).subscribe(list => {
-      console.log(list);
       this.usersRoom = list;
       this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
     });
@@ -79,7 +77,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   getEventById(path, id) {
     this.eventById = this.postService.post(path, {id}).subscribe(ev => {
-      console.log(ev);
       this.forEventId = ev;
     });
   }
@@ -204,8 +201,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   sendNewEvent() {
-    console.log(this.newCreateEvent);
-
     const data = this.newCreateEvent;
     if (data) {
       this.store.dispatch(createEventAction({data}));
@@ -232,7 +227,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
       arr = _.filter(this.allRooms, o => {
         return o.name.toLowerCase().includes(this.searchWord.toLowerCase());
       });
-      console.log(arr);
       if (arr.length > 0) {
         this.roomsSort = arr.slice(this.startLength, this.showLength);
       }

@@ -3,12 +3,12 @@ import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
-import web3Obj from '../../../../helpers/torus'
+import web3Obj from '../../../../helpers/torus';
 import {PostService} from '../../../../services/post.service';
 import * as UserActions from '../../../../actions/user.actions';
 import {Subscription} from 'rxjs';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {WelcomePageComponent} from "../../../share/welcome-page/welcome-page.component";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {WelcomePageComponent} from '../../../share/welcome-page/welcome-page.component';
 
 @Component({
   selector: 'set-question-tab',
@@ -41,7 +41,7 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select('user').subscribe((x) => {
       if (x.length != 0) {
         this.registered = true;
       }
@@ -50,9 +50,9 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
       question: [this.formData.question, Validators.required],
       answers: new FormArray([]),
       details: [this.formData.resolutionDetalis]
-    })
+    });
 
-    this.answesQuantity = this.formData.answers.length == 0 ? 2 : this.formData.answers.length
+    this.answesQuantity = this.formData.answers.length == 0 ? 2 : this.formData.answers.length;
 
     for (let i = this.t.length; i < this.answesQuantity; i++) {
       if (this.formData.answers.length != 0) {
@@ -77,7 +77,7 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
 
   oneMoreAnswer() {
     this.t.push(this.formBuilder.group({
-      name: ["", Validators.required],
+      name: ['', Validators.required],
     }));
     this.answesQuantity = this.answesQuantity + 1;
   }
@@ -88,13 +88,21 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
     this.answesQuantity = this.answesQuantity - 1;
   }
 
+  styleButtonBox() {
+    if (this.answesQuantity >= 3) {
+      return {
+        'position': 'relative'
+      };
+    }
+  }
+
   onSubmit() {
     if (this.registered) {
       this.submitted = true;
       if (this.questionForm.invalid) {
         return;
       }
-      this.getData.next(this.questionForm.value)
+      this.getData.next(this.questionForm.value);
     } else {
       this.loginWithTorus();
     }
@@ -105,20 +113,20 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
     this.spinnerLoading = true;
     this.clicked = true;
     try {
-      await web3Obj.initialize()
-      this.setTorusInfoToDB()
+      await web3Obj.initialize();
+      this.setTorusInfoToDB();
     } catch (error) {
       this.spinnerLoading = false;
-      await web3Obj.torus.cleanUp()
-      console.error(error)
+      await web3Obj.torus.cleanUp();
+      console.error(error);
     }
   }
 
   async setTorusInfoToDB() {
-    let userInfo = await web3Obj.torus.getUserInfo("")
-    let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
+    let userInfo = await web3Obj.torus.getUserInfo('');
+    let userWallet = (await web3Obj.web3.eth.getAccounts())[0];
 
-    this.localStoreUser(userInfo)
+    this.localStoreUser(userInfo);
 
     let data: Object = {
       _id: null,
@@ -128,8 +136,8 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
       avatar: userInfo.profileImage,
       verifier: userInfo.verifier,
       verifierId: userInfo.verifierId,
-    }
-    this.postSub = this.http.post("user/torus_regist", data)
+    };
+    this.postSub = this.http.post('user/torus_regist', data)
       .subscribe(
         (x: any) => {
           this.spinnerLoading = false;
@@ -147,11 +155,11 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
             x.verifier
           );
           if (this.clicked) {
-            this.onSubmit()
+            this.onSubmit();
           }
         }, (err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
   }
 
   addUser(
@@ -180,7 +188,7 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
       invitationList: invitationList,
       avatar: color,
       verifier: verifier
-    }))
+    }));
   }
 
   ngOnDestroy() {

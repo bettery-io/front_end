@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import { TimeAgoPipe } from './comment/pipe/time-ago.pipe';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
 import { MetaMaskModalComponent } from './meta-mask-modal/meta-mask-modal.component';
+import { ErrorLimitModalComponent } from './error-limit-modal/error-limit-modal.component';
 
 
 
@@ -19,6 +20,7 @@ import { MetaMaskModalComponent } from './meta-mask-modal/meta-mask-modal.compon
     CommentComponent,
     TimeAgoPipe,
     MetaMaskModalComponent,
+    ErrorLimitModalComponent,
   ],
     imports: [
         CommonModule,

@@ -91,7 +91,10 @@ export class PublicEventComponent implements  OnDestroy {
   }
 
   generateID() {
-    return this.getSevice.get("publicEvents/createId")
+    let data = {
+      id: this.host[0]._id
+    }
+    return this.PostService.post("publicEvents/createId", data);
   }
 
   getStartTime() {

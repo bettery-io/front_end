@@ -63,7 +63,10 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
   }
 
   generateID() {
-    return this.getSevice.get("privateEvents/createId")
+    let data = {
+      id: this.host[0]._id
+    }
+    return this.postService.post("privateEvents/createId", data)
   }
 
   getStartTime() {
@@ -80,9 +83,9 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     this.idSub = id.subscribe((x: any) => {
       this.sendToContract(x._id);
     }, (err) => {
+      // Modal window open here
       this.spinnerLoading = false;
       console.log(err)
-      console.log("error from generate id")
     })
   }
 

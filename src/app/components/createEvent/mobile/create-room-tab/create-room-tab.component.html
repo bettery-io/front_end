@@ -25,7 +25,8 @@
       <p class="name">CHOOSE ROOM</p>
       <select [ngClass]="{ 'is_invalid': submitted && e.roomId.errors }"
         formControlName="roomId" class="btn" name="roomId" id="roomId">
-        <option *ngFor="let room of allRooms" value="{{room.id}}">{{room.name}}</option>
+        <option selected = 'selected' value="">choose room</option>
+        <option *ngFor="let room of allRooms;" value="{{room.id}}">{{room.name}}</option>
       </select>
       <div *ngIf="submitted && e.roomId.errors">
         <small *ngIf="e.roomId.errors.required" class="form-text quize_validation_error">Choose room is

@@ -150,5 +150,4 @@ export class CreateRoomTabComponent implements OnInit, OnDestroy {
       this.postSubscribe.unsubscribe();
     }
   }
-
 }

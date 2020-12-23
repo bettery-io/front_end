@@ -137,20 +137,21 @@
 
       <div class="dropBox correctMB label">
         <label for="startTime" id="labelC">{{endPrivateTime}}</label>
-        <select (change)="chosePrivateEndTime()" formControlName="privateEndTime" class=" pl-2 dropBox correctMB startTime" [ngClass]="{ 'is_invalid': submitted && priv.privateEndTime.errors }" name="startTime" id="startTime">
+        <select (change)="chosePrivateEndTime()" formControlName="privateEndTime" class=" pl-2 dropBox startTime" [ngClass]="{ 'is_invalid': submitted && priv.privateEndTime.errors }" name="startTime" id="startTime">
           <option *ngFor="let time of times"   value="{{time.name}}">{{time.name}}</option>
         </select>
+        <div *ngIf="submitted && priv.privateEndTime.errors">
+          <small *ngIf="priv.privateEndTime.errors.required" class="form-text quize_validation_error">End time is
+            required</small>
+        </div>
       </div>
+
 
       <div class="d-flex justify-content-center mb-3" (click)="openHowEventsWorkFriend(content2)">
         <div class="question-img"></div>
         <div><p class="infoYellow" style="margin-top: 1px;">HOW EVENTS WORK</p></div>
       </div>
 
-      <div *ngIf="submitted && priv.privateEndTime.errors">
-        <small *ngIf="priv.privateEndTime.errors.required" class="form-text quize_validation_error">End time is
-          required</small>
-      </div>
       <div class="buttonBox">
         <button type="button" class="cancel" (click)="cancel()">BACK</button>
         <button type="button" class="next" (click)="createPrivateEvent()">NEXT</button>

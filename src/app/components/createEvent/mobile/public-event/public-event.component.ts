@@ -7,8 +7,10 @@ import { PostService } from '../../../../services/post.service'
 import maticInit from '../../../../contract/maticInit.js'
 import Contract from '../../../../contract/contract';
 import { Subscription } from 'rxjs';
-import {InfoModalComponent} from '../../../share/info-modal/info-modal.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { InfoModalComponent } from '../../../share/info-modal/info-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorLimitModalComponent } from '../../../share/error-limit-modal/error-limit-modal.component';
+import { environment } from '../../../../../environments/environment';
 
 
 @Component({
@@ -16,7 +18,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './public-event.component.html',
   styleUrls: ['./public-event.component.sass']
 })
-export class PublicEventComponent implements  OnDestroy {
+export class PublicEventComponent implements OnDestroy {
   @Input() formData;
   @Output() goBack = new EventEmitter();
   created = false;
@@ -91,7 +93,11 @@ export class PublicEventComponent implements  OnDestroy {
   }
 
   generateID() {
-    return this.getSevice.get("publicEvents/createId")
+    let data = {
+      id: this.host[0]._id,
+      prodDev: environment.production
+    }
+    return this.PostService.post("publicEvents/createId", data);
   }
 
   getStartTime() {
@@ -123,8 +129,8 @@ export class PublicEventComponent implements  OnDestroy {
       this.sendToContract(x._id);
     }, (err) => {
       this.spinnerLoading = false;
+      this.modalService.open(ErrorLimitModalComponent, { centered: true });
       console.log(err)
-      console.log("error from generate id")
     })
   }
 

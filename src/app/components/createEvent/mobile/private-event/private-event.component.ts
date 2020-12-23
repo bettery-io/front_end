@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InfoModalComponent } from '../../../share/info-modal/info-modal.component'
+import { ErrorLimitModalComponent } from '../../../share/error-limit-modal/error-limit-modal.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'private-event-modile',
@@ -64,7 +66,8 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
 
   generateID() {
     let data = {
-      id: this.host[0]._id
+      id: this.host[0]._id,
+      prodDev: environment.production
     }
     return this.postService.post("privateEvents/createId", data)
   }
@@ -83,7 +86,7 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     this.idSub = id.subscribe((x: any) => {
       this.sendToContract(x._id);
     }, (err) => {
-      // Modal window open here
+      this.modalService.open(ErrorLimitModalComponent, { centered: true });
       this.spinnerLoading = false;
       console.log(err)
     })
@@ -189,13 +192,13 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-    // TO DO
-    modalAboutExpert() {
-      const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
-      modalRef.componentInstance.name = '- Actually, no need to! Bettery is smart and secure enough to take care of your event. You can join to bet as a Player or become an Expert to validate the result after Players. Enjoy!';
-      modalRef.componentInstance.boldName = 'How to manage your event';
-      modalRef.componentInstance.link = 'Learn more about how Bettery works';
-    }
+  // TO DO
+  modalAboutExpert() {
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    modalRef.componentInstance.name = '- Actually, no need to! Bettery is smart and secure enough to take care of your event. You can join to bet as a Player or become an Expert to validate the result after Players. Enjoy!';
+    modalRef.componentInstance.boldName = 'How to manage your event';
+    modalRef.componentInstance.link = 'Learn more about how Bettery works';
+  }
 
   ngOnDestroy() {
     if (this.userSub) {

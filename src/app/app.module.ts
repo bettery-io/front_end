@@ -14,7 +14,7 @@ import {invitesReducer} from './reducers/invites.reducer';
 import {createEventReducer} from './reducers/newEvent.reducer';
 
 import {AppComponent} from './app.component';
-import {NavbarComponent} from './components/navbar/navbar.component';
+import {NavbarComponent} from './components/navigation/navbar/navbar.component';
 
 import {RegistrationComponent} from './components/registration/registration.component';
 
@@ -37,6 +37,7 @@ import {NgxTypedJsModule} from 'ngx-typed-js';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import {SwiperModule} from 'swiper/angular';
+import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/locale/', '.json');
@@ -52,7 +53,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     ErcCoinSaleComponent,
     NumericDirective,
     LandingFormComponent,
-    RoomsComponent
+    RoomsComponent,
+    SidebarComponent
   ],
     imports: [
         SwiperModule,
@@ -96,9 +98,10 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     GetService,
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF' }
   ],
-    exports: [
-        RoomsComponent
-    ],
+  exports: [
+    RoomsComponent,
+    SidebarComponent
+  ],
   bootstrap: [
     AppComponent
   ]

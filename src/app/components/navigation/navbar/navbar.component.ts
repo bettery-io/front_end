@@ -1,23 +1,23 @@
 import { Component, OnInit, OnDestroy, HostListener, ViewChild, DoCheck } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
-import { Coins } from '../../models/Coins.model';
-import * as CoinsActios from '../../actions/coins.actions';
-import * as UserActions from '../../actions/user.actions';
-import * as InvitesAction from '../../actions/invites.actions';
-import { RegistrationComponent } from '../registration/registration.component';
-import maticInit from '../../contract/maticInit.js'
+import { AppState } from '../../../app.state';
+import { Coins } from '../../../models/Coins.model';
+import * as CoinsActios from '../../../actions/coins.actions';
+import * as UserActions from '../../../actions/user.actions';
+import * as InvitesAction from '../../../actions/invites.actions';
+import { RegistrationComponent } from '../../registration/registration.component';
+import maticInit from '../../../contract/maticInit.js'
 
 import Web3 from 'web3';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { PostService } from '../../services/post.service';
-import { GetService } from '../../services/get.service';
+import { PostService } from '../../../services/post.service';
+import { GetService } from '../../../services/get.service';
 import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
 import _ from "lodash";
-import Contract from '../../contract/contract';
-import web3Obj from '../../helpers/torus'
+import Contract from '../../../contract/contract';
+import web3Obj from '../../../helpers/torus'
 import { Subscription } from 'rxjs';
-import { WelcomePageComponent } from "../share/welcome-page/welcome-page.component";
+import { WelcomePageComponent } from "../../share/welcome-page/welcome-page.component";
 import { IfStmt } from '@angular/compiler';
 
 

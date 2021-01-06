@@ -37,7 +37,7 @@ import {NgxTypedJsModule} from 'ngx-typed-js';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import {SwiperModule} from 'swiper/angular';
-import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
+import {NavigationModule} from './components/navigation/navigation.module';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/locale/', '.json');
@@ -46,7 +46,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
     RegistrationComponent,
     HomeComponent,
     HistoryComponent,
@@ -54,7 +53,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     NumericDirective,
     LandingFormComponent,
     RoomsComponent,
-    SidebarComponent
   ],
     imports: [
         SwiperModule,
@@ -91,7 +89,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
             },
             useDefaultLang: false,
         }),
-        NgxPageScrollModule
+        NgxPageScrollModule,
+        NavigationModule
     ],
   providers: [
     PostService,
@@ -100,7 +99,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   ],
   exports: [
     RoomsComponent,
-    SidebarComponent
   ],
   bootstrap: [
     AppComponent

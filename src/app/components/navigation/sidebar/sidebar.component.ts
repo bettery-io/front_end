@@ -19,7 +19,6 @@ export class SidebarComponent implements OnInit, DoCheck {
 
   ngDoCheck() {
     this.detectPath();
-    console.log(this.currentPath);
   }
 
   detectPath() {
@@ -35,7 +34,6 @@ export class SidebarComponent implements OnInit, DoCheck {
   @HostListener('window:scroll', ['$event'])
   listenScroll() {
     if (this.display) {
-      console.log(document.documentElement.scrollTop);
       this.scrollTop = document.documentElement.scrollTop;
     }
   }

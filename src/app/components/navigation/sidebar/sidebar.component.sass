@@ -7,7 +7,8 @@
   position: fixed
   background: url("../../../../assets/sidebar/main-bg.png") center -37px no-repeat #0B1511
   background-size: 197px
-  transition: all .2s
+  transition: width .2s
+  top: 87px
 
 .sidebar-wrap:hover
   width: 197px
@@ -29,7 +30,7 @@ li
 .show-short
   display: none
   opacity: 0
-  transition: all .2s
+  transition: opacity .2s
   white-space: nowrap
   overflow: hidden
   line-height: 17px
@@ -54,6 +55,10 @@ li
     height: 20px
     margin-right: 10px
 
+.menu-list
+  li
+    outline: none
+
 .btn-creat-text
   font-weight: bold
   font-size: 16px
@@ -66,13 +71,17 @@ li
 
 
 .join-img
-  background: url("../../../../assets/sidebar/join-img.png") center center no-repeat
-  background-size: 24px 24px
+  background: url("../../../../assets/sidebar/join-white.png") center center no-repeat
+  background-size: 48px 48px
   width: 24px
   min-width: 24px
   height: 24px
   margin-right: 16px
   margin-left: 16px
+
+.join-yellow
+  background: url("../../../../assets/sidebar/join-img.png") center center no-repeat
+  background-size: 24px 24px
 
 .host-img
   background: url("../../../../assets/sidebar/host-img.png") center center no-repeat
@@ -83,6 +92,10 @@ li
   margin-right: 16px
   margin-left: 16px
 
+.host-yellow
+  background: url("../../../../assets/sidebar/host-yelow.png") center center no-repeat
+  background-size: 48px 48px
+
 .rooms-img
   background: url("../../../../assets/sidebar/rooms-img.png") center center no-repeat
   background-size: 16px 24px
@@ -91,6 +104,10 @@ li
   height: 24px
   margin-right: 16px
   margin-left: 16px
+
+.rooms-yellow
+  background: url("../../../../assets/sidebar/rooms-yelow.png") center center no-repeat
+  background-size: 48px 48px
 
 .myEvent-img
   background: url("../../../../assets/sidebar/myEvents-img.png") center center no-repeat
@@ -101,6 +118,10 @@ li
   margin-right: 16px
   margin-left: 16px
 
+.myEvent-yellow
+  background: url("../../../../assets/sidebar/myEvent-yelow.png") center center no-repeat
+  background-size: 40px 40px
+
 .achievements-img
   background: url("../../../../assets/sidebar/achievements-img.png") center center no-repeat
   background-size: 24px 24px
@@ -109,6 +130,10 @@ li
   height: 24px
   margin-right: 16px
   margin-left: 16px
+
+.achievements-yellow
+  background: url("../../../../assets/sidebar/achievements-yelow.png") center center no-repeat
+  background-size: 48px 48px
 
 .friends-img
   background: url("../../../../assets/sidebar/friends-img.png") center center no-repeat
@@ -119,6 +144,10 @@ li
   margin-right: 16px
   margin-left: 16px
 
+.friends-yellow
+  background: url("../../../../assets/sidebar/friend-yellow.png") center center no-repeat
+  background-size: 48px 48px
+
 .help-img
   background: url("../../../../assets/sidebar/help-img.png") center center no-repeat
   background-size: 24px 24px
@@ -128,9 +157,13 @@ li
   margin-right: 16px
   margin-left: 16px
 
+.help-yellow
+  background: url("../../../../assets/sidebar/help-yelow.png") center center no-repeat
+  background-size: 48px 48px
+
 .contact-list
   margin-top: 135px
-  & li
+  & a
     color: #0B1511
     font-size: 14px
 
@@ -161,6 +194,15 @@ li
   margin-right: 13px
   margin-left: 13px
 
-@media (max-width: 1024px)
+//@media (max-width: 1024px)
+@media (max-width: 1366px) //test
   .sidebar-wrap
     display: none
+
+@media (max-height: 800px)
+  .contact-list
+    margin-top: 10px
+    & li
+      color: #FFFFFF
+  .sidebar-wrap
+    background-position: center -150px

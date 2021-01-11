@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import {NavbarComponent} from './navbar/navbar.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {RouterModule} from '@angular/router';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {ShareModule} from '../share/share.module';
 
 
 @NgModule({
@@ -17,7 +20,11 @@ import {RouterModule} from '@angular/router';
   ],
     imports: [
         CommonModule,
-        RouterModule
+        RouterModule,
+        NgbModule, 
+        FormsModule,
+        FontAwesomeModule,
+        ShareModule
     ]
 })
 export class NavigationModule { }

@@ -14,7 +14,6 @@ import {invitesReducer} from './reducers/invites.reducer';
 import {createEventReducer} from './reducers/newEvent.reducer';
 
 import {AppComponent} from './app.component';
-import {NavbarComponent} from './components/navigation/navbar/navbar.component';
 
 import {RegistrationComponent} from './components/registration/registration.component';
 

@@ -22,7 +22,7 @@ import { InvitationComponent } from './invitation/invitation.component';
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forChild([
-            { path: "eventFeed", component: EventFeedComponent },
+            { path: "join", component: EventFeedComponent },
             { path: 'question/:id', component: QuestionComponent },
             { path: "my-activites", component: MyActivitesComponent },
             { path: 'invitation', component: InvitationComponent },

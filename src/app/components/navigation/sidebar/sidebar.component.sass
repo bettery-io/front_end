@@ -1,0 +1,208 @@
+.sidebar-wrap
+  width: 56px
+  //height: 100%
+  min-height: 1080px
+  color: #ffffff
+  z-index: 999
+  position: fixed
+  background: url("../../../../assets/sidebar/main-bg.png") center -37px no-repeat #0B1511
+  background-size: 197px
+  transition: width .2s
+  top: 87px
+
+.sidebar-wrap:hover
+  width: 197px
+  .show-short
+    display: block
+    opacity: 1
+
+ul
+  list-style: none
+  margin: 0
+  padding: 0
+
+li
+  display: flex
+  align-items: center
+  padding-bottom: 27px
+  cursor: pointer
+
+.show-short
+  display: none
+  opacity: 0
+  transition: opacity .2s
+  white-space: nowrap
+  overflow: hidden
+  line-height: 17px
+
+.plus
+  color: #FFFFFF
+  font-size: 20px
+  font-weight: 600
+
+.btn-creat-event
+  background: #54DD96
+  padding: 11px 16px
+  width: 100%
+  display: flex
+  align-items: center
+  border: none
+  outline: none
+  border-bottom-right-radius: 8px
+  border-bottom-left-radius: 8px
+  & img
+    width: 20px
+    height: 20px
+    margin-right: 10px
+
+.menu-list
+  li
+    outline: none
+
+.btn-creat-text
+  font-weight: bold
+  font-size: 16px
+  line-height: 17px
+  color: #FFFFFF
+
+.active
+  color: #FFD300
+  font-weight: bold
+
+
+.join-img
+  background: url("../../../../assets/sidebar/join-white.png") center center no-repeat
+  background-size: 48px 48px
+  width: 24px
+  min-width: 24px
+  height: 24px
+  margin-right: 16px
+  margin-left: 16px
+
+.join-yellow
+  background: url("../../../../assets/sidebar/join-img.png") center center no-repeat
+  background-size: 24px 24px
+
+.host-img
+  background: url("../../../../assets/sidebar/host-img.png") center center no-repeat
+  background-size: 24px 17px
+  width: 24px
+  min-width: 24px
+  height: 17px
+  margin-right: 16px
+  margin-left: 16px
+
+.host-yellow
+  background: url("../../../../assets/sidebar/host-yelow.png") center center no-repeat
+  background-size: 48px 48px
+
+.rooms-img
+  background: url("../../../../assets/sidebar/rooms-img.png") center center no-repeat
+  background-size: 16px 24px
+  width: 16px
+  min-width: 16px
+  height: 24px
+  margin-right: 16px
+  margin-left: 16px
+
+.rooms-yellow
+  background: url("../../../../assets/sidebar/rooms-yelow.png") center center no-repeat
+  background-size: 48px 48px
+
+.myEvent-img
+  background: url("../../../../assets/sidebar/myEvents-img.png") center center no-repeat
+  background-size: 18px 20px
+  width: 18px
+  min-width: 18px
+  height: 20px
+  margin-right: 16px
+  margin-left: 16px
+
+.myEvent-yellow
+  background: url("../../../../assets/sidebar/myEvent-yelow.png") center center no-repeat
+  background-size: 40px 40px
+
+.achievements-img
+  background: url("../../../../assets/sidebar/achievements-img.png") center center no-repeat
+  background-size: 24px 24px
+  width: 24px
+  min-width: 24px
+  height: 24px
+  margin-right: 16px
+  margin-left: 16px
+
+.achievements-yellow
+  background: url("../../../../assets/sidebar/achievements-yelow.png") center center no-repeat
+  background-size: 48px 48px
+
+.friends-img
+  background: url("../../../../assets/sidebar/friends-img.png") center center no-repeat
+  background-size: 22px 24px
+  width: 22px
+  min-width: 22px
+  height: 24px
+  margin-right: 16px
+  margin-left: 16px
+
+.friends-yellow
+  background: url("../../../../assets/sidebar/friend-yellow.png") center center no-repeat
+  background-size: 48px 48px
+
+.help-img
+  background: url("../../../../assets/sidebar/help-img.png") center center no-repeat
+  background-size: 24px 24px
+  width: 24px
+  min-width: 24px
+  height: 24px
+  margin-right: 16px
+  margin-left: 16px
+
+.help-yellow
+  background: url("../../../../assets/sidebar/help-yelow.png") center center no-repeat
+  background-size: 48px 48px
+
+.contact-list
+  margin-top: 135px
+  & a
+    color: #0B1511
+    font-size: 14px
+
+.letter-img
+  background: url("../../../../assets/tokenSale/tok-icon-letter.png") center center no-repeat
+  background-size: 30px 25px
+  width: 30px
+  min-width: 30px
+  height: 25px
+  margin-right: 13px
+  margin-left: 13px
+
+.mail-img
+  background: url("../../../../assets/tokenSale/tok-mail-icon.png") center center no-repeat
+  background-size: 30px 25px
+  width: 30px
+  min-width: 30px
+  height: 25px
+  margin-right: 13px
+  margin-left: 13px
+
+.telegram-img
+  background: url("../../../../assets/tokenSale/tok-icon-telegram.png") center center no-repeat
+  background-size: 30px 25px
+  width: 30px
+  min-width: 30px
+  height: 25px
+  margin-right: 13px
+  margin-left: 13px
+
+//@media (max-width: 1024px)
+@media (max-width: 1366px) //test
+  .sidebar-wrap
+    display: none
+
+@media (max-height: 800px)
+  .contact-list
+    margin-top: 10px
+    & li
+      color: #FFFFFF
+  .sidebar-wrap
+    background-position: center -150px

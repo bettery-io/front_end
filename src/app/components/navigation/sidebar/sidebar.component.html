@@ -1,0 +1,64 @@
+<div *ngIf="display" class="sidebar-wrap" [ngStyle]="sidebarTopPosition()">
+  <div style="margin-bottom: 40px">
+    <button class="btn-creat-event" routerLink="create-event">
+      <img src="../../../../assets/sidebar/plus.png" alt="+">
+      <span class="show-short btn-creat-text">CREATE EVENT</span>
+    </button>
+  </div>
+
+  <div class="menu-list">
+    <ul>
+      <li routerLink="/join">
+        <div class="join-img" [ngClass]="detectPathForActive('join') && 'join-yellow'"></div>
+        <span class="show-short" [ngClass]="detectPathForActive('join') && 'active'">Join</span>
+      </li>
+
+      <li routerLink="/host">
+        <div class="host-img"  [ngClass]="detectPathForActive('host') && 'host-yellow'"></div>
+        <span class="show-short" [ngClass]="detectPathForActive('host') && 'active'">Host</span>
+      </li>
+
+      <li routerLink="/rooms">
+        <div class="rooms-img"  [ngClass]="detectPathForActive('rooms') && 'rooms-yellow'"></div>
+        <span class="show-short" [ngClass]="detectPathForActive('rooms') && 'active'" style="padding-left: 8px">Rooms</span>
+      </li>
+
+      <li routerLink="/my-events">
+        <div class="myEvent-img" [ngClass]="detectPathForActive('my-events') && 'myEvent-yellow'"></div>
+        <span class="show-short" [ngClass]="detectPathForActive('my-events') && 'active'" style="padding-left: 6px">My Events</span>
+      </li>
+
+      <li routerLink="/achievements">
+        <div class="achievements-img" [ngClass]="detectPathForActive('help') && 'achievements-yellow'"></div>
+        <span class="show-short" [ngClass]="detectPathForActive('achievements') && 'active'">Achievements</span>
+      </li>
+
+      <li routerLink="/friends">
+        <div class="friends-img" [ngClass]="detectPathForActive('friends') && 'friends-yellow'"></div>
+        <span class="show-short" [ngClass]="detectPathForActive('friends') && 'active'">Friends</span>
+      </li>
+
+      <li routerLink="/help">
+        <div  class="help-img" [ngClass]="detectPathForActive('help') && 'help-yellow'"></div>
+        <span class="show-short" [ngClass]="detectPathForActive('help') && 'active'">Help</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="contact-list">
+    <ul>
+      <li>
+        <div class="mail-img"></div>
+        <a href="#" class="show-short">Email</a>
+      </li>
+      <li>
+        <div class="telegram-img"></div>
+        <a href="https://web.telegram.org/#/login" target="_blank" class="show-short">Telegram</a>
+      </li>
+      <li>
+        <div class="letter-img"></div>
+        <a href="#" class="show-short">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>

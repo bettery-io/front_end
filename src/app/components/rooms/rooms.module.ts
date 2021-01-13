@@ -4,6 +4,7 @@ import { RoomsComponent } from './rooms/rooms.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RoomDetailsComponent } from './room-details/room-details.component';
+import { ShareModule} from '../share/share.module'
 
 
 
@@ -21,7 +22,8 @@ import { RoomDetailsComponent } from './room-details/room-details.component';
         ]),
     ],
     exports: [
-        RoomsComponent
+        RoomsComponent,
+        ShareModule
     ]
 })
 

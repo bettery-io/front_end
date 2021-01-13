@@ -9,6 +9,7 @@ import { TimeAgoPipe } from './comment/pipe/time-ago.pipe';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
 import { MetaMaskModalComponent } from './meta-mask-modal/meta-mask-modal.component';
 import { ErrorLimitModalComponent } from './error-limit-modal/error-limit-modal.component';
+import { RoomTemplateComponent } from './room-template/room-template.component';
 
 
 
@@ -21,16 +22,18 @@ import { ErrorLimitModalComponent } from './error-limit-modal/error-limit-modal.
     TimeAgoPipe,
     MetaMaskModalComponent,
     ErrorLimitModalComponent,
+    RoomTemplateComponent,
   ],
     imports: [
         CommonModule,
         FormsModule,
         NgxPageScrollModule,
     ],
-  exports: [
-    SpinnerLoadingComponent,
-    CommentComponent
-  ]
+    exports: [
+        SpinnerLoadingComponent,
+        CommentComponent,
+        RoomTemplateComponent
+    ]
 })
 
 export class ShareModule { }

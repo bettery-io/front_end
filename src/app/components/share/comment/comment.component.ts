@@ -61,6 +61,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   initializeSocket(): void {
     if (this.data?.id) {
       this.socketService.gettingComments(this.data.id);
+      console.log(this.data, 'test');
     } else {
       console.error('data error');
     }

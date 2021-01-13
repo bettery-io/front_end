@@ -134,7 +134,7 @@
       </div>
 
       <div class="arrow"></div>
-      <app-comment [theme]=themeChat [userData]=userData [data]=eventData></app-comment>
+      <app-comment [theme]=themeChat [userData]=userData [id]=eventData.id></app-comment>
     </div>
 
     <info *ngIf="showInfo()" [eventData]="eventData" [joinedAs]="joinedAs" (goBack)="goBack()" (agree)="agree()">

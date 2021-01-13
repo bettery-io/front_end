@@ -23,8 +23,8 @@ const web3Obj = {
             torusBrand1: '#FFD300',
           },
         },
-        logoDark: 'https://uc539cabea6954c7f940b377f39b.previews.dropboxusercontent.com/p/thumb/ABCYPdbNKHhlkihBbozK5CYDFo1KQuspv5oP5BZZB-CH2FZBLHkP6aC7Y4b2flKwKRStB-rOwyFqNa68TCCOw5NAl4kknb69CukTBiJculrpgP_Ag_XGXkTODqDYnsc__vAMZH9FZ0WxncRG-NGmyFjAYY7YOTPDYnTbE91nStdk55fC-xIVoEqL9iiXWkYEn7CXeyrNVZqWHc5-KIPGunXBFNHWSQkQJrZo-BUUw5MsxDzcqD5ohDBhvdrHcqTcKUXj2X83OzezMpgmXW0G-cO75RsOfdcI7qRa_2fOolLfNPNjVIU77b6uA7HSlf4KaTEFJcLL5poeQiHQ8Cz_y1heS3ayQJXKK5lwqsi8rdqMViIfTsjZ9F1Q02CwLaYdGLO-qPizS7wKVj-w4sXNyKXS/p.png?fv_content=true&size_mode=5', // dark logo for light background
-        logoLight: 'https://uc539cabea6954c7f940b377f39b.previews.dropboxusercontent.com/p/thumb/ABCYPdbNKHhlkihBbozK5CYDFo1KQuspv5oP5BZZB-CH2FZBLHkP6aC7Y4b2flKwKRStB-rOwyFqNa68TCCOw5NAl4kknb69CukTBiJculrpgP_Ag_XGXkTODqDYnsc__vAMZH9FZ0WxncRG-NGmyFjAYY7YOTPDYnTbE91nStdk55fC-xIVoEqL9iiXWkYEn7CXeyrNVZqWHc5-KIPGunXBFNHWSQkQJrZo-BUUw5MsxDzcqD5ohDBhvdrHcqTcKUXj2X83OzezMpgmXW0G-cO75RsOfdcI7qRa_2fOolLfNPNjVIU77b6uA7HSlf4KaTEFJcLL5poeQiHQ8Cz_y1heS3ayQJXKK5lwqsi8rdqMViIfTsjZ9F1Q02CwLaYdGLO-qPizS7wKVj-w4sXNyKXS/p.png?fv_content=true&size_mode=5',
+        logoDark: 'https://matic-network.d2f172wsk4mtv2.amplifyapp.com/bettery6.f2c637f980b2224fc627.png', // dark logo for light background
+        logoLight: 'https://matic-network.d2f172wsk4mtv2.amplifyapp.com/bettery6.f2c637f980b2224fc627.png',
         customTranslations: {
           en: {
             embed: {

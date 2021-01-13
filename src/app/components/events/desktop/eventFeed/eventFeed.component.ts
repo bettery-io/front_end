@@ -1,10 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
-import {GetService} from '../../../../services/get.service';
 import {Answer} from '../../../../models/Answer.model';
 import {User} from '../../../../models/User.model';
 import _ from 'lodash';
+import {PostService} from '../../../../services/post.service';
 
 
 @Component({
@@ -29,10 +29,11 @@ export class EventFeedComponent implements OnDestroy {
   commentList;
   newCommentList;
   test = false;
+  pureData: any;
 
   constructor(
     private store: Store<AppState>,
-    private getService: GetService,
+    private postService: PostService,
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
@@ -58,11 +59,12 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   getData() {
-    this.getService.get('publicEvents/get_all').subscribe((x) => {
+    this.postService.post('publicEvents/get_all', {from: 0, to: 29}).subscribe((x) => {
       this.myAnswers = [];
-      let data = _.orderBy(x, ['endTime'], ['asc']);
+      this.pureData = x;
+      let data = _.orderBy(this.pureData.events, ['endTime'], ['asc']);
       this.allData = data;
-      this.commentList = this.allData[0];
+      this.commentList = this.allData[1];
       this.questions = _.filter(data, (o) => {
         return o.finalAnswer === null && !o.reverted;
       });
@@ -78,7 +80,6 @@ export class EventFeedComponent implements OnDestroy {
       });
       console.log(this.myAnswers);
       console.log(this.allData);
-
       this.spinner = false;
     });
   }
@@ -227,5 +228,4 @@ export class EventFeedComponent implements OnDestroy {
     }
     this.test = !this.test;
   }
-
 }

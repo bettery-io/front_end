@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { QuizTemplateComponent } from './quiz-template/quiz-template.component';
 import { QuestionComponent } from './question/question.component';
 import { TimeComponent } from './time/time.component';
 import { EventFeedComponent } from './eventFeed/eventFeed.component';
@@ -35,7 +34,6 @@ import {ShareModule} from '../../share/share.module';
         EventFeedComponent,
         QuestionComponent,
         TimeComponent,
-        QuizTemplateComponent,
         MyActivitesComponent,
         InvitationComponent,
         SearchBarComponent

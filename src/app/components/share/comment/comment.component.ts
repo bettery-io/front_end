@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CommentSocketService} from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
 import {Subscription} from 'rxjs';
@@ -16,9 +16,9 @@ import {User} from '../../../models/User.model';
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.sass']
 })
-export class CommentComponent implements OnInit, OnDestroy {
+export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input() theme: string;
-  @Input() data: any;
+  @Input('id') id: any;
   @Input() userData: User;
   @Input() withoutSend: boolean;
   newCommentSub: Subscription;
@@ -55,12 +55,12 @@ export class CommentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initializeSocket();
+    this.initializeSocket(this.id);
   }
 
-  initializeSocket(): void {
-    if (this.data?.id) {
-      this.socketService.gettingComments(this.data.id);
+  initializeSocket(id): void {
+    if (id) {
+      this.socketService.gettingComments(id);
     } else {
       console.error('data error');
     }
@@ -79,7 +79,6 @@ export class CommentComponent implements OnInit, OnDestroy {
 
     this.newCommentSub = this.socketService.newComment().subscribe((comments: CommentModel[]) => {
       this.allComments = comments;
-      console.log(this.allComments);
       this.letsSort();
     });
   }
@@ -102,21 +101,21 @@ export class CommentComponent implements OnInit, OnDestroy {
       }
 
       if (!this.isReply.isReply) {
-        if (this.data.id && this.userData?._id && this.newComment && this.newComment.trim().length >= 1) {
-          this.socketService.send(this.data.id, this.userData._id, this.newComment);
+        if (this.id && this.userData?._id && this.newComment && this.newComment.trim().length >= 1) {
+          this.socketService.send(this.id, this.userData._id, this.newComment);
           console.log('comment send');
         }
         this.newComment = '';
       }
 
-      if (this.isReply.isReply && this.data.id && this.userData?._id && this.newComment &&
+      if (this.isReply.isReply && this.id && this.userData?._id && this.newComment &&
         this.newComment.includes('@' + this.isReply.user[1])) {
 
         const regex = new RegExp('@' + this.isReply.user[1]);
         const comments = this.newComment.replace(regex, '');
 
         if (comments.trim().length >= 1) {
-          this.socketService.newReply(this.data.id, this.userData._id, this.isReply.commentId, comments);
+          this.socketService.newReply(this.id, this.userData._id, this.isReply.commentId, comments);
           this.newComment = '';
           console.log('reply send');
         }
@@ -128,7 +127,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   sendIcon(text: string, commentId: number) {
     if (this.userData && text && commentId) {
-      this.socketService.sendSelectedIcon(text, this.data.id, this.userData._id, commentId);
+      this.socketService.sendSelectedIcon(text, this.id, this.userData._id, commentId);
     }
   }
 
@@ -171,8 +170,8 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   typingEffect() {
     setTimeout(() => {
-      if (this.data?.id) {
-        this.socketService.doTyping(this.data.id, 'Someone is typing');
+      if (this.id) {
+        this.socketService.doTyping(this.id, 'Someone is typing');
       }
     }, 300);
 
@@ -360,6 +359,15 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
     if (this.postSub) {
       this.postSub.unsubscribe();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.id && changes.id.previousValue !== undefined) {
+      const test = changes['id'];
+      if (test.currentValue !== test.previousValue) {
+        this.initializeSocket(test.currentValue);
+      }
     }
   }
 }

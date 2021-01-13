@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {SpinnerLoadingComponent} from "./spinner-loading/spinner-loading.component";
-import { InfoModalComponent } from './info-modal/info-modal.component';
-import { WelcomePageComponent } from './welcome-page/welcome-page.component';
-import { CommentComponent } from './comment/comment.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {SpinnerLoadingComponent} from './spinner-loading/spinner-loading.component';
+import {InfoModalComponent} from './info-modal/info-modal.component';
+import {WelcomePageComponent} from './welcome-page/welcome-page.component';
+import {CommentComponent} from './comment/comment.component';
 import {FormsModule} from '@angular/forms';
-import { TimeAgoPipe } from './comment/pipe/time-ago.pipe';
+import {TimeAgoPipe} from './comment/pipe/time-ago.pipe';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
-import { MetaMaskModalComponent } from './meta-mask-modal/meta-mask-modal.component';
-import { ErrorLimitModalComponent } from './error-limit-modal/error-limit-modal.component';
-
+import {MetaMaskModalComponent} from './meta-mask-modal/meta-mask-modal.component';
+import {ErrorLimitModalComponent} from './error-limit-modal/error-limit-modal.component';
+import {QuizTemplateComponent} from './quiz-template/quiz-template.component';
 
 
 @NgModule({
@@ -21,6 +21,7 @@ import { ErrorLimitModalComponent } from './error-limit-modal/error-limit-modal.
     TimeAgoPipe,
     MetaMaskModalComponent,
     ErrorLimitModalComponent,
+    QuizTemplateComponent
   ],
     imports: [
         CommonModule,
@@ -29,7 +30,8 @@ import { ErrorLimitModalComponent } from './error-limit-modal/error-limit-modal.
     ],
   exports: [
     SpinnerLoadingComponent,
-    CommentComponent
+    CommentComponent,
+    QuizTemplateComponent
   ]
 })
 

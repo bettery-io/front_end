@@ -1,20 +1,20 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
-import { User } from '../../../../models/User.model';
+import { User } from '../../../models/User.model';
 import _ from 'lodash';
-import { Answer } from '../../../../models/Answer.model';
+import { Answer } from '../../../models/Answer.model';
 import Web3 from 'web3';
-import Contract from '../../../../contract/contract';
-import * as CoinsActios from '../../../../actions/coins.actions';
-import * as UserActions from '../../../../actions/user.actions';
-import { PostService } from '../../../../services/post.service';
+import Contract from '../../../contract/contract';
+import * as CoinsActios from '../../../actions/coins.actions';
+import * as UserActions from '../../../actions/user.actions';
+import { PostService } from '../../../services/post.service';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.state';
+import { AppState } from '../../../app.state';
 
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { RegistrationComponent } from '../../../registration/registration.component';
+import { RegistrationComponent } from '../../registration/registration.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import web3Obj from '../../../../helpers/torus'
-import maticInit from '../../../../contract/maticInit.js'
+import web3Obj from '../../../helpers/torus'
+import maticInit from '../../../contract/maticInit.js'
 
 @Component({
   selector: 'quiz-template',
@@ -34,7 +34,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     private postService: PostService,
     private store: Store<AppState>,
     private modalService: NgbModal
-  ) { }
+  ) {}
 
 
   @Input() question: any;
@@ -45,6 +45,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
   @Output() callGetData = new EventEmitter();
   @Output() deleteInvitationId = new EventEmitter<number>();
+  @Output() commentIdEmmit = new EventEmitter<boolean>();
 
   ngOnInit() {
     this.allUserData = this.userData;
@@ -183,6 +184,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
   setAnswer(dataAnswer, from) {
     let answer = this.myAnswers;
+    console.log(answer);
     if (this.allUserData._id != undefined) {
       if (answer.multy) {
         if (answer.multyAnswer.length === 0) {
@@ -481,4 +483,17 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         })
   }
 
+  colorForRoom(color) {
+    if (this.question) {
+      return {
+        'background': color
+      };
+    } else {
+      return;
+    }
+  }
+
+  getCommentById(id: any) {
+    this.commentIdEmmit.emit(id);
+  }
 }

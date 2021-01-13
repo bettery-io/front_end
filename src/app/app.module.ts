@@ -34,9 +34,9 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxTypedJsModule} from 'ngx-typed-js';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
-import { RoomsComponent } from './components/rooms/rooms.component';
 import {SwiperModule} from 'swiper/angular';
 import {NavigationModule} from './components/navigation/navigation.module';
+import {RoomModule} from './components/rooms/rooms.module';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new TranslateHttpLoader(http, './assets/locale/', '.json');
@@ -51,7 +51,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     ErcCoinSaleComponent,
     NumericDirective,
     LandingFormComponent,
-    RoomsComponent,
   ],
     imports: [
         SwiperModule,
@@ -76,9 +75,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         FormsModule,
         RouterModule.forRoot([
             {path: '', component: HomeComponent},
-            {path: 'history', component: HistoryComponent},
-            {path: 'tokensale', component: ErcCoinSaleComponent},
-            {path: 'rooms', component: RoomsComponent}
+          //  {path: 'history', component: HistoryComponent},
+            {path: 'tokensale', component: ErcCoinSaleComponent}
         ], { scrollPositionRestoration: 'top'}),
         TranslateModule.forRoot({
             loader: {
@@ -89,15 +87,13 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
             useDefaultLang: false,
         }),
         NgxPageScrollModule,
-        NavigationModule
+        NavigationModule,
+        RoomModule
     ],
   providers: [
     PostService,
     GetService,
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF' }
-  ],
-  exports: [
-    RoomsComponent,
   ],
   bootstrap: [
     AppComponent

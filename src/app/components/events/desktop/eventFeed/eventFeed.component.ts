@@ -5,6 +5,7 @@ import {Answer} from '../../../../models/Answer.model';
 import {User} from '../../../../models/User.model';
 import _ from 'lodash';
 import {PostService} from '../../../../services/post.service';
+import {log} from 'util';
 
 
 @Component({
@@ -28,11 +29,12 @@ export class EventFeedComponent implements OnDestroy {
   fromComponent = 'eventFeed';
   commentList;
   newCommentList;
-  test = false;
   pureData: any;
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
   newQuestions = [];
+
+  currentComment = 0
 
   constructor(
     private store: Store<AppState>,
@@ -67,10 +69,13 @@ export class EventFeedComponent implements OnDestroy {
       this.pureData = x;
       let data = _.orderBy(this.pureData.events, ['endTime'], ['asc']);
       this.allData = data;
-      this.commentList = this.allData[1];
-      this.questions = _.filter(data, (o) => {
-        return o.finalAnswer === null && !o.reverted;
-      });
+      console.log(this.allData, 'this all data');
+      console.log(this.commentList);
+
+      // this.questions = _.filter(data, (o) => {
+      //   return o.finalAnswer === null && !o.reverted;
+      // });
+      this.questions = data;
       // this.myAnswers = this.questions.map((data) => {
       //   return {
       //     event_id: data.id,
@@ -87,9 +92,12 @@ export class EventFeedComponent implements OnDestroy {
 
       if (this.newQuestions.length === 0) {
         this.newQuestions = this.questions;
+        this.commentList = this.newQuestions[this.currentComment];
       } else {
         this.questions.forEach(el => this.newQuestions.push(el));
+        this.commentList = this.newQuestions[this.currentComment];
       }
+      console.log(this.newQuestions);
     });
   }
 
@@ -235,16 +243,30 @@ export class EventFeedComponent implements OnDestroy {
         this.commentList = this.newCommentList;
       }
     }
-    this.test = !this.test;
   }
 
   onScrollQuizTemplate() {
-    this.scrollDistanceFrom = this.scrollDistanceFrom + 5;
-    this.scrollDistanceTo = this.scrollDistanceTo + 5;
-    console.log(this.pureData?.amount);
-    // console.log(this.scrollDistanceTo);
     if (this.scrollDistanceTo < this.pureData?.amount) {
+      this.scrollDistanceFrom = this.scrollDistanceFrom + 5;
+      this.scrollDistanceTo = this.scrollDistanceTo + 5;
+
       this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
+    } else if (this.pureData?.amount / 5 !== 0 && (this.scrollDistanceTo + this.pureData?.amount % 5 <= this.pureData?.amount)) {
+      this.scrollDistanceFrom = this.scrollDistanceTo + this.pureData?.amount % 5;
+      this.scrollDistanceTo = this.scrollDistanceTo + this.pureData?.amount % 5;
+
+      this.getData(this.scrollDistanceFrom, this.scrollDistanceTo + this.pureData?.amount % 5);
+      return;
+    } else {
+      return;
+    }
+  }
+
+  colorForRoom(color) {
+    if (this.newQuestions) {
+      return {
+        'background': color
+      };
     } else {
       return;
     }

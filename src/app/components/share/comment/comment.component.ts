@@ -365,9 +365,9 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.id && changes.id.previousValue !== undefined) {
-      const test = changes['id'];
-      if (test.currentValue !== test.previousValue) {
-        this.initializeSocket(test.currentValue);
+      const id = changes['id'];
+      if (id.currentValue !== id.previousValue) {
+        this.initializeSocket(id.currentValue);
       }
     }
   }

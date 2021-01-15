@@ -46,7 +46,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
   @Output() callGetData = new EventEmitter();
   @Output() deleteInvitationId = new EventEmitter<number>();
-  @Output() commentIdEmmit = new EventEmitter<boolean>();
+  @Output() commentIdEmmit = new EventEmitter<number>();
 
   ngOnInit() {
     this.allUserData = this.userData;

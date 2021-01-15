@@ -1,14 +1,14 @@
 <div class="main-warp container-fluid">
-  <!--    <div *ngIf="spinner">-->
-  <!--        <div class="lds-ripple">-->
-  <!--            <div></div>-->
-  <!--            <div></div>-->
-  <!--        </div>-->
-  <!--    </div>-->
+
 
   <app-search-bar></app-search-bar>
-
-
+  <div *ngIf="spinner">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <div *ngIf="!spinner">
   <div class="container-fluid">
     <div class="comment-wrap" style="margin-top: 51px">
 
@@ -30,9 +30,9 @@
       <div style=" padding: 0">
         <div style="margin-right: 30px" class="comment-box">
           <div class="comment-head">
-            <img class="test-img-delet" src="../../../../../assets/descEvent/test-delet.png">
+            <div class="test-img-delet" [ngStyle]="colorForRoom(questions[currentComment]?.room.color)"></div>
             <div>
-              <span>Who will be the next president of the US?</span>
+              <span>{{questions[currentComment]?.question}}</span>
             </div>
           </div>
           <app-comment class="test" *ngIf="commentList" [theme]="'white'" [userData]= userData
@@ -41,7 +41,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <!--    <div *ngIf="!spinner">-->
   <!--        <div class="filterCheckBox">-->
   <!--            <div class="filter_box">-->

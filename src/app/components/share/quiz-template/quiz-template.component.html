@@ -74,7 +74,7 @@
           <div class="col-8 d-flex">
             <div class="comment-img mr-2"></div>
             <div *ngIf="question?.lastComment === 'null'" class="comment-text">
-              No comments yet. <span (click)="getCommentById(question?.id)"> (leave a comment)</span>
+              No comments yet. <span (click)="getCommentById(question?.id)">(leave a comment)</span>
             </div>
             <div *ngIf="question?.lastComment !== 'null'" class="comment-text"><p>
               {{question?.lastComment}} <span (click)="getCommentById(question?.id)">(see {{question?.commentsAmount}}

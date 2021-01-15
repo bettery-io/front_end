@@ -1,11 +1,11 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../app.state';
-import {Answer} from '../../../../models/Answer.model';
-import {User} from '../../../../models/User.model';
+import { Component, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../app.state';
+import { Answer } from '../../../../models/Answer.model';
+import { User } from '../../../../models/User.model';
 import _ from 'lodash';
-import {PostService} from '../../../../services/post.service';
-import {log} from 'util';
+import { PostService } from '../../../../services/post.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -19,9 +19,9 @@ export class EventFeedComponent implements OnDestroy {
   myAnswers: Answer[] = [];
   userId: number = null;
   coinInfo = null;
-  userData: any;
-  storeUserSubscribe;
-  storeCoinsSubscrive;
+  userData: any = [];
+  storeUserSubscribe: Subscription;
+  storeCoinsSubscrive: Subscription;
   allData = [];
   parcipiantFilter = true;
   validateFilter = true;
@@ -29,6 +29,7 @@ export class EventFeedComponent implements OnDestroy {
   fromComponent = 'eventFeed';
   commentList;
   newCommentList;
+  test = false;
   pureData: any;
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
@@ -161,75 +162,14 @@ export class EventFeedComponent implements OnDestroy {
     }
   }
 
-  filter() {
-    setTimeout(() => {
-      let timeNow = Number((new Date().getTime() / 1000).toFixed(0));
-      let z;
-
-      if (this.parcipiantFilter && this.validateFilter && this.historyFilter) {
-        z = this.allData;
-      } else if (!this.parcipiantFilter && !this.validateFilter && !this.historyFilter) {
-        z = [];
-      } else if (!this.parcipiantFilter && this.validateFilter && this.historyFilter) {
-        let x = _.filter(this.allData, (o) => {
-          return o.endTime <= timeNow;
-        });
-        let y = _.filter(this.allData, (o) => {
-          return o.finalAnswer !== null || o.reverted;
-        });
-        y.forEach((e) => {
-          x.push(e);
-        });
-        z = _.orderBy(x, ['endTime'], ['asc']);
-      } else if (this.parcipiantFilter && !this.validateFilter && this.historyFilter) {
-        let x = _.filter(this.allData, (o) => {
-          return o.endTime >= timeNow;
-        });
-        let y = _.filter(this.allData, (o) => {
-          return o.finalAnswer !== null || o.reverted;
-        });
-
-        y.forEach((e) => {
-          x.push(e);
-        });
-        z = _.orderBy(x, ['endTime'], ['asc']);
-      } else if (!this.parcipiantFilter && this.validateFilter && !this.historyFilter) {
-        z = _.filter(this.allData, (o) => {
-          return o.endTime <= timeNow;
-        });
-      } else if (this.parcipiantFilter && !this.validateFilter && !this.historyFilter) {
-        z = _.filter(this.allData, (o) => {
-          return o.endTime >= timeNow;
-        });
-      } else if (this.parcipiantFilter && this.validateFilter && !this.historyFilter) {
-        z = _.filter(this.allData, (o) => {
-          return o.finalAnswer === null && !o.reverted;
-        });
-      } else if (!this.parcipiantFilter && !this.validateFilter && this.historyFilter) {
-        z = _.filter(this.allData, (o) => {
-          return o.finalAnswer !== null || o.reverted;
-        });
-      }
-
-      this.myAnswers = z.map((data, i) => {
-        return {
-          event_id: data.id,
-          answer: this.findAnswer(data),
-          from: data.from,
-          multy: data.multiChoise,
-          answered: this.findAnswered(data),
-          multyAnswer: this.findMultyAnswer(data)
-        };
-      });
-
-      this.questions = z;
-    }, 100);
-  }
-
 
   ngOnDestroy() {
-    this.storeUserSubscribe.unsubscribe();
-    this.storeCoinsSubscrive.unsubscribe();
+    if (this.storeUserSubscribe) {
+      this.storeUserSubscribe.unsubscribe();
+    }
+    if (this.storeCoinsSubscrive) {
+      this.storeCoinsSubscrive.unsubscribe();
+    }
   }
 
 

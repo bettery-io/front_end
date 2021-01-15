@@ -1,10 +1,10 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import {GetService} from '../../services/get.service';
+import {GetService} from '../../../services/get.service';
 import {Subscription} from 'rxjs';
-import {PostService} from '../../services/post.service';
+import {PostService} from '../../../services/post.service';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../app.state';
-import {createEventAction} from '../../actions/newEvent.actions';
+import {AppState} from '../../../app.state';
+import {createEventAction} from '../../../actions/newEvent.actions';
 import * as _ from 'lodash';
 
 @Component({

@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RoomDetailsComponent } from './room-details/room-details.component';
 import { ShareModule} from '../share/share.module'
-
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 
 @NgModule({
@@ -16,6 +16,7 @@ import { ShareModule} from '../share/share.module'
     imports: [
         CommonModule,
         FormsModule,
+        InfiniteScrollModule,
         RouterModule.forChild([
             { path: 'rooms', component: RoomsComponent },
             { path: 'room/:id', component: RoomDetailsComponent }

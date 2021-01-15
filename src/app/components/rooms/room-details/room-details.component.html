@@ -21,12 +21,12 @@
             </div>
 
 
-            <!-- <div></div> -->
-
             <div class="container-fluid">
                 <div class="comment-wrap" style="margin-top: 51px">
 
-                    <div style="display: flex; padding-left: 17%; margin-bottom: 24px; flex-direction: column">
+                    <div class="search-results" infiniteScroll [infiniteScrollDistance]="1"
+                        [infiniteScrollThrottle]="50" (scrolled)="onScrollQuizTemplate()"
+                        style="display: flex; margin-bottom: 24px; flex-direction: column">
                         <div *ngFor="let question of roomEvents; let index = index">
                             <quiz-template (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
                                 [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
@@ -37,19 +37,17 @@
                     <div style=" padding: 0">
                         <div style="margin-right: 30px" class="comment-box">
                             <div class="comment-head">
-                                <img class="test-img-delet" src="../../../../../assets/descEvent/test-delet.png">
+                                <div class="test-img-delet" [ngStyle]="getCommentRoomColor(commentList?.room.color)">
+                                </div>
                                 <div>
-                                    <span>Who will be the next president of the US?</span>
+                                    <span>{{commentList?.question}}</span>
                                 </div>
                             </div>
-                            <!-- TODO -->
                             <app-comment class="test" *ngIf="commentList" [theme]="'white'" [userData]=userData
                                 [id]="commentList.id"></app-comment>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- <div></div> -->
 
     </div>

@@ -21,12 +21,18 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   storeCoinsSubscrive: Subscription;
   storeUserSubscribe: Subscription;
   roomDetails: any;
-  roomEvents: any;
+  roomEvents: any = [];
   coinInfo = null;
   id: any;
   myAnswers: Answer[] = [];
   userId: number = null;
   userData: any = [];
+  fromComponent: string = 'room'
+  commentList;
+  scrollDistanceFrom = 0;
+  scrollDistanceTo = 5;
+  bottom = false;
+  allData;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,21 +66,28 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       }, (err) => {
         console.log(err);
       });
-      this.getRoomEvent();
+      this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo);
     });
   }
 
-  getRoomEvent() {
+  getRoomEvent(from, to) {
     this.myAnswers = [];
     let data = {
       id: Number(this.id.id),
-      from: 0,
-      to: 10
+      from: from,
+      to: to
     }
 
     this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
-      console.log(value)
-      this.roomEvents = value.events;
+      this.allData = value;
+      this.commentList = this.roomEvents[0];
+
+      if (value.events.length === 0) {
+        this.roomEvents = value.events;
+      } else {
+        value.events.forEach(el => this.roomEvents.push(el));
+      }
+
       this.myAnswers = this.roomEvents.map((data) => {
         return {
           event_id: data.id,
@@ -127,6 +140,37 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   infoRoomColor(value) {
     return { "background": value }
+  }
+
+  commentById($event) {
+    if ($event) {
+      let newCommentList = _.find(this.roomEvents, (o) => {
+        return o.id == $event;
+      });
+      this.commentList = newCommentList;
+      console.log(this.commentList);
+    }
+  }
+
+  getCommentRoomColor(color) {
+    return { "background": color }
+  }
+
+  onScrollQuizTemplate() {
+    if (this.allData?.amount > this.scrollDistanceTo) {
+      this.scrollDistanceFrom = this.scrollDistanceFrom + 5;
+      this.scrollDistanceTo = this.scrollDistanceTo + 5;
+      if (this.scrollDistanceTo >= this.allData?.amount) {
+        this.scrollDistanceTo = this.allData?.amount
+        if (!this.bottom) {
+          this.bottom = true;
+          this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo);
+        }
+      } else {
+        this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo);
+      }
+    }
+
   }
 
   ngOnDestroy() {

@@ -14,8 +14,10 @@
               <div class="answers">
                 <div *ngIf="!finalAnswerGuard(question)">
 
-                  <div *ngIf="question.multiChoise === false">
-                    <div *ngIf="myAnswers.answered === false" class="d-flex align-items-center">
+                  <!--                  <div *ngIf="question.multiChoise === false">-->
+                  <!--                    <div *ngIf="myAnswers.answered === false" class="d-flex align-items-center">-->
+                  <div>
+                    <div class="d-flex align-items-center">
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <input class="checkbox_answer" id="{{question.id}}{{question.from}}"
                                (click)="this.makeAnswer(i)" value="i" type="radio"

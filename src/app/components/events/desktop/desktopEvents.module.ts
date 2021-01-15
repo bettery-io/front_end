@@ -12,6 +12,7 @@ import {MyActivitesComponent} from './my-activites/my-activites.component';
 import {InvitationComponent} from './invitation/invitation.component';
 import {SearchBarComponent} from './search-bar/search-bar.component';
 import {ShareModule} from '../../share/share.module';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import {ShareModule} from '../../share/share.module';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    InfiniteScrollModule,
     RouterModule.forChild([
       {path: 'join', component: EventFeedComponent},
       {path: 'question/:id', component: QuestionComponent},

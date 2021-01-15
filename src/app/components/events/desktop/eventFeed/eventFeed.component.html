@@ -12,12 +12,18 @@
   <div class="container-fluid">
     <div class="comment-wrap" style="margin-top: 51px">
 
-      <div style="display: flex; padding-left: 17%; margin-bottom: 24px; flex-direction: column">
-        <div *ngFor="let question of questions; let index = index">
+      <div
+        class="search-results"
+        infiniteScroll
+        [infiniteScrollDistance]="1"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScrollQuizTemplate()"
+        style="display: flex; padding-left: 17%; margin-bottom: 24px; flex-direction: column">
+        <div *ngFor="let newQuestion of newQuestions; let index = index">
           <quiz-template (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo" [myAnswers]="myAnswers[index]"
                          [userData]="userData"
-                         [question]="question" [fromComponent]="fromComponent"
-                         (callGetData)="getData()"></quiz-template>
+                         [question]="newQuestion" [fromComponent]="fromComponent"
+                         (callGetData)="getData(this.scrollDistanceFrom, this.scrollDistanceTo)"></quiz-template>
         </div>
       </div>
 

@@ -111,6 +111,8 @@
 
 .checkbox_answer
     margin-right: 5px
+    width: 14px
+    height: 14px
 
 .error_answer
     margin-top: 15px
@@ -119,9 +121,13 @@
 
 .label
     display: inline
+    margin-bottom: 0
 
 .each_answer
     padding-bottom: 10px
+    display: flex
+    justify-content: end
+    white-space: nowrap
 
 .answered
     display: inline
@@ -178,10 +184,11 @@
 
 .timer-span
   margin-bottom: 17px
-  & span
+  display: flex
+
+.timer-span-2
     font-weight: bold
     font-size: 14px
-    line-height: 19px
     color: #FF3232
     margin-left: 7px
 
@@ -210,6 +217,7 @@
   box-sizing: border-box
   box-shadow: -1px 4px 4px rgba(118, 109, 109, 0.08)
   border-radius: 20px
+  min-width: 900px
 
 .room-info-list
   display: flex
@@ -258,8 +266,6 @@
   font-size: 12px
   line-height: 16px
   color: #0B1511
-  margin-right: 24px
-  margin-left: 8px
 
 .questions-box
   display: flex
@@ -285,6 +291,7 @@
   color: #34DDDD
   text-transform: uppercase
   margin-left: 8px
+  cursor: pointer
 
 .bet-style
   margin-left: 4px
@@ -329,3 +336,4 @@
   line-height: 19px
   color: #FFD300
   white-space: nowrap
+  cursor: pointer

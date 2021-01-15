@@ -28,6 +28,9 @@ export class EventFeedComponent implements OnDestroy {
   newCommentList;
   test = false;
   pureData: any;
+  scrollDistanceFrom = 0;
+  scrollDistanceTo = 5;
+  newQuestions = [];
 
   constructor(
     private store: Store<AppState>,
@@ -36,12 +39,12 @@ export class EventFeedComponent implements OnDestroy {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
         this.userId = null;
-        this.userData = [];
-        this.getData();
+        this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
       } else {
         this.userId = x[0]._id;
         this.userData = x[0];
-        this.getData();
+        this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
+        console.log(this.userData, 'ecent feed');
       }
     });
     this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
@@ -56,8 +59,8 @@ export class EventFeedComponent implements OnDestroy {
     return index !== -1 ? true : false;
   }
 
-  getData() {
-    this.postService.post('publicEvents/get_all', { from: 0, to: 29 }).subscribe((x) => {
+  getData(from, to) {
+    this.postService.post('publicEvents/get_all', {from, to}).subscribe((x) => {
       this.myAnswers = [];
       this.pureData = x;
       let data = _.orderBy(this.pureData.events, ['endTime'], ['asc']);
@@ -66,19 +69,25 @@ export class EventFeedComponent implements OnDestroy {
       this.questions = _.filter(data, (o) => {
         return o.finalAnswer === null && !o.reverted;
       });
-      this.myAnswers = this.questions.map((data) => {
-        return {
-          event_id: data.id,
-          answer: this.findAnswer(data),
-          from: data.from,
-          multy: data.multiChoise,
-          answered: this.findAnswered(data),
-          multyAnswer: this.findMultyAnswer(data)
-        };
-      });
+      // this.myAnswers = this.questions.map((data) => {
+      //   return {
+      //     event_id: data.id,
+      //     answer: this.findAnswer(data),
+      //     from: data.from,
+      //     multy: data.multiChoise,
+      //     answered: this.findAnswered(data),
+      //     multyAnswer: this.findMultyAnswer(data)
+      //   };
+      // });
       console.log(this.myAnswers);
       console.log(this.allData);
       this.spinner = false;
+
+      if (this.newQuestions.length === 0) {
+        this.newQuestions = this.questions;
+      } else {
+        this.questions.forEach(el => this.newQuestions.push(el));
+      }
     });
   }
 
@@ -164,5 +173,17 @@ export class EventFeedComponent implements OnDestroy {
       }
     }
     this.test = !this.test;
+  }
+
+  onScrollQuizTemplate() {
+    this.scrollDistanceFrom = this.scrollDistanceFrom + 5;
+    this.scrollDistanceTo = this.scrollDistanceTo + 5;
+    console.log(this.pureData?.amount);
+    // console.log(this.scrollDistanceTo);
+    if (this.scrollDistanceTo < this.pureData?.amount) {
+      this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
+    } else {
+      return;
+    }
   }
 }

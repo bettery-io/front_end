@@ -1,20 +1,20 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
-import { User } from '../../../models/User.model';
+import {Component, OnInit, Input, EventEmitter, Output, OnChanges} from '@angular/core';
+import {User} from '../../../models/User.model';
 import _ from 'lodash';
-import { Answer } from '../../../models/Answer.model';
+import {Answer} from '../../../models/Answer.model';
 import Web3 from 'web3';
 import Contract from '../../../contract/contract';
 import * as CoinsActios from '../../../actions/coins.actions';
 import * as UserActions from '../../../actions/user.actions';
-import { PostService } from '../../../services/post.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
+import {PostService} from '../../../services/post.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../app.state';
 
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { RegistrationComponent } from '../../registration/registration.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import web3Obj from '../../../helpers/torus'
-import maticInit from '../../../contract/maticInit.js'
+import {faCheck} from '@fortawesome/free-solid-svg-icons';
+import {RegistrationComponent} from '../../registration/registration.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import web3Obj from '../../../helpers/torus';
+import maticInit from '../../../contract/maticInit.js';
 
 @Component({
   selector: 'quiz-template',
@@ -28,17 +28,18 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   errorValidator = {
     idError: null,
     message: undefined
-  }
+  };
 
   constructor(
     private postService: PostService,
     private store: Store<AppState>,
     private modalService: NgbModal
-  ) {}
+  ) {
+  }
 
 
   @Input() question: any;
-  @Input("userData") userData: User;
+  @Input('userData') userData: User;
   @Input() myAnswers: Answer;
   @Input() coinInfo: any;
   @Input() fromComponent: string;
@@ -56,37 +57,37 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       let currentValue = changes['userData'].currentValue;
       if (this.allUserData === undefined || currentValue._id !== this.allUserData._id) {
         this.allUserData = this.userData;
-        console.log("work ngOnChanges")
+        console.log('work ngOnChanges');
       }
     }
   }
 
 
   getPosition(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { "userId": this.allUserData._id })
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.allUserData._id});
     if (findParticipiant !== -1) {
       if (data.host == this.allUserData._id || data.host == true) {
-        return 'Host, Participiant'
+        return 'Host, Participiant';
       } else {
-        return "Participiant"
+        return 'Participiant';
       }
     } else {
-      let findValidator = _.findIndex(data.validatorsAnswers, { "userId": this.allUserData._id })
+      let findValidator = _.findIndex(data.validatorsAnswers, {'userId': this.allUserData._id});
       if (findValidator !== -1) {
         if (data.host == this.allUserData._id) {
-          return 'Host, Validator'
+          return 'Host, Validator';
         } else {
-          return "Validator"
+          return 'Validator';
         }
       } else {
-        let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
+        let findInParticInvites = _.findIndex(this.allUserData.invitationList, {'eventId': data.id});
         if (findInParticInvites !== -1) {
-          return this.allUserData.invitationList[findInParticInvites].role === "Validate" ? "invited as validator" : "invited as participiant";
+          return this.allUserData.invitationList[findInParticInvites].role === 'Validate' ? 'invited as validator' : 'invited as participiant';
         } else {
           if (data.host == this.allUserData._id || data.host == true) {
-            return 'Host'
+            return 'Host';
           } else {
-            return "Guest"
+            return 'Guest';
           }
         }
       }
@@ -98,7 +99,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       let quantity = questionData.validatorsAnswers.filter((x) => x.answer === answerIndex);
       return ((quantity.length / Number(questionData.validated)) * 100).toFixed(0);
     } else {
-      return 0
+      return 0;
     }
   }
 
@@ -107,54 +108,54 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       let quantity = questionData.parcipiantAnswers.filter((x) => x.answer === answerIndex);
       return ((quantity.length / Number(questionData.answerAmount)) * 100).toFixed(0);
     } else {
-      return 0
+      return 0;
     }
   }
 
   participantGuard(data) {
     if (data.showDistribution === true) {
-      return true
+      return true;
     } else {
       if (this.myAnswers.answered === true) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   }
 
   validatorGuard(data) {
     if (data.finalAnswer !== null) {
-      return true
+      return true;
     } else {
-      if (this.getPosition(data) === "Guest") {
-        return false
+      if (this.getPosition(data) === 'Guest') {
+        return false;
       } else if (this.getPosition(data) === 'invited as validator') {
-        return false
+        return false;
       } else {
-        return true
+        return true;
       }
     }
   }
 
   particCryptoGuard(data) {
-    let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
+    let findInParticInvites = _.findIndex(this.allUserData.invitationList, {'eventId': data.id});
     if (findInParticInvites === -1) {
-      let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+      let timeNow = Number((new Date().getTime() / 1000).toFixed(0));
       if (data.endTime >= timeNow) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     } else {
-      return this.allUserData.invitationList[findInParticInvites].role !== "Validate" ? true : false
+      return this.allUserData.invitationList[findInParticInvites].role !== 'Validate' ? true : false;
     }
   }
 
   validGuard(data) {
-    let findInParticInvites = _.findIndex(this.allUserData.invitationList, { "eventId": data.id })
+    let findInParticInvites = _.findIndex(this.allUserData.invitationList, {'eventId': data.id});
     if (findInParticInvites === -1) {
-      let timeNow = Number((new Date().getTime() / 1000).toFixed(0))
+      let timeNow = Number((new Date().getTime() / 1000).toFixed(0));
       if (data.endTime >= timeNow) {
         return false;
       } else {
@@ -165,7 +166,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         }
       }
     } else {
-      return this.allUserData.invitationList[findInParticInvites].role === "Validate" ? true : false
+      return this.allUserData.invitationList[findInParticInvites].role === 'Validate' ? true : false;
     }
   }
 
@@ -188,21 +189,21 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     if (this.allUserData._id != undefined) {
       if (answer.multy) {
         if (answer.multyAnswer.length === 0) {
-          this.errorValidator.idError = dataAnswer.id
-          this.errorValidator.message = "Chose at leas one answer"
+          this.errorValidator.idError = dataAnswer.id;
+          this.errorValidator.message = 'Chose at leas one answer';
         } else {
           // multy answer
           //  this.setToDB(answer, dataAnswer)
         }
       } else {
         if (answer.answer === undefined) {
-          this.errorValidator.idError = dataAnswer.id
-          this.errorValidator.message = "Chose at leas one answer"
+          this.errorValidator.idError = dataAnswer.id;
+          this.errorValidator.message = 'Chose at leas one answer';
         } else {
-          if (from === "validate") {
-            if (this.userData.wallet === "null") {
-              this.errorValidator.idError = dataAnswer.id
-              this.errorValidator.message = "You must connect metamask"
+          if (from === 'validate') {
+            if (this.userData.wallet === 'null') {
+              this.errorValidator.idError = dataAnswer.id;
+              this.errorValidator.message = 'You must connect metamask';
             } else {
               this.setToLoomNetworkValidation(answer, dataAnswer);
             }
@@ -212,7 +213,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         }
       }
     } else {
-      this.openRegistModal()
+      this.openRegistModal();
     }
   }
 
@@ -223,39 +224,39 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   async setToLoomNetwork(answer, dataAnswer) {
     let balance;
 
-    if (dataAnswer.currencyType === "ether") {
-      balance = this.coinInfo.loomBalance
+    if (dataAnswer.currencyType === 'ether') {
+      balance = this.coinInfo.loomBalance;
     } else {
-      balance = this.coinInfo.tokenBalance
+      balance = this.coinInfo.tokenBalance;
     }
 
     if (Number(balance) < dataAnswer.money) {
-      this.errorValidator.idError = dataAnswer.id
-      this.errorValidator.message = "Don't have enough " + dataAnswer.currencyType
+      this.errorValidator.idError = dataAnswer.id;
+      this.errorValidator.message = 'Don\'t have enough ' + dataAnswer.currencyType;
     } else {
       let web3 = new Web3();
       let contract = new Contract();
       var _question_id = dataAnswer.id;
       var _whichAnswer = answer.answer;
-      var _money = web3.utils.toWei(String(dataAnswer.money), 'ether')
-      let contr = await contract.publicEventContract()
+      var _money = web3.utils.toWei(String(dataAnswer.money), 'ether');
+      let contr = await contract.publicEventContract();
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
-        if (dataAnswer.currencyType === "ether") {
-          await contract.approveWETHToken(this.allUserData.wallet, _money, this.allUserData.verifier)
+        if (dataAnswer.currencyType === 'ether') {
+          await contract.approveWETHToken(this.allUserData.wallet, _money, this.allUserData.verifier);
         } else {
-          await contract.approveBETToken(this.allUserData.wallet, _money, this.allUserData.verifier)
+          await contract.approveBETToken(this.allUserData.wallet, _money, this.allUserData.verifier);
         }
-        let sendToContract = await contract.participateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
+        let sendToContract = await contract.participateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier);
         if (sendToContract.transactionHash !== undefined) {
-          this.setToDB(answer, dataAnswer, sendToContract.transactionHash, dataAnswer.currencyType)
+          this.setToDB(answer, dataAnswer, sendToContract.transactionHash, dataAnswer.currencyType);
         }
       } else if (Number(validator) === 1) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event not started yeat."
+        this.errorValidator.idError = dataAnswer.id;
+        this.errorValidator.message = 'Event not started yeat.';
       } else if (Number(validator) === 2) {
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Already finished"
+        this.errorValidator.idError = dataAnswer.id;
+        this.errorValidator.message = 'Already finished';
       }
     }
   }
@@ -269,25 +270,25 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       multyAnswer: answer.multyAnswer,
       transactionHash: transactionHash,
       userId: this.userData._id,
-      from: "participant",
+      from: 'participant',
       currencyType: currencyType,
       answerAmount: dataAnswer.answerAmount + 1,
       money: dataAnswer.money
-    }
-    this.postService.post("answer", data).subscribe(async () => {
-      this.myAnswers.answered = true;
-      this.errorValidator.idError = null;
-      this.errorValidator.message = undefined;
+    };
+    this.postService.post('answer', data).subscribe(async () => {
+        this.myAnswers.answered = true;
+        this.errorValidator.idError = null;
+        this.errorValidator.message = undefined;
 
-      this.updateUser();
-      this.callGetData.next();
-      this.updateBalance();
+        this.updateUser();
+        this.callGetData.next();
+        this.updateBalance();
 
 
-    },
+      },
       (err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   async setToLoomNetworkValidation(answer, dataAnswer) {
@@ -295,28 +296,28 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let contract = new Contract();
     var _question_id = dataAnswer.id;
     var _whichAnswer = answer.answer;
-    let contr = await contract.publicEventContract()
+    let contr = await contract.publicEventContract();
     let validator = await contr.methods.setTimeValidator(_question_id).call();
 
     switch (Number(validator)) {
       case 0:
-        let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier)
-        console.log(sendToContract)
+        let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier);
+        console.log(sendToContract);
         if (sendToContract.transactionHash !== undefined) {
-          this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash)
+          this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash);
         }
         break;
       case 1:
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event not started yeat."
+        this.errorValidator.idError = dataAnswer.id;
+        this.errorValidator.message = 'Event not started yeat.';
         break;
       case 2:
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "Event is finished."
+        this.errorValidator.idError = dataAnswer.id;
+        this.errorValidator.message = 'Event is finished.';
         break;
       case 3:
-        this.errorValidator.idError = dataAnswer.id
-        this.errorValidator.message = "You have been like the participant in this event. The participant can't be the validator."
+        this.errorValidator.idError = dataAnswer.id;
+        this.errorValidator.message = 'You have been like the participant in this event. The participant can\'t be the validator.';
         break;
     }
   }
@@ -330,44 +331,44 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       multyAnswer: answer.multyAnswer,
       transactionHash: transactionHash,
       userId: this.userData._id,
-      from: "validator",
+      from: 'validator',
       currencyType: dataAnswer.currencyType,
       validated: dataAnswer.validated + 1,
       money: dataAnswer.money
-    }
-    this.postService.post("answer", data).subscribe(async () => {
-      this.myAnswers.answered = true;
-      this.errorValidator.idError = null;
-      this.errorValidator.message = undefined;
+    };
+    this.postService.post('answer', data).subscribe(async () => {
+        this.myAnswers.answered = true;
+        this.errorValidator.idError = null;
+        this.errorValidator.message = undefined;
 
-      this.callGetData.next();
+        this.callGetData.next();
 
-      this.updateBalance();
+        this.updateBalance();
 
 
-    },
+      },
       (err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   async updateBalance() {
-    let web3 = new Web3(this.allUserData.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
+    let web3 = new Web3(this.allUserData.verifier === 'metamask' ? window.web3.currentProvider : web3Obj.torus.provider);
     let mainBalance = await web3.eth.getBalance(this.userData.wallet);
 
     let matic = new maticInit(this.allUserData.verifier);
     let MTXToken = await matic.getMTXBalance();
     let TokenBalance = await matic.getERC20Balance();
 
-    let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, "ether");
-    let mainEther = web3.utils.fromWei(mainBalance, "ether")
-    let tokBal = web3.utils.fromWei(TokenBalance, "ether")
+    let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, 'ether');
+    let mainEther = web3.utils.fromWei(mainBalance, 'ether');
+    let tokBal = web3.utils.fromWei(TokenBalance, 'ether');
 
     this.store.dispatch(new CoinsActios.UpdateCoins({
       loomBalance: maticTokenBalanceToEth,
       mainNetBalance: mainEther,
       tokenBalance: tokBal
-    }))
+    }));
     this.coinInfo.loomBalance = maticTokenBalanceToEth;
     this.coinInfo.tokenBalance = tokBal;
   }
@@ -375,8 +376,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   updateUser() {
     let data = {
       id: this.allUserData._id
-    }
-    this.postService.post("user/getUserById", data)
+    };
+    this.postService.post('user/getUserById', data)
       .subscribe(
         (currentUser: User) => {
           this.store.dispatch(new UserActions.UpdateUser({
@@ -391,61 +392,62 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
             invitationList: currentUser.invitationList,
             avatar: currentUser.avatar,
             verifier: currentUser.verifier
-          }))
-        })
+          }));
+        });
   }
 
   deleteInvitation(data) {
     let id = data.id;
-    this.deleteInvitationId.next(id)
+    this.deleteInvitationId.next(id);
   }
 
-  makeMultyAnswer(question, i, event){
+  makeMultyAnswer(question, i, event) {
     // TODO
   }
-  getMultyIcon(anser, i){
+
+  getMultyIcon(anser, i) {
     // TODO
   }
 
   whichComponent() {
-    if (this.fromComponent === "invitation") {
-      return true
+    if (this.fromComponent === 'invitation') {
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 
   validateDeleteButton(data) {
-    if (this.fromComponent === "myEvent") {
+    if (this.fromComponent === 'myEvent') {
       let result = this.getPosition(data);
-      let z = result.search("Host")
+      let z = result.search('Host');
       if (z !== -1) {
         if (data.answerAmount >= 1) {
-          return false
+          return false;
         } else {
-          return true
+          return true;
         }
       } else {
-        return false
+        return false;
       }
     } else {
-      false
+      false;
     }
   }
 
   async deleteEvent(data) {
-    let id = data.id
+    let id = data.id;
     let contract = new Contract();
-    let contr = await contract.publicEventContract()
+    let contr = await contract.publicEventContract();
     let deleteValidator = await contr.methods.deleteEventValidator(id).call();
     if (Number(deleteValidator) === 0) {
       this.letsDeleteEvent(id, contr);
     } else if (Number(deleteValidator) === 1) {
-      this.errorValidator.idError = id
-      this.errorValidator.message = "You can't delete event because event has money on balance."
+      this.errorValidator.idError = id;
+      this.errorValidator.message = 'You can\'t delete event because event has money on balance.';
     } else if (Number(deleteValidator) === 2) {
-      this.errorValidator.idError = id
-      this.errorValidator.message = "You are now a owner of event, only owner can delete event."
+      this.errorValidator.idError = id;
+      this.errorValidator.message = 'You are now a owner of event, only owner can delete event.';
     }
 
   }
@@ -455,8 +457,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     if (deleteEvent.transactionHash !== undefined) {
       this.deleteFromDb(id);
     } else {
-      this.errorValidator.idError = id
-      this.errorValidator.message = "error from contract. Check console log."
+      this.errorValidator.idError = id;
+      this.errorValidator.message = 'error from contract. Check console log.';
     }
   }
 
@@ -472,15 +474,15 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   deleteFromDb(id) {
     let data = {
       id: id
-    }
-    this.postService.post("delete_event", data)
+    };
+    this.postService.post('delete_event', data)
       .subscribe(() => {
-        this.callGetData.next()
-      },
+          this.callGetData.next();
+        },
         (err) => {
-          console.log("from delete wallet")
-          console.log(err)
-        })
+          console.log('from delete wallet');
+          console.log(err);
+        });
   }
 
   colorForRoom(color) {
@@ -495,5 +497,20 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
   getCommentById(id: any) {
     this.commentIdEmmit.emit(id);
+  }
+
+  calculatedJoiner(a, b) {
+    if (a !== undefined && b !== undefined) {
+      return a.length + b.length;
+    }
+    if (a === undefined && b !== undefined) {
+      return b.length;
+    }
+    if (a !== undefined && b === undefined) {
+      return a.length;
+    }
+    if (a === undefined && b === undefined) {
+      return 0;
+    }
   }
 }

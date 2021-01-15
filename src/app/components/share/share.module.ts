@@ -10,6 +10,7 @@ import {NgxPageScrollModule} from 'ngx-page-scroll';
 import {MetaMaskModalComponent} from './meta-mask-modal/meta-mask-modal.component';
 import {ErrorLimitModalComponent} from './error-limit-modal/error-limit-modal.component';
 import {QuizTemplateComponent} from './quiz-template/quiz-template.component';
+import {TimeComponent} from '../events/desktop/time/time.component';
 
 
 @NgModule({
@@ -21,17 +22,19 @@ import {QuizTemplateComponent} from './quiz-template/quiz-template.component';
     TimeAgoPipe,
     MetaMaskModalComponent,
     ErrorLimitModalComponent,
-    QuizTemplateComponent
+    QuizTemplateComponent,
+    TimeComponent
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        NgxPageScrollModule,
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgxPageScrollModule,
+  ],
   exports: [
     SpinnerLoadingComponent,
     CommentComponent,
-    QuizTemplateComponent
+    QuizTemplateComponent,
+    TimeComponent
   ]
 })
 

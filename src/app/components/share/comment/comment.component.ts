@@ -95,6 +95,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   async sendComment() {
     if (this.userData?._id === undefined) {
       await this.loginWithTorus();
+      console.log('test commnet');
     } else {
       if (this.isReply.user && !this.newComment.includes('@' + this.isReply.user[1])) {
         this.isReply.isReply = false;

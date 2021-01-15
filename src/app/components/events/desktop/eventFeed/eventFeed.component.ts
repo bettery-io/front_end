@@ -18,7 +18,7 @@ export class EventFeedComponent implements OnDestroy {
   myAnswers: Answer[] = [];
   userId: number = null;
   coinInfo = null;
-  userData: any = [];
+  userData: any;
   storeUserSubscribe;
   storeCoinsSubscrive;
   allData = [];
@@ -38,12 +38,12 @@ export class EventFeedComponent implements OnDestroy {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
         this.userId = null;
-        this.userData = [];
         this.getData();
       } else {
         this.userId = x[0]._id;
         this.userData = x[0];
         this.getData();
+        console.log(this.userData, 'ecent feed');
       }
     });
     this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
@@ -59,7 +59,7 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   getData() {
-    this.postService.post('publicEvents/get_all', {from: 0, to: 29}).subscribe((x) => {
+    this.postService.post('publicEvents/get_all', {from: 0, to: 35}).subscribe((x) => {
       this.myAnswers = [];
       this.pureData = x;
       let data = _.orderBy(this.pureData.events, ['endTime'], ['asc']);

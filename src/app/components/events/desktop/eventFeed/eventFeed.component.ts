@@ -1,11 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.state';
-import { Answer } from '../../../../models/Answer.model';
-import { User } from '../../../../models/User.model';
+import {Component, HostListener, OnDestroy} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../app.state';
+import {Answer} from '../../../../models/Answer.model';
+import {User} from '../../../../models/User.model';
 import _ from 'lodash';
-import { PostService } from '../../../../services/post.service';
-import { Subscription } from 'rxjs';
+import {PostService} from '../../../../services/post.service';
+import {Subscription} from 'rxjs';
+import {log} from 'util';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class EventFeedComponent implements OnDestroy {
   myAnswers: Answer[] = [];
   userId: number = null;
   coinInfo = null;
-  userData: any = [];
+  userData: any;
   storeUserSubscribe: Subscription;
   storeCoinsSubscrive: Subscription;
   allData = [];
@@ -29,13 +30,14 @@ export class EventFeedComponent implements OnDestroy {
   fromComponent = 'eventFeed';
   commentList;
   newCommentList;
-  test = false;
+
   pureData: any;
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
   newQuestions = [];
 
-  currentComment = 0
+  currentComment = 0;
+  scrollTop: number;
 
   constructor(
     private store: Store<AppState>,
@@ -49,7 +51,6 @@ export class EventFeedComponent implements OnDestroy {
         this.userId = x[0]._id;
         this.userData = x[0];
         this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
-        console.log(this.userData, 'ecent feed');
       }
     });
     this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
@@ -77,19 +78,19 @@ export class EventFeedComponent implements OnDestroy {
       //   return o.finalAnswer === null && !o.reverted;
       // });
       this.questions = data;
-      // this.myAnswers = this.questions.map((data) => {
-      //   return {
-      //     event_id: data.id,
-      //     answer: this.findAnswer(data),
-      //     from: data.from,
-      //     multy: data.multiChoise,
-      //     answered: this.findAnswered(data),
-      //     multyAnswer: this.findMultyAnswer(data)
-      //   };
-      // });
+      this.myAnswers = this.questions.map((data) => {
+        return {
+          event_id: data.id,
+          answer: this.findAnswer(data),
+          from: data.from,
+          multy: data.multiChoise,
+          answered: this.findAnswered(data),
+          multyAnswer: this.findMultyAnswer(data)
+        };
+      });
       console.log(this.myAnswers);
       console.log(this.allData);
-      this.spinner = false;
+
 
       if (this.newQuestions.length === 0) {
         this.newQuestions = this.questions;
@@ -98,7 +99,8 @@ export class EventFeedComponent implements OnDestroy {
         this.questions.forEach(el => this.newQuestions.push(el));
         this.commentList = this.newQuestions[this.currentComment];
       }
-      console.log(this.newQuestions);
+
+      this.spinner = false;
     });
   }
 
@@ -137,7 +139,6 @@ export class EventFeedComponent implements OnDestroy {
     }
   }
 
-
   getActiveQuantity(from) {
     let timeNow = Number((new Date().getTime() / 1000).toFixed(0));
     if (from === 'participant') {
@@ -162,27 +163,36 @@ export class EventFeedComponent implements OnDestroy {
     }
   }
 
-
-  ngOnDestroy() {
-    if (this.storeUserSubscribe) {
-      this.storeUserSubscribe.unsubscribe();
-    }
-    if (this.storeCoinsSubscrive) {
-      this.storeCoinsSubscrive.unsubscribe();
+  commentById($event) {
+    if ($event) {
+      const list = _.find(this.newQuestions, (o) => {
+        return o.id == $event;
+      });
+      this.commentList = list;
     }
   }
 
-
-  commentById($event) {
-    console.log($event);
-    if ($event) {
-      this.newCommentList = _.find(this.allData, (o) => {
-        return o.id = $event;
-      });
-      if (this.newCommentList) {
-        this.commentList = this.newCommentList;
-      }
+  colorForRoom(color) {
+    if (this.newQuestions) {
+      return {
+        'background': color
+      };
+    } else {
+      return;
     }
+  }
+
+  commentTopPosition() {
+    if (document.documentElement.scrollTop < 300) {
+      return {'top': (300 - this.scrollTop) + 'px'};
+    } else {
+      return {'top': 0};
+    }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  listenScroll() {
+    this.scrollTop = document.documentElement.scrollTop;
   }
 
   onScrollQuizTemplate() {
@@ -196,19 +206,16 @@ export class EventFeedComponent implements OnDestroy {
       this.scrollDistanceTo = this.scrollDistanceTo + this.pureData?.amount % 5;
 
       this.getData(this.scrollDistanceFrom, this.scrollDistanceTo + this.pureData?.amount % 5);
-      return;
     } else {
-      return;
     }
   }
 
-  colorForRoom(color) {
-    if (this.newQuestions) {
-      return {
-        'background': color
-      };
-    } else {
-      return;
+  ngOnDestroy() {
+    if (this.storeUserSubscribe) {
+      this.storeUserSubscribe.unsubscribe();
+    }
+    if (this.storeCoinsSubscrive) {
+      this.storeCoinsSubscrive.unsubscribe();
     }
   }
 }

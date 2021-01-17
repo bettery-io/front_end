@@ -1,24 +1,24 @@
-<div class="main-warp container-fluid">
-
+<div id="top" class="main-warp container-fluid">
 
   <app-search-bar></app-search-bar>
+
   <div *ngIf="spinner">
     <div class="lds-ripple">
       <div></div>
       <div></div>
     </div>
   </div>
+
   <div *ngIf="!spinner">
   <div class="container-fluid">
     <div class="comment-wrap" style="margin-top: 51px">
 
       <div
-        class="search-results"
-        infiniteScroll
+        class="search-results" infiniteScroll
         [infiniteScrollDistance]="1"
         [infiniteScrollThrottle]="50"
-        (scrolled)="onScrollQuizTemplate()"
-        style="display: flex; padding-left: 17%; margin-bottom: 24px; flex-direction: column">
+        (scrolled)="onScrollQuizTemplate()">
+
         <div *ngFor="let newQuestion of newQuestions; let index = index">
           <quiz-template (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo" [myAnswers]="myAnswers[index]"
                          [userData]="userData"
@@ -27,18 +27,21 @@
         </div>
       </div>
 
-      <div style=" padding: 0">
+      <div class="main-comment" [ngStyle]="commentTopPosition()">
         <div style="margin-right: 30px" class="comment-box">
           <div class="comment-head">
-            <div class="test-img-delet" [ngStyle]="colorForRoom(questions[currentComment]?.room.color)"></div>
+            <div class="img-del" [ngStyle]="colorForRoom(commentList?.room.color)"></div>
             <div>
-              <span>{{questions[currentComment]?.question}}</span>
+              <span>{{commentList?.question}}</span>
             </div>
           </div>
-          <app-comment class="test" *ngIf="commentList" [theme]="'white'" [userData]= userData
+          <app-comment class="deep-comment" *ngIf="commentList" [theme]="'white'" [userData]= userData
                        [id]="commentList.id"></app-comment>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+  <div class="to_the_top"><a pageScroll href="#top"><img src="../../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
 </div>

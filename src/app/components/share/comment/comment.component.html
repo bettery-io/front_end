@@ -1,4 +1,4 @@
-<div [className]="checkTheme() ? 'bgWhite' : 'bgDark'">
+<div [className]="checkTheme() ? 'bgWhite' : 'bgDark'" [ngClass]="theme && 'whiteClass'">
 
   <div class="sortHeadDark" id="up">
     <div class="sortHead-item-dark" [ngClass]="forSortHead('newest')"
@@ -13,7 +13,7 @@
   </div>
 
   <div *ngIf="!comingSoon" class="comment-warp">
-    <div id="{{comment?.id}}" class="commentBox" [ngClass]="allComments?.length <= showLength && 'commentBoxChange'"
+    <div  id="{{comment?.id}}" class="commentBox" [ngClass]="allComments?.length <= showLength && 'commentBoxChange'"
          *ngFor="let comment of showOnScreen">
       <div class="commentHeader">
         <div class="senderBox">
@@ -24,7 +24,7 @@
       </div>
       <div>
         <p class="comment">
-          <a (mousedown)="additionToAnchorLink(comment.replies[0].id)" class="mr-1"
+          <a  (mousedown)="additionToAnchorLink(comment.replies[0].id)" class="mr-1"
              (pageScrollFinish) = "finishScrollAnimation($event, comment.replies[0].id )"
              pageScroll href="#{{comment.replies[0].id}}" *ngIf="comment?.replies.length > 0">
             {{comment?.replies[0].user.nickName}}</a>

@@ -6,7 +6,6 @@ import { User } from '../../../../models/User.model';
 import _ from 'lodash';
 import { PostService } from '../../../../services/post.service';
 import { Subscription } from 'rxjs';
-import { log } from 'util';
 
 
 @Component({

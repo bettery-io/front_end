@@ -1,5 +1,3 @@
-import {UserComModel} from './user-com.model';
-
 export interface CommentModel {
   activites: number;
   angry: object[];
@@ -11,4 +9,10 @@ export interface CommentModel {
   star: object[];
   user: UserComModel;
   wink: object[];
+}
+
+interface UserComModel {
+  avatar: string;
+  id: number;
+  nickName: string;
 }

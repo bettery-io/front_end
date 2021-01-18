@@ -138,4 +138,47 @@
         font-size: 10px
       .darkSize
         width: 13px
-        height: 13px    
+        height: 13px
+      .whiteClass
+        max-height: 500px
+        overflow: auto
+      .whiteClass::-webkit-scrollbar
+        width: 6px
+
+      .whiteClass::-webkit-scrollbar-track
+        background: #f1f1f1
+        border-radius: 3px
+
+      .whiteClass::-webkit-scrollbar-thumb
+        background: #0094FF
+        border-radius: 3px
+
+@media (min-width: 1500px)
+  .containerFor1920
+    max-width: 1440px
+
+.lds-ripple
+  margin-top: 100px
+
+.to_the_top
+  position: fixed
+  bottom: 40px
+  right: 32%
+  cursor: pointer
+  & img
+    width: 48px
+    height: 54px
+
+.main-comment
+  width: 300px
+  padding: 0
+  position: fixed
+  right: 14%
+
+@media (max-width: 1600px)
+  .main-comment
+    right: 4%
+  .main-comment2
+    right: 22%
+  .to_the_top
+    right: 26%

@@ -30,6 +30,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     message: undefined
   };
 
+  @Input() joinRoom: boolean;
+
   constructor(
     private postService: PostService,
     private store: Store<AppState>,

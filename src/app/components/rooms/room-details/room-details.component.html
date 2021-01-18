@@ -1,7 +1,12 @@
-<div class="container">
+<div id="top" class="container containerFor1920">
     <div routerLink="/rooms" class="back">
         << Back to Rooms</div>
-            <div class="room_details" [ngStyle]="infoRoomColor(roomDetails?.color)">
+
+  <div class="lds-ripple" *ngIf="spinner">
+    <app-spinner-loading [desktop]="true"></app-spinner-loading>
+  </div>
+
+            <div *ngIf="!spinner" class="room_details" [ngStyle]="infoRoomColor(roomDetails?.color)">
                 <div>
                     <div class="inline">
                         <img class="avatar" src="{{roomDetails?.hostAvatar}}">
@@ -21,20 +26,20 @@
             </div>
 
 
-            <div class="container-fluid">
+            <div *ngIf="!spinner" class="container-fluid">
                 <div class="comment-wrap" style="margin-top: 51px">
 
                     <div class="search-results" infiniteScroll [infiniteScrollDistance]="1"
                         [infiniteScrollThrottle]="50" (scrolled)="onScrollQuizTemplate()"
                         style="display: flex; margin-bottom: 24px; flex-direction: column">
                         <div *ngFor="let question of roomEvents; let index = index">
-                            <quiz-template (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
+                            <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
                                 [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
                                 [fromComponent]="fromComponent" (callGetData)="getData()"></quiz-template>
                         </div>
                     </div>
 
-                    <div style=" padding: 0">
+                    <div class="main-comment" [ngStyle]="commentTopPosition()">
                         <div style="margin-right: 30px" class="comment-box">
                             <div class="comment-head">
                                 <div class="test-img-delet" [ngStyle]="getCommentRoomColor(commentList?.room.color)">
@@ -43,11 +48,13 @@
                                     <span>{{commentList?.question}}</span>
                                 </div>
                             </div>
-                            <app-comment class="test" *ngIf="commentList" [theme]="'white'" [userData]=userData
-                                [id]="commentList.id"></app-comment>
+                            <app-comment class="test" *ngIf="commentList" [theme]="'white'" [userData]= userData
+                                [id]="commentList?.id"></app-comment>
                         </div>
                     </div>
                 </div>
             </div>
 
+
+  <div class="to_the_top"><a pageScroll href="#top"><img src="../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
     </div>

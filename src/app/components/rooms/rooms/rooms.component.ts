@@ -37,6 +37,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   testAnimation: number;
   btnMiddleActive = 'showAllRoom';
   showInputFlag: boolean;
+  spinner: boolean;
 
   constructor(
     private getService: GetService,
@@ -62,6 +63,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.roomsSub = this.getService.get(path).subscribe(rooms => {
       this.allRooms = rooms;
       this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
+      this.spinner = true;
     });
   }
 

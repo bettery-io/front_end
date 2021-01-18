@@ -51,7 +51,7 @@
 
       <div class="room-card-bottom">
         <div class="room-info-list">
-          <div class="info-item">
+          <div *ngIf="!joinRoom" class="info-item">
             <div class="avatar mr-2">
               <img src="{{question?.host.avatat}}" alt="avatar">
             </div>
@@ -65,7 +65,7 @@
             <div class="bet-img mr-2 ml-3"></div>
             <div><span>200 BET</span> Avg. Bet</div>
           </div>
-          <div class="info-item">
+          <div *ngIf="!joinRoom" class="info-item">
             <div class="colorRoom mr-2 ml-3 " [ngStyle]="colorForRoom(question?.room.color)"></div>
             <div><span>{{question?.room.name}}</span> (1200)</div>
           </div>

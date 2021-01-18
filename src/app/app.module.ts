@@ -22,7 +22,6 @@ import {GetService} from './services/get.service';
 import {HomeComponent} from './components/home/home.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HistoryComponent} from './components/history/history.component';
 import {ErcCoinSaleComponent} from './components/erc-coin-sale/erc-coin-sale.component';
 import {NumericDirective} from './helpers/numeric';
 
@@ -47,7 +46,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     AppComponent,
     RegistrationComponent,
     HomeComponent,
-    HistoryComponent,
     ErcCoinSaleComponent,
     NumericDirective,
     LandingFormComponent,
@@ -75,7 +73,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         FormsModule,
         RouterModule.forRoot([
             {path: '', component: HomeComponent},
-          //  {path: 'history', component: HistoryComponent},
             {path: 'tokensale', component: ErcCoinSaleComponent}
         ], { scrollPositionRestoration: 'top'}),
         TranslateModule.forRoot({

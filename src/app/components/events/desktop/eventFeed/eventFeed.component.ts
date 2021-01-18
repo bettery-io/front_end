@@ -81,9 +81,9 @@ export class EventFeedComponent implements OnDestroy {
       this.myAnswers = this.newQuestions.map((data) => {
         return {
           event_id: data.id,
-          answer: this.findAnswer(data),
-          from: data.from,
-          answered: this.findAnswered(data),
+          answer: this.findAnswer(data).answer,
+          from: this.findAnswer(data).from,
+          answered: this.findAnswer(data).answer ? true : false,
           amount: 0,
           betAmount: 0 // TODO
         };
@@ -97,14 +97,10 @@ export class EventFeedComponent implements OnDestroy {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
     if (findParticipiant === -1) {
       let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
-      return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
+      return { answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined, from: "validator" };
     } else {
-      return data.parcipiantAnswers[findParticipiant].answer;
+      return { answer: data.parcipiantAnswers[findParticipiant].answer, from: "participant" };
     }
-  }
-
-  findAnswered(data) {
-    return this.findAnswer(data) !== undefined ? true : false;
   }
 
   commentById($event) {

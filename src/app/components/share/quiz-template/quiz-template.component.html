@@ -1,11 +1,10 @@
 <div class="card card_box room-card">
   <div class="row">
-    <div class="col-3"
-         style="border-top-left-radius: 20px; border-bottom-left-radius: 20px "
-         [ngStyle]="colorForRoom(question?.room.color)"></div>
+    <div class="col-3" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px "
+      [ngStyle]="colorForRoom(question?.room.color)"></div>
     <div class="col-9 pl-0">
 
-      <div class="room-card-top">
+      <div class="room-card-top" [ngStyle]="cardColorBackGround(question)">
         <div>
           <h2>{{question?.question}}</h2>
           <div class="questions-box">
@@ -13,14 +12,32 @@
             <div class="answers_box">
               <div class="answers">
                 <div *ngIf="!finalAnswerGuard(question)">
-                  <div>
-                    <div class="d-flex align-items-center">
-                      <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
-                        <input class="checkbox_answer" id="{{question.id}}{{question.from}}"
-                               (click)="this.makeAnswer(i)" value="{{i}}" type="radio"
-                               name="{{question.id}}{{question.from}}">
-                        <div class="label answer-checkbox">{{answer}}</div>
-                      </div>
+                  <div class="d-flex align-items-center">
+                    <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
+                      <input class="checkbox_answer" id="{{question.id}}{{question.from}}" (click)="this.makeAnswer(i)"
+                        value="{{i}}" type="radio" name="{{question.id}}{{question.from}}">
+                      <div class="label answer-checkbox">{{answer}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="finalAnswerGuard(question)">
+                  <div class="d-flex align-items-center" *ngIf="question.status == 'reverted'">
+                    <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
+                      <div class="cycle"></div>
+                      <div class="label answer-checkbox">{{answer}}</div>
+                    </div>
+                  </div>
+                  <div *ngIf="question.finalAnswer !== null">
+                    <p>test 2</p> <!--TODO-->
+                  </div>
+                  <div class="d-flex align-items-center" *ngIf="this.myAnswers?.answer !== undefined">
+                    <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
+                      <div class="cycle">
+                        <div *ngIf="this.myAnswers?.answer == i"
+                          [ngClass]="{'cyclePart': this.myAnswers?.from == 'participant', 'cycleValid': this.myAnswers?.from == 'validator'}">
+                        </div>
+                      </div> 
+                      <div class="label answer-checkbox">{{answer}}</div>
                     </div>
                   </div>
                 </div>
@@ -34,8 +51,14 @@
               <time [timer]="question?.endTime"></time>
             </div>
           </div>
-          <div style="margin-top: 34px">
-            BET <input [(ngModel)]="myAnswers.amount" class="bet-style"/> <span (click)="this.setAnswer(question, 'participate')" class="quickBet">QUICK BET</span>
+          <div style="margin-top: 34px" *ngIf="!finalAnswerGuard(question)">
+            BET <input [(ngModel)]="myAnswers.amount" class="bet-style" /> <span
+              (click)="this.setAnswer(question, 'participate')" class="quickBet">QUICK BET</span>
+          </div>
+          <div *ngIf="finalAnswerGuard(question)">
+            <div *ngIf="question.status == 'reverted'">
+              <p class="notExperts">Not enought Experts</p>
+            </div>
           </div>
         </div>
 
@@ -68,16 +91,18 @@
             <div *ngIf="question?.lastComment === 'null'" class="comment-text">
               No comments yet. <span (click)="getCommentById(question?.id)">(leave a comment)</span>
             </div>
-            <div *ngIf="question?.lastComment !== 'null'" class="comment-text"><p>
-              {{question?.lastComment}} <span (click)="getCommentById(question?.id)">(see {{question?.commentsAmount}}
-              more comments)</span>
-            </p>
+            <div *ngIf="question?.lastComment !== 'null'" class="comment-text">
+              <p>
+                {{question?.lastComment}} <span (click)="getCommentById(question?.id)">(see {{question?.commentsAmount}}
+                  more comments)</span>
+              </p>
             </div>
           </div>
-          <div class="col-2">
-            <div class="button">
-              join now
-            </div>
+          <div class="button" *ngIf="!finalAnswerGuard(question)">
+            join now
+          </div>
+          <div class="viewEvent" *ngIf="finalAnswerGuard(question)">
+            VIEW EVENT
           </div>
         </div>
       </div>

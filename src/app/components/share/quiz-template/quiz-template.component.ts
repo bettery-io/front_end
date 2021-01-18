@@ -53,6 +53,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         this.allUserData = this.userData;
       }
     }
+    console.log(this.myAnswers);
   }
 
   makeAnswer(i) {
@@ -364,10 +365,32 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   }
 
   finalAnswerGuard(question) {
-    if (question.finalAnswer !== null || question.reverted) {
+    if (question.finalAnswer !== null || question.status == "reverted") {
       return true;
-    } else {
+    } else if(this.myAnswers.answer != undefined) {
+      return true;
+    } else{
       return false;
+    }
+  }
+
+  // findCorrectAnswer(data) {
+  //   let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.allUserData._id });
+  //   if (findParticipiant === -1) {
+  //     let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.allUserData._id });
+  //     return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
+  //   } else {
+  //     return data.parcipiantAnswers[findParticipiant].answer;
+  //   }
+  // }
+
+  cardColorBackGround(data) {
+    if (data.finalAnswer !== null) {
+      return { "background": "#E6FFF2" } // TODO
+    } else if (data.status == "reverted") {
+      return { "background": "#F4F4F4" }
+    } else {
+      return { "background": "#E6FFF2" }
     }
   }
 

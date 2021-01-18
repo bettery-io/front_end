@@ -32,7 +32,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
   bottom = false;
-  allData;
+  allData: any = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +46,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       } else {
         this.userId = x[0]._id;
         this.userData = x[0];
+        this.allData = [];
+        this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo)
       }
     });
     this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
@@ -71,7 +73,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   getRoomEvent(from, to) {
-    this.myAnswers = [];
     let data = {
       id: Number(this.id.id),
       from: from,
@@ -79,9 +80,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
-      this.commentList = this.roomEvents[0];
+      this.commentList = value.events[0];
 
-      if (value.events.length === 0) {
+      if (this.allData.length === 0) {
         this.roomEvents = value.events;
       } else {
         value.events.forEach(el => this.roomEvents.push(el));
@@ -90,13 +91,14 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       this.myAnswers = this.roomEvents.map((data) => {
         return {
           event_id: data.id,
-          answer: this.findAnswer(data),
-          from: data.from,
-          answered: this.findAnswered(data),
+          answer: this.findAnswer(data).answer,
+          from: this.findAnswer(data).from,
+          answered: this.findAnswer(data).answer ? true : false,
           amount: 0,
           betAmount: 0 // TODO
         };
       });
+      console.log(this.myAnswers)
     }, (err) => {
       console.log(err);
     });
@@ -106,14 +108,10 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
     if (findParticipiant === -1) {
       let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
-      return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
+      return { answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined, from: "validator" };
     } else {
-      return data.parcipiantAnswers[findParticipiant].answer;
+      return { answer: data.parcipiantAnswers[findParticipiant].answer, from: "participant" };
     }
-  }
-
-  findAnswered(data) {
-    return this.findAnswer(data) !== undefined ? true : false;
   }
 
 

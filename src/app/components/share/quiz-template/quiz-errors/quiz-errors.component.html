@@ -1,0 +1,33 @@
+<div style="padding-left: 15px; padding-right: 15px">
+  <div>
+    <button type="button" class=" soonClose close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div *ngIf="errType === 'time'" class="timeType-img"></div>
+    <div *ngIf="errType === 'error'" class="errType-img"></div>
+  </div>
+
+  <div>
+    <h3 class="modal-title" [ngClass]="errType=='time' && 'modal-title-time'">{{title}}</h3>
+  </div>
+
+  <div>
+    <div style="text-align: center; font-weight: normal" *ngIf="customMessage">
+      {{customMessage}}
+    </div>
+    <p class="modal-text">{{description}}</p>
+  </div>
+
+  <div *ngIf="editionDescription && editionDescription.length > 0">
+   <ul class="list">
+     <li class="modal-text">{{editionDescription[0]}}</li>
+     <li class="modal-text">{{editionDescription[1]}}</li>
+     <li class="modal-text">{{editionDescription[2]}}</li>
+   </ul>
+  </div>
+
+  <div class="btn-block">
+    <button *ngIf="nameButton === 'fine'" class="btn-fine" (click)="activeModal.dismiss('Cross click')">FINE</button>
+    <button *ngIf="nameButton === 'report'" class="btn-fine"><a target="_blank" href="https://web.telegram.org/#/login">REPORT ERROR</a></button>
+  </div>
+</div>

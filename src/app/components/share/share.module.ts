@@ -11,6 +11,7 @@ import {MetaMaskModalComponent} from './meta-mask-modal/meta-mask-modal.componen
 import {ErrorLimitModalComponent} from './error-limit-modal/error-limit-modal.component';
 import {QuizTemplateComponent} from './quiz-template/quiz-template.component';
 import {TimeComponent} from '../events/desktop/time/time.component';
+import { QuizErrorsComponent } from './quiz-template/quiz-errors/quiz-errors.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {TimeComponent} from '../events/desktop/time/time.component';
     MetaMaskModalComponent,
     ErrorLimitModalComponent,
     QuizTemplateComponent,
-    TimeComponent
+    TimeComponent,
+    QuizErrorsComponent
   ],
   imports: [
     CommonModule,

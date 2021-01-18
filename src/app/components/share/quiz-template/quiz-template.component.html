@@ -13,9 +13,6 @@
             <div class="answers_box">
               <div class="answers">
                 <div *ngIf="!finalAnswerGuard(question)">
-
-                  <!--                  <div *ngIf="question.multiChoise === false">-->
-                  <!--                    <div *ngIf="myAnswers.answered === false" class="d-flex align-items-center">-->
                   <div>
                     <div class="d-flex align-items-center">
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
@@ -25,17 +22,12 @@
                         <div class="label answer-checkbox">{{answer}}</div>
                       </div>
                     </div>
-
                   </div>
                 </div>
-
               </div>
             </div>
-
-
           </div>
         </div>
-
         <div>
           <div class="timer-span">
             <div>
@@ -43,7 +35,7 @@
             </div>
           </div>
           <div style="margin-top: 34px">
-            BET <input class="bet-style"/> <span class="quickBet">QUICK BET</span>
+            BET <input [(ngModel)]="myAnswers.amount" class="bet-style"/> <span (click)="this.setAnswer(question, 'participate')" class="quickBet">QUICK BET</span>
           </div>
         </div>
 

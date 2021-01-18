@@ -1,12 +1,12 @@
-import {Component, HostListener, OnDestroy} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../app.state';
-import {Answer} from '../../../../models/Answer.model';
-import {User} from '../../../../models/User.model';
+import { Component, HostListener, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../app.state';
+import { Answer } from '../../../../models/Answer.model';
+import { User } from '../../../../models/User.model';
 import _ from 'lodash';
-import {PostService} from '../../../../services/post.service';
-import {Subscription} from 'rxjs';
-import {log} from 'util';
+import { PostService } from '../../../../services/post.service';
+import { Subscription } from 'rxjs';
+import { log } from 'util';
 
 
 @Component({
@@ -66,32 +66,11 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   getData(from, to) {
-    this.postService.post('publicEvents/get_all', {from, to}).subscribe((x) => {
+    this.postService.post('publicEvents/get_all', { from, to }).subscribe((x) => {
       this.myAnswers = [];
       this.pureData = x;
       let data = _.orderBy(this.pureData.events, ['endTime'], ['asc']);
-      this.allData = data;
-      console.log(this.allData, 'this all data');
-      console.log(this.commentList);
-
-      // this.questions = _.filter(data, (o) => {
-      //   return o.finalAnswer === null && !o.reverted;
-      // });
       this.questions = data;
-      this.myAnswers = this.questions.map((data) => {
-        return {
-          event_id: data.id,
-          answer: this.findAnswer(data),
-          from: data.from,
-          multy: data.multiChoise,
-          answered: this.findAnswered(data),
-          multyAnswer: this.findMultyAnswer(data)
-        };
-      });
-      console.log(this.myAnswers);
-      console.log(this.allData);
-
-
       if (this.newQuestions.length === 0) {
         this.newQuestions = this.questions;
         this.commentList = this.newQuestions[this.currentComment];
@@ -99,32 +78,26 @@ export class EventFeedComponent implements OnDestroy {
         this.questions.forEach(el => this.newQuestions.push(el));
         this.commentList = this.newQuestions[this.currentComment];
       }
+      this.allData = this.newQuestions;
+      this.myAnswers = this.newQuestions.map((data) => {
+        return {
+          event_id: data.id,
+          answer: this.findAnswer(data),
+          from: data.from,
+          answered: this.findAnswered(data),
+          amount: 0,
+          betAmount: 0 // TODO
+        };
+      });
 
       this.spinner = false;
     });
   }
 
-  findMultyAnswer(data) {
-    let z = [];
-    let part = _.filter(data.parcipiantAnswers, {'userId': this.userId});
-    part.forEach((x) => {
-      z.push(x.answer);
-    });
-    if (z.length === 0) {
-      let part = _.filter(data.validatorsAnswers, {'userId': this.userId});
-      part.forEach((x) => {
-        z.push(x.answer);
-      });
-      return z;
-    } else {
-      return z;
-    }
-  }
-
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.userId});
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, {'userId': this.userId});
+      let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
       return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
     } else {
       return data.parcipiantAnswers[findParticipiant].answer;
@@ -132,35 +105,7 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   findAnswered(data) {
-    if (data.multiChoise) {
-      return this.findMultyAnswer(data).length !== 0 ? true : false;
-    } else {
-      return this.findAnswer(data) !== undefined ? true : false;
-    }
-  }
-
-  getActiveQuantity(from) {
-    let timeNow = Number((new Date().getTime() / 1000).toFixed(0));
-    if (from === 'participant') {
-      return _.filter(this.allData, (o) => {
-        return o.endTime >= timeNow;
-      }).length;
-    } else if (from === 'validator') {
-      let z = this.allData.filter((data) => {
-        if (this.userId !== null) {
-          return data.endTime <= timeNow && data.host !== this.userId;
-        } else {
-          return data.endTime <= timeNow;
-        }
-      });
-      return z.filter((data) => {
-        return data.finalAnswer === null;
-      }).length;
-    } else if (from === 'history') {
-      return _.filter(this.allData, (o) => {
-        return o.finalAnswer !== null || o.reverted;
-      }).length;
-    }
+    return this.findAnswer(data) !== undefined ? true : false;
   }
 
   commentById($event) {
@@ -184,9 +129,9 @@ export class EventFeedComponent implements OnDestroy {
 
   commentTopPosition() {
     if (document.documentElement.scrollTop < 300) {
-      return {'top': (300 - this.scrollTop) + 'px'};
+      return { 'top': (300 - this.scrollTop) + 'px' };
     } else {
-      return {'top': 0};
+      return { 'top': 0 };
     }
   }
 

@@ -1,20 +1,19 @@
-import {Component, OnInit, Input, EventEmitter, Output, OnChanges} from '@angular/core';
-import {User} from '../../../models/User.model';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { User } from '../../../models/User.model';
 import _ from 'lodash';
-import {Answer} from '../../../models/Answer.model';
+import { Answer } from '../../../models/Answer.model';
 import Web3 from 'web3';
 import Contract from '../../../contract/contract';
 import * as CoinsActios from '../../../actions/coins.actions';
 import * as UserActions from '../../../actions/user.actions';
-import {PostService} from '../../../services/post.service';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../app.state';
-
-import {faCheck} from '@fortawesome/free-solid-svg-icons';
-import {RegistrationComponent} from '../../registration/registration.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { PostService } from '../../../services/post.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import web3Obj from '../../../helpers/torus';
 import maticInit from '../../../contract/maticInit.js';
+import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
 
 @Component({
   selector: 'quiz-template',
@@ -23,12 +22,8 @@ import maticInit from '../../../contract/maticInit.js';
 })
 export class QuizTemplateComponent implements OnInit, OnChanges {
   faCheck = faCheck;
-  allUserData: User;
-
-  errorValidator = {
-    idError: null,
-    message: undefined
-  };
+  allUserData: User = undefined;
+  amount: number;
 
   constructor(
     private postService: PostService,
@@ -45,7 +40,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   @Input() fromComponent: string;
 
   @Output() callGetData = new EventEmitter();
-  @Output() deleteInvitationId = new EventEmitter<number>();
   @Output() commentIdEmmit = new EventEmitter<number>();
 
   ngOnInit() {
@@ -57,171 +51,125 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       let currentValue = changes['userData'].currentValue;
       if (this.allUserData === undefined || currentValue._id !== this.allUserData._id) {
         this.allUserData = this.userData;
-        console.log('work ngOnChanges');
       }
     }
-  }
-
-
-  getPosition(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.allUserData._id});
-    if (findParticipiant !== -1) {
-      if (data.host == this.allUserData._id || data.host == true) {
-        return 'Host, Participiant';
-      } else {
-        return 'Participiant';
-      }
-    } else {
-      let findValidator = _.findIndex(data.validatorsAnswers, {'userId': this.allUserData._id});
-      if (findValidator !== -1) {
-        if (data.host == this.allUserData._id) {
-          return 'Host, Validator';
-        } else {
-          return 'Validator';
-        }
-      } else {
-        let findInParticInvites = _.findIndex(this.allUserData.invitationList, {'eventId': data.id});
-        if (findInParticInvites !== -1) {
-          return this.allUserData.invitationList[findInParticInvites].role === 'Validate' ? 'invited as validator' : 'invited as participiant';
-        } else {
-          if (data.host == this.allUserData._id || data.host == true) {
-            return 'Host';
-          } else {
-            return 'Guest';
-          }
-        }
-      }
-    }
-  }
-
-  getValidatorsPercentage(questionData, answerIndex) {
-    if (questionData.validatorsAnswers !== undefined) {
-      let quantity = questionData.validatorsAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(questionData.validated)) * 100).toFixed(0);
-    } else {
-      return 0;
-    }
-  }
-
-  getParticipantsPercentage(questionData, answerIndex) {
-    if (questionData.parcipiantAnswers !== undefined) {
-      let quantity = questionData.parcipiantAnswers.filter((x) => x.answer === answerIndex);
-      return ((quantity.length / Number(questionData.answerAmount)) * 100).toFixed(0);
-    } else {
-      return 0;
-    }
-  }
-
-  participantGuard(data) {
-    if (data.showDistribution === true) {
-      return true;
-    } else {
-      if (this.myAnswers.answered === true) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-
-  validatorGuard(data) {
-    if (data.finalAnswer !== null) {
-      return true;
-    } else {
-      if (this.getPosition(data) === 'Guest') {
-        return false;
-      } else if (this.getPosition(data) === 'invited as validator') {
-        return false;
-      } else {
-        return true;
-      }
-    }
-  }
-
-  particCryptoGuard(data) {
-    let findInParticInvites = _.findIndex(this.allUserData.invitationList, {'eventId': data.id});
-    if (findInParticInvites === -1) {
-      let timeNow = Number((new Date().getTime() / 1000).toFixed(0));
-      if (data.endTime >= timeNow) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return this.allUserData.invitationList[findInParticInvites].role !== 'Validate' ? true : false;
-    }
-  }
-
-  validGuard(data) {
-    let findInParticInvites = _.findIndex(this.allUserData.invitationList, {'eventId': data.id});
-    if (findInParticInvites === -1) {
-      let timeNow = Number((new Date().getTime() / 1000).toFixed(0));
-      if (data.endTime >= timeNow) {
-        return false;
-      } else {
-        if (this.getPosition(data).search('Host') === -1) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    } else {
-      return this.allUserData.invitationList[findInParticInvites].role === 'Validate' ? true : false;
-    }
-  }
-
-
-  getEndValidation(data) {
-    let date = new Date(data.endTime * 1000);
-    let x = date.setDate(date.getDate() + 7);
-    return Number((new Date(x).getTime() / 1000).toFixed(0));
   }
 
   makeAnswer(i) {
     this.myAnswers.answer = i;
-    this.errorValidator.idError = null;
-    this.errorValidator.message = undefined;
   }
 
-  setAnswer(dataAnswer, from) {
+
+  async setAnswer(dataAnswer, from) {
     let answer = this.myAnswers;
-    console.log(answer);
-    if (this.allUserData._id != undefined) {
-      if (answer.multy) {
-        if (answer.multyAnswer.length === 0) {
-          this.errorValidator.idError = dataAnswer.id;
-          this.errorValidator.message = 'Chose at leas one answer';
-        } else {
-          // multy answer
-          //  this.setToDB(answer, dataAnswer)
-        }
+    if (this.allUserData != undefined) {
+      if (answer.answer === undefined) {
+        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        modalRef.componentInstance.errType = 'error';
+        modalRef.componentInstance.title = "Choose anwer";
+        modalRef.componentInstance.description = "Choose at leas one answer";
+        modalRef.componentInstance.nameButton = "fine";
       } else {
-        if (answer.answer === undefined) {
-          this.errorValidator.idError = dataAnswer.id;
-          this.errorValidator.message = 'Chose at leas one answer';
-        } else {
-          if (from === 'validate') {
-            if (this.userData.wallet === 'null') {
-              this.errorValidator.idError = dataAnswer.id;
-              this.errorValidator.message = 'You must connect metamask';
-            } else {
-              this.setToLoomNetworkValidation(answer, dataAnswer);
-            }
+        if (from === 'validate') {
+          if (this.userData.wallet === 'null') {
+            // this.errorValidator.idError = dataAnswer.id;
+            // this.errorValidator.message = 'You must connect metamask';
           } else {
-            this.setToLoomNetwork(answer, dataAnswer);
+            this.setToNetworkValidation(answer, dataAnswer);
+          }
+        } else {
+          if (Number(answer.amount) <= 0) {
+            const modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+            modalRef.componentInstance.errType = 'error';
+            modalRef.componentInstance.title = "Low amount";
+            modalRef.componentInstance.description = "Amount must be bigger than 0";
+            modalRef.componentInstance.nameButton = "fine";
+          } else {
+            this.setToNetwork(answer, dataAnswer);
+
           }
         }
       }
     } else {
-      this.openRegistModal();
+      try {
+        await web3Obj.initialize();
+        this.setTorusInfoToDB();
+      } catch (error) {
+        await web3Obj.torus.cleanUp();
+        console.error(error);
+      }
     }
   }
 
-  openRegistModal() {
-    this.modalService.open(RegistrationComponent);
+  async setTorusInfoToDB() {
+    const userInfo = await web3Obj.torus.getUserInfo('');
+    const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
+    const data: object = {
+      _id: null,
+      wallet: userWallet,
+      nickName: userInfo.name,
+      email: userInfo.email,
+      avatar: userInfo.profileImage,
+      verifier: userInfo.verifier,
+      verifierId: userInfo.verifierId,
+    };
+    this.postService.post('user/torus_regist', data)
+      .subscribe(
+        (x: any) => {
+          this.addUser(
+            x.email,
+            x.nickName,
+            x.wallet,
+            x.listHostEvents,
+            x.listParticipantEvents,
+            x.listValidatorEvents,
+            x.historyTransaction,
+            x.invitationList,
+            x.avatar,
+            x._id,
+            x.verifier
+          );
+        }, (err) => {
+          console.log(err);
+          let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+          modalRef.componentInstance.errType = 'error';
+          modalRef.componentInstance.title = "Unknown Error";
+          modalRef.componentInstance.customMessage = String(err);
+          modalRef.componentInstance.description = "Report this unknown error to get 1 BET token!"
+          modalRef.componentInstance.nameButton = "report error";
+        });
   }
 
-  async setToLoomNetwork(answer, dataAnswer) {
+  addUser(
+    email: string,
+    nickName: string,
+    wallet: string,
+    listHostEvents: object,
+    listParticipantEvents: object,
+    listValidatorEvents: object,
+    historyTransaction: object,
+    invitationList: object,
+    color: string,
+    _id: number,
+    verifier: string
+  ) {
+
+    this.store.dispatch(new UserActions.AddUser({
+      _id: _id,
+      email: email,
+      nickName: nickName,
+      wallet: wallet,
+      listHostEvents: listHostEvents,
+      listParticipantEvents: listParticipantEvents,
+      listValidatorEvents: listValidatorEvents,
+      historyTransaction: historyTransaction,
+      invitationList: invitationList,
+      avatar: color,
+      verifier: verifier
+    }));
+  }
+
+  async setToNetwork(answer, dataAnswer) {
     let balance;
 
     if (dataAnswer.currencyType === 'ether') {
@@ -230,15 +178,19 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       balance = this.coinInfo.tokenBalance;
     }
 
-    if (Number(balance) < dataAnswer.money) {
-      this.errorValidator.idError = dataAnswer.id;
-      this.errorValidator.message = 'Don\'t have enough ' + dataAnswer.currencyType;
+    if (Number(balance) < Number(answer.amount)) {
+      let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+      modalRef.componentInstance.errType = 'error';
+      modalRef.componentInstance.title = "Insufficient BET";
+      modalRef.componentInstance.description = "You don't have enough BET tokens to make this bet. Please lower your bet or get more BET tokens by:";
+      modalRef.componentInstance.editionDescription = ["- Hosting a successful event", "- Validating event results as an Expert", "- Giving others topics to host events as an Advisor"]
+      modalRef.componentInstance.nameButton = "fine";
     } else {
       let web3 = new Web3();
       let contract = new Contract();
       var _question_id = dataAnswer.id;
       var _whichAnswer = answer.answer;
-      var _money = web3.utils.toWei(String(dataAnswer.money), 'ether');
+      var _money = web3.utils.toWei(String(answer.amount), 'ether');
       let contr = await contract.publicEventContract();
       let validator = await contr.methods.setTimeAnswer(_question_id).call();
       if (Number(validator) === 0) {
@@ -247,16 +199,24 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         } else {
           await contract.approveBETToken(this.allUserData.wallet, _money, this.allUserData.verifier);
         }
-        let sendToContract = await contract.participateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier);
+        let sendToContract = await contract.participateOnPublicEvent(_question_id, _whichAnswer, _money, this.allUserData.wallet, this.allUserData.verifier);
         if (sendToContract.transactionHash !== undefined) {
           this.setToDB(answer, dataAnswer, sendToContract.transactionHash, dataAnswer.currencyType);
         }
       } else if (Number(validator) === 1) {
-        this.errorValidator.idError = dataAnswer.id;
-        this.errorValidator.message = 'Event not started yeat.';
+        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        modalRef.componentInstance.errType = 'time';
+        modalRef.componentInstance.title = "Event not start";
+        modalRef.componentInstance.customMessage = "Betting time for this event is not start.";
+        modalRef.componentInstance.description = "Player can join when event is start."
+        modalRef.componentInstance.nameButton = "fine";
       } else if (Number(validator) === 2) {
-        this.errorValidator.idError = dataAnswer.id;
-        this.errorValidator.message = 'Already finished';
+        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        modalRef.componentInstance.errType = 'time';
+        modalRef.componentInstance.title = "Betting time’s over";
+        modalRef.componentInstance.customMessage = "Betting time for this event is over.";
+        modalRef.componentInstance.description = "No more Players can join now."
+        modalRef.componentInstance.nameButton = "fine";
       }
     }
   }
@@ -267,31 +227,31 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       event_id: answer.event_id,
       date: new Date(),
       answer: answer.answer,
-      multyAnswer: answer.multyAnswer,
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: 'participant',
       currencyType: currencyType,
       answerAmount: dataAnswer.answerAmount + 1,
-      money: dataAnswer.money
+      amount: Number(answer.amount)
     };
     this.postService.post('answer', data).subscribe(async () => {
-        this.myAnswers.answered = true;
-        this.errorValidator.idError = null;
-        this.errorValidator.message = undefined;
-
-        this.updateUser();
-        this.callGetData.next();
-        this.updateBalance();
-
-
-      },
+      this.myAnswers.answered = true;
+      this.updateUser();
+      this.callGetData.next();
+      this.updateBalance();
+    },
       (err) => {
         console.log(err);
+        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        modalRef.componentInstance.errType = 'error';
+        modalRef.componentInstance.title = "Unknown Error";
+        modalRef.componentInstance.customMessage = String(err);
+        modalRef.componentInstance.description = "Report this unknown error to get 1 BET token!"
+        modalRef.componentInstance.nameButton = "report error";
       });
   }
 
-  async setToLoomNetworkValidation(answer, dataAnswer) {
+  async setToNetworkValidation(answer, dataAnswer) {
 
     let contract = new Contract();
     var _question_id = dataAnswer.id;
@@ -299,56 +259,63 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let contr = await contract.publicEventContract();
     let validator = await contr.methods.setTimeValidator(_question_id).call();
 
+    let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
     switch (Number(validator)) {
       case 0:
         let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier);
-        console.log(sendToContract);
         if (sendToContract.transactionHash !== undefined) {
           this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash);
         }
         break;
       case 1:
-        this.errorValidator.idError = dataAnswer.id;
-        this.errorValidator.message = 'Event not started yeat.';
+        modalRef.componentInstance.errType = 'time';
+        modalRef.componentInstance.title = "Validation time’s not start";
+        modalRef.componentInstance.customMessage = "Validation time for this event not start";
+        modalRef.componentInstance.description = "Expert can join when validating time is start"
+        modalRef.componentInstance.nameButton = "fine";
         break;
       case 2:
-        this.errorValidator.idError = dataAnswer.id;
-        this.errorValidator.message = 'Event is finished.';
+        modalRef.componentInstance.errType = 'time';
+        modalRef.componentInstance.title = "Validation time’s over";
+        modalRef.componentInstance.customMessage = "Validation time for this event is over, ";
+        modalRef.componentInstance.description = "No more Experts can join now."
+        modalRef.componentInstance.nameButton = "fine";
         break;
       case 3:
-        this.errorValidator.idError = dataAnswer.id;
-        this.errorValidator.message = 'You have been like the participant in this event. The participant can\'t be the validator.';
+        modalRef.componentInstance.errType = 'error';
+        modalRef.componentInstance.title = "You participated in this event.";
+        modalRef.componentInstance.customMessage = "You have been like the participant in this event. ";
+        modalRef.componentInstance.description = "The participant can\'t be the Experts."
+        modalRef.componentInstance.nameButton = "fine";
         break;
     }
   }
 
   setToDBValidation(answer, dataAnswer, transactionHash) {
     let data = {
-      multy: answer.multy,
       event_id: answer.event_id,
       date: new Date(),
       answer: answer.answer,
-      multyAnswer: answer.multyAnswer,
       transactionHash: transactionHash,
       userId: this.userData._id,
       from: 'validator',
       currencyType: dataAnswer.currencyType,
       validated: dataAnswer.validated + 1,
-      money: dataAnswer.money
+      amount: 0
     };
     this.postService.post('answer', data).subscribe(async () => {
-        this.myAnswers.answered = true;
-        this.errorValidator.idError = null;
-        this.errorValidator.message = undefined;
-
-        this.callGetData.next();
-
-        this.updateBalance();
-
-
-      },
+      this.myAnswers.answered = true;
+      this.callGetData.next();
+      this.updateBalance();
+    },
       (err) => {
         console.log(err);
+        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        modalRef.componentInstance.errType = 'error';
+        modalRef.componentInstance.title = "Unknown Error";
+        modalRef.componentInstance.customMessage = String(err);
+        modalRef.componentInstance.description = "Report this unknown error to get 1 BET token!"
+        modalRef.componentInstance.nameButton = "report error";
       });
   }
 
@@ -396,73 +363,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         });
   }
 
-  deleteInvitation(data) {
-    let id = data.id;
-    this.deleteInvitationId.next(id);
-  }
-
-  makeMultyAnswer(question, i, event) {
-    // TODO
-  }
-
-  getMultyIcon(anser, i) {
-    // TODO
-  }
-
-  whichComponent() {
-    if (this.fromComponent === 'invitation') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  validateDeleteButton(data) {
-    if (this.fromComponent === 'myEvent') {
-      let result = this.getPosition(data);
-      let z = result.search('Host');
-      if (z !== -1) {
-        if (data.answerAmount >= 1) {
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        return false;
-      }
-    } else {
-      false;
-    }
-  }
-
-  async deleteEvent(data) {
-    let id = data.id;
-    let contract = new Contract();
-    let contr = await contract.publicEventContract();
-    let deleteValidator = await contr.methods.deleteEventValidator(id).call();
-    if (Number(deleteValidator) === 0) {
-      this.letsDeleteEvent(id, contr);
-    } else if (Number(deleteValidator) === 1) {
-      this.errorValidator.idError = id;
-      this.errorValidator.message = 'You can\'t delete event because event has money on balance.';
-    } else if (Number(deleteValidator) === 2) {
-      this.errorValidator.idError = id;
-      this.errorValidator.message = 'You are now a owner of event, only owner can delete event.';
-    }
-
-  }
-
-  async letsDeleteEvent(id, contr) {
-    let deleteEvent = await contr.methods.deleteEvent(id).send();
-    if (deleteEvent.transactionHash !== undefined) {
-      this.deleteFromDb(id);
-    } else {
-      this.errorValidator.idError = id;
-      this.errorValidator.message = 'error from contract. Check console log.';
-    }
-  }
-
-
   finalAnswerGuard(question) {
     if (question.finalAnswer !== null || question.reverted) {
       return true;
@@ -477,11 +377,16 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     };
     this.postService.post('delete_event', data)
       .subscribe(() => {
-          this.callGetData.next();
-        },
+        this.callGetData.next();
+      },
         (err) => {
-          console.log('from delete wallet');
           console.log(err);
+          let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+          modalRef.componentInstance.errType = 'error';
+          modalRef.componentInstance.title = "Unknown Error";
+          modalRef.componentInstance.customMessage = String(err);
+          modalRef.componentInstance.description = "Report this unknown error to get 1 BET token!"
+          modalRef.componentInstance.nameButton = "report error";
         });
   }
 

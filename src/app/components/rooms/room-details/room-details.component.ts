@@ -79,7 +79,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
-      this.allData = value;
       this.commentList = this.roomEvents[0];
 
       if (value.events.length === 0) {
@@ -87,15 +86,15 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       } else {
         value.events.forEach(el => this.roomEvents.push(el));
       }
-
+      this.allData = this.roomEvents;
       this.myAnswers = this.roomEvents.map((data) => {
         return {
           event_id: data.id,
           answer: this.findAnswer(data),
           from: data.from,
-          multy: data.multiChoise,
           answered: this.findAnswered(data),
-          multyAnswer: this.findMultyAnswer(data)
+          amount: 0,
+          betAmount: 0 // TODO
         };
       });
     }, (err) => {
@@ -114,29 +113,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   findAnswered(data) {
-    if (data.multiChoise) {
-      return this.findMultyAnswer(data).length !== 0 ? true : false;
-    } else {
-      return this.findAnswer(data) !== undefined ? true : false;
-    }
+    return this.findAnswer(data) !== undefined ? true : false;
   }
 
-  findMultyAnswer(data) {
-    let z = [];
-    let part = _.filter(data.parcipiantAnswers, { 'userId': this.userId });
-    part.forEach((x) => {
-      z.push(x.answer);
-    });
-    if (z.length === 0) {
-      let part = _.filter(data.validatorsAnswers, { 'userId': this.userId });
-      part.forEach((x) => {
-        z.push(x.answer);
-      });
-      return z;
-    } else {
-      return z;
-    }
-  }
 
   infoRoomColor(value) {
     return { "background": value }

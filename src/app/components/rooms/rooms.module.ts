@@ -19,14 +19,14 @@ import {NgxPageScrollModule} from 'ngx-page-scroll';
         FormsModule,
         InfiniteScrollModule,
         NgxPageScrollModule,
+        ShareModule,
         RouterModule.forChild([
             { path: 'rooms', component: RoomsComponent },
             { path: 'room/:id', component: RoomDetailsComponent }
         ]),
     ],
     exports: [
-        RoomsComponent,
-        ShareModule
+        
     ]
 })
 

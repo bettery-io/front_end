@@ -33,7 +33,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
   bottom = false;
-  allData;
+  allData: any = [];
   spinner = true;
   scrollTop = 0;
 
@@ -91,7 +91,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         value.events.forEach(el => this.roomEvents.push(el));
         this.getAnswers(this.roomEvents);
       }
-      this.allData = this.roomEvents;      
+      this.allData = this.roomEvents;  
+      this.spinner = false;    
     }, (err) => {
       console.log(err);
     });

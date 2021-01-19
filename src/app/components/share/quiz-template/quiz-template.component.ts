@@ -72,12 +72,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         modalRef.componentInstance.nameButton = "fine";
       } else {
         if (from === 'validate') {
-          if (this.userData.wallet === 'null') {
-            // this.errorValidator.idError = dataAnswer.id;
-            // this.errorValidator.message = 'You must connect metamask';
-          } else {
-            this.setToNetworkValidation(answer, dataAnswer);
-          }
+          this.setToNetworkValidation(answer, dataAnswer);
         } else {
           if (Number(answer.amount) <= 0) {
             const modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
@@ -87,7 +82,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
             modalRef.componentInstance.nameButton = "fine";
           } else {
             this.setToNetwork(answer, dataAnswer);
-
           }
         }
       }
@@ -260,35 +254,30 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let contr = await contract.publicEventContract();
     let validator = await contr.methods.setTimeValidator(_question_id).call();
 
-    let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
-    switch (Number(validator)) {
-      case 0:
-        let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier);
-        if (sendToContract.transactionHash !== undefined) {
-          this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash);
-        }
-        break;
-      case 1:
-        modalRef.componentInstance.errType = 'time';
-        modalRef.componentInstance.title = "Validation time’s not start";
-        modalRef.componentInstance.customMessage = "Validation time for this event not start";
-        modalRef.componentInstance.description = "Expert can join when validating time is start"
-        modalRef.componentInstance.nameButton = "fine";
-        break;
-      case 2:
-        modalRef.componentInstance.errType = 'time';
-        modalRef.componentInstance.title = "Validation time’s over";
-        modalRef.componentInstance.customMessage = "Validation time for this event is over, ";
-        modalRef.componentInstance.description = "No more Experts can join now."
-        modalRef.componentInstance.nameButton = "fine";
-        break;
-      case 3:
-        modalRef.componentInstance.errType = 'error';
-        modalRef.componentInstance.title = "You participated in this event.";
-        modalRef.componentInstance.customMessage = "You have been like the participant in this event. ";
-        modalRef.componentInstance.description = "The participant can\'t be the Experts."
-        modalRef.componentInstance.nameButton = "fine";
-        break;
+    if (Number(validator) == 0) {
+      let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier);
+      this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash);
+    } else if (Number(validator) == 1) {
+      let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+      modalRef.componentInstance.errType = 'time';
+      modalRef.componentInstance.title = "Validation time’s not start";
+      modalRef.componentInstance.customMessage = "Validation time for this event not start";
+      modalRef.componentInstance.description = "Expert can join when validating time is start"
+      modalRef.componentInstance.nameButton = "fine";
+    } else if (Number(validator) == 2) {
+      let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+      modalRef.componentInstance.errType = 'time';
+      modalRef.componentInstance.title = "Validation time’s over";
+      modalRef.componentInstance.customMessage = "Validation time for this event is over, ";
+      modalRef.componentInstance.description = "No more Experts can join now."
+      modalRef.componentInstance.nameButton = "fine";
+    } else if (Number(validator) == 3) {
+      let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+      modalRef.componentInstance.errType = 'error';
+      modalRef.componentInstance.title = "You participated in this event.";
+      modalRef.componentInstance.customMessage = "You have been like the participant in this event. ";
+      modalRef.componentInstance.description = "The participant can\'t be the Experts."
+      modalRef.componentInstance.nameButton = "fine";
     }
   }
 
@@ -367,22 +356,17 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   finalAnswerGuard(question) {
     if (question.finalAnswer !== null || question.status == "reverted") {
       return true;
-    } else if(this.myAnswers.answer != undefined) {
+    } else if (this.myAnswers.answer != undefined && this.myAnswers.answered) {
       return true;
-    } else{
+    } else {
       return false;
     }
   }
 
-  // findCorrectAnswer(data) {
-  //   let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.allUserData._id });
-  //   if (findParticipiant === -1) {
-  //     let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.allUserData._id });
-  //     return findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined;
-  //   } else {
-  //     return data.parcipiantAnswers[findParticipiant].answer;
-  //   }
-  // }
+  timeValidating(question) {
+    const timeNow = Number((Date.now() / 1000).toFixed(0));
+    return question.endTime - timeNow > 0
+  }
 
   cardColorBackGround(data) {
     if (data.finalAnswer !== null) {
@@ -425,6 +409,10 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
 
   getCommentById(id: any) {
     this.commentIdEmmit.emit(id);
+  }
+
+  getValidatorsAmount(q) {
+    return q.validatorsAnswers == undefined ? 0 : q.validatorsAnswers.length;
   }
 
   calculatedJoiner(a, b) {

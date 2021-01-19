@@ -28,7 +28,8 @@
                     </div>
                   </div>
                   <div *ngIf="question.finalAnswer !== null">
-                    <p>test 2</p> <!--TODO-->
+                    <p>test 2</p>
+                    <!--TODO-->
                   </div>
                   <div class="d-flex align-items-center" *ngIf="this.myAnswers?.answer !== undefined">
                     <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
@@ -36,7 +37,7 @@
                         <div *ngIf="this.myAnswers?.answer == i"
                           [ngClass]="{'cyclePart': this.myAnswers?.from == 'participant', 'cycleValid': this.myAnswers?.from == 'validator'}">
                         </div>
-                      </div> 
+                      </div>
                       <div class="label answer-checkbox">{{answer}}</div>
                     </div>
                   </div>
@@ -47,18 +48,24 @@
         </div>
         <div>
           <div class="timer-span">
-            <div>
-              <time [timer]="question?.endTime"></time>
+            <div style="display: flex;">
+              <time [timer]="question?.endTime"></time> <div *ngIf="!timeValidating(question)">({{this.getValidatorsAmount(question)}}/{{question?.validatorsAmount}} left)</div>
             </div>
           </div>
           <div style="margin-top: 34px" *ngIf="!finalAnswerGuard(question)">
-            BET <input [(ngModel)]="myAnswers.amount" class="bet-style" /> <span
-              (click)="this.setAnswer(question, 'participate')" class="quickBet">QUICK BET</span>
+            <div *ngIf="timeValidating(question)">
+              BET <input [(ngModel)]="myAnswers.amount" class="bet-style" /> <span
+                (click)="this.setAnswer(question, 'participate')" class="quickBet">QUICK BET</span>
+            </div>
           </div>
           <div *ngIf="finalAnswerGuard(question)">
             <div *ngIf="question.status == 'reverted'">
               <p class="notExperts">Not enought Experts</p>
             </div>
+          </div>
+          <div class="amount_box" *ngIf="this.myAnswers?.answered && this.myAnswers?.betAmount > 0">
+            <div class="amount_img"></div>
+            <p class="amountText">{{this.myAnswers?.betAmount}} BET</p>
           </div>
         </div>
 
@@ -98,9 +105,15 @@
               </p>
             </div>
           </div>
-          <div class="button" *ngIf="!finalAnswerGuard(question)">
-            join now
+          <div *ngIf="!finalAnswerGuard(question)">
+            <div class="button" *ngIf="timeValidating(question)">
+              join now
+            </div>
+            <div *ngIf="!timeValidating(question)" class="validateNow" (click)="this.setAnswer(question, 'validate')">
+              VALIDATE NOW
+            </div>
           </div>
+
           <div class="viewEvent" *ngIf="finalAnswerGuard(question)">
             VIEW EVENT
           </div>

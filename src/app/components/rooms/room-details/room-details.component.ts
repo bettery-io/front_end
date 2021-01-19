@@ -84,33 +84,46 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
       if (this.allData.length === 0) {
         this.roomEvents = value.events;
+        this.getAnswers(value.events);
       } else {
         value.events.forEach(el => this.roomEvents.push(el));
+        this.getAnswers(this.roomEvents);
       }
-      this.allData = this.roomEvents;
-      this.myAnswers = this.roomEvents.map((data) => {
-        return {
-          event_id: data.id,
-          answer: this.findAnswer(data).answer,
-          from: this.findAnswer(data).from,
-          answered: this.findAnswer(data).answer ? true : false,
-          amount: 0,
-          betAmount: 0 // TODO
-        };
-      });
-      console.log(this.myAnswers)
+      this.allData = this.roomEvents;      
     }, (err) => {
       console.log(err);
     });
+  }
+
+  getAnswers(x) {
+    this.myAnswers = x.map((data) => {
+      return {
+        event_id: data.id,
+        answer: this.findAnswer(data).answer,
+        from: this.findAnswer(data).from,
+        answered: this.findAnswer(data).answer != undefined ? true : false,
+        amount: 0,
+        betAmount: this.findAnswer(data).amount 
+      };
+    });
+    console.log(this.myAnswers)
   }
 
   findAnswer(data) {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
     if (findParticipiant === -1) {
       let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
-      return { answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined, from: "validator" };
+      return {
+        answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined,
+        from: "validator",
+        amount: 0
+      };
     } else {
-      return { answer: data.parcipiantAnswers[findParticipiant].answer, from: "participant" };
+      return {
+        answer: data.parcipiantAnswers[findParticipiant].answer,
+        from: "participant",
+        amount: data.parcipiantAnswers[findParticipiant].amount
+      }
     }
   }
 

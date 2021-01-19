@@ -23,7 +23,7 @@
           <quiz-template (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo" [myAnswers]="myAnswers[index]"
                          [userData]="userData"
                          [question]="newQuestion" [fromComponent]="fromComponent"
-                         (callGetData)="getData(this.scrollDistanceFrom, this.scrollDistanceTo)"></quiz-template>
+                         (callGetData)="getData(this.scrollDistanceFrom, this.scrollDistanceTo, false)"></quiz-template>
         </div>
       </div>
 

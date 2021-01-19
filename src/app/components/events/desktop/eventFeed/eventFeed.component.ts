@@ -15,7 +15,6 @@ import { Subscription } from 'rxjs';
 })
 export class EventFeedComponent implements OnDestroy {
   public spinner: boolean = true;
-  public questions: any;
   myAnswers: Answer[] = [];
   userId: number = null;
   coinInfo = null;
@@ -66,30 +65,33 @@ export class EventFeedComponent implements OnDestroy {
 
   getData(from, to) {
     this.postService.post('publicEvents/get_all', { from, to }).subscribe((x) => {
+      console.log(x);
       this.myAnswers = [];
       this.pureData = x;
-      let data = _.orderBy(this.pureData.events, ['endTime'], ['asc']);
-      this.questions = data;
       if (this.newQuestions.length === 0) {
-        this.newQuestions = this.questions;
+        this.newQuestions = this.pureData.events;
         this.commentList = this.newQuestions[this.currentComment];
+        this.getAnswers(this.newQuestions);
       } else {
-        this.questions.forEach(el => this.newQuestions.push(el));
+        this.pureData.events.forEach(el => this.newQuestions.push(el));
         this.commentList = this.newQuestions[this.currentComment];
+        this.getAnswers(this.newQuestions);
       }
       this.allData = this.newQuestions;
-      this.myAnswers = this.newQuestions.map((data) => {
-        return {
-          event_id: data.id,
-          answer: this.findAnswer(data).answer,
-          from: this.findAnswer(data).from,
-          answered: this.findAnswer(data).answer ? true : false,
-          amount: 0,
-          betAmount: 0 // TODO
-        };
-      });
-
       this.spinner = false;
+    });
+  }
+
+  getAnswers(x) {
+    this.myAnswers = x.map((data) => {
+      return {
+        event_id: data.id,
+        answer: this.findAnswer(data).answer,
+        from: this.findAnswer(data).from,
+        answered: this.findAnswer(data).answer != undefined ? true : false,
+        amount: 0,
+        betAmount: this.findAnswer(data).amount 
+      };
     });
   }
 
@@ -97,9 +99,17 @@ export class EventFeedComponent implements OnDestroy {
     let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
     if (findParticipiant === -1) {
       let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
-      return { answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined, from: "validator" };
+      return {
+        answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined,
+        from: "validator",
+        amount: 0
+      };
     } else {
-      return { answer: data.parcipiantAnswers[findParticipiant].answer, from: "participant" };
+      return {
+        answer: data.parcipiantAnswers[findParticipiant].answer,
+        from: "participant",
+        amount: data.parcipiantAnswers[findParticipiant].amount
+      }
     }
   }
 

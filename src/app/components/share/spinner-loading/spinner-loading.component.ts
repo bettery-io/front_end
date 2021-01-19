@@ -13,8 +13,9 @@ export class SpinnerLoadingComponent implements OnInit {
     'active4'
   ];
 
-  @Input()
-  withoutSpinner: boolean;
+  @Input() withoutSpinner: boolean;
+  @Input() desktop: boolean;
+
   constructor() {
 
 
@@ -44,6 +45,15 @@ export class SpinnerLoadingComponent implements OnInit {
     this.forActive(1, 'active2', 'active3', 'active4', 'active1');
     this.forActive(2, 'active3', 'active4', 'active1', 'active2');
     this.forActive(3, 'active4', 'active1', 'active2', 'active3');
+  }
+
+  styleDesktop() {
+    if (this.desktop) {
+      return {
+        'position': 'relative',
+        'background': 'none'
+      };
+    }
   }
 
   ngOnInit(): void {

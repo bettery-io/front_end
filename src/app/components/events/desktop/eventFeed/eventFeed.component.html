@@ -3,10 +3,7 @@
   <app-search-bar></app-search-bar>
 
   <div *ngIf="spinner">
-    <div class="lds-ripple">
-      <div></div>
-      <div></div>
-    </div>
+    <app-spinner-loading class="lds-ripple" [desktop]="true"></app-spinner-loading>
   </div>
 
   <div *ngIf="!spinner">
@@ -35,7 +32,7 @@
               <span>{{commentList?.question}}</span>
             </div>
           </div>
-          <app-comment class="deep-comment" *ngIf="commentList" [theme]="'white'" [userData]="userData"
+          <app-comment [showAuthButton]="userData === undefined" class="deep-comment" *ngIf="commentList" [theme]="'white'" [userData]= "userData"
                        [id]="commentList.id"></app-comment>
         </div>
       </div>
@@ -43,5 +40,5 @@
   </div>
 </div>
 
-  <div class="to_the_top"><a pageScroll href="#top"><img src="../../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
+  <div class="to_the_top" [ngClass]="scrollTop < 200 && 'dnone'" ><a pageScroll href="#top"><img src="../../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
 </div>

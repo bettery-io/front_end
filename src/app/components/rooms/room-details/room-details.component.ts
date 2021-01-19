@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { PostService } from '../../../services/post.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
-import { Answer } from '../../../models/Answer.model';
-import { User } from '../../../models/User.model';
+import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {PostService} from '../../../services/post.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../app.state';
+import {Answer} from '../../../models/Answer.model';
+import {User} from '../../../models/User.model';
 import _ from 'lodash';
+import set = Reflect.set;
 
 
 @Component({
@@ -26,13 +27,15 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   id: any;
   myAnswers: Answer[] = [];
   userId: number = null;
-  userData: any = [];
-  fromComponent: string = 'room'
+  userData: any;
+  fromComponent: string = 'room';
   commentList;
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
   bottom = false;
-  allData: any = [];
+  allData;
+  spinner = true;
+  scrollTop = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,7 +45,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
         this.userId = null;
-        this.userData = [];
       } else {
         this.userId = x[0]._id;
         this.userData = x[0];
@@ -77,7 +79,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       id: Number(this.id.id),
       from: from,
       to: to
-    }
+    };
 
     this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
       this.commentList = value.events[0];
@@ -110,7 +112,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.userId});
     if (findParticipiant === -1) {
       let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
       return {
@@ -129,7 +131,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
 
   infoRoomColor(value) {
-    return { "background": value }
+    return {'background': value};
   }
 
   commentById($event) {
@@ -143,7 +145,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   getCommentRoomColor(color) {
-    return { "background": color }
+    return {'background': color};
   }
 
   onScrollQuizTemplate() {
@@ -151,7 +153,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       this.scrollDistanceFrom = this.scrollDistanceFrom + 5;
       this.scrollDistanceTo = this.scrollDistanceTo + 5;
       if (this.scrollDistanceTo >= this.allData?.amount) {
-        this.scrollDistanceTo = this.allData?.amount
+        this.scrollDistanceTo = this.allData?.amount;
         if (!this.bottom) {
           this.bottom = true;
           this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo);
@@ -178,6 +180,19 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     }
     if (this.storeUserSubscribe) {
       this.storeUserSubscribe.unsubscribe();
+    }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  listenScroll() {
+    this.scrollTop = document.documentElement.scrollTop;
+  }
+
+  commentTopPosition() {
+    if (document.documentElement.scrollTop < 350) {
+      return {'top': (350 - this.scrollTop) + 'px'};
+    } else {
+      return {'top': 0};
     }
   }
 

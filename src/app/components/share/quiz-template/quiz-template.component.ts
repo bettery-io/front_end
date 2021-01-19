@@ -25,6 +25,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   allUserData: User = undefined;
   amount: number;
 
+  @Input() joinRoom: boolean;
+
   constructor(
     private postService: PostService,
     private store: Store<AppState>,

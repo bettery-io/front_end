@@ -21,6 +21,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input('id') id: any;
   @Input() userData: User;
   @Input() withoutSend: boolean;
+  @Input() showAuthButton = false;
   newCommentSub: Subscription;
   getTypingSub: Subscription;
   postSub: Subscription;
@@ -274,7 +275,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
       try {
         this.spinnerLoading = true;
         await web3Obj.initialize();
-        this.setTorusInfoToDB();
+        await this.setTorusInfoToDB();
         return true;
       } catch (error) {
         this.spinnerLoading = false;

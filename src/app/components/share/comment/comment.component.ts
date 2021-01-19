@@ -21,6 +21,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input('id') id: any;
   @Input() userData: User;
   @Input() withoutSend: boolean;
+  @Input() showAuthButton = false;
   newCommentSub: Subscription;
   getTypingSub: Subscription;
   postSub: Subscription;

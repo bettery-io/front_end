@@ -86,11 +86,16 @@
   </div>
 
   <div class="forWhite">
-    <div id="sendBox" class="sendCommentBox" *ngIf="!withoutSend">
+
+    <div id="sendBox" class="sendCommentBox" *ngIf="!withoutSend && !showAuthButton">
     <textarea id="textarea" (keyup)="typingEffect()" [(ngModel)]="newComment" class="addCommentBox" [ngClass]="checkTheme() && 'addCommentBoxWhite'" type="text"
               name="newComment"
               placeholder="Add a comment..."></textarea>
       <div (click)="sendComment()" class="sendImg"  [ngClass]="checkTheme() && 'sendImg-blue'"></div>
+    </div>
+
+    <div *ngIf="showAuthButton" class="sendCommentBox">
+      <button (click)="sendComment()">Register to comment</button>
     </div>
     <div class="wrapCommentDown">
       <div class="arrowUp d-flex">

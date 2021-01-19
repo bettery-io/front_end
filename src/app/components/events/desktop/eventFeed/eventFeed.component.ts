@@ -37,7 +37,7 @@ export class EventFeedComponent implements OnDestroy {
   newQuestions = [];
 
   currentComment = 0;
-  scrollTop: number;
+  scrollTop = 0;
 
   constructor(
     private store: Store<AppState>,

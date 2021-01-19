@@ -111,8 +111,12 @@
     ::ng-deep
       .sortHead-item-dark
         padding: 5px 12px
+      .whiteClass
+        max-height: 600px
       .comment-warp
         padding: 0 12px
+        max-height: 400px
+        overflow: auto
       .forWhite
         padding: 0 8px
       .arrowUp
@@ -139,17 +143,17 @@
       .darkSize
         width: 13px
         height: 13px
-      .whiteClass
-        max-height: 500px
+      .comment-warp
+        max-height: 400px
         overflow: auto
-      .whiteClass::-webkit-scrollbar
+      .comment-warp::-webkit-scrollbar
         width: 6px
 
-      .whiteClass::-webkit-scrollbar-track
+      .comment-warp::-webkit-scrollbar-track
         background: #f1f1f1
         border-radius: 3px
 
-      .whiteClass::-webkit-scrollbar-thumb
+      .comment-warp::-webkit-scrollbar-thumb
         background: #0094FF
         border-radius: 3px
 
@@ -182,3 +186,6 @@
     right: 22%
   .to_the_top
     right: 26%
+
+.dnone
+  display: none

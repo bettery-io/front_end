@@ -35,7 +35,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   bottom = false;
   allData;
   spinner = true;
-  scrollTop: number;
+  scrollTop = 0;
 
   constructor(
     private route: ActivatedRoute,

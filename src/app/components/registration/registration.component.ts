@@ -37,13 +37,15 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private http: PostService,
     private router: Router,
     public activeModal: NgbActiveModal
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       nickName: ['', Validators.minLength(6)],
       email: ['', [Validators.email, Validators.required]]
     });
+    this.loginWithTorus();
   }
 
   async loginWithTorus() {

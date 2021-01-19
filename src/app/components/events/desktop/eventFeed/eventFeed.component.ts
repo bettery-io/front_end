@@ -90,7 +90,7 @@ export class EventFeedComponent implements OnDestroy {
         from: this.findAnswer(data).from,
         answered: this.findAnswer(data).answer != undefined ? true : false,
         amount: 0,
-        betAmount: this.findAnswer(data).amount 
+        betAmount: this.findAnswer(data).amount
       };
     });
   }

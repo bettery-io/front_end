@@ -3,7 +3,7 @@
         << Back to Rooms</div>
 
   <div class="lds-ripple" *ngIf="spinner">
-    <app-spinner-loading [desktop]="true"></app-spinner-loading>
+    <app-spinner-loading class="spinner-pos" [desktop]="true"></app-spinner-loading>
   </div>
 
             <div *ngIf="!spinner" class="room_details" [ngStyle]="infoRoomColor(roomDetails?.color)">

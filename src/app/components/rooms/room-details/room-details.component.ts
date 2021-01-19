@@ -91,8 +91,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         value.events.forEach(el => this.roomEvents.push(el));
         this.getAnswers(this.roomEvents);
       }
-      this.allData = this.roomEvents;  
-      this.spinner = false;    
+      this.allData = this.roomEvents;
+      this.spinner = false;
     }, (err) => {
       console.log(err);
     });
@@ -106,7 +106,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         from: this.findAnswer(data).from,
         answered: this.findAnswer(data).answer != undefined ? true : false,
         amount: 0,
-        betAmount: this.findAnswer(data).amount 
+        betAmount: this.findAnswer(data).amount
       };
     });
     console.log(this.myAnswers)

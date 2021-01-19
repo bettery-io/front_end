@@ -12,7 +12,7 @@
             <div class="answers_box">
               <div class="answers">
                 <div *ngIf="!finalAnswerGuard(question)">
-                  <div class="d-flex align-items-center">
+                  <div class="d-flex align-items-center" [ngClass]="question.answers.length >= 4 && 'moreThan3'">
                     <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                       <input class="checkbox_answer" id="{{question.id}}{{question.from}}" (click)="this.makeAnswer(i)"
                         value="{{i}}" type="radio" name="{{question.id}}{{question.from}}">
@@ -52,7 +52,7 @@
               <time [timer]="question?.endTime"></time> <div *ngIf="!timeValidating(question)">({{this.getValidatorsAmount(question)}}/{{question?.validatorsAmount}} left)</div>
             </div>
           </div>
-          <div style="margin-top: 34px" *ngIf="!finalAnswerGuard(question)">
+          <div style="margin-top: 40px" *ngIf="!finalAnswerGuard(question)">
             <div *ngIf="timeValidating(question)">
               BET <input [(ngModel)]="myAnswers.amount" class="bet-style" /> <span
                 (click)="this.setAnswer(question, 'participate')" class="quickBet">QUICK BET</span>

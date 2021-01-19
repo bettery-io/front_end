@@ -1,6 +1,8 @@
-<div id="top" class="main-warp container-fluid">
 
-  <app-search-bar></app-search-bar>
+<app-search-bar></app-search-bar>
+<div id="top" class="main-warp  container">
+
+
 
   <div *ngIf="spinner">
     <app-spinner-loading class="lds-ripple" [desktop]="true"></app-spinner-loading>
@@ -8,7 +10,7 @@
 
   <div *ngIf="!spinner">
   <div class="container-fluid">
-    <div class="comment-wrap" style="margin-top: 51px">
+    <div class="comment-wrap" style="padding-top: 51px">
 
       <div
         class="search-results" infiniteScroll

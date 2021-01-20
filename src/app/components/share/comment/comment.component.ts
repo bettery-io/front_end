@@ -1,30 +1,37 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {CommentSocketService} from './comment-service/comment-socket.service';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { CommentSocketService } from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import web3Obj from '../../../helpers/torus';
 import * as UserActions from '../../../actions/user.actions';
-import {PostService} from '../../../services/post.service';
-import {Store} from '@ngrx/store';
+import { PostService } from '../../../services/post.service';
+import { Store } from '@ngrx/store';
 
-import {CommentModel} from './model/сomment.model';
-import {User} from '../../../models/User.model';
+import { CommentModel } from './model/сomment.model';
+import { User } from '../../../models/User.model';
+
+import { Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { PageScrollService } from 'ngx-page-scroll-core';
+import { EventEmitter } from '@angular/core';
 
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.sass']
+  styleUrls: ['./comment.component.sass'],
 })
+
 export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input() theme: string;
   @Input('id') id: any;
   @Input() userData: User;
-  @Input() withoutSend: boolean;
+  @Input() mobile: boolean;
   @Input() showAuthButton = false;
   newCommentSub: Subscription;
   getTypingSub: Subscription;
   postSub: Subscription;
+  eventCommentSub: Subscription;
   newComment = '';
   sortComment = 'newest';
   allComments: CommentModel[];
@@ -46,17 +53,30 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
 
   comingSoon: boolean;
   spinnerLoading: boolean;
+  @ViewChild('container')
+  private container: ElementRef;
 
   constructor(
     private socketService: CommentSocketService,
     private postService: PostService,
-    private store: Store<any>
+    private store: Store<any>,
+    private pageScrollService: PageScrollService,
+    @Inject(DOCUMENT) private document: any
   ) {
     this.showLength = this.allComments?.length < 10 ? this.allComments?.length : 10;
   }
 
   ngOnInit(): void {
     this.initializeSocket(this.id);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.id && changes.id.previousValue !== undefined) {
+      const id = changes['id'];
+      if (id.currentValue !== id.previousValue) {
+        this.initializeSocket(id.currentValue);
+      }
+    }
   }
 
   initializeSocket(id): void {
@@ -248,12 +268,32 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  finishScrollAnimation($event: any, id) {
+  scrollTo(target) {
+    const event = new EventEmitter<boolean>();
+    this.eventCommentSub = event.subscribe((targetReached) => this.finishScrollAnimation(targetReached, target));
+    if (!this.mobile) {
+      this.pageScrollService.scroll({
+        document: this.document,
+        scrollTarget: "#" + target,
+        scrollViews: [this.container.nativeElement],
+        scrollFinishListener: event,
+        scrollOffset: 110
+      });
+    } else {
+      this.pageScrollService.scroll({
+        document: this.document,
+        scrollTarget: "#" + target,
+        scrollFinishListener: event,
+      });
+    }
+  }
+
+  finishScrollAnimation(event: boolean, id) {
     const el = document.getElementById(id);
     const styleStart = 'background-color: rgba(68, 68, 68, 0.7); border-radius: 8px; transition: all 200ms;';
     const styleFinish = 'background-color: none ; transition: all 200ms; ';
 
-    if ($event) {
+    if (event) {
       el.style.cssText = styleStart;
     }
 
@@ -361,14 +401,8 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     if (this.postSub) {
       this.postSub.unsubscribe();
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.id && changes.id.previousValue !== undefined) {
-      const id = changes['id'];
-      if (id.currentValue !== id.previousValue) {
-        this.initializeSocket(id.currentValue);
-      }
+    if (this.eventCommentSub) {
+      this.eventCommentSub.unsubscribe();
     }
   }
 }

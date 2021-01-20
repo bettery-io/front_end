@@ -275,7 +275,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       userId: this.userData._id,
       from: 'participant',
       currencyType: currencyType,
-      answerAmount: dataAnswer.answerAmount + 1,
       amount: Number(answer.amount)
     };
     this.postService.post('answer', data).subscribe(async () => {

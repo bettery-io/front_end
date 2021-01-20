@@ -181,7 +181,6 @@ export class PublicEventFormComponent implements OnInit, OnDestroy {
       endDate: [0.083, Validators.required],
       calendarEndDate: ['', Validators.required],
       endTime: [{ hour: 0, minute: 0, second: 0 }, Validators.required],
-      showDistribution: true,
       privateOrPublic: "public",
       depositPath: "true",
       eventPayment: "ether",
@@ -446,7 +445,6 @@ export class PublicEventFormComponent implements OnInit, OnDestroy {
       answers: this.questionForm.value.answers.map((x) => {
         return x.name
       }),
-      multiChoise: this.questionForm.value.multyChoise === "one" ? false : true,
       startTime: this.getStartTime(),
       endTime: this.getEndTime(),
       private: this.questionForm.value.privateOrPublic === "private" ? true : false,
@@ -456,13 +454,11 @@ export class PublicEventFormComponent implements OnInit, OnDestroy {
       validators: this.inviteValidators.map((x) => {
         return x._id
       }),
-      answerAmount: 0,
       validated: 0,
       validatorsAmount: this.questionForm.value.amountOfValidators,
       money: this.questionForm.value.amount,
       finalAnswer: undefined,
       transactionHash: transactionHash,
-      showDistribution: this.questionForm.value.showDistribution,
       hashtagsId: this.hashtagsId,
       getCoinsForHold: Number(getCoinsForHold),
       currencyType: this.questionForm.value.eventPayment

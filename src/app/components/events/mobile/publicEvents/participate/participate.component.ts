@@ -120,7 +120,6 @@ export class ParticipateComponent implements OnInit, OnDestroy {
       userId: this.userData._id,
       from: "participant",
       currencyType: dataAnswer.currencyType,
-      answerAmount: dataAnswer.answerAmount + 1,
       amount: Number(_money)
     }
     this.postSub = this.postService.post("answer", data).subscribe(async () => {

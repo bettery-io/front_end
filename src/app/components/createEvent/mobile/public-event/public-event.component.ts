@@ -185,19 +185,16 @@ export class PublicEventComponent implements OnDestroy {
       answers: this.formData.answers.map((x) => {
         return x.name
       }),
-      multiChoise: false, // TO DO
       startTime: this.getStartTime(),
       endTime: Number(this.getEndTime()),
       private: false, // TO DO
       parcipiant: [], // TO DO
       validators: [], // TO DO
-      answerAmount: 0,
       validated: 0,
       validatorsAmount: this.formData.expertsCountType === "company" ? 0 : this.formData.expertsCount, // TO DO
       money: 0, // TO DO
       finalAnswer: undefined,
       transactionHash: transactionHash,
-      showDistribution: true, // TO DO
       getCoinsForHold: 0,
       currencyType: this.formData.tokenType,
       roomName: this.formData.roomName,

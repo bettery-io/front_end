@@ -22,7 +22,6 @@
       <div>
         <p class="comment">
           <a (mousedown)="additionToAnchorLink(comment.replies[0].id)" class="mr-1"
-            (pageScrollFinish)="finishScrollAnimation($event, comment.replies[0].id )"
             (click)="scrollTo(comment.replies[0].id)" *ngIf="comment?.replies.length > 0">
             {{comment?.replies[0].user.nickName}}</a>
           {{comment?.comment}}
@@ -86,7 +85,7 @@
 
   <div class="forWhite">
 
-    <div id="sendBox" class="sendCommentBox" *ngIf="!withoutSend && !showAuthButton">
+    <div id="sendBox" class="sendCommentBox" *ngIf="!mobile && !showAuthButton">
       <textarea id="textarea" (keyup)="typingEffect()" [(ngModel)]="newComment" class="addCommentBox"
         [ngClass]="checkTheme() && 'addCommentBoxWhite'" type="text" name="newComment"
         placeholder="Add a comment..."></textarea>

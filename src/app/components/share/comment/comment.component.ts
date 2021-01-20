@@ -13,6 +13,7 @@ import { User } from '../../../models/User.model';
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { PageScrollService } from 'ngx-page-scroll-core';
+import { EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input() theme: string;
   @Input('id') id: any;
   @Input() userData: User;
-  @Input() withoutSend: boolean;
+  @Input() mobile: boolean;
   @Input() showAuthButton = false;
   newCommentSub: Subscription;
   getTypingSub: Subscription;
@@ -66,14 +67,6 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.initializeSocket(this.id);
-  }
-
-  scrollTo(target) {
-    this.pageScrollService.scroll({
-      document: this.document,
-      scrollTarget: "#" + target,
-      scrollViews: [this.container.nativeElement]
-    });
   }
 
   initializeSocket(id): void {
@@ -265,12 +258,33 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  finishScrollAnimation($event: any, id) {
+  scrollTo(target) {
+    console.log(this.mobile)
+    const event = new EventEmitter<boolean>();
+    event.subscribe((targetReached) => this.finishScrollAnimation(targetReached, target));
+    if (!this.mobile) {
+      this.pageScrollService.scroll({
+        document: this.document,
+        scrollTarget: "#" + target,
+        scrollViews: [this.container.nativeElement],
+        scrollFinishListener: event,
+        scrollOffset: 110
+      });
+    } else {
+      this.pageScrollService.scroll({
+        document: this.document,
+        scrollTarget: "#" + target,
+        scrollFinishListener: event,
+      });
+    }
+  }
+
+  finishScrollAnimation(event: boolean, id) {
     const el = document.getElementById(id);
     const styleStart = 'background-color: rgba(68, 68, 68, 0.7); border-radius: 8px; transition: all 200ms;';
     const styleFinish = 'background-color: none ; transition: all 200ms; ';
 
-    if ($event) {
+    if (event) {
       el.style.cssText = styleStart;
     }
 

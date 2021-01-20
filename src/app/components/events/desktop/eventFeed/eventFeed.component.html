@@ -32,7 +32,7 @@
               <span>{{commentList?.question}}</span>
             </div>
           </div>
-          <app-comment [showAuthButton]="userData === undefined" class="deep-comment" *ngIf="commentList" [theme]="'white'" [userData]= "userData"
+          <app-comment [mobile]="false" [showAuthButton]="userData === undefined" class="deep-comment" *ngIf="commentList" [theme]="'white'" [userData]= "userData"
                        [id]="commentList.id"></app-comment>
         </div>
       </div>

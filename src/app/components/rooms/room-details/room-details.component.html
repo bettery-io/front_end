@@ -1,3 +1,4 @@
+<div class="main-bg">
 <div id="top" class="container containerFor1920">
     <div routerLink="/rooms" class="back">
         << Back to Rooms</div>
@@ -25,6 +26,12 @@
                 </div>
             </div>
 
+  <div class="row input-wrap">
+    <div class="col-10 main-input">
+      <div class="search-img"></div>
+      <input placeholder="Search events...." type="text">
+    </div>
+  </div>
 
             <div *ngIf="!spinner" class="container-fluid">
                 <div class="comment-wrap" style="margin-top: 51px">
@@ -58,3 +65,4 @@
 
   <div class="to_the_top" [ngClass]="scrollTop < 200 && 'dnone'"><a pageScroll href="#top"><img src="../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
     </div>
+</div>

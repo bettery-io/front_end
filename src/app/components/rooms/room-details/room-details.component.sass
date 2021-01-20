@@ -6,7 +6,7 @@
     color: #000000
     cursor: pointer
     margin-bottom: 24px
-    margin-top: 4px
+    padding-top: 24px
     width: max-content
 
 .avatar
@@ -102,6 +102,12 @@
   border-radius: 20px
   margin-right: 16px
 
+.containerFor1920
+  background:  url("../../../../assets/share/icon1.png") 15% 50px no-repeat
+  background-size: 300px
+  max-width: 1440px
+
+
 
 @media (max-width: 1366px)
   .main-warp
@@ -157,9 +163,8 @@
         background: #0094FF
         border-radius: 3px
 
-@media (min-width: 1500px)
-  .containerFor1920
-    max-width: 1440px
+@media (min-width: 1600px)
+
 
 .lds-ripple
   margin-top: 100px
@@ -177,15 +182,20 @@
   width: 300px
   padding: 0
   position: fixed
-  right: 14%
+  //right: 14%
+  transform: translateX(376%)
 
 @media (max-width: 1600px)
-  .main-comment
-    right: 4%
-  .main-comment2
-    right: 22%
+  //.main-comment
+  //  right: 4%
+  //.main-comment2
+  //  right: 22%
   .to_the_top
     right: 26%
+  .containerFor1920
+    max-width: 1240px
+  .main-comment
+    transform: translateX(311%)
 
 .dnone
   display: none
@@ -199,3 +209,37 @@
   position: fixed
   top: 50%
   left: 47%
+
+.main-bg
+  background: url("../../../../assets/descEvent/bg-desc-room.png") top right no-repeat
+  background-size: 50%
+  margin-top: -22px
+
+.main-input
+  margin: auto
+  position: relative
+  & input
+    width: 100%
+    background: #FFFFFF
+    border: 1px solid #DFDFDF
+    box-sizing: border-box
+    border-radius: 8px
+    height: 40px
+    padding-left: 47px
+  & input::placeholder
+    font-weight: bold
+    font-size: 14px
+    line-height: 19px
+    color: #CACACA
+
+.search-img
+  background: url("../../../../assets/descEvent/searchDesc.png") left center no-repeat
+  background-size: contain
+  width: 23px
+  height: 24px
+  position: absolute
+  top: 7px
+  left: 27px
+
+.input-wrap
+  padding-top: 45px

@@ -18,7 +18,7 @@
     <div class=" middle-wrap d-flex col-xl-9 col-lg-9">
       <div (click)="showAllRooms()" class="btn-middle"
            [ngClass]="btnMiddleActive === 'showAllRoom' && 'btn-middle-active'">
-        <div class="square-9-img mr-3"></div>
+        <div class="square-9-img mr-3" [ngClass]="btnMiddleActive === 'showAllRoom' ? 'square-9-img' : 'square-dis-img'"></div>
         <span>Discover</span>
       </div>
       <div (click)="showUsersRoom()" class="btn-middle"
@@ -73,7 +73,7 @@
 
             <div class="d-flex" style="width: 50%">
               <div class="nameUser pr-2">{{room?.user.nickName}}</div>
-              <div class="d-flex">
+              <div class="d-flex" style="visibility: hidden">
                 <div class="desc-rating-img mr-2"></div>
                 <span style="color: #FFD300">11</span>
               </div>
@@ -86,11 +86,14 @@
 
           <div *ngIf="i === activeRoom" class="activeCardButton" [ngClass]="i === activeRoom && 'test'">
             <div class="insid">
-              <div class="card-question">
+              <div *ngIf="(room?.privateEventsId.length > 0 || room?.publicEventsId.length > 0)" class="card-question">
                 {{forEventId?.question}}
                 <span *ngIf="!(room?.privateEventsId.length === 1 || room?.publicEventsId.length === 1)"
                       class="nameUser">(+{{room?.privateEventsId.length > 0 ? room?.privateEventsId.length - 1 : room?.publicEventsId.length - 1}}
                   events)</span>
+              </div>
+              <div *ngIf="(room?.privateEventsId.length === 0 && room?.publicEventsId.length === 0)" class="noEvents">
+                <p>No Events at the moment</p>
               </div>
               <div class="join-room">
                 <button routerLink="/room/{{room.id}}">View Room</button>

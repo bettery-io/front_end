@@ -18,7 +18,7 @@
 
 
 .lds-ripple
-  margin-top: 150px
+  padding-top: 200px
   position: relative
   width: 80px
   height: 80px
@@ -154,6 +154,7 @@
   max-width: 1920px
   min-width: 1440px
   position: relative
+  min-height: 450px
 
 .comment-head
   border-top-right-radius: 20px
@@ -170,13 +171,13 @@
   padding: 4px 16px 4px 4px
 
 .comment-wrap
-  margin: 51px auto 0 auto
+  margin: 0 auto 0 auto
   display: flex
   max-width: 1920px
 
 .search-results
   display: flex
-  padding-left: 17%
+  padding-left: 10%
   margin-bottom: 24px
   flex-direction: column
 
@@ -204,60 +205,47 @@
       padding: 5px 12px
     .whiteClass
       max-height: 600px
-
+    .bgWhite
+      border-bottom-right-radius: 20px
+      border-bottom-left-radius: 20px
     .comment-warp
       max-height: 400px
       overflow: auto
-
-    //.absolute
-    //  position: absolute
-
     .comment-warp::-webkit-scrollbar
       width: 6px
-
     .comment-warp::-webkit-scrollbar-track
       background: #f1f1f1
       border-radius: 3px
-
     .comment-warp::-webkit-scrollbar-thumb
       background: #0094FF
       border-radius: 3px
-
     .comment-warp
       padding: 0 12px
-
     .forWhite
       padding: 0 8px
-
     .arrowUp
       display: none !important
-
     .wrapCommentDown
       border-top: 0.5px solid #DDDDDD
-      padding-top: 7px
-
+      padding-top: 10px
+    .wrapCommentDown
+      padding-bottom: 15px
     .commentBoxChange:nth-last-child(n+2)
       border-bottom: 0.5px solid #DDDDDD
-
     .addCommentBox::placeholder
       font-size: 10px
       color: #0B1511
-
     .comingSoon
       color: #0b1511
-
     .commentName
       font-weight: 600
       font-size: 12px
       color: #0B1511
-
     .commentImg
       width: 20px
       height: 20px
-
     .comment
       font-size: 10px
-
     .darkSize
       width: 13px
       height: 13px
@@ -266,12 +254,13 @@
   width: 300px
   padding: 0
   position: fixed
-  right: 5%
+  //right: 15%
+  transform: translateX(430%)
 
 .to_the_top
   position: fixed
   bottom: 40px
-  right: 22%
+  right: 32%
   cursor: pointer
   & img
       width: 48px
@@ -279,9 +268,13 @@
 
 @media (max-width: 1600px)
   .main-comment
-    right: 0
-  .main-comment2
-    right: 22%
+    transform: translateX(400%)
+  .to_the_top
+    right: 26%
+
+@media (max-width: 1500px)
+  .main-comment
+    transform: translateX(370%)
 
 .dnone
   display: none

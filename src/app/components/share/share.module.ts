@@ -12,6 +12,7 @@ import { ErrorLimitModalComponent } from './error-limit-modal/error-limit-modal.
 import { QuizTemplateComponent } from './quiz-template/quiz-template.component';
 import { TimeComponent } from './quiz-template/time/time.component';
 import { QuizErrorsComponent } from './quiz-template/quiz-errors/quiz-errors.component';
+import { PreRegistrationModalComponent } from './pre-registration-modal/pre-registration-modal.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { QuizErrorsComponent } from './quiz-template/quiz-errors/quiz-errors.com
     ErrorLimitModalComponent,
     QuizTemplateComponent,
     TimeComponent,
-    QuizErrorsComponent
+    QuizErrorsComponent,
+    PreRegistrationModalComponent
   ],
   imports: [
     CommonModule,

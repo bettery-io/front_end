@@ -1,9 +1,10 @@
+<div class="main-bg">
 <div id="top" class="container containerFor1920">
     <div routerLink="/rooms" class="back">
         << Back to Rooms</div>
 
   <div class="lds-ripple" *ngIf="spinner">
-    <app-spinner-loading [desktop]="true"></app-spinner-loading>
+    <app-spinner-loading class="spinner-pos" [desktop]="true"></app-spinner-loading>
   </div>
 
             <div *ngIf="!spinner" class="room_details" [ngStyle]="infoRoomColor(roomDetails?.color)">
@@ -25,6 +26,12 @@
                 </div>
             </div>
 
+  <div class="row input-wrap">
+    <div class="col-10 main-input">
+      <div class="search-img"></div>
+      <input placeholder="Search events...." type="text">
+    </div>
+  </div>
 
             <div *ngIf="!spinner" class="container-fluid">
                 <div class="comment-wrap" style="margin-top: 51px">
@@ -58,3 +65,4 @@
 
   <div class="to_the_top" [ngClass]="scrollTop < 200 && 'dnone'"><a pageScroll href="#top"><img src="../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
     </div>
+</div>

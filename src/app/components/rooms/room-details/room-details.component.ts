@@ -76,7 +76,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   getRoomEvent(from, to) {
     let data = {
-      id: Number(this.id.id),
+      id: Number(this.id?.id),
       from: from,
       to: to
     };
@@ -190,8 +190,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   commentTopPosition() {
-    if (document.documentElement.scrollTop < 350) {
-      return { 'top': (350 - this.scrollTop) + 'px' };
+    if (document.documentElement.scrollTop < 428) {
+      return {'top': (428 - this.scrollTop) + 'px'};
     } else {
       return { 'top': 0 };
     }

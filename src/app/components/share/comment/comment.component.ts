@@ -31,6 +31,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   newCommentSub: Subscription;
   getTypingSub: Subscription;
   postSub: Subscription;
+  eventCommentSub: Subscription;
   newComment = '';
   sortComment = 'newest';
   allComments: CommentModel[];
@@ -67,6 +68,15 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.initializeSocket(this.id);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.id && changes.id.previousValue !== undefined) {
+      const id = changes['id'];
+      if (id.currentValue !== id.previousValue) {
+        this.initializeSocket(id.currentValue);
+      }
+    }
   }
 
   initializeSocket(id): void {
@@ -259,9 +269,8 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   scrollTo(target) {
-    console.log(this.mobile)
     const event = new EventEmitter<boolean>();
-    event.subscribe((targetReached) => this.finishScrollAnimation(targetReached, target));
+    this.eventCommentSub = event.subscribe((targetReached) => this.finishScrollAnimation(targetReached, target));
     if (!this.mobile) {
       this.pageScrollService.scroll({
         document: this.document,
@@ -392,14 +401,8 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     if (this.postSub) {
       this.postSub.unsubscribe();
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.id && changes.id.previousValue !== undefined) {
-      const id = changes['id'];
-      if (id.currentValue !== id.previousValue) {
-        this.initializeSocket(id.currentValue);
-      }
+    if (this.eventCommentSub) {
+      this.eventCommentSub.unsubscribe();
     }
   }
 }

@@ -67,10 +67,10 @@
             </div>
           </div>
           <div *ngIf="question.finalAnswer !== null">
-            <p class="status_text">Ended</p>
+            <p class="status_text">Ended on {{eventFinishDate(question)}}</p>
           </div>
           <div *ngIf="question.status == 'reverted'">
-            <p class="status_text">Cancelled</p>
+            <p class="status_text">Cancelled on {{eventFinishDate(question)}}</p>
           </div>
           <div style="margin-top: 34px" *ngIf="!finalAnswerGuard(question)">
             <div *ngIf="timeValidating(question)">
@@ -100,8 +100,9 @@
             <p class="lost_text2">You were</p>
             <p class="lost_amount">WRONG</p>
           </div>
-          <div>
-            <!--to you win and ern for host-->
+          <div *ngIf="question.finalAnswer !== null && this.myAnswers?.answer == question.finalAnswer && this.myAnswers?.answer != undefined && this.myAnswers?.answered">
+            <p class="winner_text">{{actionDetected(question)}}</p>
+            <p class="winner_amount" [ngStyle]="getWinnerColor(question)">{{playerAward(question)}}</p>
           </div>
         </div>
 

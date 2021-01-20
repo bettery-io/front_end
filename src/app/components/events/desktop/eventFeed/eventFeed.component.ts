@@ -21,7 +21,7 @@ export class EventFeedComponent implements OnDestroy {
   userData: any;
   storeUserSubscribe: Subscription;
   storeCoinsSubscrive: Subscription;
-  allData = [];
+  postSubsctibe: Subscription;
   parcipiantFilter = true;
   validateFilter = true;
   historyFilter = false;
@@ -42,6 +42,7 @@ export class EventFeedComponent implements OnDestroy {
     private postService: PostService,
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
+      console.log("UPDATE USER")
       if (x.length === 0) {
         this.userId = null;
         this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
@@ -58,40 +59,33 @@ export class EventFeedComponent implements OnDestroy {
     });
   }
 
-  getMultyIcon(answers, i) {
-    let index = answers.indexOf(i);
-    return index !== -1 ? true : false;
-  }
-
   getData(from, to) {
-    this.postService.post('publicEvents/get_all', { from, to }).subscribe((x) => {
-      console.log(x);
-      this.myAnswers = [];
+    this.postSubsctibe = this.postService.post('publicEvents/get_all', { from, to }).subscribe((x) => {
       this.pureData = x;
-      if (this.newQuestions.length === 0) {
+      if (from == 0) {
         this.newQuestions = this.pureData.events;
         this.commentList = this.newQuestions[this.currentComment];
-        this.getAnswers(this.newQuestions);
+        this.myAnswers = this.getAnswers(this.newQuestions);
       } else {
         this.pureData.events.forEach(el => this.newQuestions.push(el));
-        this.newQuestions = _.uniqBy(this.newQuestions, "id");
         this.commentList = this.newQuestions[this.currentComment];
-        this.getAnswers(this.newQuestions);
+        this.myAnswers = this.getAnswers(this.newQuestions);
       }
-      this.allData = this.newQuestions;
       this.spinner = false;
+    }, (err) => {
+      console.log(err);
     });
   }
 
   getAnswers(x) {
-    this.myAnswers = x.map((data) => {
+    return x.map((data) => {
       return {
         event_id: data.id,
         answer: this.findAnswer(data).answer,
         from: this.findAnswer(data).from,
         answered: this.findAnswer(data).answer != undefined ? true : false,
         amount: 0,
-        betAmount: this.findAnswer(data).amount 
+        betAmount: this.findAnswer(data).amount
       };
     });
   }
@@ -101,7 +95,7 @@ export class EventFeedComponent implements OnDestroy {
     if (findParticipiant === -1) {
       let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
       return {
-        answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined,
+        answer: findValidators != -1 ? data.validatorsAnswers[findValidators].answer : undefined,
         from: "validator",
         amount: 0
       };
@@ -162,11 +156,15 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log("NgDesctroy")
     if (this.storeUserSubscribe) {
       this.storeUserSubscribe.unsubscribe();
     }
     if (this.storeCoinsSubscrive) {
       this.storeCoinsSubscrive.unsubscribe();
+    }
+    if (this.postSubsctibe) {
+      this.postSubsctibe.unsubscribe();
     }
   }
 }

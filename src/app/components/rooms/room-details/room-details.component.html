@@ -35,7 +35,7 @@
                         <div *ngFor="let question of roomEvents; let index = index">
                             <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
                                 [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
-                                [fromComponent]="fromComponent" (callGetData)="getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo)"></quiz-template>
+                                [fromComponent]="fromComponent" (callGetData)="getRoomEvent(0, this.scrollDistanceTo)"></quiz-template>
                         </div>
                     </div>
 

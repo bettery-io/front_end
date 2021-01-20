@@ -1,11 +1,11 @@
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {PostService} from '../../../services/post.service';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../app.state';
-import {Answer} from '../../../models/Answer.model';
-import {User} from '../../../models/User.model';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { PostService } from '../../../services/post.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { Answer } from '../../../models/Answer.model';
+import { User } from '../../../models/User.model';
 import _ from 'lodash';
 import set = Reflect.set;
 
@@ -84,37 +84,35 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
       this.commentList = value.events[0];
 
-      if (this.allData.length === 0) {
+      if (from == 0) {
         this.roomEvents = value.events;
-        this.getAnswers(value.events);
+        this.myAnswers = this.getAnswers(value.events);
       } else {
         value.events.forEach(el => this.roomEvents.push(el));
-        this.roomEvents = _.uniqBy(this.roomEvents, "id");
-        this.getAnswers(this.roomEvents);
+        this.myAnswers = this.getAnswers(this.roomEvents);
       }
-      this.allData = this.roomEvents;  
-      this.spinner = false;    
+      this.allData = this.roomEvents;
+      this.spinner = false;
     }, (err) => {
       console.log(err);
     });
   }
 
   getAnswers(x) {
-    this.myAnswers = x.map((data) => {
+    return x.map((data) => {
       return {
         event_id: data.id,
         answer: this.findAnswer(data).answer,
         from: this.findAnswer(data).from,
         answered: this.findAnswer(data).answer != undefined ? true : false,
         amount: 0,
-        betAmount: this.findAnswer(data).amount 
+        betAmount: this.findAnswer(data).amount
       };
     });
-    console.log(this.myAnswers)
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.userId});
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
     if (findParticipiant === -1) {
       let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
       return {
@@ -133,7 +131,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
 
   infoRoomColor(value) {
-    return {'background': value};
+    return { 'background': value };
   }
 
   commentById($event) {
@@ -147,7 +145,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   getCommentRoomColor(color) {
-    return {'background': color};
+    return { 'background': color };
   }
 
   onScrollQuizTemplate() {
@@ -192,9 +190,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   commentTopPosition() {
     if (document.documentElement.scrollTop < 350) {
-      return {'top': (350 - this.scrollTop) + 'px'};
+      return { 'top': (350 - this.scrollTop) + 'px' };
     } else {
-      return {'top': 0};
+      return { 'top': 0 };
     }
   }
 

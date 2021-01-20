@@ -79,30 +79,112 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let winnerPool = 0;
     let totalPart = this.question.parcipiantAnswers;
     let finalAnswer = this.question.finalAnswer
-    for (let i = 0; i < totalPart.length; i++) {
-      // get loser pool
-      if (totalPart[i].answer != finalAnswer) {
-        loserPool += totalPart[i].amount
+    if (totalPart != undefined) {
+      for (let i = 0; i < totalPart.length; i++) {
+        // get loser pool
+        if (totalPart[i].answer != finalAnswer) {
+          loserPool += totalPart[i].amount
+        }
+        // get winner pool
+        if (totalPart[i].answer == finalAnswer) {
+          winnerPool += totalPart[i].amount
+        }
+        // fing biggest win
+        if (totalPart[i].amount > biggest && totalPart[i].answer == finalAnswer) {
+          biggest = totalPart[i].amount;
+        }
       }
-      // get winner pool
-      if (totalPart[i].answer == finalAnswer) {
-        winnerPool += totalPart[i].amount
-      }
-      // fing biggest win
-      if (totalPart[i].amount > biggest && totalPart[i].answer == finalAnswer) {
-        biggest = totalPart[i].amount;
-      }
+      let percent = this.getPercent(loserPool, 90)
+      return (biggest + ((percent * biggest) / winnerPool)).toFixed(2)
+    } else {
+      return 0;
     }
-    let percent = this.getPercent(loserPool, 90)
-    return (biggest + ((percent * biggest) / winnerPool)).toFixed(2)
+
+  }
+
+  letsCalcalteWinner(from, amount) {
+    let loserPool = 0;
+    let winnerPool = 0;
+    let pool = 0;
+    if (this.question.parcipiantAnswers != undefined) {
+      this.question.parcipiantAnswers.forEach(x => {
+
+        pool = pool + Number(x.amount);
+
+        if (x.answer != this.question.finalAnswer) {
+          loserPool = loserPool + Number(x.amount);
+        }
+      });
+    }
+    winnerPool = pool - loserPool;
+    if (from == "validator") {
+      let validators = 0
+      for (let i = 0; i < this.question.validatorsAnswers.length; i++) {
+        if (this.question.validatorsAnswers[i].answer == this.question.finalAnswer) {
+          validators++;
+        }
+      }
+      return (this.getPercent(loserPool, 5) / validators).toFixed(2)
+    } else if (from == "player") {
+      return (amount + ((this.getPercent(loserPool, 90) * amount) / winnerPool)).toFixed(2)
+    } else if (from == "host") {
+      return this.getPercent(loserPool, 3).toFixed(2)
+    }
+  }
+
+  actionDetected(data) {
+    if (this.userData != undefined) {
+      if (data.host.id === this.userData._id) {
+        return "You earned";
+      } else if (this.myAnswers.from == "validator") {
+        return "You earned"
+      } else {
+        return "You won"
+      }
+    } else {
+      return;
+    }
+  }
+
+  playerAward(data) {
+    if (this.userData != undefined) {
+      if (data.host.id === this.userData._id) {
+        return (Number(this.letsCalcalteWinner("player", this.myAnswers.betAmount)) + Number(this.letsCalcalteWinner("host", 0))) + " BET"
+      } else if (this.myAnswers.from == "validator") {
+        return this.letsCalcalteWinner("validator", 0) + " BET"
+      } else {
+        return this.letsCalcalteWinner("player", this.myAnswers.betAmount) + " BET"
+      }
+    } else {
+      return;
+    }
+  }
+
+  getWinnerColor(data) {
+    if (this.userData != undefined) {
+      if (data.host.id === this.userData._id) {
+        return { "color": "#F7971E" }
+      } else if (this.myAnswers.from == "validator") {
+        return { "color": "#A134FF" }
+      } else {
+        return { "color": "#10C9C9" }
+      }
+    } else {
+      return;
+    }
   }
 
   getPool(data) {
     let pool = 0;
-    data.parcipiantAnswers.forEach(x => {
-      pool = pool + Number(x.amount);
-    });
-    return pool;
+    if (data.parcipiantAnswers !== undefined) {
+      data.parcipiantAnswers.forEach(x => {
+        pool = pool + Number(x.amount);
+      });
+      return pool;
+    } else {
+      return 0;
+    }
+
   }
 
   getPercent(from, percent) {
@@ -417,23 +499,15 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   }
 
   cardColorBackGround(data) {
-    if (this.userData != undefined) {
-      if (data.host.id === this.userData._id) {
-        return { "background": "rgb(255, 248, 206)" }
-      } else {
-        return this.backgroundColor(data);
-      }
-    } else {
-      return this.backgroundColor(data);
-    }
-  }
-
-  backgroundColor(data) {
     if (data.finalAnswer !== null) {
-      if (data.finalAnswer != this.myAnswers.answer && this.myAnswers.answer != undefined) {
-        return { "background": "#FFEDED" }
+      if (this.userData != undefined) {
+        if (data.host.id === this.userData._id) {
+          return { "background": "rgb(255, 248, 206)" }
+        } else {
+          return this.backgroundColorEventFinish(data);
+        }
       } else {
-        return { "background": "#F4F4F4" }
+        return this.backgroundColorEventFinish(data);
       }
     } else if (data.status == "reverted") {
       return { "background": "#F4F4F4" }
@@ -442,23 +516,17 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     }
   }
 
-  deleteFromDb(id) {
-    let data = {
-      id: id
-    };
-    this.postService.post('delete_event', data)
-      .subscribe(() => {
-        this.callGetData.next();
-      },
-        (err) => {
-          console.log(err);
-          let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
-          modalRef.componentInstance.errType = 'error';
-          modalRef.componentInstance.title = "Unknown Error";
-          modalRef.componentInstance.customMessage = String(err);
-          modalRef.componentInstance.description = "Report this unknown error to get 1 BET token!"
-          modalRef.componentInstance.nameButton = "report error";
-        });
+  backgroundColorEventFinish(data) {
+    if (data.finalAnswer != this.myAnswers.answer && this.myAnswers.answer != undefined) {
+      return { "background": "#FFEDED" }
+    } else {
+      return { "background": "#F4F4F4" }
+    }
+  }
+
+  eventFinishDate(data) {
+    let d = new Date(Number(data.eventEnd) * 1000)
+    return `${d.getDate()}/${Number(d.getMonth()) + 1}/${d.getFullYear()}`
   }
 
   colorForRoom(color) {

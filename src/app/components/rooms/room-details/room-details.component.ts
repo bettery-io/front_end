@@ -141,7 +141,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         return o.id == $event;
       });
       this.commentList = newCommentList;
-      console.log(this.commentList);
     }
   }
 

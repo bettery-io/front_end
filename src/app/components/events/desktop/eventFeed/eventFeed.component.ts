@@ -42,7 +42,6 @@ export class EventFeedComponent implements OnDestroy {
     private postService: PostService,
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
-      console.log("UPDATE USER")
       if (x.length === 0) {
         this.userId = null;
         this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
@@ -60,12 +59,11 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   getData(from, to) {
-    this.postSubsctibe = this.postService.post('publicEvents/get_all', { from, to }).subscribe((x) => {
-      this.pureData = x;
-
+    this.postSubsctibe = this.postService.post('publicEvents/get_all', { from, to }).subscribe((x: any) => {
       if (this.pureData.length == 0) {
-        this.commentList = this.newQuestions[this.currentComment];
+        this.commentList = x.events[this.currentComment];
       }
+      this.pureData = x;
 
       if (from == 0) {
         this.newQuestions = this.pureData.events;
@@ -159,7 +157,6 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log("NgDesctroy")
     if (this.storeUserSubscribe) {
       this.storeUserSubscribe.unsubscribe();
     }

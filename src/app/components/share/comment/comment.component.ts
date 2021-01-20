@@ -124,7 +124,6 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
       if (!this.isReply.isReply) {
         if (this.id && this.userData?._id && this.newComment && this.newComment.trim().length >= 1) {
           this.socketService.send(this.id, this.userData._id, this.newComment);
-          console.log('comment send');
         }
         this.newComment = '';
       }
@@ -138,7 +137,6 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
         if (comments.trim().length >= 1) {
           this.socketService.newReply(this.id, this.userData._id, this.isReply.commentId, comments);
           this.newComment = '';
-          console.log('reply send');
         }
       }
       const el = document.getElementById('textarea');

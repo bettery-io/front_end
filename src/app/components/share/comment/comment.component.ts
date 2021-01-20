@@ -1,21 +1,26 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {CommentSocketService} from './comment-service/comment-socket.service';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { CommentSocketService } from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import web3Obj from '../../../helpers/torus';
 import * as UserActions from '../../../actions/user.actions';
-import {PostService} from '../../../services/post.service';
-import {Store} from '@ngrx/store';
+import { PostService } from '../../../services/post.service';
+import { Store } from '@ngrx/store';
 
-import {CommentModel} from './model/сomment.model';
-import {User} from '../../../models/User.model';
+import { CommentModel } from './model/сomment.model';
+import { User } from '../../../models/User.model';
+
+import { Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { PageScrollService } from 'ngx-page-scroll-core';
 
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.sass']
+  styleUrls: ['./comment.component.sass'],
 })
+
 export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input() theme: string;
   @Input('id') id: any;
@@ -46,17 +51,29 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
 
   comingSoon: boolean;
   spinnerLoading: boolean;
+  @ViewChild('container')
+  private container: ElementRef;
 
   constructor(
     private socketService: CommentSocketService,
     private postService: PostService,
-    private store: Store<any>
+    private store: Store<any>,
+    private pageScrollService: PageScrollService,
+    @Inject(DOCUMENT) private document: any
   ) {
     this.showLength = this.allComments?.length < 10 ? this.allComments?.length : 10;
   }
 
   ngOnInit(): void {
     this.initializeSocket(this.id);
+  }
+
+  scrollTo(target) {
+    this.pageScrollService.scroll({
+      document: this.document,
+      scrollTarget: "#" + target,
+      scrollViews: [this.container.nativeElement]
+    });
   }
 
   initializeSocket(id): void {

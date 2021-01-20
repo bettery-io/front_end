@@ -74,6 +74,7 @@ export class EventFeedComponent implements OnDestroy {
         this.getAnswers(this.newQuestions);
       } else {
         this.pureData.events.forEach(el => this.newQuestions.push(el));
+        this.newQuestions = _.uniqBy(this.newQuestions, "id");
         this.commentList = this.newQuestions[this.currentComment];
         this.getAnswers(this.newQuestions);
       }

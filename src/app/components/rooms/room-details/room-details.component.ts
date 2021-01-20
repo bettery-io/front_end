@@ -89,6 +89,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.getAnswers(value.events);
       } else {
         value.events.forEach(el => this.roomEvents.push(el));
+        this.roomEvents = _.uniqBy(this.roomEvents, "id");
         this.getAnswers(this.roomEvents);
       }
       this.allData = this.roomEvents;  

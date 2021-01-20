@@ -55,11 +55,58 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
         this.allUserData = this.userData;
       }
     }
-    console.log(this.myAnswers);
   }
 
   makeAnswer(i) {
     this.myAnswers.answer = i;
+  }
+
+  avgBet(q) {
+    let amount = 0;
+    if (q.parcipiantAnswers == undefined) {
+      return amount
+    } else {
+      q.parcipiantAnswers.forEach(e => {
+        amount = amount + e.amount;
+      });
+    }
+    return amount
+  }
+
+  biggestWin() {
+    let loserPool = 0;
+    let biggest = 0;
+    let winnerPool = 0;
+    let totalPart = this.question.parcipiantAnswers;
+    let finalAnswer = this.question.finalAnswer
+    for (let i = 0; i < totalPart.length; i++) {
+      // get loser pool
+      if (totalPart[i].answer != finalAnswer) {
+        loserPool += totalPart[i].amount
+      }
+      // get winner pool
+      if (totalPart[i].answer == finalAnswer) {
+        winnerPool += totalPart[i].amount
+      }
+      // fing biggest win
+      if (totalPart[i].amount > biggest && totalPart[i].answer == finalAnswer) {
+        biggest = totalPart[i].amount;
+      }
+    }
+    let percent = this.getPercent(loserPool, 90)
+    return (biggest + ((percent * biggest) / winnerPool)).toFixed(2)
+  }
+
+  getPool(data) {
+    let pool = 0;
+    data.parcipiantAnswers.forEach(x => {
+      pool = pool + Number(x.amount);
+    });
+    return pool;
+  }
+
+  getPercent(from, percent) {
+    return (from * percent) / 100;
   }
 
 
@@ -371,8 +418,24 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
   }
 
   cardColorBackGround(data) {
+    if (this.userData != undefined) {
+      if (data.host.id === this.userData._id) {
+        return { "background": "rgb(255, 248, 206)" }
+      } else {
+        return this.backgroundColor(data);
+      }
+    } else {
+      return this.backgroundColor(data);
+    }
+  }
+
+  backgroundColor(data) {
     if (data.finalAnswer !== null) {
-      return { "background": "#E6FFF2" } // TODO
+      if (data.finalAnswer != this.myAnswers.answer && this.myAnswers.answer != undefined) {
+        return { "background": "#FFEDED" }
+      } else {
+        return { "background": "#F4F4F4" }
+      }
     } else if (data.status == "reverted") {
       return { "background": "#F4F4F4" }
     } else {

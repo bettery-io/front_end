@@ -29,7 +29,7 @@ export class EventFeedComponent implements OnDestroy {
   commentList;
   newCommentList;
 
-  pureData: any;
+  pureData: any = [];
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
   newQuestions = [];
@@ -62,13 +62,16 @@ export class EventFeedComponent implements OnDestroy {
   getData(from, to) {
     this.postSubsctibe = this.postService.post('publicEvents/get_all', { from, to }).subscribe((x) => {
       this.pureData = x;
+
+      if (this.pureData.length == 0) {
+        this.commentList = this.newQuestions[this.currentComment];
+      }
+
       if (from == 0) {
         this.newQuestions = this.pureData.events;
-        this.commentList = this.newQuestions[this.currentComment];
         this.myAnswers = this.getAnswers(this.newQuestions);
       } else {
         this.pureData.events.forEach(el => this.newQuestions.push(el));
-        this.commentList = this.newQuestions[this.currentComment];
         this.myAnswers = this.getAnswers(this.newQuestions);
       }
       this.spinner = false;

@@ -82,8 +82,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     };
 
     this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
-      this.commentList = value.events[0];
-
+      if (this.roomEvents.length == 0) {
+        this.commentList = value.events[0];
+      }
       if (from == 0) {
         this.roomEvents = value.events;
         this.myAnswers = this.getAnswers(value.events);

@@ -1,11 +1,11 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.state';
-import { Answer } from '../../../../models/Answer.model';
-import { User } from '../../../../models/User.model';
+import {Component, HostListener, OnDestroy} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../app.state';
+import {Answer} from '../../../../models/Answer.model';
+import {User} from '../../../../models/User.model';
 import _ from 'lodash';
-import { PostService } from '../../../../services/post.service';
-import { Subscription } from 'rxjs';
+import {PostService} from '../../../../services/post.service';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 })
 export class EventFeedComponent implements OnDestroy {
   public spinner: boolean = true;
+  spinnerForComment: boolean;
   myAnswers: Answer[] = [];
   userId: number = null;
   coinInfo = null;
@@ -36,6 +37,7 @@ export class EventFeedComponent implements OnDestroy {
 
   currentComment = 0;
   scrollTop = 0;
+  searchWord = '';
 
   constructor(
     private store: Store<AppState>,
@@ -44,11 +46,11 @@ export class EventFeedComponent implements OnDestroy {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
         this.userId = null;
-        this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
+        this.getData(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
       } else {
         this.userId = x[0]._id;
         this.userData = x[0];
-        this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
+        this.getData(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
       }
     });
     this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
@@ -58,8 +60,15 @@ export class EventFeedComponent implements OnDestroy {
     });
   }
 
-  getData(from, to) {
-    this.postSubsctibe = this.postService.post('publicEvents/get_all', { from, to }).subscribe((x: any) => {
+  getData(from, to, search) {
+    let param;
+    if (search.length >= 3) {
+      param = search;
+    } else {
+      param = '';
+    }
+
+    this.postSubsctibe = this.postService.post('publicEvents/get_all', {from, to, search: param}).subscribe((x: any) => {
       if (this.pureData.length == 0) {
         this.commentList = x.events[this.currentComment];
       }
@@ -72,6 +81,7 @@ export class EventFeedComponent implements OnDestroy {
         this.pureData.events.forEach(el => this.newQuestions.push(el));
         this.myAnswers = this.getAnswers(this.newQuestions);
       }
+      this.commentById(this.newQuestions[0].id);
       this.spinner = false;
     }, (err) => {
       console.log(err);
@@ -92,20 +102,20 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.userId});
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
+      let findValidators = _.findIndex(data.validatorsAnswers, {'userId': this.userId});
       return {
         answer: findValidators != -1 ? data.validatorsAnswers[findValidators].answer : undefined,
-        from: "validator",
+        from: 'validator',
         amount: 0
       };
     } else {
       return {
         answer: data.parcipiantAnswers[findParticipiant].answer,
-        from: "participant",
+        from: 'participant',
         amount: data.parcipiantAnswers[findParticipiant].amount
-      }
+      };
     }
   }
 
@@ -130,9 +140,9 @@ export class EventFeedComponent implements OnDestroy {
 
   commentTopPosition() {
     if (document.documentElement.scrollTop < 300) {
-      return { 'top': (300 - this.scrollTop) + 'px' };
+      return {'top': (300 - this.scrollTop) + 'px'};
     } else {
-      return { 'top': 0 };
+      return {'top': 0};
     }
   }
 
@@ -146,12 +156,12 @@ export class EventFeedComponent implements OnDestroy {
       this.scrollDistanceFrom = this.scrollDistanceFrom + 5;
       this.scrollDistanceTo = this.scrollDistanceTo + 5;
 
-      this.getData(this.scrollDistanceFrom, this.scrollDistanceTo);
+      this.getData(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
     } else if (this.pureData?.amount / 5 !== 0 && (this.scrollDistanceTo + this.pureData?.amount % 5 <= this.pureData?.amount)) {
       this.scrollDistanceFrom = this.scrollDistanceTo + this.pureData?.amount % 5;
       this.scrollDistanceTo = this.scrollDistanceTo + this.pureData?.amount % 5;
 
-      this.getData(this.scrollDistanceFrom, this.scrollDistanceTo + this.pureData?.amount % 5);
+      this.getData(this.scrollDistanceFrom, this.scrollDistanceTo + this.pureData?.amount % 5, this.searchWord);
     } else {
     }
   }
@@ -166,5 +176,19 @@ export class EventFeedComponent implements OnDestroy {
     if (this.postSubsctibe) {
       this.postSubsctibe.unsubscribe();
     }
+  }
+
+  letsFindNewQuestion($event: string) {
+    this.searchWord = $event;
+    if (this.searchWord.length >= 3) {
+      this.getData(0, 5, this.searchWord);
+      console.log(typeof $event);
+    } else {
+      this.getData(0, 5, '');
+    }
+  }
+
+  commentsSpinner($event: boolean) {
+    this.spinnerForComment = $event;
   }
 }

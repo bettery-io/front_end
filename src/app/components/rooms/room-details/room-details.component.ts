@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { PostService } from '../../../services/post.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
-import { Answer } from '../../../models/Answer.model';
-import { User } from '../../../models/User.model';
+import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {PostService} from '../../../services/post.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../app.state';
+import {Answer} from '../../../models/Answer.model';
+import {User} from '../../../models/User.model';
 import _ from 'lodash';
-import set = Reflect.set;
+
 
 
 @Component({
@@ -36,6 +36,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   allData: any = [];
   spinner = true;
   scrollTop = 0;
+  searchWord = '';
+  timeout;
+  spinnerForComment: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,7 +52,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.userId = x[0]._id;
         this.userData = x[0];
         this.allData = [];
-        this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo)
+        this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
       }
     });
     this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
@@ -70,15 +73,22 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       }, (err) => {
         console.log(err);
       });
-      this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo);
+      this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
     });
   }
 
-  getRoomEvent(from, to) {
+  getRoomEvent(from, to, search) {
+    let param;
+    if (search.length >= 3) {
+      param = search;
+    } else {
+      param = '';
+    }
     let data = {
       id: Number(this.id?.id),
       from: from,
-      to: to
+      to: to,
+      search: param
     };
 
     this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
@@ -94,6 +104,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       }
       this.allData = this.roomEvents;
       this.spinner = false;
+      this.commentById(this.roomEvents[0].id);
     }, (err) => {
       console.log(err);
     });
@@ -113,26 +124,26 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.userId});
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
+      let findValidators = _.findIndex(data.validatorsAnswers, {'userId': this.userId});
       return {
         answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined,
-        from: "validator",
+        from: 'validator',
         amount: 0
       };
     } else {
       return {
         answer: data.parcipiantAnswers[findParticipiant].answer,
-        from: "participant",
+        from: 'participant',
         amount: data.parcipiantAnswers[findParticipiant].amount
-      }
+      };
     }
   }
 
 
   infoRoomColor(value) {
-    return { 'background': value };
+    return {'background': value};
   }
 
   commentById($event) {
@@ -145,7 +156,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   getCommentRoomColor(color) {
-    return { 'background': color };
+    return {'background': color};
   }
 
   onScrollQuizTemplate() {
@@ -156,10 +167,10 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.scrollDistanceTo = this.allData?.amount;
         if (!this.bottom) {
           this.bottom = true;
-          this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo);
+          this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
         }
       } else {
-        this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo);
+        this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
       }
     }
 
@@ -192,8 +203,26 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     if (document.documentElement.scrollTop < 428) {
       return {'top': (428 - this.scrollTop) + 'px'};
     } else {
-      return { 'top': 0 };
+      return {'top': 0};
     }
   }
 
+letsFindEvent() {
+    if (this.timeout !== undefined) {
+      clearTimeout(this.timeout);
+    }
+
+    this.timeout = setTimeout(() => {
+
+      if (this.searchWord.length >= 3) {
+        this.getRoomEvent(0, 5, this.searchWord);
+      } else {
+        this.getRoomEvent(0, 5, '');
+      }
+    }, 300);
+  }
+
+  commentsSpinner($event: boolean) {
+    this.spinnerForComment = $event;
+  }
 }

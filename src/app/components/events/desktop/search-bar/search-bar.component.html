@@ -6,8 +6,8 @@
         <img style="width: 50px; height: 38px" class="input-group-text" id="basic-addon1" alt="src"
              src="../../../../../assets/descEvent/searchDesc.png">
       </div>
-      <input type="text" class="form-control" placeholder="What are you interested in?" aria-label="Username"
-             aria-describedby="basic-addon1">
+      <input type="text" class="form-control" name="searchWord" [(ngModel)]="searchWord" placeholder="What are you interested in?" aria-label="Username"
+             aria-describedby="basic-addon1" (keyup)="letsFindEvent()">
     </div>
     <div class="col-12 col-lg-6 d-flex" style="height: 100%; position: relative">
       <div class="btn-item btn-text mr-3 social-img">Social</div>
@@ -22,16 +22,16 @@
 
   <div class="row mt-3">
     <div class="col-6 d-flex">
-      <div class="text-disactive text-active">
+      <div (click)="changesActiveBtn('trending')" class="text-disactive" [ngClass]="active === 'trending' && 'text-active'">
         <span>Trending</span>
       </div>
-      <div class="text-disactive">
+      <div (click)="changesActiveBtn('controversial')" class="text-disactive" [ngClass]="active === 'controversial' && 'text-active'">
         Controversial
       </div>
-      <div class="text-disactive">
+      <div (click)="changesActiveBtn('following')" class="text-disactive" [ngClass]="active === 'following' && 'text-active'">
         Following
       </div>
-      <div class="text-disactive d-flex">
+      <div (click)="changesActiveBtn('pro')" class="text-disactive d-flex" [ngClass]="active === 'pro' && 'text-active'">
         <div class="baks-img"></div>
         <span class="ml-2">Pro</span>
       </div>

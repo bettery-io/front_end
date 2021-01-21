@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-search-bar',
@@ -6,10 +6,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-bar.component.sass']
 })
 export class SearchBarComponent implements OnInit {
+  active = 'trending';
+  searchWord = '';
+  timeout;
+  @Output() searchWordEmit = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
+  changesActiveBtn(str): void {
+    this.active = str;
+  }
+
+  letsFindEvent() {
+    if (this.timeout !== undefined) {
+      clearTimeout(this.timeout);
+    }
+
+    this.timeout = setTimeout(() => {
+      this.searchWordEmit.emit(this.searchWord);
+    }, 300);
+  }
 }

@@ -180,6 +180,7 @@
   padding-left: 10%
   margin-bottom: 24px
   flex-direction: column
+  width: 78%
 
 .comment-box
   background: #FFFFFF
@@ -255,24 +256,54 @@
   padding: 0
   position: fixed
   //right: 15%
-  transform: translateX(430%)
+  transform: translateX(490%)
 
 .to_the_top
   position: fixed
   bottom: 40px
-  right: 32%
+  right: 300px
   cursor: pointer
   & img
       width: 48px
       height: 54px
 
+
+@media (max-width: 1880px)
+  .main-comment
+    transform: translateX(479%)
+
+@media (max-width: 1850px)
+  .main-comment
+    transform: translateX(474%)
+
+@media (max-width: 1750px)
+  .main-comment
+    transform: translateX(450%)
+
+//@media (max-width: 1630px)
+//  .main-comment
+//    transform: translateX(450%)
+
+@media (max-width: 1680px)
+  .main-comment
+    transform: translateX(425%)
+    //transform: translateX(440%)
+
 @media (max-width: 1600px)
   .main-comment
-    transform: translateX(400%)
+    transform: translateX(410%)
   .to_the_top
-    right: 26%
+    right: 230px
+
+@media (max-width: 1570px)
+  .main-comment
+    transform: translateX(397%)
 
 @media (max-width: 1500px)
+  .main-comment
+    transform: translateX(380%)
+
+@media (max-width: 1460px)
   .main-comment
     transform: translateX(370%)
 

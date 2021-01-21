@@ -172,7 +172,7 @@
 .to_the_top
   position: fixed
   bottom: 40px
-  right: 32%
+  right: 430px
   cursor: pointer
   & img
     width: 48px
@@ -185,17 +185,21 @@
   //right: 14%
   transform: translateX(376%)
 
-@media (max-width: 1600px)
-  //.main-comment
-  //  right: 4%
-  //.main-comment2
-  //  right: 22%
+@media (max-width: 1800px)
   .to_the_top
-    right: 26%
+    right: 350px
+
+@media (max-width: 1600px)
   .containerFor1920
     max-width: 1240px
   .main-comment
-    transform: translateX(311%)
+    transform: translateX(323%)
+  .room_details
+    width: 103%
+
+@media (max-width: 1550px)
+  .to_the_top
+    right: 230px
 
 .dnone
   display: none
@@ -243,3 +247,14 @@
 
 .input-wrap
   padding-top: 45px
+
+.search-results
+  width: 81%
+
+@media (max-width: 1640px)
+  .search-results
+    width: 78%
+
+@media (max-width: 1800px)
+  .search-results
+    width: 82%

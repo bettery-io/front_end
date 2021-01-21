@@ -1,10 +1,13 @@
 <div class="main-bg">
 <div id="top" class="container containerFor1920">
-    <div routerLink="/rooms" class="back">
+    <div *ngIf="!spinner" routerLink="/rooms" class="back">
         << Back to Rooms</div>
 
   <div class="lds-ripple" *ngIf="spinner">
     <app-spinner-loading class="spinner-pos" [desktop]="true"></app-spinner-loading>
+  </div>
+  <div *ngIf="spinnerForComment">
+    <app-spinner-loading></app-spinner-loading>
   </div>
 
             <div *ngIf="!spinner" class="room_details" [ngStyle]="infoRoomColor(roomDetails?.color)">
@@ -26,10 +29,10 @@
                 </div>
             </div>
 
-  <div class="row input-wrap">
+  <div *ngIf="!spinner" class="row input-wrap">
     <div class="col-10 main-input">
       <div class="search-img"></div>
-      <input placeholder="Search events...." type="text">
+      <input (keyup)="letsFindEvent()" [(ngModel)]="searchWord" name="searchWord" placeholder="Search events...." type="text">
     </div>
   </div>
 
@@ -55,7 +58,7 @@
                                     <span>{{commentList?.question}}</span>
                                 </div>
                             </div>
-                            <app-comment [mobile]="false" [showAuthButton]="userData === undefined" class="test" *ngIf="commentList" [theme]="'white'" [userData]= userData
+                            <app-comment (spinnerEmmit)="commentsSpinner($event)" [mobile]="false" [showAuthButton]="userData === undefined" class="test" *ngIf="commentList" [theme]="'white'" [userData]= userData
                                 [id]="commentList?.id"></app-comment>
                         </div>
                     </div>

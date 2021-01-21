@@ -250,7 +250,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   forLetsFindRoom(arr) {
-    if (this.searchWord && this.searchWord.length > 3) {
+    if (this.searchWord && this.searchWord.length >= 3) {
       arr = _.filter(this.allRooms, o => {
         return o.name.toLowerCase().includes(this.searchWord.toLowerCase());
       });

@@ -1,19 +1,19 @@
-import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { CommentSocketService } from './comment-service/comment-socket.service';
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {CommentSocketService} from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 import web3Obj from '../../../helpers/torus';
 import * as UserActions from '../../../actions/user.actions';
-import { PostService } from '../../../services/post.service';
-import { Store } from '@ngrx/store';
+import {PostService} from '../../../services/post.service';
+import {Store} from '@ngrx/store';
 
-import { CommentModel } from './model/сomment.model';
-import { User } from '../../../models/User.model';
+import {CommentModel} from './model/сomment.model';
+import {User} from '../../../models/User.model';
 
-import { Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { PageScrollService } from 'ngx-page-scroll-core';
-import { EventEmitter } from '@angular/core';
+import {Inject} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {PageScrollService} from 'ngx-page-scroll-core';
+import {EventEmitter} from '@angular/core';
 
 
 @Component({
@@ -28,6 +28,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input() userData: User;
   @Input() mobile: boolean;
   @Input() showAuthButton = false;
+  @Output() spinnerEmmit = new EventEmitter<boolean>();
   newCommentSub: Subscription;
   getTypingSub: Subscription;
   postSub: Subscription;
@@ -272,7 +273,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.mobile) {
       this.pageScrollService.scroll({
         document: this.document,
-        scrollTarget: "#" + target,
+        scrollTarget: '#' + target,
         scrollViews: [this.container.nativeElement],
         scrollFinishListener: event,
         scrollOffset: 110
@@ -280,7 +281,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.pageScrollService.scroll({
         document: this.document,
-        scrollTarget: "#" + target,
+        scrollTarget: '#' + target,
         scrollFinishListener: event,
       });
     }
@@ -311,12 +312,16 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   async loginWithTorus() {
     if (!this.userData) {
       try {
-        this.spinnerLoading = true;
+        if (this.mobile) {
+          this.spinnerLoading = true;
+        }
         await web3Obj.initialize();
         await this.setTorusInfoToDB();
+        this.spinnerEmmit.emit(true);
         return true;
       } catch (error) {
         this.spinnerLoading = false;
+        this.spinnerEmmit.emit(false);
         await web3Obj.torus.cleanUp();
         console.error(error);
         return false;
@@ -342,6 +347,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe(
         (x: any) => {
           this.spinnerLoading = false;
+          this.spinnerEmmit.emit(false);
           this.addUser(
             x.email,
             x.nickName,

@@ -10,6 +10,10 @@
   </div>
 
   <div #container *ngIf="!comingSoon" class="comment-warp">
+    <div *ngIf="allComments?.length == 0" class="commentBox noComments">
+      <h4 [ngClass]="!checkTheme() && 'colorWhite'">No comments yet.</h4>
+      <p [ngClass]="!checkTheme() && 'colorWhite'"> Leave a comment, get likes, and earn big!</p>
+    </div>
     <div id="{{comment?.id}}" class="commentBox" [ngClass]="allComments?.length <= showLength && 'commentBoxChange'"
       *ngFor="let comment of showOnScreen">
       <div class="commentHeader">
@@ -85,7 +89,7 @@
 
   <div class="forWhite">
 
-    <div id="sendBox" class="sendCommentBox" *ngIf="!mobile && !showAuthButton">
+    <div id="sendBox" class="sendCommentBox" *ngIf="!showAuthButton">
       <textarea id="textarea" (keyup)="typingEffect()" [(ngModel)]="newComment" class="addCommentBox"
         [ngClass]="checkTheme() && 'addCommentBoxWhite'" type="text" name="newComment"
         placeholder="Add a comment..."></textarea>

@@ -42,14 +42,14 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RegistrationComponent,
-    HomeComponent,
-    ErcCoinSaleComponent,
-    NumericDirective,
-    LandingFormComponent,
-  ],
+    declarations: [
+        AppComponent,
+        RegistrationComponent,
+        HomeComponent,
+        ErcCoinSaleComponent,
+        NumericDirective,
+        LandingFormComponent,
+    ],
     imports: [
         SwiperModule,
         ShareModule,
@@ -74,7 +74,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         RouterModule.forRoot([
             {path: '', component: HomeComponent},
             {path: 'tokensale', component: ErcCoinSaleComponent}
-        ], { scrollPositionRestoration: 'top'}),
+        ], {scrollPositionRestoration: 'top'}),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -87,13 +87,13 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         NavigationModule,
         RoomModule
     ],
-  providers: [
-    PostService,
-    GetService,
-    { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF' }
-  ],
-  bootstrap: [
-    AppComponent
-  ]
+    providers: [
+        PostService,
+        GetService,
+        {provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lf7m88ZAAAAAPQIjM2Wn9uJhi8QNjt26chDnnlF'}
+    ],
+    bootstrap: [
+        AppComponent
+    ]
 })
 export class AppModule { }

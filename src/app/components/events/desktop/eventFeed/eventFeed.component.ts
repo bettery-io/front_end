@@ -38,6 +38,7 @@ export class EventFeedComponent implements OnDestroy {
   currentComment = 0;
   scrollTop = 0;
   searchWord = '';
+  commentResetFlag: boolean;
 
   constructor(
     private store: Store<AppState>,
@@ -81,7 +82,10 @@ export class EventFeedComponent implements OnDestroy {
         this.pureData.events.forEach(el => this.newQuestions.push(el));
         this.myAnswers = this.getAnswers(this.newQuestions);
       }
-      this.commentById(this.newQuestions[0].id);
+      if (this.commentResetFlag && this.newQuestions.length > 0) {
+        this.commentById(this.newQuestions[0].id);
+        this.commentResetFlag = false;
+      }
       this.spinner = false;
     }, (err) => {
       console.log(err);
@@ -182,9 +186,11 @@ export class EventFeedComponent implements OnDestroy {
     this.searchWord = $event;
     if (this.searchWord.length >= 3) {
       this.getData(0, 5, this.searchWord);
-      console.log(typeof $event);
+      this.commentResetFlag = true;
+
     } else {
       this.getData(0, 5, '');
+      this.commentResetFlag = true;
     }
   }
 

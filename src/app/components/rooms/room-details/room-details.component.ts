@@ -39,6 +39,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   searchWord = '';
   timeout;
   spinnerForComment: boolean;
+  commentResetFlag: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -103,8 +104,11 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.myAnswers = this.getAnswers(this.roomEvents);
       }
       this.allData = this.roomEvents;
+      if (this.commentResetFlag && this.roomEvents.length > 0) {
+        this.commentById(this.roomEvents[0].id);
+        this.commentResetFlag = false;
+      }
       this.spinner = false;
-      this.commentById(this.roomEvents[0].id);
     }, (err) => {
       console.log(err);
     });
@@ -216,8 +220,10 @@ letsFindEvent() {
 
       if (this.searchWord.length >= 3) {
         this.getRoomEvent(0, 5, this.searchWord);
+        this.commentResetFlag = true;
       } else {
         this.getRoomEvent(0, 5, '');
+        this.commentResetFlag = true;
       }
     }, 300);
   }

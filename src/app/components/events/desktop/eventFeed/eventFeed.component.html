@@ -26,6 +26,9 @@
                          [question]="newQuestion" [fromComponent]="fromComponent"
                          (callGetData)="getData(0, this.scrollDistanceTo)"></quiz-template>
         </div>
+        <div class="notFound" *ngIf="this.newQuestions.length === 0">
+          We could not find any data of your need.
+        </div>
       </div>
 
       <div class="main-comment" [ngStyle]="commentTopPosition()">

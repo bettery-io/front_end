@@ -88,6 +88,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             x._id,
             x.verifier
           );
+          this.spinner = false
         }, (err) => {
           console.log(err)
         })

@@ -315,9 +315,9 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
         if (this.mobile) {
           this.spinnerLoading = true;
         }
+        this.spinnerEmmit.emit(true);
         await web3Obj.initialize();
         await this.setTorusInfoToDB();
-        this.spinnerEmmit.emit(true);
         return true;
       } catch (error) {
         this.spinnerLoading = false;

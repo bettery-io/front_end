@@ -226,6 +226,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showSearchInput() {
+    if (this.btnMiddleActive !== 'showAllRoom') {
+      this.showAllRooms();
+    }
     this.showInputFlag = !this.showInputFlag;
     this.btnMiddleActive = 'searchInput';
   }

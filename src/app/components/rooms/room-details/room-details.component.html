@@ -43,19 +43,35 @@
 
         <div class="search-results" infiniteScroll [infiniteScrollDistance]="1"
              [infiniteScrollThrottle]="50" (scrolled)="onScrollQuizTemplate()"
-             style="display: flex; margin-bottom: 24px; flex-direction: column">
-          <div *ngFor="let question of roomEvents; let index = index">
-            <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
-                           [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
-                           [fromComponent]="fromComponent"
-                           (callGetData)="getRoomEvent(0, this.scrollDistanceTo)"></quiz-template>
-          </div>
+             style="display: flex; margin-bottom: 24px; flex-direction: column"
+             [ngClass]="(roomEvents.length === 0) && 'w-100'"
+        >
+            <div *ngFor="let question of roomEvents; let index = index">
+              <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
+                             [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
+                             [fromComponent]="fromComponent"
+                             (callGetData)="getRoomEvent(0, this.scrollDistanceTo)"></quiz-template>
+            </div>
           <div class="notFound" *ngIf="roomEvents?.length === 0">
-            We could not find any data of your need.
+            <div class="notFound-img"></div>
+            <div class="notFound-title">
+              <h4>
+                NO RESULTS
+              </h4>
+            </div>
+            <div class="notFound-text">
+              <p>
+                We couldn't find what you were looking for. But hey, why not host an event about it and earn? Go to
+                <span>Bettery.io</span> on your mobile device and create an event now!
+              </p>
+            </div>
+            <div class="notFound-btn">
+              <button routerLink="/create-event">CREATE EVENT</button>
+            </div>
           </div>
         </div>
 
-        <div class="main-comment" [ngStyle]="commentTopPosition()">
+        <div *ngIf="commentList && roomEvents.length !== 0" class="main-comment" [ngStyle]="commentTopPosition()">
           <div style="margin-right: 30px" class="comment-box">
             <div class="comment-head">
               <div class="test-img-delet" [ngStyle]="getCommentRoomColor(commentList?.room.color)">
@@ -64,8 +80,8 @@
                 <span>{{commentList?.question}}</span>
               </div>
             </div>
-            <app-comment (spinnerEmmit)="commentsSpinner($event)" [mobile]="false"
-                         [showAuthButton]="userData === undefined" class="test" *ngIf="commentList" [theme]="'white'"
+            <app-comment  (spinnerEmmit)="commentsSpinner($event)" [mobile]="false"
+                         [showAuthButton]="userData === undefined" class="test" [theme]="'white'"
                          [userData]=userData
                          [id]="commentList?.id"></app-comment>
           </div>

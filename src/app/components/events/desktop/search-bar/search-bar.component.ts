@@ -10,6 +10,7 @@ export class SearchBarComponent implements OnInit {
   searchWord = '';
   timeout;
   @Output() searchWordEmit = new EventEmitter();
+  @Output() activeItemEmit = new EventEmitter();
 
   constructor() {
   }
@@ -19,6 +20,7 @@ export class SearchBarComponent implements OnInit {
 
   changesActiveBtn(str): void {
     this.active = str;
+    this.activeItemEmit.emit(this.active);
   }
 
   letsFindEvent() {

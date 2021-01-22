@@ -16,7 +16,7 @@
   <div class="middle row">
     <div class=" middle-wrap d-flex col-xl-9 col-lg-9">
       <div (click)="showAllRooms()" class="btn-middle"
-           [ngClass]="btnMiddleActive === 'showAllRoom' && 'btn-middle-active'">
+           [ngClass]="(btnMiddleActive === 'showAllRoom' || btnMiddleActive === 'searchInput')  && 'btn-middle-active'">
         <div class="square-9-img mr-3" [ngClass]="btnMiddleActive === 'showAllRoom' ? 'square-9-img' : 'square-dis-img'"></div>
         <span>Discover</span>
       </div>

@@ -1,51 +1,92 @@
+<div class="main-bg">
+  <app-search-bar class="main-warp  container" (activeItemEmit)="activeBtnFromSearchBar($event)"
+                  (searchWordEmit)="letsFindNewQuestion($event)"></app-search-bar>
+  <div id="top" class="main-warp  container">
 
-<div id="top" class="main-warp  container">
 
-  <app-search-bar (searchWordEmit)="letsFindNewQuestion($event)"></app-search-bar>
+    <div *ngIf="spinner">
+      <app-spinner-loading class="lds-ripple" [desktop]="true"></app-spinner-loading>
+    </div>
+    <div *ngIf="spinnerForComment">
+      <app-spinner-loading></app-spinner-loading>
+    </div>
 
-  <div *ngIf="spinner">
-    <app-spinner-loading class="lds-ripple" [desktop]="true"></app-spinner-loading>
-  </div>
-  <div *ngIf="spinnerForComment">
-    <app-spinner-loading></app-spinner-loading>
-  </div>
+    <div class="small-bg" *ngIf="!spinner">
+      <div class="container-fluid">
+        <div class="comment-wrap" style="padding-top: 51px">
 
-  <div *ngIf="!spinner">
-  <div class="container-fluid">
-    <div class="comment-wrap" style="padding-top: 51px">
+          <div
+            class="search-results" infiniteScroll
+            [infiniteScrollDistance]="1"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScrollQuizTemplate()"
+            [ngClass]="(activeBtn==='pro' || newQuestions.length === 0) && 'w-100'"
+          >
+            <div *ngIf="activeBtn !== 'pro'">
+              <div *ngFor="let newQuestion of newQuestions; let index = index">
+                <quiz-template (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
+                               [myAnswers]="myAnswers[index]"
+                               [userData]="userData"
+                               [question]="newQuestion" [fromComponent]="fromComponent"
+                               (callGetData)="getData(0, this.scrollDistanceTo, '')"></quiz-template>
+              </div>
+            </div>
+            <div class="notFound" *ngIf="newQuestions.length === 0 && activeBtn !== 'pro' ">
+              <div class="notFound-img"></div>
+              <div class="notFound-title">
+                <h4>
+                  NO RESULTS
+                </h4>
+              </div>
+              <div class="notFound-text">
+                <p>
+                  We couldn't find what you were looking for. But hey, why not host an event about it and earn? Go to
+                  <span>Bettery.io</span> on your mobile device and create an event now!
+                </p>
+              </div>
+              <div class="notFound-btn">
+                <button routerLink="/create-event">CREATE EVENT</button>
+              </div>
+            </div>
 
-      <div
-        class="search-results" infiniteScroll
-        [infiniteScrollDistance]="1"
-        [infiniteScrollThrottle]="50"
-        (scrolled)="onScrollQuizTemplate()">
-
-        <div *ngFor="let newQuestion of newQuestions; let index = index">
-          <quiz-template (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo" [myAnswers]="myAnswers[index]"
-                         [userData]="userData"
-                         [question]="newQuestion" [fromComponent]="fromComponent"
-                         (callGetData)="getData(0, this.scrollDistanceTo)"></quiz-template>
-        </div>
-        <div class="notFound" *ngIf="this.newQuestions.length === 0">
-          We could not find any data of your need.
-        </div>
-      </div>
-
-      <div class="main-comment" [ngStyle]="commentTopPosition()">
-        <div style="margin-right: 30px" class="comment-box">
-          <div class="comment-head">
-            <div class="img-del" [ngStyle]="colorForRoom(commentList?.room.color)"></div>
-            <div>
-              <span>{{commentList?.question}}</span>
+            <div class="soonPro" *ngIf="this.activeBtn === 'pro'">
+              <div class="baksGreen-img"></div>
+              <div class="soon-title">
+                <h4>
+                  coming soon!
+                </h4>
+              </div>
+              <div class="soon-text">
+                <p>
+                  <span>Pro events,</span> hosted by Influencers and Businesses, will let you directly earn BTY and cash
+                  out instantly.
+                </p>
+              </div>
+              <div class="soon-btn">
+                <button>Learn more</button>
+              </div>
             </div>
           </div>
-          <app-comment (spinnerEmmit)="commentsSpinner($event)" [mobile]="false" [showAuthButton]="userData === undefined" class="deep-comment" *ngIf="commentList" [theme]="'white'" [userData]= "userData"
-                       [id]="commentList.id"></app-comment>
+
+          <div *ngIf="activeBtn !== 'pro' && newQuestions.length !== 0" class="main-comment" [ngStyle]="commentTopPosition()">
+            <div style="margin-right: 30px" class="comment-box">
+              <div class="comment-head">
+                <div class="img-del" [ngStyle]="colorForRoom(commentList?.room.color)"></div>
+                <div>
+                  <span>{{commentList?.question}}</span>
+                </div>
+              </div>
+              <app-comment (spinnerEmmit)="commentsSpinner($event)" [mobile]="false"
+                           [showAuthButton]="userData === undefined" class="deep-comment" *ngIf="commentList"
+                           [theme]="'white'" [userData]="userData"
+                           [id]="commentList.id"></app-comment>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-  <div class="to_the_top" [ngClass]="scrollTop < 200 && 'dnone'" ><a pageScroll href="#top"><img src="../../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
+    <div class="to_the_top" [ngClass]="scrollTop < 200 && 'dnone'"><a pageScroll href="#top"><img
+      src="../../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
+  </div>
 </div>

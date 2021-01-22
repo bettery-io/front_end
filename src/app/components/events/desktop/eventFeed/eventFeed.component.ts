@@ -39,6 +39,7 @@ export class EventFeedComponent implements OnDestroy {
   scrollTop = 0;
   searchWord = '';
   commentResetFlag: boolean;
+  activeBtn = '';
 
   constructor(
     private store: Store<AppState>,
@@ -73,6 +74,10 @@ export class EventFeedComponent implements OnDestroy {
       if (this.pureData.length == 0) {
         this.commentList = x.events[this.currentComment];
       }
+      if (this.commentResetFlag) {
+        this.commentList = x.events[this.currentComment];
+        this.commentResetFlag = false;
+      }
       this.pureData = x;
 
       if (from == 0) {
@@ -82,11 +87,8 @@ export class EventFeedComponent implements OnDestroy {
         this.pureData.events.forEach(el => this.newQuestions.push(el));
         this.myAnswers = this.getAnswers(this.newQuestions);
       }
-      if (this.commentResetFlag && this.newQuestions.length > 0) {
-        this.commentById(this.newQuestions[0].id);
-        this.commentResetFlag = false;
-      }
       this.spinner = false;
+      console.log(this.commentList);
     }, (err) => {
       console.log(err);
     });
@@ -184,6 +186,7 @@ export class EventFeedComponent implements OnDestroy {
 
   letsFindNewQuestion($event: string) {
     this.searchWord = $event;
+
     if (this.searchWord.length >= 3) {
       this.getData(0, 5, this.searchWord);
       this.commentResetFlag = true;
@@ -196,5 +199,10 @@ export class EventFeedComponent implements OnDestroy {
 
   commentsSpinner($event: boolean) {
     this.spinnerForComment = $event;
+  }
+
+  activeBtnFromSearchBar(activeBtn) {
+    console.log(activeBtn);
+    this.activeBtn = activeBtn;
   }
 }

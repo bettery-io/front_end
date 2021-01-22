@@ -19,7 +19,7 @@ export class PreRegistrationModalComponent implements OnInit {
   }
 
   letsRegister() {
-    this.modalService.open(RegistrationComponent, {centered: true});
+    this.modalService.open(RegistrationComponent);
     this.activeModal.dismiss('Cross click');
   }
 

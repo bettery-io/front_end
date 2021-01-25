@@ -215,13 +215,15 @@ export class EventFeedComponent implements OnDestroy {
 
   letsFindNewQuestion($event: string) {
     this.searchWord = $event;
+    this.scrollDistanceFrom = 0;
+    this.scrollDistanceTo = 5;
 
     if (this.searchWord.length >= 3) {
-      this.getData(this.queryPath, 0, 5, this.searchWord, this.activeBtn);
+      this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord, this.activeBtn);
       this.commentResetFlag = true;
 
     } else {
-      this.getData(this.queryPath, 0, 5, '', this.activeBtn);
+      this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, '', this.activeBtn);
       this.commentResetFlag = true;
     }
   }
@@ -232,16 +234,29 @@ export class EventFeedComponent implements OnDestroy {
 
   activeBtnFromSearchBar(activeBtn) {
     this.activeBtn = activeBtn;
+    this.scrollDistanceFrom = 0;
+    this.scrollDistanceTo = 5;
 
     if (this.activeBtn === 'controversial' || this.activeBtn === 'trending') {
-      this.queryPath = 'publicEvents/get_all';
-      this.getData(this.queryPath, 0, 5, '', this.activeBtn);
+
+      if (this.searchWord.length >= 3) {
+        this.queryPath = 'publicEvents/get_all';
+        this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord, this.activeBtn);
+        this.commentResetFlag = true;
+
+      } else {
+        this.queryPath = 'publicEvents/get_all';
+        this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, '', this.activeBtn);
+      }
     }
 
     if (this.activeBtn === 'following') {
-
       if (!this.userData) {
         this.modalService.open(RegistrationComponent, {centered: true});
+      } else {
+        this.queryPath = 'user/event_activites';
+        this.getData(this.queryPath, 0, 5, this.searchWord, '');
       }
-    }}
+    }
+  }
 }

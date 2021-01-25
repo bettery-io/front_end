@@ -103,7 +103,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   nextRooms() {
-    console.log(this.pageRoom);
     if (this.pageRoom > Math.round(this.usersRoom?.length / 8) ||
       this.pageRoom > Math.round(this.allRooms?.length / 8) ||
       this.pageRoom > Math.round(this.roomsSort?.length / 8) && this.btnMiddleActive === 'searchInput'
@@ -267,11 +266,13 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   forFilterBySubject() {
-    if (this.pageRoom * 8 < this.allRooms?.length) {
-      return this.pageRoom * 8;
-    }
-    if (this.pageRoom * 8 > this.allRooms?.length){
-      return this.allRooms.length;
+
+    if (this.roomsSort?.length > 0 && this.searchWord?.length >= 3) {
+      return this.roomsSort?.length;
+    } else if (this.btnMiddleActive === 'showUsersRoom') {
+      return this.usersRoom?.length;
+    } else {
+      return this.allRooms?.length;
     }
   }
 

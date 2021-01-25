@@ -9,7 +9,7 @@ import { RegistrationComponent } from '../../registration/registration.component
 import maticInit from '../../../contract/maticInit.js'
 
 import Web3 from 'web3';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../services/post.service';
 import { GetService } from '../../../services/get.service';
 import { faReply, faShare } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +18,6 @@ import Contract from '../../../contract/contract';
 import web3Obj from '../../../helpers/torus'
 import { Subscription } from 'rxjs';
 import { WelcomePageComponent } from "../../share/welcome-page/welcome-page.component";
-import { IfStmt } from '@angular/compiler';
 
 
 @Component({

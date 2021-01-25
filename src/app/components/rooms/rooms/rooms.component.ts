@@ -7,7 +7,7 @@ import {AppState} from '../../../app.state';
 import {createEventAction} from '../../../actions/newEvent.actions';
 import * as _ from 'lodash';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {PreRegistrationModalComponent} from '../../share/pre-registration-modal/pre-registration-modal.component';
+import {RegistrationComponent} from '../../registration/registration.component';
 
 @Component({
   selector: 'app-rooms',
@@ -130,7 +130,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
     } else {
       return Math.ceil(currentList / 8);
     }
-
   }
 
   letsFindRoomsLength() {
@@ -187,6 +186,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.userSub = this.store.select('user').subscribe((x) => {
       if (x.length !== 0) {
         this.userData = x[0];
+        if (this.btnMiddleActive === 'showUsersRoom') {
+          this.getUsersRoomById(this.userData._id);
+        }
       }
     });
   }
@@ -200,7 +202,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.btnMiddleActive = 'showUsersRoom';
       this.comSoon = false;
     } else {
-      this.modalService.open(PreRegistrationModalComponent, { centered: true });
+      this.btnMiddleActive = 'showUsersRoom';
+      this.modalService.open(RegistrationComponent, {centered: true});
       return;
     }
   }
@@ -260,6 +263,15 @@ export class RoomsComponent implements OnInit, OnDestroy {
       if (arr.length > 0) {
         this.roomsSort = arr.slice(this.startLength, this.showLength);
       }
+    }
+  }
+
+  forFilterBySubject() {
+    if (this.pageRoom * 8 < this.allRooms?.length) {
+      return this.pageRoom * 8;
+    }
+    if (this.pageRoom * 8 > this.allRooms?.length){
+      return this.allRooms.length;
     }
   }
 

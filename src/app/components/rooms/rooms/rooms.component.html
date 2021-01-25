@@ -14,7 +14,7 @@
   </div>
 
   <div class="middle row">
-    <div class=" middle-wrap d-flex col-xl-9 col-lg-9">
+    <div class=" middle-wrap d-flex col-xl-8 col-lg-8">
       <div (click)="showAllRooms()" class="btn-middle"
            [ngClass]="(btnMiddleActive === 'showAllRoom' || btnMiddleActive === 'searchInput')  && 'btn-middle-active'">
         <div class="square-9-img mr-3" [ngClass]="btnMiddleActive === 'showAllRoom' ? 'square-9-img' : 'square-dis-img'"></div>
@@ -35,8 +35,9 @@
                [ngClass]="showInputFlag && 'search-input-active'" type="text">
       </div>
     </div>
-    <div class="col-lg-3 d-flex justify-content-end media-pagination">
+    <div class="col-lg-4 d-flex justify-content-end media-pagination">
       <div class="pagination">
+        <div class="filter">Filter by subject ({{forFilterBySubject()}}/{{allRooms?.length}})</div>
         <div (click)="prevRooms()" class="left-img-1"></div>
         <div class="ml-3 mr-3 count">{{pageRoom}} / <span>{{letsFindRoomsLength()}}</span></div>
         <div (click)="nextRooms()" class="right-img-1"></div>
@@ -107,5 +108,23 @@
         <h1>Coming soon</h1>
       </div>
     </div>
+
+    <div class="notFound" *ngIf="btnMiddleActive === 'showUsersRoom' && roomsSort?.length === 0">
+      <div class="noFollowEvents-img"></div>
+
+      <div class="notFound-title">
+        <h4 style="color: #939393">
+          No Events at the moment
+        </h4>
+      </div>
+      <div class="notFound-text">
+        <p>
+          Join some Rooms or Events if you haven't already to get updates in your Following timeline.
+        </p>
+      </div>
+    </div>
+
+
+
   </div>
 </div>

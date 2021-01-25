@@ -40,6 +40,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   timeout;
   spinnerForComment: boolean;
   commentResetFlag: boolean;
+  pureData;
 
   constructor(
     private route: ActivatedRoute,
@@ -93,6 +94,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     };
 
     this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
+      this.pureData = value;
       if (this.roomEvents.length == 0) {
         this.commentList = value.events[0];
       }
@@ -164,11 +166,11 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   onScrollQuizTemplate() {
-    if (this.allData?.amount > this.scrollDistanceTo) {
+    if (this.pureData?.amount > this.scrollDistanceTo) {
       this.scrollDistanceFrom = this.scrollDistanceFrom + 5;
       this.scrollDistanceTo = this.scrollDistanceTo + 5;
-      if (this.scrollDistanceTo >= this.allData?.amount) {
-        this.scrollDistanceTo = this.allData?.amount;
+      if (this.scrollDistanceTo >= this.pureData?.amount) {
+        this.scrollDistanceTo = this.pureData?.amount;
         if (!this.bottom) {
           this.bottom = true;
           this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);

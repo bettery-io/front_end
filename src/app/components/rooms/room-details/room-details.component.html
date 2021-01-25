@@ -50,7 +50,7 @@
               <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
                              [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
                              [fromComponent]="fromComponent"
-                             (callGetData)="getRoomEvent(0, this.scrollDistanceTo)"></quiz-template>
+                             (callGetData)="getRoomEvent(0, scrollDistanceTo, searchWord)"></quiz-template>
             </div>
           <div class="notFound" *ngIf="roomEvents?.length === 0">
             <div class="notFound-img"></div>

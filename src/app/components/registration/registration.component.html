@@ -1,3 +1,25 @@
+<div *ngIf="!spinner">
+  <div  class="pb-3" *ngIf="!loginWithMetamsk">
+    <div  style="padding: 0 40px; border: none">
+      <div>
+        <button type="button" class=" soonClose close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="main-img"></div>
+      </div>
+      <div>
+        <h3 class="modal-title">Sign-up to Bettery</h3>
+      </div>
+      <div>
+        <p class="modal-text">Get free 10 BET Tokens, enjoy betting with friends to win pizza, and grow your Reputations to earn big!</p>
+      </div>
+      <div class="modal-two-btn">
+        <button class="btn-1" (click)="loginWithTorus()">Login or Register</button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-spinner-loading *ngIf="spinner"></app-spinner-loading>
 
 <div *ngIf="loginWithMetamsk">
     <div *ngIf="spinner">
@@ -53,3 +75,5 @@
         </div>
     </div>
 </div>
+
+

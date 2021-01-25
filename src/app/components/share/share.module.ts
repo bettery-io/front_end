@@ -13,6 +13,7 @@ import { QuizTemplateComponent } from './quiz-template/quiz-template.component';
 import { TimeComponent } from './quiz-template/time/time.component';
 import { QuizErrorsComponent } from './quiz-template/quiz-errors/quiz-errors.component';
 import { PreRegistrationModalComponent } from './pre-registration-modal/pre-registration-modal.component';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -29,17 +30,19 @@ import { PreRegistrationModalComponent } from './pre-registration-modal/pre-regi
     QuizErrorsComponent,
     PreRegistrationModalComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgxPageScrollModule,
-  ],
-  exports: [
-    SpinnerLoadingComponent,
-    CommentComponent,
-    QuizTemplateComponent,
-    TimeComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgxPageScrollModule,
+        RouterModule,
+    ],
+    exports: [
+        SpinnerLoadingComponent,
+        CommentComponent,
+        QuizTemplateComponent,
+        TimeComponent,
+        PreRegistrationModalComponent
+    ]
 })
 
 export class ShareModule { }

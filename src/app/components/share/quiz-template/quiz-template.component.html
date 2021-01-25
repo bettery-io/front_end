@@ -125,9 +125,9 @@
             <div class="bet-img mr-2 ml-3"></div>
             <div><span>{{avgBet(question)}} BET</span> Avg. Bet</div>
           </div>
-          <div *ngIf="!joinRoom" class="info-item">
+          <div style="cursor: pointer" routerLink="/room/{{question?.room.id}}" *ngIf="!joinRoom" class="info-item">
             <div class="colorRoom mr-2 ml-3 " [ngStyle]="colorForRoom(question?.room.color)"></div>
-            <div><span>{{question?.room.name}}</span> (1200)</div>
+            <div><span>{{question?.room.name}}</span> ({{question?.room.eventAmount}})</div>
           </div>
         </div>
         <div *ngIf="question.status == 'reverted'" class="refund_box_info">

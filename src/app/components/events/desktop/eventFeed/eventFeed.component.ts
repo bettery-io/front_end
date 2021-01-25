@@ -1,4 +1,4 @@
-import {Component, HostListener, OnDestroy} from '@angular/core';
+import {Component, HostListener, OnChanges, OnDestroy} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
 import {Answer} from '../../../../models/Answer.model';
@@ -6,6 +6,8 @@ import {User} from '../../../../models/User.model';
 import _ from 'lodash';
 import {PostService} from '../../../../services/post.service';
 import {Subscription} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RegistrationComponent} from '../../../registration/registration.component';
 
 
 @Component({
@@ -39,20 +41,28 @@ export class EventFeedComponent implements OnDestroy {
   scrollTop = 0;
   searchWord = '';
   commentResetFlag: boolean;
-  activeBtn = '';
+
+  activeBtn = 'trending';
+  queryPath = 'publicEvents/get_all';
 
   constructor(
     private store: Store<AppState>,
     private postService: PostService,
+    private modalService: NgbModal
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
         this.userId = null;
-        this.getData(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
+        this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord, this.activeBtn);
       } else {
         this.userId = x[0]._id;
         this.userData = x[0];
-        this.getData(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
+        if (this.activeBtn === 'following') {
+          this.queryPath = 'user/event_activites';
+          this.getData(this.queryPath, 0, 5, this.searchWord, '');
+        } else {
+          this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord, this.activeBtn);
+        }
       }
     });
     this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
@@ -62,15 +72,33 @@ export class EventFeedComponent implements OnDestroy {
     });
   }
 
-  getData(from, to, search) {
+  getData(path, from, to, search, sort) {
     let param;
+    let data = {};
     if (search.length >= 3) {
       param = search;
     } else {
       param = '';
     }
 
-    this.postSubsctibe = this.postService.post('publicEvents/get_all', {from, to, search: param}).subscribe((x: any) => {
+    if (path === 'publicEvents/get_all') {
+      data = {
+        from: from,
+        to: to,
+        search: param,
+        sort: sort
+      };
+    }
+
+    if (path === 'user/event_activites') {
+      data = {
+        from: from,
+        to: to,
+        search: param,
+        userId: this.userData?._id
+      };
+    }
+    this.postSubsctibe = this.postService.post(path, data).subscribe((x: any) => {
       if (this.pureData.length == 0) {
         this.commentList = x.events[this.currentComment];
       }
@@ -88,8 +116,8 @@ export class EventFeedComponent implements OnDestroy {
         this.myAnswers = this.getAnswers(this.newQuestions);
       }
       this.spinner = false;
-      console.log(this.commentList);
     }, (err) => {
+      this.spinner = false;
       console.log(err);
     });
   }
@@ -162,13 +190,14 @@ export class EventFeedComponent implements OnDestroy {
       this.scrollDistanceFrom = this.scrollDistanceFrom + 5;
       this.scrollDistanceTo = this.scrollDistanceTo + 5;
 
-      this.getData(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
+      this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord, this.activeBtn);
     } else if (this.pureData?.amount / 5 !== 0 && (this.scrollDistanceTo + this.pureData?.amount % 5 <= this.pureData?.amount)) {
       this.scrollDistanceFrom = this.scrollDistanceTo + this.pureData?.amount % 5;
       this.scrollDistanceTo = this.scrollDistanceTo + this.pureData?.amount % 5;
 
-      this.getData(this.scrollDistanceFrom, this.scrollDistanceTo + this.pureData?.amount % 5, this.searchWord);
+      this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo + this.pureData?.amount % 5, this.searchWord, this.activeBtn);
     } else {
+      return;
     }
   }
 
@@ -188,11 +217,11 @@ export class EventFeedComponent implements OnDestroy {
     this.searchWord = $event;
 
     if (this.searchWord.length >= 3) {
-      this.getData(0, 5, this.searchWord);
+      this.getData(this.queryPath, 0, 5, this.searchWord, this.activeBtn);
       this.commentResetFlag = true;
 
     } else {
-      this.getData(0, 5, '');
+      this.getData(this.queryPath, 0, 5, '', this.activeBtn);
       this.commentResetFlag = true;
     }
   }
@@ -202,7 +231,17 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   activeBtnFromSearchBar(activeBtn) {
-    console.log(activeBtn);
     this.activeBtn = activeBtn;
-  }
+
+    if (this.activeBtn === 'controversial' || this.activeBtn === 'trending') {
+      this.queryPath = 'publicEvents/get_all';
+      this.getData(this.queryPath, 0, 5, '', this.activeBtn);
+    }
+
+    if (this.activeBtn === 'following') {
+
+      if (!this.userData) {
+        this.modalService.open(RegistrationComponent, {centered: true});
+      }
+    }}
 }

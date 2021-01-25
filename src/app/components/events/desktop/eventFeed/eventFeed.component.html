@@ -1,6 +1,10 @@
 <div class="main-bg">
-  <app-search-bar class="main-warp  container" (activeItemEmit)="activeBtnFromSearchBar($event)"
-                  (searchWordEmit)="letsFindNewQuestion($event)"></app-search-bar>
+  <app-search-bar class="main-warp  container"
+                  (activeItemEmit)="activeBtnFromSearchBar($event)"
+                  (searchWordEmit)="letsFindNewQuestion($event)"
+                  [allAmountEvents] = pureData?.allAmountEvents
+                  [amount] = pureData?.amount
+></app-search-bar>
   <div id="top" class="main-warp  container">
 
 
@@ -28,13 +32,13 @@
                                [myAnswers]="myAnswers[index]"
                                [userData]="userData"
                                [question]="newQuestion" [fromComponent]="fromComponent"
-                               (callGetData)="getData(0, this.scrollDistanceTo, '')"></quiz-template>
+                               (callGetData)="getData(queryPath,0, scrollDistanceTo, '', activeBtn)"></quiz-template>
               </div>
             </div>
-            <div class="notFound" *ngIf="newQuestions.length === 0 && activeBtn !== 'pro' ">
+            <div class="notFound" *ngIf="pureData?.allAmountEvents !== 0 && pureData?.events.length === 0">
               <div class="notFound-img"></div>
               <div class="notFound-title">
-                <h4>
+                <h4 style="color: #939393">
                   NO RESULTS
                 </h4>
               </div>
@@ -49,7 +53,22 @@
               </div>
             </div>
 
-            <div class="soonPro" *ngIf="this.activeBtn === 'pro'">
+            <div class="notFound" *ngIf="activeBtn === 'following' && pureData?.allAmountEvents === 0">
+              <div class="noFollowEvents-img"></div>
+
+              <div class="notFound-title">
+                <h4 style="color: #939393">
+                  No Events at the moment
+                </h4>
+              </div>
+              <div class="notFound-text">
+                <p>
+                  Join some Rooms or Events if you haven't already to get updates in your Following timeline.
+                </p>
+              </div>
+            </div>
+
+            <div class="soonPro" *ngIf="activeBtn === 'pro'">
               <div class="baksGreen-img"></div>
               <div class="soon-title">
                 <h4>

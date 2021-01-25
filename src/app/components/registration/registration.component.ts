@@ -29,7 +29,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   userWallet: string = undefined;
   validateSubscribe;
   loginWithMetamsk = false;
-  spinner = true;
+  spinner;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,15 +45,17 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       nickName: ['', Validators.minLength(6)],
       email: ['', [Validators.email, Validators.required]]
     });
-    this.loginWithTorus();
+    // this.loginWithTorus();
   }
 
   async loginWithTorus() {
-    this.activeModal.dismiss('Cross click')
+    this.spinner = true;
+    // this.activeModal.dismiss('Cross click')
     try {
       await web3Obj.initialize()
       this.setTorusInfoToDB()
     } catch (error) {
+      this.spinner = false
       console.error(error)
     }
   }

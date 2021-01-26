@@ -126,6 +126,8 @@
     </div>
 
     <div class="notFound" *ngIf="btnMiddleActive === 'joinedRoom' && roomsSort?.length === 0">
+      <div class="joinedRooms-img"></div>
+
       <div class="notFound-title">
         <h4 style="color: #939393">
           YOU HAVEN'T JOINED ANY ROOMS YET
@@ -137,10 +139,14 @@
         </p>
       </div>
       <div class="soon-btn">
-        <button routerLink="/join">
-          <div class="noJoin-img"></div> JOIN
+        <button class="join_event" routerLink="/join">
+          <div class="searchEvent-img"></div>
+          <div>JOIN</div>
         </button>
-        <button (click)="showAllRooms()">ROOMS</button>
+        <button class="join_room" (click)="showAllRooms()">
+          <div class="searchRoom-img"></div>
+          <div>ROOMS</div>
+        </button>
       </div>
     </div>
   </div>

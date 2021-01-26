@@ -379,11 +379,15 @@
 .notFound
   padding: 100px 290px 0 290px
 
-.noFollowEvents-img
-  background: url("../../../../assets/descEvent/noFollowevents.png") center center no-repeat
+@media (max-width: 1200px)
+  .notFound
+    padding: 100px 0 0 0
+
+.noCreateEvents-img
+  background: url("../../../../assets/rooms/noYet.png") center center no-repeat
   background-size: contain
-  width: 48px
-  height: 69px
+  width: 100px
+  height: 80px
   margin: 0 auto 16px auto
 
 .notFound-text
@@ -398,3 +402,26 @@
     margin-bottom: 16px
   & span
     font-weight: bold
+
+.soon-btn
+  display: flex
+  justify-content: center
+  & button
+    background: #FFD300
+    border-radius: 8px
+    font-weight: bold
+    font-size: 18px
+    line-height: 25px
+    text-align: center
+    text-decoration-line: underline
+    text-transform: uppercase
+    color: #FFFFFF
+    padding: 12px 29px
+    border: none
+
+.noJoin-img
+  background: url("../../../../assets/sidebar/join-img.png") center center no-repeat
+  background-size: contain
+  width: 100px
+  height: 80px
+  margin: 0 auto 16px auto

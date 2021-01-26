@@ -233,20 +233,23 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   notification(x) {
-    this.disabledButton = true;
-    let data = {
-      joinedId: this.roomDetails.joinedId,
-      subscribe: x
-    }
-    this.notificationRoomSub = this.postService.post('room/notification', data).subscribe(() => {
-      let dataRoomInfo = {
-        userId: this.userId,
-        roomId: Number(this.roomData?.roomId)
+    if (!this.disabledButton) {
+      let data = {
+        joinedId: this.roomDetails.joinedId,
+        subscribe: x
       }
-      this.getRoomInfo(dataRoomInfo)
-    }, (err) => {
-      console.log(err)
-    })
+      this.disabledButton = true;
+      this.notificationRoomSub = this.postService.post('room/notification', data).subscribe(() => {
+        let dataRoomInfo = {
+          userId: this.userId,
+          roomId: Number(this.roomData?.roomId)
+        }
+        this.getRoomInfo(dataRoomInfo)
+      }, (err) => {
+        console.log(err)
+      })
+    }
+
   }
 
   ngOnDestroy() {

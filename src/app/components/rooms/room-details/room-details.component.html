@@ -25,7 +25,9 @@
                   Active)</b></p>
             </div>
             <div class="inline join-box">
-              <div *ngIf="roomDetails.joined">
+              <div class="notification_box" *ngIf="roomDetails.joined">
+                <div class="notification_info">{{roomDetails.notifications ? 'Turn off notifications for new events' : 'Turn on notifications
+                  for new events'}}</div>
                 <div (click)="this.notification(false)" *ngIf="roomDetails.notifications" class="notificationOn"></div>
                 <div (click)="this.notification(true)" *ngIf="!roomDetails.notifications" class="notificationOff"></div>
               </div>

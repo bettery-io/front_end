@@ -4,6 +4,7 @@
                   (searchWordEmit)="letsFindNewQuestion($event)"
                   [allAmountEvents] = pureData?.allAmountEvents
                   [amount] = pureData?.amount
+                  (timelineActive)="openTimeline($event)"
 ></app-search-bar>
   <div id="top" class="main-warp  container">
 
@@ -109,3 +110,8 @@
       src="../../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
   </div>
 </div>
+
+<app-timeline *ngIf="timelineActive"
+              (closeEmmit)="openTimeline($event)"
+              (filterData)="letsFilterData($event)"
+></app-timeline>

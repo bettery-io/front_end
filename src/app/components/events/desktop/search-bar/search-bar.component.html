@@ -14,7 +14,7 @@
       <div class="btn-item btn-text mr-3 social-img">Social</div>
       <div class="btn-item-3 btn-text btn-item-2 mr-3 btn-item-padding moments-img">Moments</div>
       <div class="btn-text btn-item-3 live-img">Live</div>
-      <div class="gps">
+      <div class="gps" (click)="openFilter($event)">
         <div class="text-disactive text-right text-disactive-last">Filter by subject ({{amount}}/{{allAmountEvents}})</div>
       </div>
     </div>

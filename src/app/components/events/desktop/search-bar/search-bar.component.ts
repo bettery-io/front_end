@@ -11,6 +11,7 @@ export class SearchBarComponent implements OnInit {
   timeout;
   @Output() searchWordEmit = new EventEmitter();
   @Output() activeItemEmit = new EventEmitter();
+  @Output() timelineActive = new EventEmitter();
   @Input() allAmountEvents: number;
   @Input() amount: number;
 
@@ -33,5 +34,9 @@ export class SearchBarComponent implements OnInit {
     this.timeout = setTimeout(() => {
       this.searchWordEmit.emit(this.searchWord);
     }, 300);
+  }
+
+  openFilter() {
+    this.timelineActive.emit(true);
   }
 }

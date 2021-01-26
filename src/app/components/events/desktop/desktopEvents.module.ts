@@ -10,6 +10,7 @@ import {SearchBarComponent} from './search-bar/search-bar.component';
 import {ShareModule} from '../../share/share.module';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {NgxPageScrollModule} from 'ngx-page-scroll';
+import {NavigationModule} from '../../navigation/navigation.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {NgxPageScrollModule} from 'ngx-page-scroll';
             {path: 'join', component: EventFeedComponent}
         ]),
         ShareModule,
-        NgxPageScrollModule
+        NgxPageScrollModule,
+        NavigationModule
     ],
   exports: [
   ],

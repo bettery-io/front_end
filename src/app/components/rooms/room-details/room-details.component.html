@@ -1,96 +1,100 @@
 <div class="main-bg">
   <div id="top" class="container containerFor1920">
     <div *ngIf="!spinner" routerLink="/rooms" class="back">
-      << Back to Rooms
-    </div>
+      << Back to Rooms </div>
 
-    <div class="lds-ripple" *ngIf="spinner">
-      <app-spinner-loading class="spinner-pos" [desktop]="true"></app-spinner-loading>
-    </div>
-    <div *ngIf="spinnerForComment">
-      <app-spinner-loading></app-spinner-loading>
-    </div>
-
-    <div *ngIf="!spinner" class="room_details" [ngStyle]="infoRoomColor(roomDetails?.color)">
-      <div style="position: relative">
-        <div class="inline">
-          <img class="avatar" src="{{roomDetails?.hostAvatar}}">
+        <div class="lds-ripple" *ngIf="spinner">
+          <app-spinner-loading class="spinner-pos" [desktop]="true"></app-spinner-loading>
         </div>
-        <div class="inline detailNameHost">
-          <p class="room_name">{{roomDetails?.name}}</p>
-          <p class="room_owner">{{roomDetails?.host}}</p>
+        <div *ngIf="spinnerForComment">
+          <app-spinner-loading></app-spinner-loading>
         </div>
-        <div class="inline eventsPositionsInfo">
-          <p class="eventsInfo">Events: <b>{{roomDetails?.events}} ({{roomDetails?.activeEvents}}
-            Active)</b></p>
-        </div>
-        <div class="inline join-box">
-          <button class="join">Join Room</button>
-        </div>
-      </div>
-    </div>
 
-    <div *ngIf="!spinner" class="row input-wrap">
-      <div class="col-10 main-input">
-        <div class="search-img"></div>
-        <input (keyup)="letsFindEvent()" [(ngModel)]="searchWord" name="searchWord" placeholder="Search events...."
-               type="text">
-      </div>
-    </div>
-
-    <div *ngIf="!spinner" class="container-fluid">
-      <div class="comment-wrap" style="margin-top: 51px">
-
-        <div class="search-results" infiniteScroll [infiniteScrollDistance]="1"
-             [infiniteScrollThrottle]="50" (scrolled)="onScrollQuizTemplate()"
-             style="display: flex; margin-bottom: 24px; flex-direction: column"
-             [ngClass]="(roomEvents.length === 0) && 'w-100'"
-        >
-            <div *ngFor="let question of roomEvents; let index = index">
-              <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
-                             [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
-                             [fromComponent]="fromComponent"
-                             (callGetData)="getRoomEvent(0, scrollDistanceTo, searchWord)"></quiz-template>
+        <div *ngIf="!spinner" class="room_details" [ngStyle]="infoRoomColor(roomDetails?.color)">
+          <div style="position: relative">
+            <div class="inline">
+              <img class="avatar" src="{{roomDetails?.hostAvatar}}">
             </div>
-          <div class="notFound" *ngIf="roomEvents?.length === 0">
-            <div class="notFound-img"></div>
-            <div class="notFound-title">
-              <h4>
-                NO RESULTS
-              </h4>
+            <div class="inline detailNameHost">
+              <p class="room_name">{{roomDetails?.name}}</p>
+              <p class="room_owner">{{roomDetails?.host}}</p>
             </div>
-            <div class="notFound-text">
-              <p>
-                We couldn't find what you were looking for. But hey, why not host an event about it and earn? Go to
-                <span>Bettery.io</span> on your mobile device and create an event now!
-              </p>
+            <div class="inline eventsPositionsInfo">
+              <p class="eventsInfo">Members: <b>{{roomDetails?.members}}</b></p>
+              <p class="eventsInfo">Events: <b>{{roomDetails?.events}} ({{roomDetails?.activeEvents}}
+                  Active)</b></p>
             </div>
-            <div class="notFound-btn">
-              <button routerLink="/create-event">CREATE EVENT</button>
+            <div class="inline join-box">
+              <div *ngIf="roomDetails.joined">
+                <div (click)="this.notification(false)" *ngIf="roomDetails.notifications" class="notificationOn"></div>
+                <div (click)="this.notification(true)" *ngIf="!roomDetails.notifications" class="notificationOff"></div>
+              </div>
+              <button [disabled]="disabledButton" *ngIf="!roomDetails.joined" class="join"
+                (click)="this.joinToRoom()">Join Room</button>
+              <button [disabled]="disabledButton" *ngIf="roomDetails.joined" class="leaveRoom"
+                (click)="this.leaveRoom()">Leave room</button>
             </div>
           </div>
         </div>
 
-        <div *ngIf="commentList && roomEvents.length !== 0" class="main-comment" [ngStyle]="commentTopPosition()">
-          <div style="margin-right: 30px" class="comment-box">
-            <div class="comment-head">
-              <div class="test-img-delet" [ngStyle]="getCommentRoomColor(commentList?.room.color)">
-              </div>
-              <div>
-                <span>{{commentList?.question}}</span>
-              </div>
-            </div>
-            <app-comment  (spinnerEmmit)="commentsSpinner($event)" [mobile]="false"
-                         [showAuthButton]="userData === undefined" class="test" [theme]="'white'"
-                         [userData]=userData
-                         [id]="commentList?.id"></app-comment>
+        <div *ngIf="!spinner" class="row input-wrap">
+          <div class="col-10 main-input">
+            <div class="search-img"></div>
+            <input (keyup)="letsFindEvent()" [(ngModel)]="searchWord" name="searchWord" placeholder="Search events...."
+              type="text">
           </div>
         </div>
-      </div>
+
+        <div *ngIf="!spinner" class="container-fluid">
+          <div class="comment-wrap" style="margin-top: 51px">
+
+            <div class="search-results" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
+              (scrolled)="onScrollQuizTemplate()" style="display: flex; margin-bottom: 24px; flex-direction: column"
+              [ngClass]="(roomEvents.length === 0) && 'w-100'">
+              <div *ngFor="let question of roomEvents; let index = index">
+                <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
+                  [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
+                  [fromComponent]="fromComponent" (callGetData)="getRoomEvent(0, scrollDistanceTo, searchWord)">
+                </quiz-template>
+              </div>
+              <div class="notFound" *ngIf="roomEvents?.length === 0">
+                <div class="notFound-img"></div>
+                <div class="notFound-title">
+                  <h4>
+                    NO RESULTS
+                  </h4>
+                </div>
+                <div class="notFound-text">
+                  <p>
+                    We couldn't find what you were looking for. But hey, why not host an event about it and earn? Go to
+                    <span>Bettery.io</span> on your mobile device and create an event now!
+                  </p>
+                </div>
+                <div class="notFound-btn">
+                  <button routerLink="/create-event">CREATE EVENT</button>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="commentList && roomEvents.length !== 0" class="main-comment" [ngStyle]="commentTopPosition()">
+              <div style="margin-right: 30px" class="comment-box">
+                <div class="comment-head">
+                  <div class="test-img-delet" [ngStyle]="getCommentRoomColor(commentList?.room.color)">
+                  </div>
+                  <div>
+                    <span>{{commentList?.question}}</span>
+                  </div>
+                </div>
+                <app-comment (spinnerEmmit)="commentsSpinner($event)" [mobile]="false"
+                  [showAuthButton]="userData === undefined" class="test" [theme]="'white'" [userData]=userData
+                  [id]="commentList?.id"></app-comment>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="to_the_top" [ngClass]="scrollTop < 200 && 'dnone'"><a pageScroll href="#top"><img
+              src="../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
     </div>
-
-
-    <div class="to_the_top" [ngClass]="scrollTop < 200 && 'dnone'"><a pageScroll href="#top"><img
-      src="../../../../assets/descEvent/topBTN.png" alt="Top"></a></div>
   </div>
-</div>

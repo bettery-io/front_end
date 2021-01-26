@@ -1,12 +1,14 @@
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {PostService} from '../../../services/post.service';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../app.state';
-import {Answer} from '../../../models/Answer.model';
-import {User} from '../../../models/User.model';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { PostService } from '../../../services/post.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.state';
+import { Answer } from '../../../models/Answer.model';
+import { User } from '../../../models/User.model';
 import _ from 'lodash';
+import { RegistrationComponent } from '../../registration/registration.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -21,10 +23,12 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   eventSub: Subscription;
   storeCoinsSubscrive: Subscription;
   storeUserSubscribe: Subscription;
+  joinRoomSub: Subscription;
+  leaveRoomSub: Subscription;
+  notificationRoomSub: Subscription;
   roomDetails: any;
   roomEvents: any = [];
   coinInfo = null;
-  id: any;
   myAnswers: Answer[] = [];
   userId: number = null;
   userData: any;
@@ -41,11 +45,14 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   spinnerForComment: boolean;
   commentResetFlag: boolean;
   pureData;
+  roomData: any;
+  disabledButton: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,
     private store: Store<AppState>,
+    private modalService: NgbModal
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
@@ -54,6 +61,11 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.userId = x[0]._id;
         this.userData = x[0];
         this.allData = [];
+        let data = {
+          roomId: Number(this.roomData.roomId),
+          userId: this.userId
+        }
+        this.getRoomInfo(data);
         this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
       }
     });
@@ -66,16 +78,22 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
-      this.id = {
-        id: Number(params.id)
+      this.roomData = {
+        roomId: Number(params.id),
+        userId: this.userId,
       };
-      this.infoSub = this.postService.post('room/info', this.id).subscribe((value: any) => {
-        this.roomDetails = value;
-        console.log(value);
-      }, (err) => {
-        console.log(err);
-      });
+      this.getRoomInfo(this.roomData)
       this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
+    });
+  }
+
+  getRoomInfo(data) {
+    this.infoSub = this.postService.post('room/info', data).subscribe((value: any) => {
+      this.roomDetails = value;
+      this.disabledButton = false;
+      console.log(value);
+    }, (err) => {
+      console.log(err);
     });
   }
 
@@ -87,7 +105,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       param = '';
     }
     let data = {
-      id: Number(this.id?.id),
+      id: Number(this.roomData?.roomId),
       from: from,
       to: to,
       search: param
@@ -130,9 +148,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.userId});
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, {'userId': this.userId});
+      let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
       return {
         answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined,
         from: 'validator',
@@ -149,7 +167,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
 
   infoRoomColor(value) {
-    return {'background': value};
+    return { 'background': value };
   }
 
   commentById($event) {
@@ -162,7 +180,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   getCommentRoomColor(color) {
-    return {'background': color};
+    return { 'background': color };
   }
 
   onScrollQuizTemplate() {
@@ -179,7 +197,56 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
       }
     }
+  }
 
+  joinToRoom() {
+    if (!this.userId) {
+      this.modalService.open(RegistrationComponent, { centered: true });
+    } else {
+      this.disabledButton = true;
+      let data = {
+        userId: this.userId,
+        roomId: Number(this.roomData?.roomId)
+      }
+      this.joinRoomSub = this.postService.post('room/join', data).subscribe((x) => {
+        this.getRoomInfo(data)
+      }, (err) => {
+        console.log(err)
+      })
+    }
+  }
+
+  leaveRoom() {
+    this.disabledButton = true;
+    let data = {
+      joinedId: this.roomDetails.joinedId,
+    }
+    this.leaveRoomSub = this.postService.post('room/leave', data).subscribe(() => {
+      let dataRoomInfo = {
+        userId: this.userId,
+        roomId: Number(this.roomData?.roomId)
+      }
+      this.getRoomInfo(dataRoomInfo)
+    }, (err) => {
+      console.log(err)
+    })
+  }
+
+  notification(x) {
+    this.disabledButton = true;
+    let data = {
+      joinedId: this.roomDetails.joinedId,
+      subscribe: x
+    }
+    this.notificationRoomSub = this.postService.post('room/notification', data).subscribe(() => {
+      let dataRoomInfo = {
+        userId: this.userId,
+        roomId: Number(this.roomData?.roomId)
+      }
+      this.getRoomInfo(dataRoomInfo)
+    }, (err) => {
+      console.log(err)
+    })
   }
 
   ngOnDestroy() {
@@ -198,6 +265,15 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     if (this.storeUserSubscribe) {
       this.storeUserSubscribe.unsubscribe();
     }
+    if (this.joinRoomSub) {
+      this.joinRoomSub.unsubscribe();
+    }
+    if (this.leaveRoomSub) {
+      this.leaveRoomSub.unsubscribe();
+    }
+    if (this.notificationRoomSub) {
+      this.notificationRoomSub.unsubscribe();
+    }
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -207,13 +283,13 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   commentTopPosition() {
     if (document.documentElement.scrollTop < 428) {
-      return {'top': (428 - this.scrollTop) + 'px'};
+      return { 'top': (428 - this.scrollTop) + 'px' };
     } else {
-      return {'top': 0};
+      return { 'top': 0 };
     }
   }
 
-letsFindEvent() {
+  letsFindEvent() {
     if (this.timeout !== undefined) {
       clearTimeout(this.timeout);
     }

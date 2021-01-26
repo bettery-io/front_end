@@ -25,15 +25,15 @@
                   Active)</b></p>
             </div>
             <div class="inline join-box">
-              <div class="notification_box" *ngIf="roomDetails.joined">
+              <div class="notification_box" *ngIf="roomDetails?.joined">
                 <div class="notification_info">{{roomDetails.notifications ? 'Turn off notifications for new events' : 'Turn on notifications
                   for new events'}}</div>
                 <div (click)="this.notification(false)" *ngIf="roomDetails.notifications" class="notificationOn"></div>
                 <div (click)="this.notification(true)" *ngIf="!roomDetails.notifications" class="notificationOff"></div>
               </div>
-              <button [disabled]="disabledButton" *ngIf="!roomDetails.joined" class="join"
+              <button [disabled]="disabledButton" *ngIf="!roomDetails?.joined" class="join"
                 (click)="this.joinToRoom()">Join Room</button>
-              <button [disabled]="disabledButton" *ngIf="roomDetails.joined" class="leaveRoom"
+              <button [disabled]="disabledButton" *ngIf="roomDetails?.joined" class="leaveRoom"
                 (click)="this.leaveRoom()">Leave room</button>
             </div>
           </div>

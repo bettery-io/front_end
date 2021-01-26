@@ -61,12 +61,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.userId = x[0]._id;
         this.userData = x[0];
         this.allData = [];
-        let data = {
-          roomId: Number(this.roomData.roomId),
-          userId: this.userId
-        }
-        this.getRoomInfo(data);
-        this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
+        this.getAllData();
       }
     });
     this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
@@ -77,6 +72,10 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getAllData();
+  }
+
+  getAllData() {
     this.routeSub = this.route.params.subscribe(params => {
       this.roomData = {
         roomId: Number(params.id),
@@ -91,7 +90,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     this.infoSub = this.postService.post('room/info', data).subscribe((value: any) => {
       this.roomDetails = value;
       this.disabledButton = false;
-      console.log(value);
     }, (err) => {
       console.log(err);
     });

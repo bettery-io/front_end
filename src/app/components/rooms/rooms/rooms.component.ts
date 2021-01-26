@@ -290,7 +290,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
     if (this.roomsSort?.length > 0 && this.searchWord?.length >= 3) {
       return this.roomsSort?.length;
-    } else if (this.btnMiddleActive === 'showUsersRoom') {
+    } else if (this.btnMiddleActive === 'showUsersRoom' || this.btnMiddleActive === "joinedRoom") {
       return this.usersRoom?.length;
     } else {
       return this.allRooms?.length;

@@ -1,0 +1,94 @@
+<div class="wrapper">
+  <form action="#" [formGroup]="form" (ngSubmit)="sendForm(form, $event)" class="form"  >
+    <button (click)="closeWindow()" type="button" class=" soonClose close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <div class="title">
+      <h1>What do you want on your timeline?</h1>
+    </div>
+
+    <div class="endOrJoin">
+      <div class="form-check mr-4">
+        <input formControlName="showEnd" name="showEnd" class="form-check-input checkBoxClass" type="checkbox" id="blankCheckbox" value="showEnd">
+        <label for="blankCheckbox">Show ended Events</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input checkBoxClass" disabled type="checkbox" id="blankCheckbox2" value="option1">
+        <label for="blankCheckbox2">Show Events that I joined</label>
+      </div>
+    </div>
+    <div style="position: relative">
+      <div class="btnsBox row ml-0 mr-0">
+        <div class="col-6 filter">
+          <div class="checkButton">
+            <div class="form-check pl-4">
+              <input class="form-check-input checkBoxClass" type="checkbox" id="beauty" value="option1">
+              <label for="beauty">Beauty & Fashion</label>
+            </div>
+          </div>
+          <div class="checkButton">
+            <div class="form-check pl-4">
+              <input class="form-check-input checkBoxClass" type="checkbox" id="entertainment" value="option1">
+              <label for="entertainment">Entertainment</label>
+            </div>
+          </div>
+          <div class="checkButton">
+            <div class="form-check pl-4">
+              <input class="form-check-input checkBoxClass" type="checkbox" id="body" value="option1">
+              <label for="body">Mind & Body</label>
+            </div>
+          </div>
+          <div class="checkButton">
+            <div class="form-check pl-4">
+              <input class="form-check-input checkBoxClass" type="checkbox" id="travel" value="option1">
+              <label for="travel">Travel & Leisure</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 filter">
+          <div class="checkButton">
+            <div class="form-check pl-4">
+              <input class="form-check-input checkBoxClass" type="checkbox" id="commerce" value="option1">
+              <label for="commerce">Commerce</label>
+            </div>
+          </div>
+          <div class="checkButton">
+            <div class="form-check pl-4">
+              <input class="form-check-input checkBoxClass" type="checkbox" id="foodDrink" value="option1">
+              <label for="foodDrink">Food & Drink</label>
+            </div>
+          </div>
+          <div class="checkButton">
+            <div class="form-check pl-4">
+              <input class="form-check-input checkBoxClass" type="checkbox" id="science" value="option1">
+              <label for="science">Science & Technology</label>
+            </div>
+          </div>
+          <div class="checkButton">
+            <div class="form-check pl-4">
+              <input class="form-check-input checkBoxClass" type="checkbox" id="all" value="option1">
+              <label for="all">Select All </label>
+            </div>
+          </div>
+        </div>
+        <div class="deleteBg">
+          <h1>COMING SOON</h1>
+        </div>
+      </div>
+
+      <div class="location">
+        <label for="location">Location:</label>
+        <input type="text" id="location">
+        <button>Add Location</button>
+      </div>
+</div>
+    <!--    <div>-->
+    <!--  Ho Chi Minh City X   New York X   -->
+    <!--    </div>-->
+    <div class="mainButton">
+      <button type="submit">Confirm</button>
+    </div>
+
+  </form>
+</div>

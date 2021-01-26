@@ -45,6 +45,9 @@ export class EventFeedComponent implements OnDestroy {
   activeBtn = 'trending';
   queryPath = 'publicEvents/get_all';
 
+  timelineActive: boolean;
+  showEnd: boolean;
+
   constructor(
     private store: Store<AppState>,
     private postService: PostService,
@@ -86,7 +89,8 @@ export class EventFeedComponent implements OnDestroy {
         from: from,
         to: to,
         search: param,
-        sort: sort
+        sort: sort,
+        finished: this.showEnd
       };
     }
 
@@ -95,7 +99,8 @@ export class EventFeedComponent implements OnDestroy {
         from: from,
         to: to,
         search: param,
-        userId: this.userData?._id
+        userId: this.userData?._id,
+        finished: this.showEnd
       };
     }
     this.postSubsctibe = this.postService.post(path, data).subscribe((x: any) => {
@@ -258,5 +263,20 @@ export class EventFeedComponent implements OnDestroy {
         this.getData(this.queryPath, 0, 5, this.searchWord, '');
       }
     }
+  }
+
+  openTimeline($event: any) {
+    if ($event) {
+      this.timelineActive = !this.timelineActive;
+    }
+  }
+
+  letsFilterData(data) {
+    this.scrollDistanceFrom = 0;
+    this.scrollDistanceTo = 5;
+
+    this.showEnd = data.showEnd;
+
+    this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord, this.activeBtn);
   }
 }

@@ -11,9 +11,10 @@ export class TimelineComponent implements OnInit {
   @Output() filterData = new EventEmitter();
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder) {
     this.form = formBuilder.group({
-      showEnd: ['', Validators.required],
+      showEnd: [true, Validators.required],
     });
   }
 
@@ -21,7 +22,7 @@ export class TimelineComponent implements OnInit {
   }
 
   closeWindow() {
-    this.closeEmmit.emit(true);
+      this.closeEmmit.emit(true);
   }
 
   sendForm(form: FormGroup, $event: any) {
@@ -30,5 +31,9 @@ export class TimelineComponent implements OnInit {
     };
     this.filterData.emit(data);
     this.closeWindow();
+  }
+
+  stopPropagation(e) {
+    e.stopPropagation();
   }
 }

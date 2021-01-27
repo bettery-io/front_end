@@ -149,6 +149,7 @@
 .main-bg
   background: url("../../../../../assets/descEvent/bg-desc-room.png") top right no-repeat #FFFFFF
   background-size: 1000px
+  min-height: 1000px
 
 .small-bg
   background: url("../../../../../assets/share/icon1.png") 31px -11px no-repeat
@@ -256,6 +257,9 @@
     .darkSize
       width: 13px
       height: 13px
+    @media (max-height: 600px)
+      .comment-warp
+        max-height: 300px
 
 .main-comment
   width: 300px
@@ -362,3 +366,6 @@
   height: 69px
   margin: 0 auto 16px auto
 
+.z-ind::ng-deep
+  .block_spinner_box
+    z-index: 1111

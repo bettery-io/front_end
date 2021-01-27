@@ -71,7 +71,7 @@
         </div>
 
         <div class="replyDark col-5">
-          <a href="#sendBox" pageScroll (click)="replySend(comment?.id, comment?.user)">Reply</a>
+          <a href="{{mobile && '#sendBox'}}" pageScroll  (click)="replySend(comment?.id, comment?.user)">Reply</a>
         </div>
 
       </div>

@@ -1,5 +1,6 @@
-<div class="wrapper">
-  <form action="#" [formGroup]="form" (ngSubmit)="sendForm(form, $event)" class="form"  >
+
+<div class="wrapper"  (click)="closeWindow()">
+  <form (click)="stopPropagation($event)" action="#" [formGroup]="form" (ngSubmit)="sendForm(form, $event)" class="form">
     <button (click)="closeWindow()" type="button" class=" soonClose close" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -92,3 +93,4 @@
 
   </form>
 </div>
+

@@ -6,7 +6,7 @@
         <div class="lds-ripple" *ngIf="spinner">
           <app-spinner-loading class="spinner-pos" [desktop]="true"></app-spinner-loading>
         </div>
-        <div *ngIf="spinnerForComment">
+        <div class="z-ind" *ngIf="spinnerForComment">
           <app-spinner-loading></app-spinner-loading>
         </div>
 
@@ -26,8 +26,7 @@
             </div>
             <div class="inline join-box">
               <div class="notification_box" *ngIf="roomDetails?.joined">
-                <div class="notification_info">{{roomDetails.notifications ? 'Turn off notifications for new events' : 'Turn on notifications
-                  for new events'}}</div>
+                <div class="notification_info">{{roomDetails.notifications ? 'Turn off notifications for new events' : 'Turn on notifications for new events'}}</div>
                 <div (click)="this.notification(false)" *ngIf="roomDetails.notifications" class="notificationOn"></div>
                 <div (click)="this.notification(true)" *ngIf="!roomDetails.notifications" class="notificationOff"></div>
               </div>
@@ -88,7 +87,7 @@
                   </div>
                 </div>
                 <app-comment (spinnerEmmit)="commentsSpinner($event)" [mobile]="false"
-                  [showAuthButton]="userData === undefined" class="test" [theme]="'white'" [userData]=userData
+                  [showAuthButton]="userData === undefined" class="deep-comment" [theme]="'white'" [userData]=userData
                   [id]="commentList?.id"></app-comment>
               </div>
             </div>

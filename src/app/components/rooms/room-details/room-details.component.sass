@@ -119,55 +119,60 @@
   .main-warp
     margin-top: -20px
 //==== comment setting ======
-.test
+
+.deep-comment
   ::ng-deep
     .sortHead-item-dark
       padding: 5px 12px
-      .whiteClass
-        max-height: 600px
+    .whiteClass
+      max-height: 600px
+    .bgWhite
+      border-bottom-right-radius: 20px
+      border-bottom-left-radius: 20px
+    .comment-warp
+      max-height: 400px
+      overflow: auto
+    .comment-warp::-webkit-scrollbar
+      width: 6px
+    .comment-warp::-webkit-scrollbar-track
+      background: #f1f1f1
+      border-radius: 3px
+    .comment-warp::-webkit-scrollbar-thumb
+      background: #0094FF
+      border-radius: 3px
+    .comment-warp
+      padding: 0 12px
+    .forWhite
+      padding: 0 8px
+    .arrowUp
+      display: none !important
+    .wrapCommentDown
+      border-top: 0.5px solid #DDDDDD
+      padding-top: 10px
+    .wrapCommentDown
+      padding-bottom: 15px
+    .commentBoxChange:nth-last-child(n+2)
+      border-bottom: 0.5px solid #DDDDDD
+    .addCommentBox::placeholder
+      font-size: 10px
+      color: #0B1511
+    .comingSoon
+      color: #0b1511
+    .commentName
+      font-weight: 600
+      font-size: 12px
+      color: #0B1511
+    .commentImg
+      width: 20px
+      height: 20px
+    .comment
+      font-size: 10px
+    .darkSize
+      width: 13px
+      height: 13px
+    @media (max-height: 600px)
       .comment-warp
-        padding: 0 12px
-        max-height: 400px
-        overflow: auto
-      .forWhite
-        padding: 0 8px
-      .arrowUp
-        display: none !important
-      .wrapCommentDown
-        border-top: 0.5px solid #DDDDDD
-        padding-top: 7px
-      .commentBoxChange:nth-last-child(n+2)
-        border-bottom: 0.5px solid #DDDDDD
-      .addCommentBox::placeholder
-        font-size: 10px
-        color: #0B1511
-      .comingSoon
-        color: #0b1511
-      .commentName
-        font-weight: 600
-        font-size: 12px
-        color: #0B1511
-      .commentImg
-        width: 20px
-        height: 20px
-      .comment
-        font-size: 10px
-      .darkSize
-        width: 13px
-        height: 13px
-      .comment-warp
-        max-height: 400px
-        overflow: auto
-      .comment-warp::-webkit-scrollbar
-        width: 6px
-
-      .comment-warp::-webkit-scrollbar-track
-        background: #f1f1f1
-        border-radius: 3px
-
-      .comment-warp::-webkit-scrollbar-thumb
-        background: #0094FF
-        border-radius: 3px
+        max-height: 300px
 
 @media (min-width: 1600px)
 
@@ -223,6 +228,7 @@
   background: url("../../../../assets/descEvent/bg-desc-room.png") top right no-repeat #ffffff
   background-size: 50%
   margin-top: -22px
+  min-height: 1000px
 
 .main-input
   margin: auto
@@ -386,3 +392,7 @@
   left: -59px
   bottom: 45px
   display: none
+
+.z-ind::ng-deep
+  .block_spinner_box
+    z-index: 1111

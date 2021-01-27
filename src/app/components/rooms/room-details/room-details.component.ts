@@ -1,15 +1,14 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { PostService } from '../../../services/post.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
-import { Answer } from '../../../models/Answer.model';
-import { User } from '../../../models/User.model';
+import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {PostService} from '../../../services/post.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../app.state';
+import {Answer} from '../../../models/Answer.model';
+import {User} from '../../../models/User.model';
 import _ from 'lodash';
-import { RegistrationComponent } from '../../registration/registration.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import {RegistrationComponent} from '../../registration/registration.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -146,9 +145,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   findAnswer(data) {
-    let findParticipiant = _.findIndex(data.parcipiantAnswers, { 'userId': this.userId });
+    let findParticipiant = _.findIndex(data.parcipiantAnswers, {'userId': this.userId});
     if (findParticipiant === -1) {
-      let findValidators = _.findIndex(data.validatorsAnswers, { 'userId': this.userId });
+      let findValidators = _.findIndex(data.validatorsAnswers, {'userId': this.userId});
       return {
         answer: findValidators !== -1 ? data.validatorsAnswers[findValidators].answer : undefined,
         from: 'validator',
@@ -165,7 +164,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
 
   infoRoomColor(value) {
-    return { 'background': value };
+    return {'background': value};
   }
 
   commentById($event) {
@@ -178,7 +177,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   getCommentRoomColor(color) {
-    return { 'background': color };
+    return {'background': color};
   }
 
   onScrollQuizTemplate() {
@@ -199,7 +198,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   joinToRoom() {
     if (!this.userId) {
-      this.modalService.open(RegistrationComponent, { centered: true });
+      this.modalService.open(RegistrationComponent, {centered: true});
     } else {
       this.disabledButton = true;
       let data = {
@@ -284,9 +283,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   commentTopPosition() {
     if (document.documentElement.scrollTop < 428) {
-      return { 'top': (428 - this.scrollTop) + 'px' };
+      return {'top': (428 - this.scrollTop) + 'px'};
     } else {
-      return { 'top': 0 };
+      return {'top': 0};
     }
   }
 

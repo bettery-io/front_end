@@ -4,21 +4,6 @@
   </div>
   <div *ngIf="nickName === undefined">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
-<!--      <li class="nav-item">-->
-<!--        <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}" routerLink="/event-group"-->
-<!--           (click)="setActiveTab('add')">Create event</a>-->
-<!--      </li>-->
-<!--      <li class="nav-item">-->
-<!--        <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}" routerLink="/eventFeed"-->
-<!--           (click)="setActiveTab('eventFeed')">Event Feed</a>-->
-<!--      </li>-->
-<!--      <li class="nav-item">-->
-<!--        <div class="registration">-->
-<!--          <button type="button" class="btn btn-success" (click)="registrationModal()">Login /-->
-<!--            Registration-->
-<!--          </button>-->
-<!--        </div>-->
-<!--      </li>-->
       <li class="nav-item">
         <div class="loginBox mt-3" (click)="loginWithTorus()">
           <p class="login" style="color: #4E4E4E; font-size: 16px; font-weight: 600; margin-right: 10px">Log in</p>
@@ -27,60 +12,6 @@
       </li>
     </ul>
   </div>
-<!--    <div *ngIf="nickName !== undefined">-->
-<!--      <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'add'}" routerLink="/event-group"-->
-<!--             (click)="setActiveTab('add')">Create event</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'eventFeed'}" routerLink="/eventFeed"-->
-<!--             (click)="setActiveTab('eventFeed')">Event Feed</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item invitation">-->
-<!--          <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'invitation'}" routerLink="/invitation"-->
-<!--             (click)="setActiveTab('invitation')">Invitation</a>-->
-<!--          <p *ngIf="invitationQuantity !== 0" class="badge">{{invitationQuantity}}</p>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'activites'}"-->
-<!--             routerLink="/my-activites" (click)="setActiveTab('activites')">My-->
-<!--            activites</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <div class="circle" [style.background]="avatar"></div>-->
-<!--          <div class="user_email"> {{nickName}}</div>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <div *ngIf="amountSpinner">-->
-<!--            <div class="lds-ripple-small">-->
-<!--              <div></div>-->
-<!--              <div></div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div *ngIf="!amountSpinner">-->
-<!--            <div>-->
-<!--              <p [ngbPopover]="popContent" [popoverTitle]="popTitle" class="loom_balance">-->
-<!--                Balance: {{coinInfo.loomBalance | number:'1.0-2'}} ETH /-->
-<!--                {{ERC20Coins?.loomBalance | number:'1.0-2'}} BET-->
-<!--              <p *ngIf="holdBalance !== 0" class="loom_hold_balance">On hold: {{holdBalance}} $</p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li *ngIf="this.depositGuard()" class="nav-item">-->
-<!--          <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="open(content)">Deposit /-->
-<!--            Withdrawal-->
-<!--          </button>-->
-<!--        </li>-->
-<!--        <li class="nav-item erc20">-->
-<!--          <a class="nav_tabs nav-link" [ngClass]="{'active_tab':this.activeTab === 'erc20'}" routerLink="erc20"-->
-<!--             (click)="setActiveTab('erc20')">Buy IBT Tokens</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <button type="button" class="btn btn-outline-success btn-sm deposit" (click)="logOut()">Log out</button>-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--    </div>-->
 
   <div *ngIf="nickName !== undefined">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0 navbar_row">
@@ -89,14 +20,16 @@
 
           <div class="balancePos mr-4">
             <p *ngIf="!amountSpinner" class="balance colorBl" style="font-weight: 500;">
-              <b>{{coinInfo?.tokenBalance | number:'1.0-2'}}</b> BTY</p>
+              <b>{{coinInfo?.tokenBalance | number:'1.0-2'}}</b> BTY
+            </p>
             <p *ngIf="amountSpinner" class="balance colorBl" style="font-weight: 400;">Calculating...</p>
             <div class="btyImg btyImgNew"></div>
           </div>
 
           <div class="balancePos mr-4">
             <p *ngIf="!amountSpinner" class="balance colorBl" style="font-weight: 500;">
-              <b>{{coinInfo?.loomBalance | number:'1.0-2'}}</b> ETH</p>
+              <b>{{coinInfo?.loomBalance | number:'1.0-2'}}</b> ETH
+            </p>
             <p *ngIf="amountSpinner" class="balance colorBl" style="font-weight: 400;">Calculating...</p>
             <div class="ethImg btyImgNew"></div>
           </div>
@@ -109,7 +42,7 @@
         <img class="circle-img" src="{{avatar}}" alt="avatar">
       </li>
       <li class="nav-item">
-        <div class="colocol"></div>
+        <notifications [userId]="userId"></notifications>
       </li>
     </ul>
   </div>
@@ -131,13 +64,15 @@
       <div class="balanceBox">
         <div class="balancePos">
           <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
-            <b>{{coinInfo?.loomBalance | number:'1.0-2'}}</b> ETH</p>
+            <b>{{coinInfo?.loomBalance | number:'1.0-2'}}</b> ETH
+          </p>
           <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
           <div class="ethImg"></div>
         </div>
         <div class="balancePos">
           <p *ngIf="!amountSpinner" class="balance" style="font-weight: 500;">
-            <b>{{coinInfo?.tokenBalance | number:'1.0-2'}}</b> BTY</p>
+            <b>{{coinInfo?.tokenBalance | number:'1.0-2'}}</b> BTY
+          </p>
           <p *ngIf="amountSpinner" class="balance" style="font-weight: 400;">Calculating...</p>
           <div class="btyImg"></div>
         </div>
@@ -174,7 +109,7 @@
       <ng-template ngbTabContent>
         <div class="modal-body">
           <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
-          <hr/>
+          <hr />
           <p>ETH Balance (ETH Mainnet): {{coinInfo?.mainNetBalance | number:'1.0-4'}}</p>
           <p>ETH Balance (Matic Sidechain): {{coinInfo?.loomBalance | number:'1.0-4'}}</p>
           <div>
@@ -182,10 +117,10 @@
               <div class="input-group">
                 <label class="amount_deposit_label">ETH deposit:</label>
                 <input min="0" class="form-control deposit_input" [(ngModel)]="depositAmount"
-                       (ngModelChange)="changeInput()" placeholder="Amount of ETH" type="number">
+                  (ngModelChange)="changeInput()" placeholder="Amount of ETH" type="number">
                 <span class="input-group-btn">
                   <button *ngIf="!depositSpinner" type="button" class="btn btn-outline-dark"
-                          (click)="deposit()">Deposit</button>
+                    (click)="deposit()">Deposit</button>
                   <div *ngIf="depositSpinner">
                     <div class="lds-ripple-small">
                       <div></div>
@@ -198,7 +133,7 @@
             <p *ngIf="depositError !== undefined" class="deposit_error">{{depositError}}</p>
           </div>
 
-          <hr/>
+          <hr />
           <p>QUIZE Balance (ETH Mainnet): {{ERC20Coins?.mainNetBalance | number:'1.0-4'}}</p>
           <p>QUIZE Balance (Matic Sidechain): {{ERC20Coins?.loomBalance | number:'1.0-4'}}</p>
 
@@ -207,10 +142,10 @@
               <div class="input-group">
                 <label class="amount_deposit_label">QUIZE deposit:</label>
                 <input min="0" class="form-control deposit_input" [(ngModel)]="ERC20depositAmount"
-                       (ngModelChange)="changeInput()" placeholder="Amount of QUIZE" type="number">
+                  (ngModelChange)="changeInput()" placeholder="Amount of QUIZE" type="number">
                 <span class="input-group-btn">
                   <button *ngIf="!depositSpinner" type="button" class="btn btn-outline-dark"
-                          (click)="depositERC20()">Deposit</button>
+                    (click)="depositERC20()">Deposit</button>
                   <div *ngIf="depositSpinner">
                     <div class="lds-ripple-small">
                       <div></div>
@@ -229,7 +164,7 @@
       <ng-template ngbTabContent>
         <div class="modal-body">
           <p>Deposit to the Loom network can take between 5 to 10 minutes.</p>
-          <hr/>
+          <hr />
           <p>ETH Balance (ETH Mainnet): {{coinInfo?.mainNetBalance | number:'1.0-4'}}</p>
           <p>ETH Balance (Matic Sidechain): {{coinInfo?.loomBalance | number:'1.0-4'}}</p>
           <div>
@@ -237,10 +172,10 @@
               <div class="input-group">
                 <label class="amount_deposit_label">ETH withdrawal: </label>
                 <input min="0" class="form-control deposit_input" [(ngModel)]="withdrawalAmount"
-                       (ngModelChange)="changeWithdrawal()" placeholder="Amount of ETH" type="number">
+                  (ngModelChange)="changeWithdrawal()" placeholder="Amount of ETH" type="number">
                 <span class="input-group-btn">
                   <button *ngIf="!withdrawalSpinner" type="button" class="btn btn-outline-dark"
-                          (click)="withdrawal()">Withdrawal</button>
+                    (click)="withdrawal()">Withdrawal</button>
                   <div *ngIf="withdrawalSpinner">
                     <div class="lds-ripple-small">
                       <div></div>
@@ -252,7 +187,7 @@
             </div>
             <p *ngIf="withdrawalError !== undefined" class="deposit_error">{{withdrawalError}}</p>
           </div>
-          <hr/>
+          <hr />
           <p>QUIZE Balance (ETH Mainnet): {{ERC20Coins?.mainNetBalance | number:'1.0-4'}}</p>
           <p>QUIZE Balance (Matic Sidechain): {{ERC20Coins?.loomBalance | number:'1.0-4'}}</p>
           <div>
@@ -260,10 +195,10 @@
               <div class="input-group">
                 <label class="amount_deposit_label">QUIZE withdrawal: </label>
                 <input min="0" class="form-control deposit_input" [(ngModel)]="ERC20withdrawalAmount"
-                       (ngModelChange)="changeWithdrawal()" placeholder="Amount of ETH" type="number">
+                  (ngModelChange)="changeWithdrawal()" placeholder="Amount of ETH" type="number">
                 <span class="input-group-btn">
                   <button *ngIf="!withdrawalSpinner" type="button" class="btn btn-outline-dark"
-                          (click)="withdrawalERC20()">Withdrawal</button>
+                    (click)="withdrawalERC20()">Withdrawal</button>
                   <div *ngIf="withdrawalSpinner">
                     <div class="lds-ripple-small">
                       <div></div>

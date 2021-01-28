@@ -8,13 +8,15 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ShareModule} from '../share/share.module';
 import { TimelineComponent } from './timeline/timeline.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 @NgModule({
   declarations: [
     NavbarComponent,
     SidebarComponent,
-    TimelineComponent
+    TimelineComponent,
+    NotificationsComponent
   ],
     exports: [
         NavbarComponent,

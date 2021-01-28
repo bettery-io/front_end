@@ -37,7 +37,7 @@ export class SetQuestionDesktopComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private http: PostService,
     private modalService: NgbModal,
-    private activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal
   ) {
   }
 

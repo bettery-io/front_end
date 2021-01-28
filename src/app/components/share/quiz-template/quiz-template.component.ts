@@ -329,7 +329,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
         }
         let sendToContract = await contract.participateOnPublicEvent(_question_id, _whichAnswer, _money, this.allUserData.wallet, this.allUserData.verifier);
         if (sendToContract.transactionHash !== undefined) {
-          this.setToDB(answer, dataAnswer, sendToContract.transactionHash, dataAnswer.currencyType);
+          this.setToDB(answer, sendToContract.transactionHash, dataAnswer.currencyType);
         }
       } else if (Number(validator) === 1) {
         let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
@@ -349,19 +349,17 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  setToDB(answer, dataAnswer, transactionHash, currencyType) {
+  setToDB(answer, transactionHash, currencyType) {
     let data = {
-      multy: answer.multy,
       event_id: answer.event_id,
       date: new Date(),
       answer: answer.answer,
       transactionHash: transactionHash,
       userId: this.userData._id,
-      from: 'participant',
       currencyType: currencyType,
       amount: Number(answer.amount)
     };
-    this.answerSub = this.postService.post('answer', data).subscribe(async () => {
+    this.answerSub = this.postService.post('publicEvents/participate', data).subscribe(async () => {
       this.myAnswers.answered = true;
       this.updateUser();
       this.callGetData.next();
@@ -420,12 +418,10 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
       answer: answer.answer,
       transactionHash: transactionHash,
       userId: this.userData._id,
-      from: 'validator',
       currencyType: dataAnswer.currencyType,
-      validated: dataAnswer.validated + 1,
-      amount: 0
+      validated: dataAnswer.validated + 1
     };
-    this.validSub = this.postService.post('answer', data).subscribe(async () => {
+    this.validSub = this.postService.post('publicEvents/validate', data).subscribe(async () => {
       this.myAnswers.answered = true;
       this.callGetData.next();
       this.updateBalance();

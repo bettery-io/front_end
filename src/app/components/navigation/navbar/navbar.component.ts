@@ -86,7 +86,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     this.coinsSub = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
-        this.getMoneyHolder();
+      //  this.getMoneyHolder();
       }
     })
   }
@@ -130,17 +130,18 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   ngOnInit() {
-    let interval = setInterval(async () => {
-      if (this.userWallet !== undefined && this.verifier === "metamask") {
-        let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
-        if (checkSelectedAddress !== this.userWallet) {
-          this.store.dispatch(new UserActions.RemoveUser(0));
-          this.nickName = undefined;
-          this.userWallet = undefined;
-          clearImmediate(interval);
-        }
-      }
-    }, 500)
+    // OLD CODE
+    // let interval = setInterval(async () => {
+    //   if (this.userWallet !== undefined && this.verifier === "metamask") {
+    //     let checkSelectedAddress = await window.web3.currentProvider.selectedAddress
+    //     if (checkSelectedAddress !== this.userWallet) {
+    //       this.store.dispatch(new UserActions.RemoveUser(0));
+    //       this.nickName = undefined;
+    //       this.userWallet = undefined;
+    //       clearImmediate(interval);
+    //     }
+    //   }
+    // }, 500)
 
     this.onDocumentClick = this.onDocumentClick.bind(this);
     document.addEventListener('click', this.onDocumentClick);
@@ -183,30 +184,31 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     this.amountSpinner = false;
   }
 
-  async getMoneyHolder() {
-    let matic = new maticInit(this.verifier);
-    let userWallet = await matic.getUserAccount()
+  // OLD CODE
+  // async getMoneyHolder() {
+  //   let matic = new maticInit(this.verifier);
+  //   let userWallet = await matic.getUserAccount()
 
-    let contract = new Contract()
-    let contr = await contract.publicEventContract();
-    let holdBalance = Number(await contr.methods.onHold(userWallet).call());
-    if (holdBalance > 0) {
-      let web3 = new Web3();
-      this.holdBalance = Number(web3.utils.fromWei(String(holdBalance), 'ether')).toFixed(4);
-      this.getEthPrice(this.holdBalance);
-    } else {
-      this.holdBalance = holdBalance;
-      this.amountSpinner = false;
-    }
-  }
+  //   let contract = new Contract()
+  //   let contr = await contract.publicEventContract();
+  //   let holdBalance = Number(await contr.methods.onHold(userWallet).call());
+  //   if (holdBalance > 0) {
+  //     let web3 = new Web3();
+  //     this.holdBalance = Number(web3.utils.fromWei(String(holdBalance), 'ether')).toFixed(4);
+  //     this.getEthPrice(this.holdBalance);
+  //   } else {
+  //     this.holdBalance = holdBalance;
+  //     this.amountSpinner = false;
+  //   }
+  // }
 
-  async getEthPrice(_holdBalance) {
-    this.getSub = this.getService.get("eth_price").subscribe((price: any) => {
-      let priceData = price.price;
-      this.holdBalance = (_holdBalance * priceData).toFixed(4);
-      this.amountSpinner = false;
-    })
-  }
+  // async getEthPrice(_holdBalance) {
+  //   this.getSub = this.getService.get("eth_price").subscribe((price: any) => {
+  //     let priceData = price.price;
+  //     this.holdBalance = (_holdBalance * priceData).toFixed(4);
+  //     this.amountSpinner = false;
+  //   })
+  // }
 
   open(content) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
@@ -224,126 +226,128 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     this.ERC20withdrawalError = undefined;
   }
 
-  async deposit() {
-    if (this.depositAmount > 0) {
-      if (Number(this.depositAmount) > Number(this.coinInfo.mainNetBalance)) {
-        this.depositError = "You don't have enough money"
-      } else {
-        this.depositSpinner = true;
-        let web3 = new Web3()
-        var value = web3.utils.toWei(this.depositAmount.toString(), 'ether')
-        let matic = new maticInit(this.verifier);
-        let response = await matic.depositEth(value);
-        console.log(response);
-        if (response.message === undefined) {
-          this.modalService.dismissAll()
-          this.depositSpinner = false;
-        } else {
-          this.depositSpinner = false;
-          this.depositError = response.message
-        }
-      }
-    } else {
-      this.depositError = "Must be more than zero"
-    }
-  }
 
-  async withdrawal() {
-    if (this.withdrawalAmount > 0) {
-      if (Number(this.withdrawalAmount) > Number(this.coinInfo.loomBalance)) {
-        this.withdrawalError = "You don't have enough money in Loom network"
-      } else {
-        this.withdrawalSpinner = true;
-        let web3 = new Web3()
-        var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
-        let contract = new Contract()
-        let { withdrawal, sign } = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier)
-        console.log(withdrawal);
-        if (withdrawal.transactionHash !== undefined) {
-          let data = {
-            userId: this.userId,
-            transactionHash: withdrawal.transactionHash,
-            amount: value,
-            coinType: "ether",
-            sign: sign
-          }
-          this.postSub = this.postService.post("withdrawal/init", data)
-            .subscribe(async (x: any) => {
-              this.modalService.dismissAll()
-              this.withdrawalSpinner = false;
-            }, (err) => {
-              console.log(err);
-              this.withdrawalSpinner = false;
-              this.withdrawalError = err
-            })
-        } else {
-          this.withdrawalSpinner = false;
-          this.withdrawalError = withdrawal.message
-        }
-      }
-    } else {
-      this.withdrawalError = "Must be more than zero"
-    }
-  }
+  // OLD CODE
+  // async deposit() {
+  //   if (this.depositAmount > 0) {
+  //     if (Number(this.depositAmount) > Number(this.coinInfo.mainNetBalance)) {
+  //       this.depositError = "You don't have enough money"
+  //     } else {
+  //       this.depositSpinner = true;
+  //       let web3 = new Web3()
+  //       var value = web3.utils.toWei(this.depositAmount.toString(), 'ether')
+  //       let matic = new maticInit(this.verifier);
+  //       let response = await matic.depositEth(value);
+  //       console.log(response);
+  //       if (response.message === undefined) {
+  //         this.modalService.dismissAll()
+  //         this.depositSpinner = false;
+  //       } else {
+  //         this.depositSpinner = false;
+  //         this.depositError = response.message
+  //       }
+  //     }
+  //   } else {
+  //     this.depositError = "Must be more than zero"
+  //   }
+  // }
 
-  async depositERC20() {
-    if (this.ERC20depositAmount > 0) {
-      if (Number(this.ERC20depositAmount) > Number(this.ERC20Coins.mainNetBalance)) {
-        this.ERC20depositError = "You don't have enough tokens in Ethereum network"
-      } else {
-        this.depositSpinner = true;
-        let web3 = new Web3()
-        var value = web3.utils.toWei(this.ERC20depositAmount.toString(), 'ether')
-        let matic = new maticInit(this.verifier);
-        let response = await matic.depositERC20Token(value)
-        if (response.message === undefined) {
-          this.modalService.dismissAll()
-          this.depositSpinner = false;
-        } else {
-          this.depositSpinner = false;
-          this.ERC20depositError = response.message
-        }
-      }
-    } else {
-      this.ERC20depositError = "Value must be more that 0"
-    }
-  }
+  // async withdrawal() {
+  //   if (this.withdrawalAmount > 0) {
+  //     if (Number(this.withdrawalAmount) > Number(this.coinInfo.loomBalance)) {
+  //       this.withdrawalError = "You don't have enough money in Loom network"
+  //     } else {
+  //       this.withdrawalSpinner = true;
+  //       let web3 = new Web3()
+  //       var value = web3.utils.toWei(this.withdrawalAmount.toString(), 'ether');
+  //       let contract = new Contract()
+  //       let { withdrawal, sign } = await contract.withdrawalWETHToken(this.userWallet, value, this.verifier)
+  //       console.log(withdrawal);
+  //       if (withdrawal.transactionHash !== undefined) {
+  //         let data = {
+  //           userId: this.userId,
+  //           transactionHash: withdrawal.transactionHash,
+  //           amount: value,
+  //           coinType: "ether",
+  //           sign: sign
+  //         }
+  //         this.postSub = this.postService.post("withdrawal/init", data)
+  //           .subscribe(async (x: any) => {
+  //             this.modalService.dismissAll()
+  //             this.withdrawalSpinner = false;
+  //           }, (err) => {
+  //             console.log(err);
+  //             this.withdrawalSpinner = false;
+  //             this.withdrawalError = err
+  //           })
+  //       } else {
+  //         this.withdrawalSpinner = false;
+  //         this.withdrawalError = withdrawal.message
+  //       }
+  //     }
+  //   } else {
+  //     this.withdrawalError = "Must be more than zero"
+  //   }
+  // }
 
-  async withdrawalERC20() {
-    if (this.ERC20withdrawalAmount > 0) {
-      if (Number(this.ERC20withdrawalAmount) > Number(this.ERC20Coins.loomBalance)) {
-        this.ERC20withdrawalError = "You don't have enough tokens in Ethereum network"
-      } else {
-        this.withdrawalSpinner = true;
-        let web3 = new Web3()
-        var value = web3.utils.toWei(this.ERC20withdrawalAmount.toString(), 'ether');
-        let matic = new maticInit(this.verifier);
-        let withdrawal = await matic.withdraw(value, false)
-        if (withdrawal.transactionHash !== undefined) {
-          let data = {
-            userId: this.userId,
-            transactionHash: withdrawal.transactionHash,
-            amount: value,
-            coinType: "token"
-          }
-          this.postSub = this.postService.post("withdrawal/init", data)
-            .subscribe(async (x: any) => {
-              this.modalService.dismissAll()
-              this.withdrawalSpinner = false;
-            }, (err) => {
-              console.log(err);
-              this.withdrawalSpinner = false;
-              this.ERC20withdrawalError = err
-            })
-        } else {
-          this.withdrawalSpinner = false;
-          this.ERC20withdrawalError = withdrawal.message
-        }
-      }
-    } else {
-      this.ERC20withdrawalError = "Value must be more that 0"
-    }
-  }
+  // async depositERC20() {
+  //   if (this.ERC20depositAmount > 0) {
+  //     if (Number(this.ERC20depositAmount) > Number(this.ERC20Coins.mainNetBalance)) {
+  //       this.ERC20depositError = "You don't have enough tokens in Ethereum network"
+  //     } else {
+  //       this.depositSpinner = true;
+  //       let web3 = new Web3()
+  //       var value = web3.utils.toWei(this.ERC20depositAmount.toString(), 'ether')
+  //       let matic = new maticInit(this.verifier);
+  //       let response = await matic.depositERC20Token(value)
+  //       if (response.message === undefined) {
+  //         this.modalService.dismissAll()
+  //         this.depositSpinner = false;
+  //       } else {
+  //         this.depositSpinner = false;
+  //         this.ERC20depositError = response.message
+  //       }
+  //     }
+  //   } else {
+  //     this.ERC20depositError = "Value must be more that 0"
+  //   }
+  // }
+
+  // async withdrawalERC20() {
+  //   if (this.ERC20withdrawalAmount > 0) {
+  //     if (Number(this.ERC20withdrawalAmount) > Number(this.ERC20Coins.loomBalance)) {
+  //       this.ERC20withdrawalError = "You don't have enough tokens in Ethereum network"
+  //     } else {
+  //       this.withdrawalSpinner = true;
+  //       let web3 = new Web3()
+  //       var value = web3.utils.toWei(this.ERC20withdrawalAmount.toString(), 'ether');
+  //       let matic = new maticInit(this.verifier);
+  //       let withdrawal = await matic.withdraw(value, false)
+  //       if (withdrawal.transactionHash !== undefined) {
+  //         let data = {
+  //           userId: this.userId,
+  //           transactionHash: withdrawal.transactionHash,
+  //           amount: value,
+  //           coinType: "token"
+  //         }
+  //         this.postSub = this.postService.post("withdrawal/init", data)
+  //           .subscribe(async (x: any) => {
+  //             this.modalService.dismissAll()
+  //             this.withdrawalSpinner = false;
+  //           }, (err) => {
+  //             console.log(err);
+  //             this.withdrawalSpinner = false;
+  //             this.ERC20withdrawalError = err
+  //           })
+  //       } else {
+  //         this.withdrawalSpinner = false;
+  //         this.ERC20withdrawalError = withdrawal.message
+  //       }
+  //     }
+  //   } else {
+  //     this.ERC20withdrawalError = "Value must be more that 0"
+  //   }
+  // }
 
   // @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
   //   this.logOut()

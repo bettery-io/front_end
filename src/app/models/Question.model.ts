@@ -10,7 +10,6 @@ export interface Question {
     parcipiant: Object[];
     validators: Object[];
     validatorsAmount: number;
-    money: number;
     finalAnswer: number;
     transactionHash: number;
     validated: number;

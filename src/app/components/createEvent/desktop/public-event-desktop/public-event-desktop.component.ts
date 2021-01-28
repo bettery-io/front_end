@@ -1,19 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-//
-// @Component({
-//   selector: 'app-public-event-desktop',
-//   templateUrl: './public-event-desktop.component.html',
-//   styleUrls: ['./public-event-desktop.component.sass']
-// })
-// export class PublicEventDesktopComponent implements OnInit {
-//
-//   constructor() { }
-//
-//   ngOnInit(): void {
-//   }
-//
-// }
-
 import {Component, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
@@ -199,14 +183,11 @@ export class PublicEventDesktopComponent implements OnDestroy {
       startTime: this.getStartTime(),
       endTime: Number(this.getEndTime()),
       private: false, // TO DO
-      parcipiant: [], // TO DO
-      validators: [], // TO DO
       validated: 0,
       validatorsAmount: this.formData.expertsCountType === "company" ? 0 : this.formData.expertsCount, // TO DO
-      money: 0, // TO DO
       finalAnswer: undefined,
       transactionHash: transactionHash,
-      getCoinsForHold: 0,
+      getCoinsForHold: 0, // TO DO
       currencyType: this.formData.tokenType,
       roomName: this.formData.roomName,
       roomColor: this.formData.roomColor,

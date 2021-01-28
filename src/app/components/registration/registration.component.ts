@@ -8,8 +8,9 @@ import * as UserActions from '../../actions/user.actions';
 import { PostService } from '../../services/post.service';
 import Web3 from 'web3';
 import { Router } from "@angular/router";
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import web3Obj from '../../helpers/torus'
+import { Subscription } from 'rxjs';
 
 
 
@@ -27,7 +28,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   web3: Web3 | undefined = null;
   metamaskError: string = undefined;
   userWallet: string = undefined;
-  validateSubscribe;
+  validateSubscribe: Subscription;
+  torusRegistSub: Subscription;
+  registSub: Subscription;
   loginWithMetamsk = false;
   spinner;
 
@@ -73,7 +76,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       verifier: userInfo.verifier,
       verifierId: userInfo.verifierId,
     }
-    this.http.post("user/torus_regist", data)
+    this.torusRegistSub = this.http.post("user/torus_regist", data)
       .subscribe(
         (x: any) => {
           console.log(x);
@@ -198,7 +201,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     }
 
 
-    this.http.post("user/regist", data)
+    this.registSub = this.http.post("user/regist", data)
       .subscribe(
         (x: any) => {
           this.addUser(
@@ -263,7 +266,15 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //   this.validateSubscribe.unsubscribe();
+    if (this.validateSubscribe) {
+      this.validateSubscribe.unsubscribe()
+    }
+    if (this.torusRegistSub) {
+      this.torusRegistSub.unsubscribe()
+    }
+    if (this.registSub) {
+      this.registSub.unsubscribe();
+    }
   }
 
 }

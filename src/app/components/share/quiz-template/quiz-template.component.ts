@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
 import { User } from '../../../models/User.model';
 import _ from 'lodash';
 import { Answer } from '../../../models/Answer.model';
@@ -14,16 +14,21 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import web3Obj from '../../../helpers/torus';
 import maticInit from '../../../contract/maticInit.js';
 import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'quiz-template',
   templateUrl: './quiz-template.component.html',
   styleUrls: ['./quiz-template.component.sass']
 })
-export class QuizTemplateComponent implements OnInit, OnChanges {
+export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   faCheck = faCheck;
   allUserData: User = undefined;
   amount: number;
+  torusSub: Subscription
+  answerSub: Subscription
+  validSub: Subscription
+  updateSub: Subscription
 
   @Input() joinRoom: boolean;
 
@@ -239,7 +244,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       verifier: userInfo.verifier,
       verifierId: userInfo.verifierId,
     };
-    this.postService.post('user/torus_regist', data)
+    this.torusSub = this.postService.post('user/torus_regist', data)
       .subscribe(
         (x: any) => {
           this.addUser(
@@ -359,7 +364,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       currencyType: currencyType,
       amount: Number(answer.amount)
     };
-    this.postService.post('answer', data).subscribe(async () => {
+    this.answerSub = this.postService.post('answer', data).subscribe(async () => {
       this.myAnswers.answered = true;
       this.updateUser();
       this.callGetData.next();
@@ -423,7 +428,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
       validated: dataAnswer.validated + 1,
       amount: 0
     };
-    this.postService.post('answer', data).subscribe(async () => {
+    this.validSub = this.postService.post('answer', data).subscribe(async () => {
       this.myAnswers.answered = true;
       this.callGetData.next();
       this.updateBalance();
@@ -464,7 +469,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     let data = {
       id: this.allUserData._id
     };
-    this.postService.post('user/getUserById', data)
+    this.updateSub = this.postService.post('user/getUserById', data)
       .subscribe(
         (currentUser: User) => {
           this.store.dispatch(new UserActions.UpdateUser({
@@ -559,6 +564,21 @@ export class QuizTemplateComponent implements OnInit, OnChanges {
     }
     if (a === undefined && b === undefined) {
       return 0;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.torusSub) {
+      this.torusSub.unsubscribe();
+    }
+    if (this.answerSub) {
+      this.answerSub.unsubscribe();
+    }
+    if (this.validSub) {
+      this.validSub.unsubscribe();
+    }
+    if (this.updateSub) {
+      this.updateSub.unsubscribe();
     }
   }
 }

@@ -10,7 +10,6 @@ import {RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module} from 'ng-recaptcha';
 
 import {userReducer} from './reducers/user.reducer';
 import {coinsReducer} from './reducers/coins.reducer';
-import {invitesReducer} from './reducers/invites.reducer';
 import {createEventReducer} from './reducers/newEvent.reducer';
 
 import {AppComponent} from './app.component';
@@ -66,7 +65,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         StoreModule.forRoot({
             user: userReducer,
             coins: coinsReducer,
-            invites: invitesReducer,
             createEvent: createEventReducer
         }),
         NgbModule,

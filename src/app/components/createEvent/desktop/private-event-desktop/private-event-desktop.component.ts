@@ -1,19 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-//
-// @Component({
-//   selector: 'app-private-event-desktop',
-//   templateUrl: './private-event-desktop.component.html',
-//   styleUrls: ['./private-event-desktop.component.sass']
-// })
-// export class PrivateEventDesktopComponent implements OnInit {
-//
-//   constructor() { }
-//
-//   ngOnInit(): void {
-//   }
-//
-// }
-
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {GetService} from '../../../../services/get.service';
 import {PostService} from '../../../../services/post.service';

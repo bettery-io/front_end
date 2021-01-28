@@ -4,7 +4,6 @@ import { AppState } from '../../../app.state';
 import { Coins } from '../../../models/Coins.model';
 import * as CoinsActios from '../../../actions/coins.actions';
 import * as UserActions from '../../../actions/user.actions';
-import * as InvitesAction from '../../../actions/invites.actions';
 import maticInit from '../../../contract/maticInit.js'
 
 import Web3 from 'web3';
@@ -41,7 +40,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   userId: number;
   userSub: Subscription;
   coinsSub: Subscription;
-  invitesSub: Subscription;
   postSub: Subscription;
   getSub: Subscription;
   userHistory: any = []
@@ -81,7 +79,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
         this.getHistoryUsers(historyData)
-        this.getInvitation()
         this.updateBalance()
       }
     });
@@ -92,10 +89,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
         this.getMoneyHolder();
       }
     })
-
-    // this.invitesSub = this.store.select("invites").subscribe((x) => {
-     
-    // })
   }
 
   ngDoCheck() {
@@ -134,17 +127,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
         this.userHistory = z;
       }
     }
-  }
-
-  getInvitation() {
-    let data = {
-      id: this.userId
-    }
-    this.postSub = this.postService.post("my_activites/invites", data)
-      .subscribe(async (x: any) => {
-        let amount = x.length
-        this.store.dispatch(new InvitesAction.UpdateInvites({ amount: amount }));
-      })
   }
 
   ngOnInit() {
@@ -480,9 +462,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     }
     if (this.coinsSub) {
       this.coinsSub.unsubscribe();
-    }
-    if (this.invitesSub) {
-      this.invitesSub.unsubscribe();
     }
     if (this.postSub) {
       this.postSub.unsubscribe();

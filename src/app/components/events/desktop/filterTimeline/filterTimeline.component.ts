@@ -2,11 +2,11 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
-  selector: 'app-timeline',
-  templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.sass']
+  selector: 'filterTimeline',
+  templateUrl: './filterTimeline.component.html',
+  styleUrls: ['./filterTimeline.component.sass']
 })
-export class TimelineComponent implements OnInit {
+export class FilterTimelineComponent implements OnInit {
   @Output() closeEmmit = new EventEmitter();
   @Output() filterData = new EventEmitter();
   form: FormGroup;

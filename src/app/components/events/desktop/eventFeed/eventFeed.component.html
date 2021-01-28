@@ -111,7 +111,7 @@
   </div>
 </div>
 
-<app-timeline *ngIf="timelineActive"
+<filterTimeline *ngIf="timelineActive"
               (closeEmmit)="openTimeline($event)"
               (filterData)="letsFilterData($event)"
-></app-timeline>
+></filterTimeline>

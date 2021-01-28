@@ -7,19 +7,16 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ShareModule} from '../share/share.module';
-import { TimelineComponent } from './timeline/timeline.component';
 
 
 @NgModule({
   declarations: [
     NavbarComponent,
-    SidebarComponent,
-    TimelineComponent
+    SidebarComponent
   ],
     exports: [
         NavbarComponent,
-        SidebarComponent,
-        TimelineComponent
+        SidebarComponent
     ],
   imports: [
     CommonModule,

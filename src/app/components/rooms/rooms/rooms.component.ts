@@ -8,6 +8,7 @@ import { createEventAction } from '../../../actions/newEvent.actions';
 import * as _ from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RegistrationComponent } from '../../registration/registration.component';
+import {EventsTemplatesDesktopComponent} from "../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component";
 
 @Component({
   selector: 'app-rooms',
@@ -317,5 +318,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
     if (this.joinedRoomSub) {
       this.joinedRoomSub.unsubscribe();
     }
+  }
+  openCreateEventModal() {
+    this.modalService.open(EventsTemplatesDesktopComponent, {centered: true });
   }
 }

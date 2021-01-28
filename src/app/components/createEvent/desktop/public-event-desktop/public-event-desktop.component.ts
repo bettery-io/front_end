@@ -102,12 +102,6 @@ export class PublicEventDesktopComponent implements OnDestroy {
     }
   }
 
-  copyToClickBoard() {
-    let href = window.location.hostname
-    let path = href == "localhost" ? 'http://localhost:4200' : href
-    this._clipboardService.copy(`${path}/public_event/${this.quizData._id}`)
-  }
-
   generateID() {
     let data = {
       id: this.host[0]._id,

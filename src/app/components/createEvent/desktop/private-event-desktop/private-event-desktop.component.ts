@@ -74,12 +74,6 @@ export class PrivateEventDesktopComponent implements OnInit, OnDestroy {
     this.goBack.next();
   }
 
-  copyToClickBoard() {
-    let href = window.location.hostname
-    let path = href == "localhost" ? 'http://localhost:4200' : href
-    this._clipboardService.copy(`${path}/private_event/${this.eventData._id}`)
-  }
-
   generateID() {
     let data = {
       id: this.host[0]._id,

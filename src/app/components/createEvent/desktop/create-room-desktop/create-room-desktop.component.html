@@ -18,7 +18,7 @@
       </div>
     </div>
   </form>
-  <div class="borderLine"></div>
+  <div *ngIf="allRooms?.length > 0" class="borderLine"></div>
 
   <div *ngIf="r.createNewRoom.value == 'exist'">
     <form [formGroup]="existRoom">
@@ -81,7 +81,7 @@
           </div>
         </div>
       </div>
-      <div class="buttonBox buttonBox_1">
+      <div class="buttonBox buttonBox_1" [ngClass]="allRooms?.length > 0 && 'mt-50'">
         <button type="button" class="cancel" (click)="cancel()">Back</button>
         <button type="button" class="next" (click)="createRoom()">Next</button>
       </div>

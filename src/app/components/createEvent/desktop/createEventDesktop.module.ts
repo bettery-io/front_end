@@ -5,12 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
-// import { PublicEventFormComponent } from './public-event-form/public-event-form.component';
-// import { PrivateEventFormComponent } from './private-event-form/private-event-form.component';
-// import { EventGroupComponent } from './event-group/event-group.component';
-import {AppModule} from '../../../app.module';
 import { EventsTemplatesDesktopComponent } from './events-templates-desktop/events-templates-desktop.component';
 import { SetQuestionDesktopComponent } from './set-question-desktop/set-question-desktop.component';
 import {ShareModule} from "../../share/share.module";
@@ -29,11 +23,6 @@ import { PrivateEventDesktopComponent } from './private-event-desktop/private-ev
     ReactiveFormsModule,
     ShareModule,
     RouterModule,
-    // RouterModule.forChild([
-    // {path: 'event-group', component: EventGroupComponent},
-    // {path: 'create-public-event', component: PublicEventFormComponent},
-    // {path: 'create-private-event', component: PrivateEventFormComponent},
-    // ]),
   ],
     declarations: [
       EventsTemplatesDesktopComponent,
@@ -42,9 +31,6 @@ import { PrivateEventDesktopComponent } from './private-event-desktop/private-ev
       MakeRulesDesktopComponent,
       PublicEventDesktopComponent,
       PrivateEventDesktopComponent,
-        // PublicEventFormComponent,
-        // PrivateEventFormComponent,
-        // EventGroupComponent,
     ]
 })
 export class CreateEventDesktopModule { }

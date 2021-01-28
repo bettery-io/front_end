@@ -8,6 +8,7 @@ import {PostService} from '../../../../services/post.service';
 import {Subscription} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RegistrationComponent} from '../../../registration/registration.component';
+import {EventsTemplatesDesktopComponent} from "../../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component";
 
 
 @Component({
@@ -278,5 +279,9 @@ export class EventFeedComponent implements OnDestroy {
     this.showEnd = data.showEnd;
 
     this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord, this.activeBtn);
+  }
+
+  openCreateEventModal() {
+    this.modalService.open(EventsTemplatesDesktopComponent, {centered: true });
   }
 }

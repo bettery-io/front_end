@@ -121,7 +121,7 @@
         </p>
       </div>
       <div class="soon-btn">
-        <button routerLink="/create-event">Create Room</button>
+        <button (click)="openCreateEventModal()">Create Room</button>
       </div>
     </div>
 
@@ -138,14 +138,10 @@
           Check out your timeline to join some Events or look for interesting Rooms to join if you haven't already
         </p>
       </div>
-      <div class="soon-btn">
-        <button class="join_event" routerLink="/join">
-          <div class="searchEvent-img"></div>
-          <div>JOIN</div>
-        </button>
+      <div class="soon-btn marginBtn">
         <button class="join_room" (click)="showAllRooms()">
           <div class="searchRoom-img"></div>
-          <div>ROOMS</div>
+          <div>BROWSE ROOMS</div>
         </button>
       </div>
     </div>

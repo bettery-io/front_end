@@ -1,3 +1,36 @@
 <div>
-    <div class="colocol"></div>
+    <div (click)="this.toggleNavbar()" *ngIf="this.colocol" class="colocolRed"></div>
+    <div (click)="this.toggleNavbar()" *ngIf="!this.colocol" class="colocol"></div>
+    <div *ngIf="this.navbar" class="notif_box">
+        <div>
+            <div *ngIf="this.notifData.length != 0">
+                <div class="info_box">
+                    <p class="info">{{unreadNotif()}} Unread Notifications</p>
+                    <div *ngIf="unreadNotif() != 0" (click)="this.sendReadAll()" class="letter"></div>
+                </div>
+                <div class="main_box">
+                    <div class="box" *ngFor="let notif of notifData" [ngStyle]="getBackgrond(notif)">
+                        <div>
+                            <img class="avatar" src={{notif.userAvatar}} alt="#" referrerpolicy="no-referrer">
+                        </div>
+                        <div style="cursor: pointer;">
+                            <p class="event_creator">{{notif.userName}} just create new events</p>
+                            <p class="event_details">An event will be held on {{timeCreating(notif.eventEnd)}} and ...
+                            </p>
+                        </div>
+                        <div class="unreadBox">
+                            <div (click)="this.sendRead(notif.id)" *ngIf="!notif.read" class="letterUnread"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <p class="clear" (click)="this.clearAll()">Clear all</p>
+                </div>
+            </div>
+            <div *ngIf="this.notifData.length == 0">
+                <p class="info">No Unread Notifications</p>
+                <p class="info_text">Join more Rooms or Events to stay notified.</p>
+            </div>
+        </div>
+    </div>
 </div>

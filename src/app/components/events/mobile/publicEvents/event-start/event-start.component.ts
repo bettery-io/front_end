@@ -226,7 +226,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
             x.listParticipantEvents,
             x.listValidatorEvents,
             x.historyTransaction,
-            x.invitationList,
             x.avatar,
             x._id,
             x.verifier
@@ -245,7 +244,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     listParticipantEvents: Object,
     listValidatorEvents: Object,
     historyTransaction: Object,
-    invitationList: Object,
     color: string,
     _id: number,
     verifier: string
@@ -260,7 +258,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
-      invitationList: invitationList,
       avatar: color,
       verifier: verifier
     }))

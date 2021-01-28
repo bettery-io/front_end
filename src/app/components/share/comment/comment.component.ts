@@ -356,7 +356,6 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
             x.listParticipantEvents,
             x.listValidatorEvents,
             x.historyTransaction,
-            x.invitationList,
             x.avatar,
             x._id,
             x.verifier
@@ -374,7 +373,6 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     listParticipantEvents: object,
     listValidatorEvents: object,
     historyTransaction: object,
-    invitationList: object,
     color: string,
     _id: number,
     verifier: string
@@ -389,7 +387,6 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
-      invitationList: invitationList,
       avatar: color,
       verifier: verifier
     }));

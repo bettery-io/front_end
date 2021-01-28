@@ -398,7 +398,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
             x.listParticipantEvents,
             x.listValidatorEvents,
             x.historyTransaction,
-            x.invitationList,
             x.avatar,
             x._id,
             x.verifier
@@ -416,7 +415,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     listParticipantEvents: Object,
     listValidatorEvents: Object,
     historyTransaction: Object,
-    invitationList: Object,
     color: string,
     _id: number,
     verifier: string
@@ -431,7 +429,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
-      invitationList: invitationList,
       avatar: color,
       verifier: verifier
     }))

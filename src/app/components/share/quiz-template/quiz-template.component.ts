@@ -255,7 +255,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
             x.listParticipantEvents,
             x.listValidatorEvents,
             x.historyTransaction,
-            x.invitationList,
             x.avatar,
             x._id,
             x.verifier
@@ -279,7 +278,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     listParticipantEvents: object,
     listValidatorEvents: object,
     historyTransaction: object,
-    invitationList: object,
     color: string,
     _id: number,
     verifier: string
@@ -294,7 +292,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
-      invitationList: invitationList,
       avatar: color,
       verifier: verifier
     }));
@@ -481,7 +478,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
             listParticipantEvents: currentUser.listParticipantEvents,
             listValidatorEvents: currentUser.listValidatorEvents,
             historyTransaction: currentUser.historyTransaction,
-            invitationList: currentUser.invitationList,
             avatar: currentUser.avatar,
             verifier: currentUser.verifier
           }));

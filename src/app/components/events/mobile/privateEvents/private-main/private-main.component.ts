@@ -166,7 +166,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
             x.listParticipantEvents,
             x.listValidatorEvents,
             x.historyTransaction,
-            x.invitationList,
             x.avatar,
             x._id,
             x.verifier
@@ -184,7 +183,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     listParticipantEvents: object,
     listValidatorEvents: object,
     historyTransaction: object,
-    invitationList: object,
     color: string,
     _id: number,
     verifier: string
@@ -199,7 +197,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
-      invitationList: invitationList,
       avatar: color,
       verifier: verifier
     }));

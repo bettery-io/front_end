@@ -88,7 +88,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             x.listParticipantEvents,
             x.listValidatorEvents,
             x.historyTransaction,
-            x.invitationList,
             x.avatar,
             x._id,
             x.verifier
@@ -155,7 +154,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
                 x.listParticipantEvents,
                 x.listValidatorEvents,
                 x.historyTransaction,
-                x.invitationList,
                 x.avatar,
                 x._id,
                 x.verifier);
@@ -212,7 +210,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             [],
             [],
             [],
-            [],
             color,
             x._id,
             x.verifier
@@ -236,7 +233,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     listParticipantEvents: Object,
     listValidatorEvents: Object,
     historyTransaction: Object,
-    invitationList: Object,
     color: string,
     _id: number,
     verifier: string
@@ -251,7 +247,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       listParticipantEvents: listParticipantEvents,
       listValidatorEvents: listValidatorEvents,
       historyTransaction: historyTransaction,
-      invitationList: invitationList,
       avatar: color,
       verifier: verifier
     }))

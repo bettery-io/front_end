@@ -5,7 +5,6 @@ import { Coins } from '../../../models/Coins.model';
 import * as CoinsActios from '../../../actions/coins.actions';
 import * as UserActions from '../../../actions/user.actions';
 import * as InvitesAction from '../../../actions/invites.actions';
-import { RegistrationComponent } from '../../registration/registration.component';
 import maticInit from '../../../contract/maticInit.js'
 
 import Web3 from 'web3';
@@ -38,7 +37,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   amountSpinner: boolean = true;
   depositSpinner: boolean = false;
   withdrawalSpinner: boolean = false;
-  activeTab: string = undefined;
   userWallet: string = undefined;
   userId: number;
   userSub: Subscription;
@@ -46,7 +44,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   invitesSub: Subscription;
   postSub: Subscription;
   getSub: Subscription;
-  invitationQuantity = null;
   userHistory: any = []
   faReply = faReply
   faShare = faShare
@@ -81,7 +78,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
         this.verifier = x[0].verifier
         this.avatar = x[0].avatar;
         this.userId = x[0]._id;
-        this.activeTab = "eventFeed"
 
         let historyData = _.orderBy(x[0].historyTransaction, ['date'], ['desc']);
         this.getHistoryUsers(historyData)
@@ -97,11 +93,9 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
       }
     })
 
-    this.invitesSub = this.store.select("invites").subscribe((x) => {
-      if (x.length !== 0) {
-        this.invitationQuantity = x[0].amount
-      }
-    })
+    // this.invitesSub = this.store.select("invites").subscribe((x) => {
+     
+    // })
   }
 
   ngDoCheck() {
@@ -179,10 +173,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     }
   }
 
-  setActiveTab(data) {
-    this.activeTab = data;
-  }
-
   async updateBalance() {
     let web3 = new Web3(this.verifier === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider);
     let mainBalance = await web3.eth.getBalance(this.userWallet);
@@ -234,11 +224,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
       this.holdBalance = (_holdBalance * priceData).toFixed(4);
       this.amountSpinner = false;
     })
-  }
-
-
-  registrationModal() {
-    this.modalService.open(RegistrationComponent);
   }
 
   open(content) {

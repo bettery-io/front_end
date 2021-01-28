@@ -7,12 +7,14 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ShareModule} from '../share/share.module';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 @NgModule({
   declarations: [
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    NotificationsComponent
   ],
     exports: [
         NavbarComponent,

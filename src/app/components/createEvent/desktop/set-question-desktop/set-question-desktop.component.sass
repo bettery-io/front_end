@@ -1,0 +1,190 @@
+.box
+  display: flex
+  flex-direction: column
+  margin-left: 16px
+  margin-right: 16px
+
+.name
+  font-family: 'Open Sans', sans-serif
+  font-style: normal
+  font-weight: bold
+  font-size: 12px
+  line-height: 16px
+  text-transform: uppercase
+  color: #0B1511
+  display: flex
+
+.img
+  width: 24px
+  height: 24px
+
+.text
+  left: 5px
+  top: 3px
+  position: relative
+
+.question
+  background: rgba(50, 58, 64, 0.96)
+  border-radius: 5px
+  min-height: 48px
+  height: auto
+  color: #0B1511
+  background: #FBFBFB
+  border: 1px solid #CBCBCB
+
+.question::placeholder
+  font-family: 'Open Sans', sans-serif
+  font-style: normal
+  font-weight: bold
+  font-size: 14px
+  line-height: 27px
+  display: flex
+  text-align: center
+  padding-top: 8px
+  color: #7D7D7D
+
+.answer
+  border: 1px solid #CBCBCB
+  color: #0B1511
+  width: 100%
+  min-height: 48px
+  height: auto
+  border-radius: 5px
+
+.answer::placeholder
+  font-family: 'Open Sans', sans-serif
+  font-style: normal
+  font-weight: 500
+  font-size: 12px
+  line-height: 16px
+  color: #7D7D7D
+  padding-left: 19px
+
+.adapting::placeholder
+  font-size: 10px
+  font-weight: 500
+
+.iconBox
+  background: url("../../../../../assets/create-event/desktop/green+.png") center center no-repeat
+  background-size: contain
+  width: 24px
+  height: 24px
+
+.add
+  background-color: transparent
+  border: 0px
+  margin-top: 10px
+  margin-bottom: 16px
+  display: flex
+  align-items: center
+
+.addText
+  font-family: 'Open Sans', sans-serif
+  font-style: normal
+  font-weight: 600
+  font-size: 12px
+  line-height: 16px
+  color: #54DD96
+  padding-left: 8px
+
+//.iconPlus
+//  color: #FFD300
+//  position: relative
+//  top: -1px
+//  left: 7px
+
+.border
+  border: 0.5px solid #B6B6B6
+  margin-left: 16px
+  margin-right: 16px
+
+.optional
+  font-weight: lighter
+  font-size: 12px
+  text-transform: lowercase
+
+.cancel
+  background: #C4C4C4
+  border-radius: 8px
+  border: 0px
+  height: 48px
+  margin-right: 15px
+  flex: 1
+  font-weight: bold
+  font-size: 16px
+  line-height: 22px
+
+.next
+  background: #FDD92A
+  border-radius: 8px
+  border: 0px
+  height: 48px
+  flex: 1
+  font-weight: bold
+  font-size: 16px
+  line-height: 22px
+
+.buttonBox
+  margin-top: 23px
+  display: flex
+  overflow: auto
+  text-align: center
+  padding: 0 15px 14px 15px
+
+.quize_validation_error
+  font-family: 'Open Sans', sans-serif
+  font-style: normal
+  font-weight: 600
+  font-size: 10px
+  line-height: 14px
+  text-align: right
+  color: #EC0100
+
+.is_invalid
+  border: 1px solid #EC0100 !important
+
+.inputBox
+  position: relative
+
+.deleteButtonPos
+  position: absolute
+  right: 10px
+  top: 13px
+
+.trashImg
+  width: 16px
+  height: 16px
+  background: url("../../../../../assets/create-event/desktop/vidro.png") left center no-repeat
+  background-size: contain
+
+.deleteButton
+  background-color: transparent
+  border: none
+
+
+@media (max-height: 1024px)
+  .buttonBox
+    position: absolute
+    bottom: 0
+    width: 100%
+    padding: 0 15px 10px 15px
+
+@media (max-height: 800px)
+  .buttonBox
+    position: relative
+    margin: 23px auto 0 auto
+    width: 100%
+    padding: 0 15px 10px 15px
+
+
+@media (min-width: 1024px) and (min-height: 667px)
+  .buttonBox
+    position: relative !important
+
+@media (max-height: 568px)
+  .buttonBox
+    width: 100%
+    padding: 0 15px 10px 15px
+
+
+

@@ -1,0 +1,58 @@
+<div>
+  <form [formGroup]="questionForm">
+    <div class="box">
+      <label for="Question" class="name">
+        <span class="text">Set topic</span>
+      </label>
+      <input type="text" formControlName="question" class="question" id="Question"
+                placeholder="Enter topic..."
+                [ngClass]="{ 'is_invalid': submitted && f.question.errors }">
+      <div *ngIf="submitted && f.question.errors">
+        <small *ngIf="f.question.errors.required" class="form-text quize_validation_error">Please enter the
+          question</small>
+      </div>
+    </div>
+
+    <div class="box" style="margin-top:25px;">
+      <label class="name">
+        <span class="text">SET OUTCOMES</span>
+      </label>
+      <div *ngFor="let answer of t.controls; let i = index" style="margin-bottom: 8px;">
+        <div [formGroup]="answer" class="input-group inputBox">
+          <input [ngClass]="{ 'is_invalid': submitted && answer.controls.name.errors }" type="text"
+                 formControlName="name" class="answer" id="Question {{i}}"
+                 placeholder="Outcome {{i+1}}">
+          <div *ngIf='answesQuantity >= 3' class="deleteButtonPos">
+            <button (click)="deleteAnswer(i)" class="deleteButton" type="button">
+              <div class="trashImg"></div>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="submitted && answer.controls.name.errors">
+          <small style="padding-bottom: 10px" *ngIf="answer.controls.name.errors.required"
+                 class="form-text quize_validation_error">Please enter the question</small>
+        </div>
+      </div>
+      <div>
+        <button type="button" (click)="oneMoreAnswer()" class="add">
+          <div class="iconBox"></div>
+          <span class="addText">Add possible outcome</span>
+        </button>
+      </div>
+    </div>
+    <div class="border"></div>
+    <div class="box">
+      <label for="Question" class="name" style="margin-top: 24px">
+        <span class="text mb-2">how to verify <span class="optional">(optional)</span></span>
+      </label>
+      <input type="text" formControlName="details" class="answer adapting" id="detalis"
+             placeholder="If result can be checked on the Internet, give source...">
+    </div>
+    <div class="buttonBox" [ngStyle]="styleButtonBox()">
+      <button type="button" class="cancel" (click)="activeModal.dismiss('Cross click')">Cancel</button>
+      <button type="button" class="next" (click)="onSubmit()">Next</button>
+    </div>
+  </form>
+</div>
+<app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>
+

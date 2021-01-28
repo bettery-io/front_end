@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrivateEventFormComponent } from './private-event-form.component';
+import { CreateRoomDesktopComponent } from './create-room-desktop.component';
 
-describe('PrivateEventFormComponent', () => {
-  let component: PrivateEventFormComponent;
-  let fixture: ComponentFixture<PrivateEventFormComponent>;
+describe('CreateRoomDesktopComponent', () => {
+  let component: CreateRoomDesktopComponent;
+  let fixture: ComponentFixture<CreateRoomDesktopComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrivateEventFormComponent ]
+      declarations: [ CreateRoomDesktopComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrivateEventFormComponent);
+    fixture = TestBed.createComponent(CreateRoomDesktopComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

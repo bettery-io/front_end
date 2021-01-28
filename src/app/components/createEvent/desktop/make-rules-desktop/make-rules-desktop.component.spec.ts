@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EventGroupComponent } from './event-group.component';
+import { MakeRulesDesktopComponent } from './make-rules-desktop.component';
 
-describe('EventGroupComponent', () => {
-  let component: EventGroupComponent;
-  let fixture: ComponentFixture<EventGroupComponent>;
+describe('MakeRulesDesktopComponent', () => {
+  let component: MakeRulesDesktopComponent;
+  let fixture: ComponentFixture<MakeRulesDesktopComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventGroupComponent ]
+      declarations: [ MakeRulesDesktopComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventGroupComponent);
+    fixture = TestBed.createComponent(MakeRulesDesktopComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

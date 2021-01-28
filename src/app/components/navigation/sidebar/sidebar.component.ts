@@ -1,4 +1,6 @@
 import {Component, DoCheck, HostListener, OnInit} from '@angular/core';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {EventsTemplatesDesktopComponent} from "../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component";
 
 @Component({
   selector: 'app-sidebar',
@@ -10,7 +12,7 @@ export class SidebarComponent implements OnInit, DoCheck {
   scrollTop: number;
   currentPath
 
-  constructor() {
+  constructor(private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -53,5 +55,9 @@ export class SidebarComponent implements OnInit, DoCheck {
     } else {
       return false;
     }
+  }
+
+  openCreateEventModal() {
+    this.modalService.open(EventsTemplatesDesktopComponent, {centered: true });
   }
 }

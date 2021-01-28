@@ -1,0 +1,252 @@
+<div class="box">
+  <div *ngIf="formData.eventType === 'public'">
+    <form [formGroup]="publicForm">
+      <p class="name">Bet WITH</p>
+      <div class="checkBox">
+        <div class="pretty p-default p-round inline">
+          <input type="radio" value="token" formControlName="tokenType" checked>
+          <div class="state p-success-o checkPos">
+            <label class="pos"> </label>
+          </div>
+          <p class="tab" [ngClass]="{ 'tab_active': f.tokenType.value == 'token' }">BTY Token</p>
+        </div>
+
+        <div class="pretty p-default p-round inline">
+          <input type="radio" value="ether" formControlName="tokenType">
+          <div class="state p-success-o checkPos">
+            <label class="pos"> </label>
+          </div>
+          <p class="tab" [ngClass]="{ 'tab_active': f.tokenType.value == 'ether' }">ETH (Ethereum)</p>
+
+        </div>
+        <span (click)="openLearnMore()" class="link">Learn more</span>
+      </div>
+      <div class="timeBox">
+        <div>
+          <div class="labelTime">
+            <p style="margin-bottom: 8px">betting time</p>
+          </div>
+          <div class="dropBox arowMarker">
+            <label for="startPublicTime" id="labelC2">{{endPublicTime}}</label>
+            <select (change)="chosePublicEndTime()" [ngClass]="{ 'is_invalid': submitted && pub.publicEndTime.errors }" formControlName="publicEndTime"  class="btn" name="startPublicTime" id="startPublicTime">
+              <option *ngFor="let time of times" value="{{time.name}}">{{time.name}}</option>
+            </select>
+            <div class="calendarPosition">
+              <div class="calendarImg" (click)="openCalendar(content)"></div>
+            </div>
+
+          </div>
+          <div *ngIf="submitted && pub.publicEndTime.errors">
+            <small *ngIf="pub.publicEndTime.errors.required" class="form-text quize_validation_error">Time
+              to bet
+              is required</small>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="labelTime">
+          <p style="margin-bottom: 8px; margin-top: 32px">NUMBER OF EXPERTS</p>
+        </div>
+        <div class="pretty p-default p-round inline expertsCheckWrapper" style="margin-bottom: 8px">
+          <input type="radio" value="company" formControlName="expertsCountType" checked>
+          <div class="state p-warning-o checkBoxPosition">
+            <label class="pos"> </label>
+          </div>
+          <p class="tab tabPosTwo colorT">Default</p>
+        </div>
+        <div [ngClass]="{ 'nguyen': pub.expertsCountType.value == 'custom'}">
+          <div class="pretty p-default p-round inline expertsCheckWrapper"
+               [ngClass]="{ 'nguyen2': pub.expertsCountType.value == 'custom'}">
+            <input type="radio" value="custom" formControlName="expertsCountType">
+            <div class="state p-warning-o checkBoxPosition">
+              <label class="pos"> </label>
+            </div>
+            <p *ngIf="pub.expertsCountType.value != 'custom'" class="tab tabPosTwo colorT">Custom
+            </p>
+          </div>
+          <div *ngIf="pub.expertsCountType.value == 'custom'"
+               [ngClass]="{ 'nguyen3': pub.expertsCountType.value == 'custom'}">
+            <div [ngClass]="{ 'nguyen3': pub.expertsCountType.value == 'custom'}">
+              <input type="number" placeholder="Enter number of experts" formControlName="expertsCount"
+                     class="answer" [ngClass]="{
+                                    'is_invalid': submitted && (pub.expertsCount.value == '' || pub.expertsCount.value == 0),
+                                    'nguyen4': pub.expertsCountType.value == 'custom'
+                                }"/>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && pub.expertsCountType.value == 'custom'">
+          <small *ngIf="pub.expertsCount.value == '' || pub.expertsCount.value == 0"
+                 class="form-text quize_validation_error">Experts number is required</small>
+        </div>
+      </div>
+      <div>
+        <ul style="padding-top: 32px">
+          <li class="infoGrey">Bets from losers is distributed to <span>Experts (5%), Host (3%), Bettery (2%), and Winners (90%) </span>who
+            get their bets back.
+          </li>
+        </ul>
+        <div class="d-flex justify-content-center mb-5" (click)="openHowEventsWorkSocial(content2)">
+          <div class="question-img"></div>
+          <div><p class="infoYellow" style="margin-top: 1px;">HOW EVENTS WORK</p></div>
+        </div>
+      </div>
+      <div class="buttonBox">
+        <button type="button" class="cancel" (click)="cancel()">Back</button>
+        <button type="button" class="next" (click)="createPublicEvent()">Next</button>
+      </div>
+
+    </form>
+  </div>
+  <div *ngIf="formData.eventType === 'private'">
+    <form [formGroup]="privateForm">
+      <div class="cupInfo">
+        <p class="name cupName">What to win or lose</p>
+      </div>
+      <div class="form-group">
+        <div class="inputBox">
+          <input type="text" formControlName="winner" class="answer fixBordRadius" id="winner"
+                 placeholder="Get free dinner"
+                 [ngClass]="{ 'is_invalid': submitted && priv.winner.errors }">
+          <div class="tip">
+            <p class="posOne">Winners</p>
+          </div>
+        </div>
+        <div *ngIf="submitted && priv.winner.errors">
+          <small *ngIf="priv.winner.errors.required" class="form-text quize_validation_error">Winners is
+            required</small>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="inputBox">
+          <input type="text" formControlName="losers" class="answer fixBordRadius" id="losers"
+                 placeholder="Share the bill"
+                 [ngClass]="{ 'is_invalid': submitted && priv.losers.errors }">
+          <div class="tip">
+            <p class="posTwo">Losers</p>
+          </div>
+        </div>
+        <div *ngIf="submitted && priv.losers.errors">
+          <small *ngIf="priv.losers.errors.required" class="form-text quize_validation_error">Losers is
+            required</small>
+        </div>
+      </div>
+
+      <div class="cupInfo" style="padding-top: 20px;">
+        <p class="name cupName">BETTING TIME</p>
+      </div>
+
+      <div class="dropBox correctMB label">
+        <label for="startTime" id="labelC">{{endPrivateTime}}</label>
+        <select (change)="chosePrivateEndTime()" formControlName="privateEndTime" class=" pl-2 dropBox startTime" [ngClass]="{ 'is_invalid': submitted && priv.privateEndTime.errors }" name="startTime" id="startTime">
+          <option *ngFor="let time of times"   value="{{time.name}}">{{time.name}}</option>
+        </select>
+        <div *ngIf="submitted && priv.privateEndTime.errors">
+          <small *ngIf="priv.privateEndTime.errors.required" class="form-text quize_validation_error">End time is
+            required</small>
+        </div>
+      </div>
+
+
+      <div class="d-flex justify-content-center mb-3" (click)="openHowEventsWorkFriend(content2)">
+        <div class="question-img"></div>
+        <div><p class="infoYellow" style="margin-top: 1px;">HOW EVENTS WORK</p></div>
+      </div>
+
+      <div class="buttonBox">
+        <button type="button" class="cancel" (click)="cancel()">Back</button>
+        <button type="button" class="next" (click)="createPrivateEvent()">Next</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header update">
+    <h4 class="modal-title" id="modal-basic-title">WHEN BETTING ENDS</h4>
+  </div>
+  <div class="modal-body update">
+    <p class="date">DATE</p>
+    <form [formGroup]="exactTime" class="formPicker">
+      <select id="daydropdown" class="datePicker" formControlName="day">
+      </select>
+      <select id="monthdropdown" class="datePicker" formControlName="month">
+      </select>
+      <select id="yeardropdown" class="datePicker" formControlName="year">
+      </select>
+    </form>
+    <div class="borderVector"></div>
+    <p class="date" style="margin-top: 24px;">TIME</p>
+    <ngb-timepicker id="timePicker" [(ngModel)]="timeData"></ngb-timepicker>
+  </div>
+  <div class="modal-footer update">
+    <button type="button" class="greyModalCancel" (click)="modal.dismiss('Cross click')">Cancel</button>
+    <button type="button" class="btn saveModal" (click)="saveExactTime(modal)">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+  <div class="modal-header border-none" style="padding: 10px 16px 5px 16px;">
+    <button type="button" class="close border-hover" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="text-center"><h4 class="modal-title h4-modal">HOW EVENTS WORK</h4></div>
+  <div class="modal-body">
+    <div class="modal-text-new">
+      <h5>Who can join my event?</h5>
+      <ul *ngIf="!modalTrigger">
+        <li>
+          <p>
+            Anyone can choose to join as a Player to bet, or as an Expert to validate the result after betting time.
+            Minimum bet is 1 BTY. Experts can’t bet.</p>
+        </li>
+        <li>
+          <p>The event is cancelled if no Players join within betting time, or if there aren’t enough Experts (10% of
+            total Players by default or custom, minimum 3).
+          </p>
+        </li>
+        <li><p>The event ends when all Experts validate.</p></li>
+      </ul>
+
+      <ul *ngIf="modalTrigger">
+        <li>
+          <p>
+            Anyone can choose to join as a Player to bet, or as an Expert to validate the result after betting time. The
+            Expert can’t bet.</p>
+        </li>
+        <li>
+          <p>The event is cancelled if no Players join within betting time, or if the Expert doesn’t validate the event
+            result within 24 hours after betting ends.
+          </p>
+        </li>
+        <li><p>The event ends after the Expert validates.</p></li>
+      </ul>
+    </div>
+    <div class="modal-text-new">
+      <h5>How is the result determined?</h5>
+      <ul *ngIf="!modalTrigger">
+        <li>
+          <p>The outcome validated by the majority of Experts is considered the event result.</p>
+        </li>
+        <li>
+          <p>In the future, Players will be able to “appeal” the event result before it’s accepted by the platform as
+            final if they suspect it’s incorrect.</p>
+        </li>
+      </ul>
+
+      <ul *ngIf="modalTrigger">
+        <li>
+          <p>Since the prize for winning Players and reward for Expert is a promise between friends, don’t forget to
+            remind everyone involved to deliver on their promise!</p>
+        </li>
+      </ul>
+    </div>
+    <div class="a-learn-more"><a href="#">Learn more about how Bettery works</a></div>
+  </div>
+  <div class="modal-footer border-none modal-btn">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">OK</button>
+  </div>
+</ng-template>
+

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { QuizErrorsComponent } from '../quiz-errors/quiz-errors.component';
 import web3Obj from '../../../../helpers/torus';
@@ -14,12 +14,13 @@ import { User } from '../../../../models/User.model';
   templateUrl: './quiz-action.component.html',
   styleUrls: ['./quiz-action.component.sass']
 })
-export class QuizActionComponent implements OnInit, OnDestroy {
+export class QuizActionComponent implements OnDestroy {
   @Input() question: any;
   @Input() joinPlayer: boolean;
   @Input() becomeExpert: boolean;
   @Output() goBack = new EventEmitter();
-  @Output() bet = new EventEmitter();
+  @Output() betEvent = new EventEmitter<Array<any>>();
+  @Output() validateEvent = new EventEmitter<Array<any>>();
 
   allUserData = undefined;
   answerNumber: number = null;
@@ -35,13 +36,9 @@ export class QuizActionComponent implements OnInit, OnDestroy {
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length != 0) {
-        this.allUserData = null;
+        this.allUserData = x[0];
       }
     });
-  }
-
-  ngOnInit(): void {
-
   }
 
   async makeAnswer(i) {
@@ -73,7 +70,11 @@ export class QuizActionComponent implements OnInit, OnDestroy {
           modalRef.componentInstance.description = "Amount must be bigger than 0";
           modalRef.componentInstance.nameButton = "fine";
         } else {
-          // to do set to main component
+          let data: any = {
+            amount: this.amount,
+            answer: this.answerNumber
+          }
+          this.betEvent.next(data);
         }
 
       }
@@ -97,8 +98,10 @@ export class QuizActionComponent implements OnInit, OnDestroy {
         modalRef.componentInstance.description = "Choose at leas one answer";
         modalRef.componentInstance.nameButton = "fine";
       } else {
-        // to do set to main component
-
+        let data: any = {
+          answer: this.answerNumber
+        }
+        this.validateEvent.next(data)
       }
     } else {
       try {

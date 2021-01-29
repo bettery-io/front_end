@@ -201,6 +201,16 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     return (from * percent) / 100;
   }
 
+  betEvent(event) {
+    event.event_id = this.question.id
+    this.setToNetwork(event, this.question);
+  }
+
+  validateEvent(event) {
+    event.event_id = this.question.id
+    this.setToNetworkValidation(event, this.question)
+  }
+
 
   async setAnswer(dataAnswer, from) {
     let answer = this.myAnswers;

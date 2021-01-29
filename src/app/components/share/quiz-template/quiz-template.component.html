@@ -192,7 +192,7 @@
         <div *ngIf="joinPlayer || becomeExpert">
           <quiz-info *ngIf="details && !letsBet" (goBack)="cancel()" (agree)="continue()" [joinPlayer]="joinPlayer"
             [becomeExpert]="becomeExpert"></quiz-info>
-          <quiz-action (goBack)="goToInfo()" [joinPlayer]="joinPlayer" [becomeExpert]="becomeExpert" *ngIf="!details && letsBet"
+          <quiz-action (goBack)="goToInfo()" (betEvent)="betEvent($event)" (validateEvent)="validateEvent($event)" [joinPlayer]="joinPlayer" [becomeExpert]="becomeExpert" *ngIf="!details && letsBet"
             [question]="question"></quiz-action>
 
         </div>

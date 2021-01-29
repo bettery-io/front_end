@@ -9,7 +9,7 @@
                     <div *ngIf="unreadNotif() != 0" (click)="this.sendReadAll()" class="letter"></div>
                 </div>
                 <div class="main_box">
-                    <div class="box" *ngFor="let notif of notifData" [ngStyle]="getBackgrond(notif)">
+                    <div (click)="this.sendRead(notif.id)" routerLink="room/{{notif.roomId}}" class="box" *ngFor="let notif of notifData" [ngStyle]="getBackgrond(notif)">
                         <div>
                             <img class="avatar" src={{notif.userAvatar}} alt="#" referrerpolicy="no-referrer">
                         </div>

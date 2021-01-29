@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewChild, DoCheck } from '@angular/core';
+import {Component, OnInit, OnDestroy, HostListener, ViewChild, DoCheck, ElementRef} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
 import { Coins } from '../../../models/Coins.model';
@@ -59,12 +59,14 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
 
   spinnerLoading: boolean;
   saveUserLocStorage = [];
+  logoutBox: boolean;
 
   constructor(
     private store: Store<AppState>,
     private modalService: NgbModal,
     private postService: PostService,
     private getService: GetService,
+    private eRef: ElementRef
   ) {
 
     this.detectPath()
@@ -353,6 +355,13 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   //   this.logOut()
   // }
 
+  @HostListener('document:click', ['$event'])
+  public clickout() {
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.logoutBox = false;
+    }
+  }
+
   async logOut() {
     if (this.userWallet !== undefined && this.verifier !== "metamask") {
       await web3Obj.torus.cleanUp()
@@ -360,6 +369,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     this.store.dispatch(new UserActions.RemoveUser(0));
     this.nickName = undefined;
     this.openNavBar = false;
+    this.logoutBox = false;
   }
 
   async loginWithTorus() {
@@ -488,5 +498,9 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
       localStorage.setItem('userBettery', JSON.stringify(array));
       this.modalService.open(WelcomePageComponent);
     }
+  }
+
+  toggleLogout() {
+    this.logoutBox = !this.logoutBox;
   }
 }

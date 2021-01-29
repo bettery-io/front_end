@@ -15,6 +15,7 @@
     padding-bottom: 0
     z-index: 1000
     box-shadow: 0px 4px 4px rgb(0 0 0 / 5%)
+    background: #ffffff
 
 .loom_balance:hover
     text-decoration: underline
@@ -76,6 +77,7 @@
     padding-right: 20px
     top: 0px
     left: 5px
+    cursor: pointer
 
 .navbar_row
     flex-direction: row !important
@@ -166,6 +168,7 @@
     width: 62px
     height: 62px
     border-radius: 100%
+    cursor: pointer
 
 .erc20
     padding-left: 10px
@@ -422,3 +425,39 @@
     font-weight: bold
     font-size: 20px
     line-height: 27px
+
+.logoutBox
+  background: #FFFFFF
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08)
+  border-radius: 8px
+  padding: 12px 0px 0px 0px
+  font-weight: 600
+  font-size: 16px
+  line-height: 22px
+  color: #4E4E4E
+  position: absolute
+  left: -119px
+  top: 70px
+  & ul
+    list-style: none
+    padding: 0
+    text-align: right
+    & li
+      padding: 10px 20px 10px 57px
+      cursor: pointer
+    & li:hover
+      background: #F5F5F5
+  & ul:last-child li
+    padding-bottom: 14px
+
+.refImg:before
+  content: ''
+  background: url("../../../../assets/share/refLink.png")
+  background-size: contain
+  width: 20px
+  height: 20px
+  position: absolute
+  left: 25px
+
+.disabledItem
+  color: rgba(113, 113, 113, 0.66)

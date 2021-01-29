@@ -47,7 +47,7 @@ export class EventFeedComponent implements OnDestroy {
   queryPath = 'publicEvents/get_all';
 
   timelineActive: boolean;
-  showEnd: boolean;
+  showEnd = true;
 
   constructor(
     private store: Store<AppState>,

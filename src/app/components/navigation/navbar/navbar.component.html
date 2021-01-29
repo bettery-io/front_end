@@ -1,4 +1,4 @@
-<nav class="navbar navbar-light bg-light" *ngIf="display">
+<nav class="navbar navbar-light" *ngIf="display">
   <div class="logoBox">
     <div class="logo-desc" routerLink="/"></div>
   </div>
@@ -36,10 +36,17 @@
         </div>
       </li>
       <li class="nav-item">
-        <div class="user_email"> {{nickName}}</div>
+        <div (click)="toggleLogout()" class="user_email"> {{nickName}}</div>
       </li>
-      <li class="nav-item">
-        <img class="circle-img" src="{{avatar}}" alt="avatar">
+      <li class="nav-item position-relative">
+        <img  (click)="toggleLogout()" class="circle-img" src="{{avatar}}" alt="avatar">
+        <div *ngIf="logoutBox" class="logoutBox">
+          <ul>
+            <li class="profile disabledItem">My profile</li>
+            <li class="refLink refImg">Referral Link</li>
+            <li class="Logout" (click)="logOut()">Logout</li>
+          </ul>
+        </div>
       </li>
       <li class="nav-item">
         <notifications [userId]="userId"></notifications>
@@ -267,7 +274,7 @@
     <button type="button" (click)="modal.close('Close click')">GET MORE BTY</button>
   </div>
   <div class="modal-a"><a href="#">Learn more about how Bettery works</a></div>
-</ng-template> 
+</ng-template>
 
 <app-spinner-loading *ngIf="spinnerLoading"></app-spinner-loading>
 <app-spinner-loading *ngIf="openNavBar" [withoutSpinner]="true"></app-spinner-loading>

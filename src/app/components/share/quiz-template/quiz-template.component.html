@@ -161,10 +161,8 @@
               No comments yet. <span (click)="getCommentById(question?.id)">(leave a comment)</span>
             </div>
             <div *ngIf="question?.lastComment !== 'null'" class="comment-text">
-              <p>
-                {{question?.lastComment}} <span (click)="getCommentById(question?.id)">(see {{question?.commentsAmount}}
+              {{question?.lastComment}} <span (click)="getCommentById(question?.id)">(see {{question?.commentsAmount}}
                   more comments)</span>
-              </p>
             </div>
           </div>
           <div *ngIf="!finalAnswerGuard(question)">

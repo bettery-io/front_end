@@ -79,6 +79,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.roomById = this.postService.post(path, data).subscribe(list => {
       this.usersRoom = list;
       this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
+      this.spinner = true;
     });
   }
 
@@ -198,6 +199,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showUsersRoom() {
+    this.spinner = false;
     this.pageRoom = 1;
     this.startLength = 0;
     this.showLength = 8;
@@ -207,6 +209,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     } else {
       this.btnMiddleActive = 'showUsersRoom';
       this.modalService.open(RegistrationComponent, { centered: true });
+      this.spinner = true;
       return;
     }
   }
@@ -226,6 +229,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showJoinedRoom() {
+    this.spinner = false;
     this.pageRoom = 1;
     this.startLength = 0;
     this.showLength = 8;
@@ -235,6 +239,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     } else {
       this.btnMiddleActive = 'joinedRoom';
       this.modalService.open(RegistrationComponent, { centered: true });
+      this.spinner = true;
       return;
     }
   }
@@ -246,6 +251,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.joinedRoomSub = this.postService.post(path, data).subscribe(list => {
       this.usersRoom = list;
       this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
+      this.spinner = true;
     });
   }
 

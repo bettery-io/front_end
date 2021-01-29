@@ -129,5 +129,4 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.deleteNotifSub.unsubscribe();
     }
   }
-
 }

@@ -161,7 +161,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
         'right': (i * 10) + "px"
       }
     }
-
   }
 
   poolName() {

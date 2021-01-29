@@ -26,7 +26,8 @@
             </div>
             <div class="inline join-box">
               <div class="notification_box" *ngIf="roomDetails?.joined">
-                <div class="notification_info">{{roomDetails.notifications ? 'Turn off notifications for new events' : 'Turn on notifications for new events'}}</div>
+                <div class="notification_info">{{roomDetails.notifications ? 'Turn off notifications for new events' :
+                  'Turn on notifications for new events'}}</div>
                 <div (click)="this.notification(false)" *ngIf="roomDetails.notifications" class="notificationOn"></div>
                 <div (click)="this.notification(true)" *ngIf="!roomDetails.notifications" class="notificationOff"></div>
               </div>
@@ -54,6 +55,7 @@
               [ngClass]="(roomEvents.length === 0) && 'w-100'">
               <div *ngFor="let question of roomEvents; let index = index">
                 <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
+                  [index]="index"
                   [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
                   [fromComponent]="fromComponent" (callGetData)="getRoomEvent(0, scrollDistanceTo, searchWord)">
                 </quiz-template>

@@ -157,12 +157,10 @@ export class ValidateComponent implements OnInit, OnDestroy {
       answer: answer,
       transactionHash: transactionHash,
       userId: this.userData._id,
-      from: "validator",
       currencyType: dataAnswer.currencyType,
-      validated: dataAnswer.validated + 1,
-      amount: 0
+      validated: dataAnswer.validated + 1
     }
-    this.postSub = this.postService.post("answer", data).subscribe(async () => {
+    this.postSub = this.postService.post('publicEvents/validate', data).subscribe(async () => {
       this.errorMessage = undefined;
       this.spinnerLoading = false;
       this.viewStatus();

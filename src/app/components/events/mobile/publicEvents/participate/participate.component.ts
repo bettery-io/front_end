@@ -118,11 +118,10 @@ export class ParticipateComponent implements OnInit, OnDestroy {
       answer: answer,
       transactionHash: transactionHash,
       userId: this.userData._id,
-      from: "participant",
       currencyType: dataAnswer.currencyType,
       amount: Number(_money)
     }
-    this.postSub = this.postService.post("answer", data).subscribe(async () => {
+    this.postSub = this.postService.post('publicEvents/participate', data).subscribe(async () => {
       await this.updateBalance();
       this.errorMessage = undefined;
       this.spinnerLoading = false

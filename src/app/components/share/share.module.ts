@@ -19,6 +19,7 @@ import { QuizChooseRoleComponent } from './quiz-template/quiz-choose-role/quiz-c
 import { QuizActionComponent } from './quiz-template/quiz-action/quiz-action.component';
 
 
+
 @NgModule({
   declarations: [
     SpinnerLoadingComponent,

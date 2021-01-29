@@ -594,6 +594,11 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     this.details = true;
   }
 
+  goToInfo() {
+    this.letsBet = false;
+    this.details = true;
+  }
+
   ngOnDestroy() {
     if (this.torusSub) {
       this.torusSub.unsubscribe();

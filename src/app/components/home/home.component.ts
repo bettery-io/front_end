@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   flagMenu = false;
   dropDownSwitch: boolean;
   eventSub: Subscription;
-  eventData;
+  eventData: any;
   triggerPopover: boolean;
   timerPopover: any;
 
@@ -167,6 +167,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
     this.eventSub = this.postService.post('bettery_event', email)
       .subscribe((x: any) => {
+        console.log(x)
         this.shuffleArray(x);
         this.eventData = x.slice(0, 3);
       }, (err) => {

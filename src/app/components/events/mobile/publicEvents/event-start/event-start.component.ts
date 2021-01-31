@@ -5,11 +5,13 @@ import * as UserActions from '../../../../../actions/user.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { ClipboardService } from 'ngx-clipboard';
-import _ from "lodash";
+import _ from 'lodash';
 import { Subscription } from 'rxjs';
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { WelcomePageComponent } from "../../../../share/welcome-page/welcome-page.component";
-import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { WelcomePageComponent } from '../../../../share/welcome-page/welcome-page.component';
+import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component';
+import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
+import {User} from '../../../../../models/User.model';
 
 
 @Component({
@@ -18,7 +20,7 @@ import { InfoModalComponent } from '../../../../share/info-modal/info-modal.comp
   styleUrls: ['./event-start.component.sass']
 })
 export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
-  @Input('eventData') eventData;
+  @Input('eventData') eventData: PubEventMobile;
   @Output() interacDone = new EventEmitter<number>();
   letsJoin: boolean = false;
   info: boolean = false;
@@ -26,19 +28,19 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   joinedAs: string = undefined;
   validation: boolean = false;
   created: boolean = false;
-  day;
-  hour;
-  minutes;
-  seconds;
-  userData = undefined
+  day: string | number;
+  hour: string | number;
+  minutes: string | number;
+  seconds: string | number;
+  userData: User = undefined;
   participatedAnswer = [];
-  validatedAnswer = []
+  validatedAnswer = [];
   currentPool = 0;
   playersJoinde = 0;
   expertJoinned = 0;
-  coinType;
-  storeSub: Subscription
-  postSub: Subscription
+  coinType: string;
+  storeSub: Subscription;
+  postSub: Subscription;
   spinnerLoading: boolean = false;
   themeChat = 'dark';
 
@@ -57,7 +59,8 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getUsers() {
-    this.storeSub = this.store.select("user").subscribe((x) => {
+    this.storeSub = this.store.select("user").subscribe((x: User[]) => {
+      console.log(x)
       if (x.length != 0) {
         this.currentPool = 0;
         this.playersJoinde = 0;

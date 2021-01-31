@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PostService } from '../../../../../services/post.service';
 import { Subscription } from 'rxjs';
+import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
 
 @Component({
   selector: 'app-public-main',
@@ -10,10 +11,10 @@ import { Subscription } from 'rxjs';
 })
 export class PublicMainComponent implements OnInit, OnDestroy {
   eventId: number;
-  eventData;
+  eventData: PubEventMobile;
   errorPage: boolean = false;
-  routeSub: Subscription
-  postSub: Subscription
+  routeSub: Subscription;
+  postSub: Subscription;
   // TODO
   eventFinish: boolean = false;
 
@@ -35,11 +36,14 @@ export class PublicMainComponent implements OnInit, OnDestroy {
 
   getDataFromServer(data) {
     this.postSub = this.postService.post("publicEvents/get_by_id", data)
-      .subscribe((x: any) => {
+      .subscribe((x: PubEventMobile) => {
         if (x.finalAnswer !== null) {
           this.eventFinish = true;
-        } 
+        }
         this.eventData = x;
+        console.log('======================')
+        console.log(this.eventData)
+        console.log('======')
         this.errorPage = false;
       }, (err) => {
         console.log(err)

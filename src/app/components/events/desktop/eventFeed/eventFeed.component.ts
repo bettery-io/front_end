@@ -8,8 +8,9 @@ import {PostService} from '../../../../services/post.service';
 import {Subscription} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RegistrationComponent} from '../../../registration/registration.component';
-import {EventsTemplatesDesktopComponent} from "../../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component";
-
+import {EventsTemplatesDesktopComponent} from '../../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component';
+import {Coins} from '../../../../models/Coins.model';
+import {EventModel} from '../../../../models/Event.model';
 
 @Component({
   selector: 'eventFeed',
@@ -21,8 +22,8 @@ export class EventFeedComponent implements OnDestroy {
   spinnerForComment: boolean;
   myAnswers: Answer[] = [];
   userId: number = null;
-  coinInfo = null;
-  userData: any;
+  coinInfo: Coins = null;
+  userData: User;
   storeUserSubscribe: Subscription;
   storeCoinsSubscrive: Subscription;
   postSubsctibe: Subscription;
@@ -33,7 +34,7 @@ export class EventFeedComponent implements OnDestroy {
   commentList;
   newCommentList;
 
-  pureData: any = [];
+  pureData: EventModel;
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
   newQuestions = [];
@@ -69,7 +70,7 @@ export class EventFeedComponent implements OnDestroy {
         }
       }
     });
-    this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
+    this.storeCoinsSubscrive = this.store.select('coins').subscribe((x: Coins[]) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }
@@ -104,8 +105,8 @@ export class EventFeedComponent implements OnDestroy {
         finished: this.showEnd
       };
     }
-    this.postSubsctibe = this.postService.post(path, data).subscribe((x: any) => {
-      if (this.pureData.length == 0) {
+    this.postSubsctibe = this.postService.post(path, data).subscribe((x: EventModel) => {
+      if (this.pureData === undefined || this.pureData.events.length === 0) {
         this.commentList = x.events[this.currentComment];
       }
       if (this.commentResetFlag) {

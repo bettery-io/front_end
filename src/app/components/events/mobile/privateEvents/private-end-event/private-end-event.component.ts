@@ -3,6 +3,8 @@ import _ from 'lodash';
 import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../../app.state';
+import {User} from '../../../../../models/User.model';
+import {PrivEventMobile} from '../../../../../models/PrivEventMobile.model';
 
 @Component({
   selector: 'app-private-end-event',
@@ -10,13 +12,13 @@ import {AppState} from '../../../../../app.state';
   styleUrls: ['./private-end-event.component.sass']
 })
 export class PrivateEndEventComponent implements OnInit, OnDestroy {
-  @Input() eventData;
+  @Input() eventData: PrivEventMobile;
   winners = [];
   losers = [];
   userSub: Subscription;
   award = 'none';
-  participatedIndex: any;
-  userData: any;
+  participatedIndex: number;
+  userData: User;
 
 
   constructor(
@@ -25,14 +27,13 @@ export class PrivateEndEventComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userSub = this.store.select('user').subscribe((x) => {
+    this.userSub = this.store.select('user').subscribe((x: User[]) => {
       if (x.length != 0) {
         this.userData = x[0];
         this.letsFindActivites(x[0]._id);
       }
     });
     this.letsFindWinner();
-    console.log(this.eventData);
   }
 
   letsFindActivites(id) {

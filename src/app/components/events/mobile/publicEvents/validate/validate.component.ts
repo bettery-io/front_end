@@ -7,6 +7,8 @@ import Contract from '../../../../../contract/contract';
 import { PostService } from '../../../../../services/post.service';
 import _ from "lodash";
 import { Subscription } from 'rxjs';
+import {User} from '../../../../../models/User.model';
+import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
 
 @Component({
   selector: 'validate',
@@ -14,19 +16,19 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./validate.component.sass']
 })
 export class ValidateComponent implements OnInit, OnDestroy {
-  @Input() eventData;
+  @Input() eventData: PubEventMobile;
   @Output() goBack = new EventEmitter();
   @Output() goViewStatus = new EventEmitter<number>();
   timeIsValid: boolean;
   submitted: boolean = false;
-  spinnerLoading: boolean = false
+  spinnerLoading: boolean = false;
 
   answerForm: FormGroup;
   errorMessage: string;
-  userData;
-  hour;
-  minutes;
-  seconds
+  userData: User;
+  hour: number | string;
+  minutes: number | string;
+  seconds: number | string;
   userSub: Subscription;
   postSub: Subscription;
 
@@ -36,7 +38,7 @@ export class ValidateComponent implements OnInit, OnDestroy {
     private postService: PostService,
     private _clipboardService: ClipboardService
   ) {
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length != 0) {
         this.userData = x[0]
       }

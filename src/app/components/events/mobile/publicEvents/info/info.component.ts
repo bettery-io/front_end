@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
 
 @Component({
   selector: 'info',
@@ -6,10 +7,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./info.component.sass']
 })
 export class InfoComponent implements OnInit {
-  @Input() joinedAs;
-  @Input() eventData;
-  @Output() goBack = new EventEmitter();;
-  @Output() agree = new EventEmitter();;
+  @Input() joinedAs: string;
+  @Input() eventData: PubEventMobile;
+  @Output() goBack = new EventEmitter();
+  @Output() agree = new EventEmitter();
 
   constructor() { }
 

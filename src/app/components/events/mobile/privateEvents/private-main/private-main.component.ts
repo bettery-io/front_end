@@ -11,6 +11,8 @@ import {AppState} from '../../../../../app.state';
 import _ from 'lodash';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component';
+import {User} from '../../../../../models/User.model';
+import {PrivEventMobile} from '../../../../../models/PrivEventMobile.model';
 
 @Component({
   selector: 'app-private-main',
@@ -18,12 +20,12 @@ import {InfoModalComponent} from '../../../../share/info-modal/info-modal.compon
   styleUrls: ['./private-main.component.sass']
 })
 export class PrivateMainComponent implements OnInit, OnDestroy {
-  data: any;
+  data: PrivEventMobile;
 
   answerForm: FormGroup;
   badRequest: boolean;
   condition: boolean;
-  counts: any = 1;
+  counts = 1;
   expert: boolean;
   expertPage: boolean;
   hideBtn = false;
@@ -38,7 +40,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   routeSub: Subscription;
   userSub: Subscription;
   postSub: Subscription;
-  userData;
+  userData: User;
   id: any;
   allTime: any = {
     day: '',
@@ -55,7 +57,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     private _clipboardService: ClipboardService,
     private modalService: NgbModal
   ) {
-    this.userSub = this.store.select('user').subscribe((x) => {
+    this.userSub = this.store.select('user').subscribe((x: User[]) => {
       if (x.length != 0) {
         this.userData = x[0];
         this.letsFindActivites(x[0]._id);
@@ -89,12 +91,12 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   letsGetDataFromDB() {
-    this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: any) => {
+    this.postSub = this.postService.post('privateEvents/get_by_id', this.id).subscribe((value: PrivEventMobile) => {
       if (value.finalAnswer !== '') {
         this.finised = true;
       }
       this.data = value;
-      console.log(this.userData);
+      console.log(this.data);
       if (this.userData) {
         this.letsFindActivites(this.userData._id);
       }

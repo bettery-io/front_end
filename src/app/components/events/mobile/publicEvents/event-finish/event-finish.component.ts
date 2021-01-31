@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component'
+import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component';;;;
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { Subscription } from 'rxjs';
 import _ from 'lodash';
-import { ClipboardService } from 'ngx-clipboard'
+import { ClipboardService } from 'ngx-clipboard';
+import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
 
 @Component({
   selector: 'event-finish',
@@ -13,21 +14,21 @@ import { ClipboardService } from 'ngx-clipboard'
   styleUrls: ['./event-finish.component.sass']
 })
 export class EventFinishComponent implements OnInit, OnDestroy {
-  @Input() eventData;
-  status = undefined
+  @Input() eventData: PubEventMobile;
+  status = undefined;
   hostStatus = undefined;
-  amount = undefined
+  amount = undefined;
   info = undefined;
-  userSub: Subscription
+  userSub: Subscription;
   userData = undefined;
   pool = 0;
-  currencyType;
+  currencyType: string;
   viewMore: number = null;
   coinType: string = undefined;
   host: boolean = false;
   role: string = undefined;
   winner: boolean = false;
-  playerIndex;
+  playerIndex: number;
 
   constructor(
     private modalService: NgbModal,
@@ -68,10 +69,9 @@ export class EventFinishComponent implements OnInit, OnDestroy {
   }
 
   letsFindWinner(user) {
-    console.log(this.eventData)
     let findValidator = _.findIndex(this.eventData.validatorsAnswers, (x) => { return x.userId == user._id })
     if (findValidator !== -1) {
-      this.playerIndex = findValidator
+      this.playerIndex = findValidator;
       this.role = "Expert"
       this.winner = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer;
       this.status = this.eventData.validatorsAnswers[findValidator].answer == this.eventData.finalAnswer ? "YOU EARNED" : "";
@@ -81,7 +81,7 @@ export class EventFinishComponent implements OnInit, OnDestroy {
       if (this.eventData.parcipiantAnswers != undefined) {
         let findPlayer = _.findIndex(this.eventData.parcipiantAnswers, (x) => { return x.userId == user._id })
         if (findPlayer !== -1) {
-          this.playerIndex = findPlayer
+          this.playerIndex = findPlayer;
           this.role = "Player"
           this.winner = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer;
           this.status = this.eventData.parcipiantAnswers[findPlayer].answer == this.eventData.finalAnswer ? "YOU WON" : "YOU LOST";

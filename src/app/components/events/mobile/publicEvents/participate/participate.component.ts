@@ -11,6 +11,9 @@ import web3Obj from '../../../../../helpers/torus'
 import maticInit from '../../../../../contract/maticInit.js'
 import * as CoinsActios from '../../../../../actions/coins.actions';
 import { Subscription } from 'rxjs';
+import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
+import {User} from '../../../../../models/User.model';
+import {Coins} from '../../../../../models/Coins.model';
 
 @Component({
   selector: 'participate',
@@ -18,19 +21,19 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./participate.component.sass']
 })
 export class ParticipateComponent implements OnInit, OnDestroy {
-  @Input() eventData;
+  @Input() eventData: PubEventMobile;
   @Output() goBack = new EventEmitter();
   @Output() goViewStatus = new EventEmitter<number>();
-  userData;
+  userData: User;
   answerForm: FormGroup;
   coinType: string;
   submitted: boolean = false;
   spinnerLoading: boolean = false;
   errorMessage: string;
-  coinInfo;
-  userSub: Subscription
-  coinsSub: Subscription
-  postSub: Subscription
+  coinInfo: Coins;
+  userSub: Subscription;
+  coinsSub: Subscription;
+  postSub: Subscription;
 
 
   constructor(
@@ -39,12 +42,12 @@ export class ParticipateComponent implements OnInit, OnDestroy {
     private _clipboardService: ClipboardService,
     private postService: PostService,
   ) {
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length != 0) {
         this.userData = x[0]
       }
     });
-    this.coinsSub = this.store.select("coins").subscribe((x) => {
+    this.coinsSub = this.store.select("coins").subscribe((x: Coins[]) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }

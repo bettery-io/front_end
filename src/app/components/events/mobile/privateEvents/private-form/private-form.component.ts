@@ -6,6 +6,8 @@ import {AppState} from '../../../../../app.state';
 import Contract from '../../../../../contract/contract';
 import {PostService} from '../../../../../services/post.service';
 import {Subscription} from 'rxjs';
+import {PrivEventMobile} from '../../../../../models/PrivEventMobile.model';
+import {User} from '../../../../../models/User.model';
 
 
 @Component({
@@ -15,10 +17,10 @@ import {Subscription} from 'rxjs';
 })
 export class PrivateFormComponent implements OnInit, OnDestroy {
   answerForm: FormGroup;
-  @Input() data: any;
+  @Input() data: PrivEventMobile;
   formValid: boolean;
   @Output() changed = new EventEmitter<boolean>();
-  userData;
+  userData: User;
   errorMessage = undefined;
   userSub: Subscription;
   postSub: Subscription;
@@ -29,7 +31,7 @@ export class PrivateFormComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private postService: PostService,
   ) {
-    this.userSub = this.store.select('user').subscribe((x) => {
+    this.userSub = this.store.select('user').subscribe((x: User[]) => {
       if (x.length != 0) {
         this.userData = x[0];
       }

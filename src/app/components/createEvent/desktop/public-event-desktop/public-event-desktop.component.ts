@@ -1,17 +1,18 @@
-import {Component, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../app.state';
-import {ClipboardService} from 'ngx-clipboard'
-import {GetService} from '../../../../services/get.service';
-import {PostService} from '../../../../services/post.service'
+import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../app.state';
+import { ClipboardService } from 'ngx-clipboard'
+import { GetService } from '../../../../services/get.service';
+import { PostService } from '../../../../services/post.service'
 import maticInit from '../../../../contract/maticInit.js'
 import Contract from '../../../../contract/contract';
-import {Subscription} from 'rxjs';
-import {InfoModalComponent} from '../../../share/info-modal/info-modal.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ErrorLimitModalComponent} from '../../../share/error-limit-modal/error-limit-modal.component';
-import {environment} from '../../../../../environments/environment';
-import {User} from '../../../../models/User.model';
+import { Subscription } from 'rxjs';
+import { InfoModalComponent } from '../../../share/info-modal/info-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorLimitModalComponent } from '../../../share/error-limit-modal/error-limit-modal.component';
+import { environment } from '../../../../../environments/environment';
+import { User } from '../../../../models/User.model';
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -41,7 +42,8 @@ export class PublicEventDesktopComponent implements OnDestroy {
     private _clipboardService: ClipboardService,
     private getSevice: GetService,
     private PostService: PostService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router,
   ) {
     this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length !== 0) {
@@ -121,11 +123,11 @@ export class PublicEventDesktopComponent implements OnDestroy {
     this.spinnerLoading = true;
     let id = this.generateID()
     this.idSub = id.subscribe((x: any) => {
-        this.sendToContract(x._id);
-      }
+      this.sendToContract(x._id);
+    }
       , (err) => {
         this.spinnerLoading = false;
-        this.modalService.open(ErrorLimitModalComponent, {centered: true});
+        this.modalService.open(ErrorLimitModalComponent, { centered: true });
         console.log(err)
       })
   }
@@ -198,12 +200,12 @@ export class PublicEventDesktopComponent implements OnDestroy {
 
     this.postSub = this.PostService.post("publicEvents/set", this.quizData)
       .subscribe(
-        () => {
+        (x: any) => {
           this.spinnerLoading = false;
           this.created = true;
           this.calculateDate()
-          console.log("set to db DONE")
           this.modalService.dismissAll();
+          this.router.navigate([`room/${x.roomId}`]);
         },
         (err) => {
           this.spinnerLoading = false;
@@ -218,7 +220,7 @@ export class PublicEventDesktopComponent implements OnDestroy {
     }
     this.createSub = this.PostService.post("delete_event_id", data)
       .subscribe(() => {
-        },
+      },
         (err) => {
           console.log("from delete wallet")
           console.log(err)
@@ -247,7 +249,7 @@ export class PublicEventDesktopComponent implements OnDestroy {
   }
 
   modalAboutExpert() {
-    const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
     modalRef.componentInstance.name = '- Actually, no need to! Bettery is smart and secure enough to take care of your event. You can join to bet as a Player or become an Expert to validate the result after Players. Enjoy!';
     modalRef.componentInstance.boldName = 'How to manage your event';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';

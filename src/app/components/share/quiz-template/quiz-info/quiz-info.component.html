@@ -1,0 +1,42 @@
+<div class="details_container">
+    <h1 class="details_title">The prize pool of all events are from the loser bets.</h1>
+    <p class="details_text">Winners always get their bets back after every event, plus the prize.</p>
+    <div class="detailsBox">
+      <div class="detailsCard">
+        <div class="corona"></div>
+        <p class="detailsText">Winners</p>
+        <p class="detailsPerc">90%</p>
+      </div>
+      <div class="detailsCard">
+        <div class="host"></div>
+        <p class="detailsText">Host</p>
+        <p class="detailsPerc">3%</p>
+      </div>
+      <div class="detailsCard">
+        <div class="experts"></div>
+        <p class="detailsText">Experts</p>
+        <p class="detailsPerc">5%</p>
+      </div>
+      <div class="detailsCard">
+        <div class="bettery"></div>
+        <p class="detailsText">Bettery</p>
+        <p class="detailsPerc">2%</p>
+      </div>
+    </div>
+    <div class="buttonBox">
+      <div *ngIf="joinPlayer && !becomeExpert">
+        <button (click)="this.continue()" style="background: #34DDDD"
+          class="joinAsPlayer agreeButton">AGREE</button>
+      </div>
+      <div>
+        <button (click)="this.cancel()" style="background: #C4C4C4;"
+          [ngStyle]="{'margin-left': becomeExpert ? '0px' : '24px'}"
+          class="joinAsPlayer buttonBack">CANCEL</button>
+      </div>
+      <div *ngIf="!joinPlayer && becomeExpert">
+        <button (click)="this.continue()" style="background: #BF94E4; margin-left: 24px;"
+          class="joinAsPlayer agreeButtonTwo">AGREE</button>
+      </div>
+    </div>
+    <p class="terms_text">To join the event, you must agree to our <a class="termsLink" href="#">terms.</a></p>
+  </div>

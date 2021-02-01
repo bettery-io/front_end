@@ -14,6 +14,11 @@ import { TimeComponent } from './quiz-template/time/time.component';
 import { QuizErrorsComponent } from './quiz-template/quiz-errors/quiz-errors.component';
 import { PreRegistrationModalComponent } from './pre-registration-modal/pre-registration-modal.component';
 import {RouterModule} from '@angular/router';
+import { QuizInfoComponent } from './quiz-template/quiz-info/quiz-info.component';
+import { QuizChooseRoleComponent } from './quiz-template/quiz-choose-role/quiz-choose-role.component';
+import { QuizActionComponent } from './quiz-template/quiz-action/quiz-action.component';
+import { QuizEventFinishComponent } from './quiz-template/quiz-event-finish/quiz-event-finish.component';
+
 
 
 @NgModule({
@@ -28,7 +33,11 @@ import {RouterModule} from '@angular/router';
     QuizTemplateComponent,
     TimeComponent,
     QuizErrorsComponent,
-    PreRegistrationModalComponent
+    PreRegistrationModalComponent,
+    QuizInfoComponent,
+    QuizChooseRoleComponent,
+    QuizActionComponent,
+    QuizEventFinishComponent
   ],
     imports: [
         CommonModule,

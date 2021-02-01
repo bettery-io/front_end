@@ -1,0 +1,30 @@
+<div class="details_container">
+    <div class="answer_box">
+        <div class="each_answer" *ngFor="let answer of question.answers; let i = index"
+            [ngStyle]="this.getBackground(i)" (click)="this.makeAnswer(i)">
+            <input class="checkbox_answer" id="{{question.id}}{{question.from}}" value="{{i}}" type="radio"
+                name="{{question.id}}{{question.from}}">
+            <div class="label" [ngStyle]="{'color': answerNumber == i ? '#FFFFFF' : '#0B1511' }">{{answer}}</div>
+        </div>
+    </div>
+
+    <div class="bet_box" *ngIf="joinPlayer">
+        <p class="yourBet">YOUR BET</p>
+        <input class="yourBetInput" [(ngModel)]="amount">
+    </div>
+
+    <div class="buttonBox">
+        <div *ngIf="joinPlayer && !becomeExpert">
+            <button (click)="this.participate()" style="background: #34DDDD"
+                class="joinAsPlayer agreeButton">BET</button>
+        </div>
+        <div>
+            <button (click)="this.cancel()" style="background: #C4C4C4;"
+                [ngStyle]="{'margin-left': becomeExpert ? '0px' : '24px'}" class="joinAsPlayer buttonBack">BACK</button>
+        </div>
+        <div *ngIf="!joinPlayer && becomeExpert">
+            <button (click)="this.validate()" style="background: #BF94E4; margin-left: 24px;"
+                class="joinAsPlayer agreeButtonTwo">CONFIRM</button>
+        </div>
+    </div>
+</div>

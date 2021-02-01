@@ -27,12 +27,19 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   faCheck = faCheck;
   allUserData: User = undefined;
   amount: number;
-  torusSub: Subscription;
-  answerSub: Subscription;
-  validSub: Subscription;
-  updateSub: Subscription;
+  torusSub: Subscription
+  answerSub: Subscription
+  validSub: Subscription
+  updateSub: Subscription
+  openIndex: number = null;
+  joinPlayer: boolean = false;
+  becomeExpert: boolean = false;
+  details: boolean = true;
+  letsBet: boolean = false;
+  viewEventFinishInfo: boolean = false;
 
   @Input() joinRoom: boolean;
+  @Input() index: number;
 
   constructor(
     private postService: PostService,
@@ -191,11 +198,20 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       return 0;
     }
-
   }
 
   getPercent(from, percent) {
     return (from * percent) / 100;
+  }
+
+  betEvent(event) {
+    event.event_id = this.question.id
+    this.setToNetwork(event, this.question);
+  }
+
+  validateEvent(event) {
+    event.event_id = this.question.id
+    this.setToNetworkValidation(event, this.question)
   }
 
 
@@ -558,6 +574,53 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (a === undefined && b === undefined) {
       return 0;
+    }
+  }
+
+  openDetails() {
+    if (this.openIndex == this.index) {
+      this.openIndex = null;
+    } else {
+      this.openIndex = this.index;
+    }
+  }
+
+
+  cancel() {
+    this.details = false;
+    this.joinPlayer = false;
+    this.becomeExpert = false;
+  }
+
+  continue() {
+    this.letsBet = true;
+    this.details = false;
+  }
+
+  joinAsPlayer() {
+    this.joinPlayer = true;
+    this.details = true;
+  }
+
+  becomeValidator() {
+    this.becomeExpert = true;
+    this.details = true;
+  }
+
+  goToInfo() {
+    this.letsBet = false;
+    this.details = true;
+  }
+
+  viewDetails() {
+    if (this.question.status != "reverted") {
+      if (this.openIndex == this.index) {
+        this.openIndex = null;
+        this.viewEventFinishInfo = false;
+      } else {
+        this.openIndex = this.index;
+        this.viewEventFinishInfo = true;
+      }
     }
   }
 

@@ -59,6 +59,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
         this.userId = null;
+        this.userData = undefined;
+        this.getAllData();
       } else {
         this.userId = x[0]._id;
         this.userData = x[0];

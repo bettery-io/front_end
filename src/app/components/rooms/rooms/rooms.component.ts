@@ -1,13 +1,13 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { GetService } from '../../../services/get.service';
-import { Subscription } from 'rxjs';
-import { PostService } from '../../../services/post.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
-import { createEventAction } from '../../../actions/newEvent.actions';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {GetService} from '../../../services/get.service';
+import {Subscription} from 'rxjs';
+import {PostService} from '../../../services/post.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../app.state';
+import {createEventAction} from '../../../actions/newEvent.actions';
 import * as _ from 'lodash';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RegistrationComponent } from '../../registration/registration.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RegistrationComponent} from '../../registration/registration.component';
 import {EventsTemplatesDesktopComponent} from '../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component';
 import {RoomModel} from '../../../models/Room.model';
 import {User} from '../../../models/User.model';
@@ -67,14 +67,14 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.roomsSub = this.getService.get(path).subscribe((rooms: RoomModel[]) => {
       this.allRooms = rooms;
       this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
-      console.log(this.roomsSort)
+      console.log(this.roomsSort);
       this.spinner = true;
     });
   }
 
   getUsersRoomById(id: number) {
     const path = 'room/get_by_user_id';
-    const data = { id };
+    const data = {id};
 
     this.roomById = this.postService.post(path, data).subscribe(list => {
       this.usersRoom = list;
@@ -84,7 +84,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   getEventById(path, id) {
-    this.eventById = this.postService.post(path, { id }).subscribe(ev => {
+    this.eventById = this.postService.post(path, {id}).subscribe(ev => {
       this.forEventId = ev;
     });
   }
@@ -191,9 +191,14 @@ export class RoomsComponent implements OnInit, OnDestroy {
         if (this.btnMiddleActive === 'showUsersRoom') {
           this.getUsersRoomById(this.userData._id);
         }
-        if (this.btnMiddleActive === "joinedRoom") {
+        if (this.btnMiddleActive === 'joinedRoom') {
           this.getJoinedUsersRoomById(this.userData._id);
         }
+      } else {
+        this.userData = undefined;
+        this.usersRoom = undefined;
+        this.getAllRoomsFromServer();
+        this.btnMiddleActive = 'showAllRoom';
       }
     });
   }
@@ -208,7 +213,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.btnMiddleActive = 'showUsersRoom';
     } else {
       this.btnMiddleActive = 'showUsersRoom';
-      this.modalService.open(RegistrationComponent, { centered: true });
+      this.modalService.open(RegistrationComponent, {centered: true});
       this.spinner = true;
       return;
     }
@@ -223,7 +228,10 @@ export class RoomsComponent implements OnInit, OnDestroy {
   sendNewEvent() {
     const data = this.newCreateEvent;
     if (data) {
-      this.store.dispatch(createEventAction({ data }));
+      this.store.dispatch(createEventAction({data}));
+      this.openCreateEventModal();
+    } else {
+      this.openCreateEventModal();
     }
     this.newCreateEvent = '';
   }
@@ -238,15 +246,15 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.btnMiddleActive = 'joinedRoom';
     } else {
       this.btnMiddleActive = 'joinedRoom';
-      this.modalService.open(RegistrationComponent, { centered: true });
+      this.modalService.open(RegistrationComponent, {centered: true});
       this.spinner = true;
       return;
     }
   }
 
   getJoinedUsersRoomById(id) {
-    const path = "room/joined";
-    const data = { id };
+    const path = 'room/joined';
+    const data = {id};
 
     this.joinedRoomSub = this.postService.post(path, data).subscribe(list => {
       this.usersRoom = list;
@@ -294,10 +302,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   forFilterBySubject() {
-
     if (this.roomsSort?.length > 0 && this.searchWord?.length >= 3) {
       return this.roomsSort?.length;
-    } else if (this.btnMiddleActive === 'showUsersRoom' || this.btnMiddleActive === "joinedRoom") {
+    } else if (this.btnMiddleActive === 'showUsersRoom' || this.btnMiddleActive === 'joinedRoom') {
       return this.usersRoom?.length;
     } else {
       return this.allRooms?.length;
@@ -325,7 +332,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.joinedRoomSub.unsubscribe();
     }
   }
+
   openCreateEventModal() {
-    this.modalService.open(EventsTemplatesDesktopComponent, {centered: true });
+    this.modalService.open(EventsTemplatesDesktopComponent, {centered: true});
   }
 }

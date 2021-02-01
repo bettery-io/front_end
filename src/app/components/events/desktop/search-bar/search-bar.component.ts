@@ -6,7 +6,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./search-bar.component.sass']
 })
 export class SearchBarComponent implements OnInit {
-  active = 'trending';
   searchWord = '';
   timeout: any;
   @Output() searchWordEmit = new EventEmitter();
@@ -14,6 +13,7 @@ export class SearchBarComponent implements OnInit {
   @Output() timelineActive = new EventEmitter();
   @Input() allAmountEvents: number;
   @Input() amount: number;
+  @Input() active = 'trending';
 
   constructor() {
   }

@@ -171,15 +171,22 @@
               </div>
             </div>
             <div *ngIf="!finalAnswerGuard(question)">
-              <div class="button" *ngIf="timeValidating(question)" (click)="this.openDetails()">
-                join now
+              <div class="button" *ngIf="timeValidating(question)" (click)="this.openDetails()" style="display: flex;">
+                join now <div
+                  [ngClass]="{arrow_up_yellow: this.openIndex == this.index, arrow_down_yellow: this.openIndex != this.index}">
+                </div>
               </div>
-              <div *ngIf="!timeValidating(question)" class="validateNow" (click)="this.openDetails()">
-                VALIDATE NOW
+              <div *ngIf="!timeValidating(question)" class="validateNow" (click)="this.openDetails()"
+                style="display: flex;">
+                VALIDATE NOW <div
+                  [ngClass]="{arrow_up_purple: this.openIndex == this.index, arrow_down_purple: this.openIndex != this.index}">
+                </div>
               </div>
             </div>
-            <div class="viewEvent" *ngIf="finalAnswerGuard(question)" (click)="this.viewDetails()">
-              VIEW EVENT
+            <div class="viewEvent" *ngIf="finalAnswerGuard(question)" (click)="this.viewDetails()" style="display: flex;">
+              VIEW EVENT <div *ngIf="question.status != 'reverted'"
+              [ngClass]="{arrow_up_grey: this.openIndex == this.index, arrow_down_grey: this.openIndex != this.index}">
+            </div>
             </div>
           </div>
         </div>

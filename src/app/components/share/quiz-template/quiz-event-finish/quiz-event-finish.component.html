@@ -42,14 +42,17 @@
     <div class="answer_box answer_container">
         <div *ngFor="let answer of question.answers; index as i" class="answer" [ngStyle]="getBackground(i)">
             <div class="name_box">
-                <p class="answer_name">{{answer}}</p>
-                <div [ngClass]="{wrong: findWinner(i), win: findWinner(i)}">
-                </div>
+                <p class="answer_name" [ngStyle]="{'color': getImg(i) !== undefined ? '#FFFFFF': '#7D7D7D;'}">{{answer}}
+                </p>
+                <div [ngClass]="getImg(i)"></div>
             </div>
             <div class="border_answer"></div>
-            <p class="answer_info"><b>{{playersBet(i)}} Players</b> bet <b>({{playersPers(i)}})</b></p>
-            <p class="answer_info"><b>{{expertsBet(i)}} Experts</b> validated</p>
-            <p class="answer_info" style="margin-bottom: 7px;"><b>{{pool(i)}} BET</b> Prize Pool</p>
+            <p class="answer_info" [ngStyle]="{'color': getImg(i) !== undefined ? '#FFFFFF': '#7D7D7D;'}">
+                <b>{{playersBet(i)}} Players</b> bet <b>({{playersPers(i)}})</b></p>
+            <p class="answer_info" [ngStyle]="{'color': getImg(i) !== undefined ? '#FFFFFF': '#7D7D7D;'}">
+                <b>{{expertsBet(i)}} Experts</b> validated</p>
+            <p class="answer_info lastPadding" [ngStyle]="{'color': getImg(i) !== undefined ? '#FFFFFF': '#7D7D7D;'}">
+                <b>{{pool(i)}} BET</b> Prize Pool</p>
         </div>
     </div>
 </div>

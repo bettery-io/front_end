@@ -43,15 +43,6 @@ export class QuizActionComponent implements OnDestroy {
 
   async makeAnswer(i) {
     this.answerNumber = i;
-    if (this.allUserData == undefined) {
-      try {
-        await web3Obj.initialize();
-        this.setTorusInfoToDB();
-      } catch (error) {
-        await web3Obj.torus.cleanUp();
-        console.error(error);
-      }
-    }
   }
 
   async participate() {

@@ -176,10 +176,6 @@
 .questions-box
   display: flex
 
-.timer-span
-  margin-bottom: 17px
-  display: flex
-
 .timer-span-2
   font-weight: bold
   font-size: 14px
@@ -206,7 +202,7 @@
 .room-info-list
   display: flex
   align-items: center
-  padding-bottom: 27px
+  padding-bottom: 17px
   border-bottom: 0.5px solid #F0F0F0
   padding-left: 44px
   padding-right: 25px
@@ -240,9 +236,11 @@
   line-height: 14px
   display: flex
   color: #6B6B6B
-  & span
-    color: #0094FF
-    cursor: pointer
+  & p
+    margin-bottom: 0px
+    & span
+      color: #0094FF
+      cursor: pointer
 
 .answer-checkbox
   font-weight: 800
@@ -262,6 +260,7 @@
 
 .timer-span
   margin-bottom: 17px
+  display: flex
   & span
     font-weight: bold
     font-size: 14px
@@ -335,6 +334,7 @@
   color: #6B6B6B
   margin-right: 10px
   cursor: pointer
+  display: flex
 
 .cycle
   width: 14px
@@ -378,7 +378,7 @@
   line-height: 19px
   color: #BF94E4
   text-transform: uppercase
-  margin-right: 16px
+  margin-right: 9px
   margin-top: 7px
   cursor: pointer
 
@@ -439,6 +439,7 @@
   font-size: 12px
   line-height: 16px
   color: #6B6B6B
+  float: right
 
 .validated
   background: url("../../../../assets/quiz-template/validated.png") center center no-repeat
@@ -547,7 +548,6 @@
   border: 1px solid #F4F4F4
   box-sizing: border-box
   box-shadow: -1px 4px 4px rgba(118, 109, 109, 0.08)
-  border-radius: 20px
   width: 72%
 
 .imageBox
@@ -602,3 +602,11 @@
   height: 16px
   margin-left: 9px
   margin-top: 2px
+
+.hostName
+  font-weight: bold
+
+.leave_comment
+  color: #54A3DD
+  cursor: pointer
+  margin-left: 3px

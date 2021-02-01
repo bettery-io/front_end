@@ -16,7 +16,7 @@ import maticInit from '../../../contract/maticInit.js';
 import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
 import { Subscription } from 'rxjs';
 import { Event } from '../../../models/Event.model';
-import {Coins} from '../../../models/Coins.model';
+import { Coins } from '../../../models/Coins.model';
 
 @Component({
   selector: 'quiz-template',
@@ -37,6 +37,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   details: boolean = true;
   letsBet: boolean = false;
   viewEventFinishInfo: boolean = false;
+
 
   @Input() joinRoom: boolean;
   @Input() index: number;
@@ -544,10 +545,10 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     return `${d.getDate()}/${Number(d.getMonth()) + 1}/${d.getFullYear()}`
   }
 
-  colorForRoom(color) {
+  colorForRoom() {
     if (this.question) {
       return {
-        'background': color
+        'background': this.question.room.color
       };
     } else {
       return;
@@ -620,6 +621,24 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
       } else {
         this.openIndex = this.index;
         this.viewEventFinishInfo = true;
+      }
+    }
+  }
+
+  roomCardBottom() {
+    if (this.openIndex != this.index) {
+      return {
+        "border-top-left-radius": "0px",
+        "border-top-right-radius": "20px",
+        "border-bottom-left-radius": "0px",
+        "border-bottom-right-radius": "20px",
+      }
+    } else {
+      return {
+        "border-top-left-radius": "0px",
+        "border-top-right-radius": "20px",
+        "border-bottom-left-radius": "20px",
+        "border-bottom-right-radius": "20px",
       }
     }
   }

@@ -42,6 +42,9 @@ export class QuizChooseRoleComponent implements OnInit {
       return {
         'opacity': 0.5,
         'cursor': 'default',
+        'padding-top': '6px',
+        'padding-bottom': '6px',
+        'line-height': '14px'
       }
     } else {
       return {
@@ -78,12 +81,14 @@ export class QuizChooseRoleComponent implements OnInit {
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }
 
-  joinAsPlayer(){
+  joinAsPlayer() {
     this.player.next()
   }
 
-  becomeValidator(){
-    this.expert.next()
+  becomeValidator() {
+    if (!this.timeValidating(this.question)) {
+      this.expert.next()
+    }
   }
 
   getPool(data) {

@@ -1,4 +1,4 @@
-<div class="border-top">
+<div class="border-top-event">
     <div class="info_footer">
       <div class="partBox">
         <div class="partPos">
@@ -29,9 +29,9 @@
         <p class="infoButtonText" style="color: #34DDDD" (click)="this.modalAboutPlayers()">What is a Player?</p>
       </div>
       <div>
-        <button (click)="this.becomeValidator()" [disabled]="timeValidating(question)"
+        <div (click)="this.becomeValidator()"
           [ngStyle]="getValidatorStyle(timeValidating(question))" style="background: #BF94E4; max-width: 235px;"
-          class="joinAsPlayer">BECOME AN EXPERT {{timeValidating(question) ? '(When betting ends)' : ''}}</button>
+          class="joinAsPlayer">BECOME AN EXPERT <span class="when_betting_ends" *ngIf="timeValidating(question)">(When betting ends)</span></div>
         <p class="infoButtonText" style="color: #BF94E4; opacity: 1;" (click)="this.modalAboutExpert()">What is an
           Expert?</p>
       </div>

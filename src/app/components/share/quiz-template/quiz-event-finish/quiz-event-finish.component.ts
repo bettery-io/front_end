@@ -100,40 +100,46 @@ export class QuizEventFinishComponent implements OnInit {
     }
   }
 
-  // TODO
-
-  findWinner(i) {
-    if (this.myAnswers.answered) {
-      return this.question.finalAnswer == i && this.myAnswers.answer == i;
+  getImg(i) {
+    if (this.question.finalAnswer !== null) {
+      if (this.myAnswers.answered) {
+        if (this.question.finalAnswer == this.myAnswers.answer && this.question.finalAnswer == i) {
+          return 'win'
+        } else if (this.question.finalAnswer != this.myAnswers.answer) {
+          if (this.question.finalAnswer == i) {
+            return 'win'
+          } else if (this.myAnswers.answer == i) {
+            return "wrong";
+          } else {
+            return undefined;
+          }
+        } else {
+          return undefined;
+        }
+      } else {
+        if (this.question.finalAnswer == i) {
+          return 'win'
+        } else {
+          return undefined;
+        }
+      }
     } else {
-      return this.question.finalAnswer == i;
+      return undefined;
     }
   }
 
   getBackground(i) {
-    if (this.myAnswers.answered) {
-      if (this.question.finalAnswer == i && this.myAnswers.answer == this.question.finalAnswer) {
-        return {
-          'background': "#5DB145"
-        }
-      } else if (this.question.finalAnswer == i && this.myAnswers.answer != this.question.finalAnswer) {
-        return {
-          'background': "#C10000"
-        }
-      } else {
-        return {
-          'background': "#EAEAEA"
-        }
+    if (this.getImg(i) == "win") {
+      return {
+        'background': "#5DB145"
+      }
+    } else if (this.getImg(i) == "wrong") {
+      return {
+        'background': "#C10000"
       }
     } else {
-      if (this.question.finalAnswer == i) {
-        return {
-          'background': "#5DB145"
-        }
-      } else {
-        return {
-          'background': "#EAEAEA"
-        }
+      return {
+        'background': "#EAEAEA"
       }
     }
   }

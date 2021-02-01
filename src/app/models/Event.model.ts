@@ -4,7 +4,7 @@ export interface EventModel {
   events: Event[];
 }
 
-interface Event {
+export interface Event {
   answerAmount: number;
   answers: object[];
   commentsAmount: number;
@@ -20,7 +20,7 @@ interface Event {
   };
   id: number;
   lastComment: string;
-  parcipiantAnswers: object[];
+  parcipiantAnswers: ParcipiantAnswers[];
   question: string;
   room: {
     color: string;
@@ -34,4 +34,21 @@ interface Event {
   transactionHash: string;
   validated: number;
   validatorsAmount: number;
+  validatorsAnswers: ValidatorsAnswers[];
 }
+interface ValidatorsAnswers {
+  answer: number;
+  avatar: string;
+  date: number;
+  transactionHash: string;
+  userId: number
+}
+interface ParcipiantAnswers {
+  amount: number;
+  answer: number;
+  avatar: string;
+  date: number;
+  transactionHash: string;
+  userId: number;
+}
+

@@ -3,7 +3,11 @@ export interface RoomModel {
   id: number;
   joinedUsers: number;
   name: string;
-  privateEventsId: object[];
-  publicEventsId: object[];
+  privateEventsId: EventId[];
+  publicEventsId: EventId[];
   user: object;
+}
+
+interface EventId {
+  _id: number;
 }

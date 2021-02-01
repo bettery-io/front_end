@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef } from '@
 import { Subscription } from 'rxjs';
 import { PostService } from '../../../services/post.service';
 import _ from 'lodash';
+import {NotificationModel} from "../../../models/Notification.model";
 
 @Component({
   selector: 'notifications',
@@ -14,8 +15,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   notifSub: Subscription;
   readSub: Subscription;
   deleteNotifSub: Subscription;
-  notifData: [];
-  colocol
+  notifData: NotificationModel[];
+  colocol: boolean;
   navbar = false;
 
   constructor(
@@ -38,7 +39,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     let data = {
       userId: this.userId
     }
-    this.notifSub = this.postService.post('notification/get_by_user_id', data).subscribe((x: any) => {
+    this.notifSub = this.postService.post('notification/get_by_user_id', data).subscribe((x: NotificationModel[]) => {
       this.notifData = x;
       let index = _.findIndex(x, (o) => { return o.read == false });
       this.colocol = index == -1 ? false : true;

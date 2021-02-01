@@ -9,6 +9,9 @@ import {User} from '../../../models/User.model';
 import _ from 'lodash';
 import {RegistrationComponent} from '../../registration/registration.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Coins} from '../../../models/Coins.model';
+import {RoomDetails} from '../../../models/RoomDetails.model';
+import {EventModel, Event} from '../../../models/Event.model';
 
 
 @Component({
@@ -25,14 +28,15 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   joinRoomSub: Subscription;
   leaveRoomSub: Subscription;
   notificationRoomSub: Subscription;
-  roomDetails: any;
-  roomEvents: any = [];
-  coinInfo = null;
-  myAnswers: Answer[] = [];
+  roomDetails: RoomDetails;
+  roomEvents: Event[] = [];
+  coinInfo: Coins = null;
+  myAnswers: Answer[];
+  pureData: EventModel;
   userId: number = null;
   userData: any;
   fromComponent: string = 'room';
-  commentList;
+  commentList: Event;
   scrollDistanceFrom = 0;
   scrollDistanceTo = 5;
   bottom = false;
@@ -40,10 +44,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   spinner = true;
   scrollTop = 0;
   searchWord = '';
-  timeout;
+  timeout: any;
   spinnerForComment: boolean;
   commentResetFlag: boolean;
-  pureData;
   roomData: any;
   disabledButton: boolean = false;
 
@@ -63,7 +66,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.getAllData();
       }
     });
-    this.storeCoinsSubscrive = this.store.select('coins').subscribe((x) => {
+    this.storeCoinsSubscrive = this.store.select('coins').subscribe((x: Coins[]) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
       }
@@ -86,7 +89,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   getRoomInfo(data) {
-    this.infoSub = this.postService.post('room/info', data).subscribe((value: any) => {
+    this.infoSub = this.postService.post('room/info', data).subscribe((value: RoomDetails) => {
       this.roomDetails = value;
       this.disabledButton = false;
     }, (err) => {
@@ -108,8 +111,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       search: param
     };
 
-    this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: any) => {
+    this.eventSub = this.postService.post('room/get_event_by_room_id', data).subscribe((value: EventModel) => {
       this.pureData = value;
+
       if (this.roomEvents.length == 0) {
         this.commentList = value.events[0];
       }

@@ -16,6 +16,7 @@ import Contract from '../../../contract/contract';
 import web3Obj from '../../../helpers/torus'
 import { Subscription } from 'rxjs';
 import { WelcomePageComponent } from "../../share/welcome-page/welcome-page.component";
+import {User} from "../../../models/User.model";
 
 
 @Component({
@@ -42,11 +43,11 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   coinsSub: Subscription;
   postSub: Subscription;
   getSub: Subscription;
-  userHistory: any = []
-  faReply = faReply
-  faShare = faShare
-  loadMore = false
-  avatar;
+  userHistory: any = [];
+  faReply = faReply;
+  faShare = faShare;
+  loadMore = false;
+  avatar: string;
   holdBalance: any = 0;
   ERC20Coins: any = [];
   ERC20depositError: string = undefined;
@@ -71,7 +72,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
 
     this.detectPath()
 
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.userWallet = x[0].wallet;

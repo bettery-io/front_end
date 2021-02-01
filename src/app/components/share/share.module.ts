@@ -17,6 +17,7 @@ import {RouterModule} from '@angular/router';
 import { QuizInfoComponent } from './quiz-template/quiz-info/quiz-info.component';
 import { QuizChooseRoleComponent } from './quiz-template/quiz-choose-role/quiz-choose-role.component';
 import { QuizActionComponent } from './quiz-template/quiz-action/quiz-action.component';
+import { QuizEventFinishComponent } from './quiz-template/quiz-event-finish/quiz-event-finish.component';
 
 
 
@@ -35,7 +36,8 @@ import { QuizActionComponent } from './quiz-template/quiz-action/quiz-action.com
     PreRegistrationModalComponent,
     QuizInfoComponent,
     QuizChooseRoleComponent,
-    QuizActionComponent
+    QuizActionComponent,
+    QuizEventFinishComponent
   ],
     imports: [
         CommonModule,

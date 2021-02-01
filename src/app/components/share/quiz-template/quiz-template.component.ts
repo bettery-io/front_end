@@ -34,6 +34,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   becomeExpert: boolean = false;
   details: boolean = true;
   letsBet: boolean = false;
+  viewEventFinishInfo: boolean = false;
 
   @Input() joinRoom: boolean;
   @Input() index: number;
@@ -607,6 +608,16 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   goToInfo() {
     this.letsBet = false;
     this.details = true;
+  }
+
+  viewDetails(){
+    if (this.openIndex == this.index) {
+      this.openIndex = null;
+      this.viewEventFinishInfo = false;
+    } else {
+      this.openIndex = this.index;
+      this.viewEventFinishInfo = true;
+    }
   }
 
   ngOnDestroy() {

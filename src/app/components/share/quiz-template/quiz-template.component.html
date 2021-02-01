@@ -174,28 +174,27 @@
               <div class="button" *ngIf="timeValidating(question)" (click)="this.openDetails()">
                 join now
               </div>
-              <!-- (click)="this.setAnswer(question, 'validate')"-->
               <div *ngIf="!timeValidating(question)" class="validateNow" (click)="this.openDetails()">
                 VALIDATE NOW
               </div>
             </div>
-
-            <div class="viewEvent" *ngIf="finalAnswerGuard(question)">
+            <div class="viewEvent" *ngIf="finalAnswerGuard(question)" (click)="this.viewDetails()">
               VIEW EVENT
             </div>
           </div>
         </div>
       </div>
       <div *ngIf="this.openIndex == this.index">
-        <quiz-choose-role *ngIf="!joinPlayer && !becomeExpert" [question]="question" (player)="joinAsPlayer()"
-          (expert)="becomeValidator()"></quiz-choose-role>
+        <quiz-choose-role *ngIf="!joinPlayer && !becomeExpert && !viewEventFinishInfo" [question]="question"
+          (player)="joinAsPlayer()" (expert)="becomeValidator()"></quiz-choose-role>
         <div *ngIf="joinPlayer || becomeExpert">
           <quiz-info *ngIf="details && !letsBet" (goBack)="cancel()" (agree)="continue()" [joinPlayer]="joinPlayer"
             [becomeExpert]="becomeExpert"></quiz-info>
-          <quiz-action (goBack)="goToInfo()" (betEvent)="betEvent($event)" (validateEvent)="validateEvent($event)" [joinPlayer]="joinPlayer" [becomeExpert]="becomeExpert" *ngIf="!details && letsBet"
-            [question]="question"></quiz-action>
-
+          <quiz-action (goBack)="goToInfo()" (betEvent)="betEvent($event)" (validateEvent)="validateEvent($event)"
+            [joinPlayer]="joinPlayer" [becomeExpert]="becomeExpert" *ngIf="!details && letsBet" [question]="question">
+          </quiz-action>
         </div>
+        <quiz-event-finish *ngIf="viewEventFinishInfo"></quiz-event-finish>
       </div>
     </div>
   </div>

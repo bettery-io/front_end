@@ -9,4 +9,5 @@ export interface RoomDetails {
   members: number;
   name: string;
   joinedId: boolean;
+  notifications: boolean;
 }

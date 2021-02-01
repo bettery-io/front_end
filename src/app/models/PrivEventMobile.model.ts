@@ -22,9 +22,19 @@ export interface PrivEventMobile {
   status: string;
   transactionHash: string;
   winner: string;
+  validatorsAmount: number;
+  validatorAnswer: ValidatorsAnswers[];
 }
 
 interface ParcipiantAnswers {
+  answer: number;
+  avatar: string;
+  date: number;
+  transactionHash: string;
+  userId: number;
+}
+
+interface ValidatorsAnswers {
   answer: number;
   avatar: string;
   date: number;

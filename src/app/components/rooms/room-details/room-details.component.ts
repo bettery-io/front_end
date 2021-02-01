@@ -91,6 +91,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   getRoomInfo(data) {
     this.infoSub = this.postService.post('room/info', data).subscribe((value: RoomDetails) => {
       this.roomDetails = value;
+      console.log('=================================')
+      console.log(this.roomDetails)
+      console.log('=================================')
       this.disabledButton = false;
     }, (err) => {
       console.log(err);

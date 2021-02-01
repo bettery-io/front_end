@@ -10,6 +10,8 @@ export class QuizEventFinishComponent implements OnInit {
   @Input() question;
   @Input() userData;
   @Input() myAnswers;
+  @Input() joinRoom: boolean;
+
 
   constructor() { }
 

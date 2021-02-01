@@ -11,6 +11,7 @@ import { InfoModalComponent } from '../../../share/info-modal/info-modal.compone
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorLimitModalComponent } from '../../../share/error-limit-modal/error-limit-modal.component';
 import { environment } from '../../../../../environments/environment';
+import {User} from '../../../../models/User.model';
 
 
 @Component({
@@ -22,17 +23,17 @@ export class PublicEventComponent implements OnDestroy {
   @Input() formData;
   @Output() goBack = new EventEmitter();
   created = false;
-  day;
-  hour;
-  minutes;
-  seconds;
-  nickName;
-  host
-  quizData;
-  userSub: Subscription
-  idSub: Subscription
-  postSub: Subscription
-  createSub: Subscription
+  day: number | string;
+  hour: number | string;
+  minutes: number | string;
+  seconds: number | string;
+  nickName: string;
+  host: User[];
+  quizData: any;
+  userSub: Subscription;
+  idSub: Subscription;
+  postSub: Subscription;
+  createSub: Subscription;
   spinnerLoading: boolean = false;
 
   constructor(
@@ -42,7 +43,7 @@ export class PublicEventComponent implements OnDestroy {
     private PostService: PostService,
     private modalService: NgbModal
   ) {
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length !== 0) {
         this.nickName = x[0].nickName;
         this.host = x;

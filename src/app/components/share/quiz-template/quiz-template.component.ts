@@ -15,6 +15,8 @@ import web3Obj from '../../../helpers/torus';
 import maticInit from '../../../contract/maticInit.js';
 import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
 import { Subscription } from 'rxjs';
+import { Event } from '../../../models/Event.model';
+import {Coins} from '../../../models/Coins.model';
 
 @Component({
   selector: 'quiz-template',
@@ -25,10 +27,10 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   faCheck = faCheck;
   allUserData: User = undefined;
   amount: number;
-  torusSub: Subscription
-  answerSub: Subscription
-  validSub: Subscription
-  updateSub: Subscription
+  torusSub: Subscription;
+  answerSub: Subscription;
+  validSub: Subscription;
+  updateSub: Subscription;
 
   @Input() joinRoom: boolean;
 
@@ -40,10 +42,10 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  @Input() question: any;
+  @Input() question: Event;
   @Input('userData') userData: User;
   @Input() myAnswers: Answer;
-  @Input() coinInfo: any;
+  @Input() coinInfo: Coins;
   @Input() fromComponent: string;
 
   @Output() callGetData = new EventEmitter();

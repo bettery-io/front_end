@@ -7,7 +7,8 @@ import TokenSale from '../../../../build/contracts/QuizeTokenSale.json';
 import { environment } from '../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetaMaskModalComponent } from '../share/meta-mask-modal/meta-mask-modal.component';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {TokenSaleInfo} from '../../models/TokenSaleInfo.model';
 
 @Component({
   selector: 'erc-coin-sale',
@@ -19,13 +20,13 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   postServiceSub: Subscription;
   numberOfTokens = undefined;
 
-  tokensaleInfo: any;
+  tokensaleInfo: TokenSaleInfo;
   spinner: boolean = false;
 
-  percent;
-  time;
-  timer;
-  timeInterval;
+  percent: number;
+  time: any;
+  timer: any;
+  timeInterval: any;
 
   form: FormGroup;
   submitted: boolean = false;
@@ -53,7 +54,7 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
     let data = {
       from: 'dev'
     };
-    this.postServiceSub = this.postService.post('tokensale/info', data).subscribe((x) => {
+    this.postServiceSub = this.postService.post('tokensale/info', data).subscribe((x: TokenSaleInfo) => {
       this.tokensaleInfo = x;
     }, (err) => {
       console.log(err);

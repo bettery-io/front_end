@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
 import _ from "lodash";
+import {RoomModel} from "../../../../models/Room.model";
+import {User} from "../../../../models/User.model";
 
 @Component({
   selector: 'create-room-desktop',
@@ -24,12 +26,12 @@ export class CreateRoomDesktopComponent implements OnInit, OnDestroy {
   existRoom: FormGroup;
   createRoomForm: FormGroup;
   gradietnNumber: number = 0;
-  postSubscribe: Subscription
-  userSub: Subscription
-  postValidation: Subscription
-  allRooms: any;
+  postSubscribe: Subscription;
+  userSub: Subscription;
+  postValidation: Subscription;
+  allRooms: RoomModel[];
   roomError: string;
-  userId
+  userId: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,7 +54,7 @@ export class CreateRoomDesktopComponent implements OnInit, OnDestroy {
       roomId: [this.formData.roomId, Validators.required]
     })
 
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length != 0) {
         this.userId = x[0]._id;
         this.getUserRooms(this.userId)
@@ -64,11 +66,11 @@ export class CreateRoomDesktopComponent implements OnInit, OnDestroy {
     let data = {
       id: id
     }
-    this.postSubscribe = this.postService.post('room/get_by_user_id', data).subscribe((x: any) => {
+    this.postSubscribe = this.postService.post('room/get_by_user_id', data).subscribe((x: RoomModel[]) => {
       if (x.length !== 0 && this.formData.roomName == '') {
         this.createRoomForm.controls.createNewRoom.setValue("exist");
       }
-      this.allRooms = x
+      this.allRooms = x;
     }, (err) => {
       console.log(err)
     })
@@ -130,7 +132,7 @@ export class CreateRoomDesktopComponent implements OnInit, OnDestroy {
     }, (err) => {
       console.log(err);
       this.roomError = err.message;
-    })
+    });
   }
 
   cancel() {

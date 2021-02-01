@@ -10,7 +10,7 @@ import {EventsTemplatesDesktopComponent} from "../../createEvent/desktop/events-
 export class SidebarComponent implements OnInit, DoCheck {
   display: boolean;
   scrollTop: number;
-  currentPath
+  currentPath: string;
 
   constructor(private modalService: NgbModal) {
   }

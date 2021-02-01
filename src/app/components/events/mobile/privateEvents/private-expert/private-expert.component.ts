@@ -6,6 +6,8 @@ import {AppState} from '../../../../../app.state';
 import Contract from '../../../../../contract/contract';
 import {PostService} from '../../../../../services/post.service';
 import {Subscription} from 'rxjs';
+import {PrivEventMobile} from '../../../../../models/PrivEventMobile.model';
+import {User} from '../../../../../models/User.model';
 
 @Component({
   selector: 'app-private-expert',
@@ -15,8 +17,8 @@ import {Subscription} from 'rxjs';
 export class PrivateExpertComponent implements OnInit, OnDestroy {
   answerForm: FormGroup;
   @Input() allTime: any;
-  @Input() data: any;
-  @Input() ifTimeValid: any;
+  @Input() data: PrivEventMobile;
+  @Input() ifTimeValid: boolean;
   @Output() changed = new EventEmitter<boolean>();
   @Output() changed2 = new EventEmitter<boolean>();
   @Output() back = new EventEmitter<boolean>();
@@ -26,19 +28,19 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
   errorMessage = undefined;
   userSub: Subscription;
   postSub: Subscription;
-  userData;
-  date;
-  month;
-  year;
-  hour;
-  minutes;
+  userData: User;
+  date: string | number;
+  month: string | number;
+  year: string | number;
+  hour: string | number;
+  minutes: string | number;
 
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
     private postService: PostService,
   ) {
-    this.userSub = this.store.select('user').subscribe((x) => {
+    this.userSub = this.store.select('user').subscribe((x: User[]) => {
       if (x.length != 0) {
         this.userData = x[0];
       }

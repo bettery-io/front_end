@@ -23,11 +23,13 @@
       </div>
       <div (click)="showUsersRoom()" class="btn-middle"
         [ngClass]="btnMiddleActive === 'showUsersRoom' && 'btn-middle-active'">
-        <div class="deactivate-2"></div>
+        <div [ngClass]="btnMiddleActive === 'showUsersRoom' ? 'my-room-img' : 'deactivate-2'">
+        </div>
         <span>My Rooms</span>
       </div>
       <div (click)="showJoinedRoom()" class="btn-middle"
         [ngClass]="btnMiddleActive === 'joinedRoom' && 'btn-middle-active'">
+        <div [ngClass]="btnMiddleActive === 'joinedRoom' ? 'joinedRoom-active-img' : 'joinedRoom-dis-img'"></div>
         <span>Joined Rooms</span>
       </div>
       <div class="btn-middle" [ngClass]="btnMiddleActive === 'searchInput' && 'btn-middle-active'">
@@ -107,7 +109,7 @@
       </div>
     </div>
 
-    <div class="notFound" *ngIf="btnMiddleActive === 'showUsersRoom' && roomsSort?.length === 0">
+    <div class="notFound" *ngIf="btnMiddleActive === 'showUsersRoom' && roomsSort?.length === 0 && spinner == true">
       <div class="noCreateEvents-img"></div>
 
       <div class="notFound-title">
@@ -125,7 +127,7 @@
       </div>
     </div>
 
-    <div class="notFound" *ngIf="btnMiddleActive === 'joinedRoom' && roomsSort?.length === 0">
+    <div class="notFound" *ngIf="btnMiddleActive === 'joinedRoom' && roomsSort?.length === 0 && spinner == true">
       <div class="joinedRooms-img"></div>
 
       <div class="notFound-title">

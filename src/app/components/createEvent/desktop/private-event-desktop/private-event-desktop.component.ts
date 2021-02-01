@@ -12,6 +12,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {InfoModalComponent} from '../../../share/info-modal/info-modal.component'
 import {ErrorLimitModalComponent} from '../../../share/error-limit-modal/error-limit-modal.component';
 import {environment} from '../../../../../environments/environment';
+import {User} from '../../../../models/User.model';
 
 @Component({
   selector: 'private-event-desktop',
@@ -22,17 +23,17 @@ export class PrivateEventDesktopComponent implements OnInit, OnDestroy {
   @Input() formData;
   @Output() goBack = new EventEmitter();
   spinner: boolean = false;
-  host;
+  host: User[];
   created = false;
-  eventData;
-  day;
-  hour;
-  minutes;
-  seconds;
-  userSub: Subscription
-  idSub: Subscription
-  postSub: Subscription
-  createSub: Subscription
+  eventData: any;
+  day: number | string;
+  hour: number | string;
+  minutes: number | string;
+  seconds: number | string;
+  userSub: Subscription;
+  idSub: Subscription;
+  postSub: Subscription;
+  createSub: Subscription;
   spinnerLoading: boolean = false;
 
 
@@ -44,7 +45,7 @@ export class PrivateEventDesktopComponent implements OnInit, OnDestroy {
     private router: Router,
     private modalService: NgbModal
   ) {
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length != 0) {
         this.host = x;
       }

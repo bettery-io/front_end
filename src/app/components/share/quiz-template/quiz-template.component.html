@@ -15,8 +15,8 @@
                 <div *ngIf="!finalAnswerGuard(question)">
                   <div class="d-flex align-items-center" [ngClass]="question.answers.length >= 4 && 'moreThan3'">
                     <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
-                      <input class="checkbox_answer" id="{{question.id}}{{question.from}}" (click)="this.makeAnswer(i)"
-                        value="{{i}}" type="radio" name="{{question.id}}{{question.from}}">
+                      <input class="checkbox_answer" id="{{question.id}}{{i}}" (click)="this.makeAnswer(i)"
+                        value="{{i}}" type="radio" name="{{question.id}}{{i}}">
                       <div class="label answer-checkbox">{{answer}}</div>
                     </div>
                   </div>
@@ -161,10 +161,8 @@
               No comments yet. <span (click)="getCommentById(question?.id)">(leave a comment)</span>
             </div>
             <div *ngIf="question?.lastComment !== 'null'" class="comment-text">
-              <p>
-                {{question?.lastComment}} <span (click)="getCommentById(question?.id)">(see {{question?.commentsAmount}}
+              {{question?.lastComment}} <span (click)="getCommentById(question?.id)">(see {{question?.commentsAmount}}
                   more comments)</span>
-              </p>
             </div>
           </div>
           <div *ngIf="!finalAnswerGuard(question)">

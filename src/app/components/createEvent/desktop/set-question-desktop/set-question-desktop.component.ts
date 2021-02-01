@@ -9,6 +9,7 @@ import * as UserActions from '../../../../actions/user.actions';
 import {Subscription} from 'rxjs';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {WelcomePageComponent} from '../../../share/welcome-page/welcome-page.component';
+import {User} from '../../../../models/User.model';
 
 @Component({
   selector: 'set-question-desktop',
@@ -42,7 +43,7 @@ export class SetQuestionDesktopComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userSub = this.store.select('user').subscribe((x) => {
+    this.userSub = this.store.select('user').subscribe((x: User[]) => {
       if (x.length != 0) {
         this.registered = true;
       }

@@ -8,7 +8,9 @@ import { createEventAction } from '../../../actions/newEvent.actions';
 import * as _ from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RegistrationComponent } from '../../registration/registration.component';
-import {EventsTemplatesDesktopComponent} from "../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component";
+import {EventsTemplatesDesktopComponent} from '../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component';
+import {RoomModel} from '../../../models/Room.model';
+import {User} from '../../../models/User.model';
 
 @Component({
   selector: 'app-rooms',
@@ -22,21 +24,19 @@ export class RoomsComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   joinedRoomSub: Subscription;
 
-  allRooms: any;
-
+  allRooms: RoomModel[];
+  roomsSort: RoomModel[];
   showLength = 8;
   startLength = 0;
-  roomsSort: any;
   pageRoom = 1;
-
   activeRoom: number;
+  userData: User;
 
-  userData;
-  usersRoom;
+  usersRoom: any;
   newCreateEvent = '';
   searchWord: string;
 
-  forEventId;
+  forEventId: any;
   testAnimation: number;
   btnMiddleActive = 'showAllRoom';
   showInputFlag: boolean;
@@ -64,10 +64,10 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   getAllRoomsFromServer() {
     const path = 'room/get_all';
-    this.roomsSub = this.getService.get(path).subscribe(rooms => {
-      console.log(rooms);
+    this.roomsSub = this.getService.get(path).subscribe((rooms: RoomModel[]) => {
       this.allRooms = rooms;
       this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
+      console.log(this.roomsSort)
       this.spinner = true;
     });
   }
@@ -79,6 +79,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.roomById = this.postService.post(path, data).subscribe(list => {
       this.usersRoom = list;
       this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
+      this.spinner = true;
     });
   }
 
@@ -184,7 +185,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   findCurrentUser(): void {
-    this.userSub = this.store.select('user').subscribe((x) => {
+    this.userSub = this.store.select('user').subscribe((x: User[]) => {
       if (x.length !== 0) {
         this.userData = x[0];
         if (this.btnMiddleActive === 'showUsersRoom') {
@@ -198,6 +199,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showUsersRoom() {
+    this.spinner = false;
     this.pageRoom = 1;
     this.startLength = 0;
     this.showLength = 8;
@@ -207,6 +209,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     } else {
       this.btnMiddleActive = 'showUsersRoom';
       this.modalService.open(RegistrationComponent, { centered: true });
+      this.spinner = true;
       return;
     }
   }
@@ -226,6 +229,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showJoinedRoom() {
+    this.spinner = false;
     this.pageRoom = 1;
     this.startLength = 0;
     this.showLength = 8;
@@ -235,6 +239,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     } else {
       this.btnMiddleActive = 'joinedRoom';
       this.modalService.open(RegistrationComponent, { centered: true });
+      this.spinner = true;
       return;
     }
   }
@@ -246,6 +251,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.joinedRoomSub = this.postService.post(path, data).subscribe(list => {
       this.usersRoom = list;
       this.roomsSort = this.usersRoom.slice(this.startLength, this.showLength);
+      this.spinner = true;
     });
   }
 

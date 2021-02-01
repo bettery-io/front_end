@@ -32,7 +32,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   torusRegistSub: Subscription;
   registSub: Subscription;
   loginWithMetamsk = false;
-  spinner;
+  spinner: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,8 +78,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     }
     this.torusRegistSub = this.http.post("user/torus_regist", data)
       .subscribe(
-        (x: any) => {
-          console.log(x);
+        (x: User) => {
           this.addUser(
             x.email,
             x.nickName,
@@ -92,10 +91,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             x._id,
             x.verifier
           );
-          this.spinner = false
+          this.spinner = false;
         }, (err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
   }
 
   async loginMetamask() {

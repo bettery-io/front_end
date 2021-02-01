@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
 import {NgbActiveModal, NgbModalConfig} from "@ng-bootstrap/ng-bootstrap";
+import {User} from "../../../../models/User.model";
 
 const init = {
   question: '',
@@ -45,7 +46,7 @@ export class EventsTemplatesDesktopComponent implements OnInit, OnDestroy {
     public activeModal: NgbActiveModal,
     config: NgbModalConfig
   ) {
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length == 0) {
         this.formData = {
           question: '',

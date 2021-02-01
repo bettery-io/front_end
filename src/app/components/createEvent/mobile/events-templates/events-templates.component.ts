@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.state';
+import { User } from 'src/app/models/User.model';
 
 const init = {
   question: '',
@@ -12,11 +13,11 @@ const init = {
   roomColor: 'linear-gradient(228.16deg, #54DD96 -1.47%, #6360F7 97.79%)',
   eventType: 'public',
   tokenType: "token",
-  winner: "",
-  losers: "",
-  privateEndTime: "",
-  publicEndTime: "",
-  expertsCountType: "company",
+  winner: '',
+  losers: '',
+  privateEndTime: '',
+  publicEndTime: '',
+  expertsCountType: 'company',
   expertsCount: '',
   exactMinutes: new Date().getMinutes(),
   exactHour: new Date().getHours(),
@@ -24,7 +25,7 @@ const init = {
   exactMonth: new Date().getMonth(),
   exactYear: new Date().getFullYear(),
   exactTimeBool: false,
-  roomId: ""
+  roomId: ''
 };
 
 @Component({
@@ -40,7 +41,7 @@ export class EventsTemplatesComponent implements OnInit {
 
 
   constructor(private store: Store<AppState>) {
-    this.userSub = this.store.select("user").subscribe((x) => {
+    this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length == 0) {
         this.formData = {
           question: '',
@@ -209,7 +210,7 @@ export class EventsTemplatesComponent implements OnInit {
       this.eventFromLandingSubscr.unsubscribe();
     }
     if (this.userSub) {
-      this.userSub.unsubscribe()
+      this.userSub.unsubscribe();
     }
   }
 

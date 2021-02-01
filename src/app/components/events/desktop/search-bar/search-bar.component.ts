@@ -8,7 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class SearchBarComponent implements OnInit {
   active = 'trending';
   searchWord = '';
-  timeout;
+  timeout: any;
   @Output() searchWordEmit = new EventEmitter();
   @Output() activeItemEmit = new EventEmitter();
   @Output() timelineActive = new EventEmitter();

@@ -1,1 +1,55 @@
-<p>quiz-event-finish works!</p>
+<div class="border-top-event">
+    <div class="info_box answer_container">
+        <div class="partBox">
+            <div class="partPos">
+                <div *ngFor="let part of question.parcipiantAnswers; index as i">
+                    <div [ngStyle]="getPartPos(i, 'part')">
+                        <img *ngIf="i <= 3" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
+                    </div>
+                </div>
+            </div>
+            <p class="playersNumber"><span
+                    style="color: #34DDDD; font-weight: bold;">{{joined(question.parcipiantAnswers)}}
+                    Players</span> bet</p>
+        </div>
+        <div class="partBox">
+            <div class="partPos">
+                <div *ngFor="let part of question.validatorsAnswers; index as i">
+                    <div [ngStyle]="getPartPos(i, 'valid')">
+                        <img *ngIf="i <= 3" class="partImg" referrerpolicy="no-referrer" src="{{part.avatar}}">
+                    </div>
+                </div>
+            </div>
+            <p class="playersNumber"><span
+                    style="color: #BF94E4; font-weight: bold;">{{joined(question.validatorsAnswers)}}
+                    Experts</span> validated</p>
+        </div>
+
+        <div *ngIf="!joinRoom" class="roomBox">
+            <div class="info-item">
+                <div class="avatar mr-2">
+                    <img src="{{question?.host.avatat}}" alt="avatar">
+                </div>
+                <div class="hostName" style="color: #54DD96;">{{question?.host.nickName}}</div>
+            </div>
+            <div style="cursor: pointer" routerLink="/room/{{question?.room.id}}" class="info-item">
+                <div class="colorRoom mr-2 ml-3 " [ngStyle]="colorForRoom(question?.room.color)"></div>
+                <div class="roomName"><span>{{question?.room.name}}</span> ({{question?.room.eventAmount}})</div>
+            </div>
+        </div>
+    </div>
+    <div class="border-bottom-event"></div>
+    <div class="answer_box answer_container">
+        <div *ngFor="let answer of question.answers; index as i" class="answer" [ngStyle]="getBackground(i)">
+            <div class="name_box">
+                <p class="answer_name">{{answer}}</p>
+                <div [ngClass]="{wrong: findWinner(i), win: findWinner(i)}">
+                </div>
+            </div>
+            <div class="border_answer"></div>
+            <p class="answer_info"><b>{{playersBet(i)}} Players</b> bet <b>({{playersPers(i)}})</b></p>
+            <p class="answer_info"><b>{{expertsBet(i)}} Experts</b> validated</p>
+            <p class="answer_info" style="margin-bottom: 7px;"><b>{{pool(i)}} BET</b> Prize Pool</p>
+        </div>
+    </div>
+</div>

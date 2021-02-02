@@ -87,15 +87,16 @@ export class TimeComponent implements OnInit {
   }
 
   correctMarginLeft() {
-    if (this.day >= 10 && this.day < 100) {
-      return {
-        'margin-left': '55px'
-      };
-    }
-    if (this.day >= 100) {
-      return {
-        'margin-left': '47px'
-      };
-    }
+    // if (this.day >= 10 && this.day < 100) {
+    //   return {
+    //     'margin-left': '55px'
+    //   };
+    // }
+    // if (this.day >= 100) {
+    //   return {
+    //     'margin-left': '47px'
+    //   };
+    // }
+    return {'float' : 'right'}
   }
 }

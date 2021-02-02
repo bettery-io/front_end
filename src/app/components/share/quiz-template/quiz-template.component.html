@@ -58,8 +58,8 @@
           </div>
           <div>
             <div class="timer-span" *ngIf="question.finalAnswer === null && question.status != 'reverted' ">
-              <div style="display: flex;">
-                <time [timer]="question?.endTime"></time>
+              <div style="display: flex; width: 100%">
+                <time class="w-100" [timer]="question?.endTime"></time>
                 <div *ngIf="!timeValidating(question)">
                   ({{this.getValidatorsAmount(question)}}/{{question?.validatorsAmount}} left)</div>
               </div>

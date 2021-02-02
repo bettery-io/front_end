@@ -1,17 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
-import web3Obj from '../../../../../helpers/torus'
 import { PostService } from '../../../../../services/post.service';
-import * as UserActions from '../../../../../actions/user.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../app.state';
 import { ClipboardService } from 'ngx-clipboard';
 import _ from 'lodash';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { WelcomePageComponent } from '../../../../share/welcome-page/welcome-page.component';
 import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component';
 import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
 import {User} from '../../../../../models/User.model';
+import { RegistrationComponent } from '../../../../registration/registration.component';
 
 
 @Component({
@@ -41,10 +39,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   coinType: string;
   storeSub: Subscription;
   postSub: Subscription;
-  spinnerLoading: boolean = false;
   themeChat = 'dark';
-
-  saveUserLocStorage = [];
 
 
   constructor(
@@ -132,6 +127,8 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
         this.created = true;
       }
     }
+    this.calculateDate();
+    this.letsJoin = true;
   }
 
   calculatePool() {
@@ -176,94 +173,10 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async join() {
-    if (await this.loginWithTorus()) {
-      this.letsJoin = true;
-      this.calculateDate();
-    }
+    const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+    modalRef.componentInstance.openSpinner = true;
   }
 
-  async loginWithTorus() {
-    if (!this.userData) {
-      try {
-        this.spinnerLoading = true;
-        await web3Obj.initialize()
-        this.setTorusInfoToDB()
-        return true;
-      } catch (error) {
-        this.spinnerLoading = false;
-        await web3Obj.torus.cleanUp()
-        console.error(error)
-        return false;
-      }
-    } else {
-      return true;
-    }
-
-  }
-
-  async setTorusInfoToDB() {
-    let userInfo = await web3Obj.torus.getUserInfo("")
-    let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
-
-    this.localStoreUser(userInfo)
-
-    let data: Object = {
-      _id: null,
-      wallet: userWallet,
-      nickName: userInfo.name,
-      email: userInfo.email,
-      avatar: userInfo.profileImage,
-      verifier: userInfo.verifier,
-      verifierId: userInfo.verifierId,
-    }
-    this.postSub = this.http.post("user/torus_regist", data)
-      .subscribe(
-        (x: any) => {
-          this.spinnerLoading = false;
-          this.addUser(
-            x.email,
-            x.nickName,
-            x.wallet,
-            x.listHostEvents,
-            x.listParticipantEvents,
-            x.listValidatorEvents,
-            x.historyTransaction,
-            x.avatar,
-            x._id,
-            x.verifier
-          );
-        }, (err) => {
-          this.spinnerLoading = false;
-          console.log(err)
-        })
-  }
-
-  addUser(
-    email: string,
-    nickName: string,
-    wallet: string,
-    listHostEvents: Object,
-    listParticipantEvents: Object,
-    listValidatorEvents: Object,
-    historyTransaction: Object,
-    color: string,
-    _id: number,
-    verifier: string
-  ) {
-
-    this.store.dispatch(new UserActions.AddUser({
-      _id: _id,
-      email: email,
-      nickName: nickName,
-      wallet: wallet,
-      listHostEvents: listHostEvents,
-      listParticipantEvents: listParticipantEvents,
-      listValidatorEvents: listValidatorEvents,
-      historyTransaction: historyTransaction,
-      avatar: color,
-      verifier: verifier
-    }))
-  }
 
   joinAsPlayer() {
     this.info = true;
@@ -316,7 +229,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     this.info = false;
     this.goToAction = false;
     this.joinedAs = undefined;
-    //  this.getUsers();
     this.interacDone.next(data);
   }
 
@@ -372,19 +284,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (this.postSub) {
       this.postSub.unsubscribe()
-    }
-  }
-
-  localStoreUser(userInfo): void {
-    if (localStorage.getItem('userBettery') === undefined || localStorage.getItem('userBettery') == null) {
-      localStorage.setItem('userBettery', JSON.stringify(this.saveUserLocStorage));
-    }
-    const getItem = JSON.parse(localStorage.getItem('userBettery'));
-    if (getItem.length === 0 || !getItem.includes(userInfo.email)) {
-      const array = JSON.parse(localStorage.getItem('userBettery'));
-      array.push(userInfo.email);
-      localStorage.setItem('userBettery', JSON.stringify(array));
-      this.modalService.open(WelcomePageComponent);
     }
   }
 

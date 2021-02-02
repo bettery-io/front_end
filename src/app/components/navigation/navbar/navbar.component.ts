@@ -15,7 +15,6 @@ import _ from "lodash";
 import Contract from '../../../contract/contract';
 import web3Obj from '../../../helpers/torus'
 import { Subscription } from 'rxjs';
-import { WelcomePageComponent } from "../../share/welcome-page/welcome-page.component";
 import {User} from "../../../models/User.model";
 import {RegistrationComponent} from '../../registration/registration.component';
 
@@ -58,8 +57,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   verifier: string = undefined;
   openNavBar = false;
   display: boolean = false;
-
-  spinnerLoading: boolean;
   saveUserLocStorage = [];
   logoutBox: boolean;
 
@@ -375,80 +372,10 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   async loginWithTorus() {
-    this.spinnerLoading = true;
-    try {
-      await web3Obj.initialize()
-      this.setTorusInfoToDB()
-      this.spinnerLoading = false;
-    } catch (error) {
-      await web3Obj.torus.cleanUp()
-      this.spinnerLoading = false;
-      console.error(error)
-    }
+    const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
+    modalRef.componentInstance.openSpinner = true;
   }
 
-  async setTorusInfoToDB() {
-    let userInfo = await web3Obj.torus.getUserInfo("")
-    let userWallet = (await web3Obj.web3.eth.getAccounts())[0]
-
-    this.localStoreUser(userInfo);
-
-    let data: Object = {
-      _id: null,
-      wallet: userWallet,
-      nickName: userInfo.name,
-      email: userInfo.email,
-      avatar: userInfo.profileImage,
-      verifier: userInfo.verifier,
-      verifierId: userInfo.verifierId,
-    }
-    this.postSub = this.postService.post("user/torus_regist", data)
-      .subscribe(
-        (x: any) => {
-          console.log(x);
-          this.addUser(
-            x.email,
-            x.nickName,
-            x.wallet,
-            x.listHostEvents,
-            x.listParticipantEvents,
-            x.listValidatorEvents,
-            x.historyTransaction,
-            x.avatar,
-            x._id,
-            x.verifier
-          );
-        }, (err) => {
-          console.log(err)
-        })
-  }
-
-  addUser(
-    email: string,
-    nickName: string,
-    wallet: string,
-    listHostEvents: Object,
-    listParticipantEvents: Object,
-    listValidatorEvents: Object,
-    historyTransaction: Object,
-    color: string,
-    _id: number,
-    verifier: string
-  ) {
-
-    this.store.dispatch(new UserActions.AddUser({
-      _id: _id,
-      email: email,
-      nickName: nickName,
-      wallet: wallet,
-      listHostEvents: listHostEvents,
-      listParticipantEvents: listParticipantEvents,
-      listValidatorEvents: listValidatorEvents,
-      historyTransaction: historyTransaction,
-      avatar: color,
-      verifier: verifier
-    }))
-  }
 
   navBar() {
     this.openNavBar = !this.openNavBar
@@ -489,25 +416,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     this.openNavBar = false;
   }
 
-  localStoreUser(userInfo): void {
-    if (localStorage.getItem('userBettery') === undefined || localStorage.getItem('userBettery') == null) {
-      localStorage.setItem('userBettery', JSON.stringify(this.saveUserLocStorage));
-    }
-    const getItem = JSON.parse(localStorage.getItem('userBettery'));
-    if (getItem.length === 0 || !getItem.includes(userInfo.email)) {
-      const array = JSON.parse(localStorage.getItem('userBettery'));
-      array.push(userInfo.email);
-      localStorage.setItem('userBettery', JSON.stringify(array));
-      this.modalService.open(WelcomePageComponent);
-    }
-  }
-
   toggleLogout() {
     this.logoutBox = !this.logoutBox;
-  }
-
-  openRegistration() {
-    const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
-    modalRef.componentInstance.openSpinner = true;
   }
 }

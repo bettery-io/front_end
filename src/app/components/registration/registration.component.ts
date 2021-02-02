@@ -1,16 +1,17 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {faTimes} from '@fortawesome/free-solid-svg-icons';
-import {Store} from '@ngrx/store';
-import {User} from '../../models/User.model';
-import {AppState} from '../../app.state';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
+import { User } from '../../models/User.model';
+import { AppState } from '../../app.state';
 import * as UserActions from '../../actions/user.actions';
-import {PostService} from '../../services/post.service';
+import { PostService } from '../../services/post.service';
 import Web3 from 'web3';
-import {Router} from '@angular/router';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import web3Obj from '../../helpers/torus';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
+import { WelcomePageComponent } from '../share/welcome-page/welcome-page.component';
 
 
 @Component({
@@ -32,13 +33,15 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   registSub: Subscription;
   loginWithMetamsk = false;
   spinner: boolean;
+  saveUserLocStorage = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
     private http: PostService,
     private router: Router,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private modalService: NgbModal,
   ) {
   }
 
@@ -60,6 +63,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       this.setTorusInfoToDB();
     } catch (error) {
       this.spinner = false;
+      this.closeModal();
+      await web3Obj.torus.cleanUp()
       console.error(error);
     }
   }
@@ -67,6 +72,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   async setTorusInfoToDB() {
     let userInfo = await web3Obj.torus.getUserInfo('');
     let userWallet = (await web3Obj.web3.eth.getAccounts())[0];
+
+    this.localStoreUser(userInfo);
 
     let data: Object = {
       _id: null,
@@ -93,7 +100,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             x.verifier
           );
           this.spinner = false;
-        }, (err) => {
+        }, async (err) => {
+          this.closeModal();
+          this.spinner = false;
+          await web3Obj.torus.cleanUp()
           console.log(err);
         });
   }
@@ -260,6 +270,19 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.submitted = false;
     this.registerForm.reset();
     this.closeModal();
+  }
+
+  localStoreUser(userInfo): void {
+    if (localStorage.getItem('userBettery') === undefined || localStorage.getItem('userBettery') == null) {
+      localStorage.setItem('userBettery', JSON.stringify(this.saveUserLocStorage));
+    }
+    const getItem = JSON.parse(localStorage.getItem('userBettery'));
+    if (getItem.length === 0 || !getItem.includes(userInfo.email)) {
+      const array = JSON.parse(localStorage.getItem('userBettery'));
+      array.push(userInfo.email);
+      localStorage.setItem('userBettery', JSON.stringify(array));
+      this.modalService.open(WelcomePageComponent);
+    }
   }
 
   ngOnDestroy() {

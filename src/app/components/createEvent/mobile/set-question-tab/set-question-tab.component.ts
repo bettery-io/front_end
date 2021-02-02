@@ -1,15 +1,13 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../../app.state';
-import web3Obj from '../../../../helpers/torus';
-import {PostService} from '../../../../services/post.service';
-import * as UserActions from '../../../../actions/user.actions';
-import {Subscription} from 'rxjs';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {WelcomePageComponent} from '../../../share/welcome-page/welcome-page.component';
-import {User} from '../../../../models/User.model';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../app.state';
+import { PostService } from '../../../../services/post.service';
+import { Subscription } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { User } from '../../../../models/User.model';
+import { RegistrationComponent } from '../../../registration/registration.component';
 
 @Component({
   selector: 'set-question-tab',
@@ -27,7 +25,6 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
   registered = false;
   clicked = false;
   userSub: Subscription;
-  postSub: Subscription;
 
   spinnerLoading: boolean;
   saveUserLocStorage = [];
@@ -45,6 +42,9 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
     this.userSub = this.store.select('user').subscribe((x: User[]) => {
       if (x.length != 0) {
         this.registered = true;
+        if (this.clicked) {
+          this.onSubmit();
+        }
       }
     });
     this.questionForm = this.formBuilder.group({
@@ -111,103 +111,14 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
   }
 
   async loginWithTorus() {
-    this.spinnerLoading = true;
     this.clicked = true;
-    try {
-      await web3Obj.initialize();
-      this.setTorusInfoToDB();
-    } catch (error) {
-      this.spinnerLoading = false;
-      await web3Obj.torus.cleanUp();
-      console.error(error);
-    }
-  }
-
-  async setTorusInfoToDB() {
-    let userInfo = await web3Obj.torus.getUserInfo('');
-    let userWallet = (await web3Obj.web3.eth.getAccounts())[0];
-
-    this.localStoreUser(userInfo);
-
-    let data: Object = {
-      _id: null,
-      wallet: userWallet,
-      nickName: userInfo.name,
-      email: userInfo.email,
-      avatar: userInfo.profileImage,
-      verifier: userInfo.verifier,
-      verifierId: userInfo.verifierId,
-    };
-    this.postSub = this.http.post('user/torus_regist', data)
-      .subscribe(
-        (x: any) => {
-          this.spinnerLoading = false;
-          this.addUser(
-            x.email,
-            x.nickName,
-            x.wallet,
-            x.listHostEvents,
-            x.listParticipantEvents,
-            x.listValidatorEvents,
-            x.historyTransaction,
-            x.avatar,
-            x._id,
-            x.verifier
-          );
-          if (this.clicked) {
-            this.onSubmit();
-          }
-        }, (err) => {
-          console.log(err);
-        });
-  }
-
-  addUser(
-    email: string,
-    nickName: string,
-    wallet: string,
-    listHostEvents: Object,
-    listParticipantEvents: Object,
-    listValidatorEvents: Object,
-    historyTransaction: Object,
-    color: string,
-    _id: number,
-    verifier: string
-  ) {
-
-    this.store.dispatch(new UserActions.AddUser({
-      _id: _id,
-      email: email,
-      nickName: nickName,
-      wallet: wallet,
-      listHostEvents: listHostEvents,
-      listParticipantEvents: listParticipantEvents,
-      listValidatorEvents: listValidatorEvents,
-      historyTransaction: historyTransaction,
-      avatar: color,
-      verifier: verifier
-    }));
+    const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+    modalRef.componentInstance.openSpinner = true;
   }
 
   ngOnDestroy() {
     if (this.userSub) {
       this.userSub.unsubscribe();
-    }
-    if (this.postSub) {
-      this.postSub.unsubscribe();
-    }
-  }
-
-  localStoreUser(userInfo): void {
-    if (localStorage.getItem('userBettery') === undefined || localStorage.getItem('userBettery') == null) {
-      localStorage.setItem('userBettery', JSON.stringify(this.saveUserLocStorage));
-    }
-    const getItem = JSON.parse(localStorage.getItem('userBettery'));
-    if (getItem.length === 0 || !getItem.includes(userInfo.email)) {
-      const array = JSON.parse(localStorage.getItem('userBettery'));
-      array.push(userInfo.email);
-      localStorage.setItem('userBettery', JSON.stringify(array));
-      this.modalService.open(WelcomePageComponent);
     }
   }
 }

@@ -1,18 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PostService} from '../../../../../services/post.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
-import web3Obj from '../../../../../helpers/torus';
-import * as UserActions from '../../../../../actions/user.actions';
-import {Store} from '@ngrx/store';
-import {ClipboardService} from 'ngx-clipboard';
-import {AppState} from '../../../../../app.state';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PostService } from '../../../../../services/post.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { ClipboardService } from 'ngx-clipboard';
+import { AppState } from '../../../../../app.state';
 import _ from 'lodash';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component';
-import {User} from '../../../../../models/User.model';
-import {PrivEventMobile} from '../../../../../models/PrivEventMobile.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component';
+import { User } from '../../../../../models/User.model';
+import { PrivEventMobile } from '../../../../../models/PrivEventMobile.model';
+import { RegistrationComponent } from '../../../../registration/registration.component';
 
 @Component({
   selector: 'app-private-main',
@@ -33,7 +32,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   ifTimeValid: boolean;
   participatedIndex: number;
   finised: boolean = false;
-  spinnerLoading: boolean = false;
   calculateDateTimer;
   themeChat = 'dark';
 
@@ -118,90 +116,12 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
         this.hideBtn = true;
       }
     }
+    this.calculateDate();
   }
 
   async changePage() {
-    if (await this.loginWithTorus()) {
-      this.calculateDate();
-    }
-  }
-
-  async loginWithTorus() {
-    if (!this.userData) {
-      try {
-        this.spinnerLoading = true;
-        await web3Obj.initialize();
-        this.setTorusInfoToDB();
-        return true;
-      } catch (error) {
-        this.spinnerLoading = false;
-        await web3Obj.torus.cleanUp();
-        console.error(error);
-        return false;
-      }
-    } else {
-      return true;
-    }
-  }
-
-  async setTorusInfoToDB() {
-    const userInfo = await web3Obj.torus.getUserInfo('');
-    const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
-    const data: object = {
-      _id: null,
-      wallet: userWallet,
-      nickName: userInfo.name,
-      email: userInfo.email,
-      avatar: userInfo.profileImage,
-      verifier: userInfo.verifier,
-      verifierId: userInfo.verifierId,
-    };
-    this.postService.post('user/torus_regist', data)
-      .subscribe(
-        (x: any) => {
-          this.spinnerLoading = false;
-          this.addUser(
-            x.email,
-            x.nickName,
-            x.wallet,
-            x.listHostEvents,
-            x.listParticipantEvents,
-            x.listValidatorEvents,
-            x.historyTransaction,
-            x.avatar,
-            x._id,
-            x.verifier
-          );
-        }, (err) => {
-          console.log(err);
-        });
-  }
-
-  addUser(
-    email: string,
-    nickName: string,
-    wallet: string,
-    listHostEvents: object,
-    listParticipantEvents: object,
-    listValidatorEvents: object,
-    historyTransaction: object,
-    color: string,
-    _id: number,
-    verifier: string
-  ) {
-
-    this.store.dispatch(new UserActions.AddUser({
-      _id: _id,
-      email: email,
-      nickName: nickName,
-      wallet: wallet,
-      listHostEvents: listHostEvents,
-      listParticipantEvents: listParticipantEvents,
-      listValidatorEvents: listValidatorEvents,
-      historyTransaction: historyTransaction,
-      avatar: color,
-      verifier: verifier
-    }));
+    const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+    modalRef.componentInstance.openSpinner = true;
   }
 
   prevPage() {
@@ -297,14 +217,14 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   modalAboutExpert() {
-    const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
     modalRef.componentInstance.name = 'Validate the event result, confirming what actually happened. For Social Media events, several Experts share a portion of the prize pool. For Friends events, the Expert has 24 hours to validate and gets a custom reward from the Host.';
     modalRef.componentInstance.boldName = 'Expert - ';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
   }
 
   modalAboutPlayers() {
-    const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
+    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
     modalRef.componentInstance.name = 'Bet on the event outcome. The prize pool is taken from loser bets and shared to winning Players, Host, Experts, and other roles.';
     modalRef.componentInstance.boldName = 'Player - ';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
@@ -322,7 +242,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   }
 
   openSoonModal(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', centered: true});
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true });
   }
 
   ngOnDestroy() {

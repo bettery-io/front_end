@@ -1,28 +1,25 @@
-import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { QuizErrorsComponent } from '../quiz-errors/quiz-errors.component';
-import web3Obj from '../../../../helpers/torus';
-import { PostService } from 'src/app/services/post.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.state';
-import * as UserActions from '../../../../actions/user.actions';
 import { Subscription } from 'rxjs';
 import { User } from '../../../../models/User.model';
+import { RegistrationComponent } from '../../../registration/registration.component';
+
 
 @Component({
   selector: 'quiz-action',
   templateUrl: './quiz-action.component.html',
   styleUrls: ['./quiz-action.component.sass']
 })
-export class QuizActionComponent implements OnDestroy {
+export class QuizActionComponent {
   @Input() question: any;
   @Input() joinPlayer: boolean;
   @Input() becomeExpert: boolean;
+  @Input() allUserData: User;
   @Output() goBack = new EventEmitter();
   @Output() betEvent = new EventEmitter<Array<any>>();
   @Output() validateEvent = new EventEmitter<Array<any>>();
 
-  allUserData = undefined;
   answerNumber: number = null;
   amount: number = 0;
 
@@ -31,15 +28,7 @@ export class QuizActionComponent implements OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private postService: PostService,
-    private store: Store<AppState>
-  ) {
-    this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
-      if (x.length != 0) {
-        this.allUserData = x[0];
-      }
-    });
-  }
+  ) {}
 
   async makeAnswer(i) {
     this.answerNumber = i;
@@ -70,13 +59,8 @@ export class QuizActionComponent implements OnDestroy {
 
       }
     } else {
-      try {
-        await web3Obj.initialize();
-        this.setTorusInfoToDB();
-      } catch (error) {
-        await web3Obj.torus.cleanUp();
-        console.error(error);
-      }
+      const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+      modalRef.componentInstance.openSpinner = true;
     }
   }
 
@@ -95,13 +79,8 @@ export class QuizActionComponent implements OnDestroy {
         this.validateEvent.next(data)
       }
     } else {
-      try {
-        await web3Obj.initialize();
-        this.setTorusInfoToDB();
-      } catch (error) {
-        await web3Obj.torus.cleanUp();
-        console.error(error);
-      }
+      const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+      modalRef.componentInstance.openSpinner = true;
     }
   }
 
@@ -118,80 +97,6 @@ export class QuizActionComponent implements OnDestroy {
       return {
         'background': this.answerNumber == i ? '#BF94E4' : '#EBEBEB'
       }
-    }
-  }
-
-  async setTorusInfoToDB() {
-    const userInfo = await web3Obj.torus.getUserInfo('');
-    const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
-    const data: object = {
-      _id: null,
-      wallet: userWallet,
-      nickName: userInfo.name,
-      email: userInfo.email,
-      avatar: userInfo.profileImage,
-      verifier: userInfo.verifier,
-      verifierId: userInfo.verifierId,
-    };
-    this.torusSub = this.postService.post('user/torus_regist', data)
-      .subscribe(
-        (x: any) => {
-          this.addUser(
-            x.email,
-            x.nickName,
-            x.wallet,
-            x.listHostEvents,
-            x.listParticipantEvents,
-            x.listValidatorEvents,
-            x.historyTransaction,
-            x.avatar,
-            x._id,
-            x.verifier
-          );
-        }, (err) => {
-          console.log(err);
-          let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
-          modalRef.componentInstance.errType = 'error';
-          modalRef.componentInstance.title = "Unknown Error";
-          modalRef.componentInstance.customMessage = String(err);
-          modalRef.componentInstance.description = "Report this unknown error to get 1 BET token!"
-          modalRef.componentInstance.nameButton = "report error";
-        });
-  }
-
-  addUser(
-    email: string,
-    nickName: string,
-    wallet: string,
-    listHostEvents: object,
-    listParticipantEvents: object,
-    listValidatorEvents: object,
-    historyTransaction: object,
-    color: string,
-    _id: number,
-    verifier: string
-  ) {
-
-    this.store.dispatch(new UserActions.AddUser({
-      _id: _id,
-      email: email,
-      nickName: nickName,
-      wallet: wallet,
-      listHostEvents: listHostEvents,
-      listParticipantEvents: listParticipantEvents,
-      listValidatorEvents: listValidatorEvents,
-      historyTransaction: historyTransaction,
-      avatar: color,
-      verifier: verifier
-    }));
-  }
-
-  ngOnDestroy() {
-    if (this.torusSub) {
-      this.torusSub.unsubscribe()
-    }
-    if (this.storeUserSubscribe) {
-      this.storeUserSubscribe.unsubscribe();
     }
   }
 

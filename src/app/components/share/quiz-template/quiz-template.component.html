@@ -159,7 +159,8 @@
             <div class="col-8 d-flex maxFix">
               <div class="comment-img mr-2"></div>
               <div *ngIf="question?.lastComment === 'null'" class="comment-text">
-                No comments yet. <span class="leave_comment" (click)="getCommentById(question?.id)">(leave a comment)</span>
+                No comments yet. <span class="leave_comment" (click)="getCommentById(question?.id)">(leave a
+                  comment)</span>
               </div>
               <div *ngIf="question?.lastComment !== 'null'" class="comment-text">
                 <p>
@@ -182,7 +183,8 @@
                 </div>
               </div>
             </div>
-            <div class="viewEvent" *ngIf="finalAnswerGuard(question)" (click)="this.viewDetails()" [ngStyle]="{'cursor': question.status != 'reverted' ? 'pointer' : 'default'}">
+            <div class="viewEvent" *ngIf="finalAnswerGuard(question)" (click)="this.viewDetails()"
+              [ngStyle]="{'cursor': question.status != 'reverted' ? 'pointer' : 'default'}">
               VIEW EVENT <div *ngIf="question.status != 'reverted'"
                 [ngClass]="{arrow_up_grey: this.openIndex == this.index, arrow_down_grey: this.openIndex != this.index}">
               </div>
@@ -196,8 +198,9 @@
         <div *ngIf="joinPlayer || becomeExpert">
           <quiz-info *ngIf="details && !letsBet" (goBack)="cancel()" (agree)="continue()" [joinPlayer]="joinPlayer"
             [becomeExpert]="becomeExpert"></quiz-info>
-          <quiz-action (goBack)="goToInfo()" (betEvent)="betEvent($event)" (validateEvent)="validateEvent($event)"
-            [joinPlayer]="joinPlayer" [becomeExpert]="becomeExpert" *ngIf="!details && letsBet" [question]="question">
+          <quiz-action [allUserData]="allUserData" (goBack)="goToInfo()" (betEvent)="betEvent($event)"
+            (validateEvent)="validateEvent($event)" [joinPlayer]="joinPlayer" [becomeExpert]="becomeExpert"
+            *ngIf="!details && letsBet" [question]="question">
           </quiz-action>
         </div>
         <quiz-event-finish *ngIf="viewEventFinishInfo" [question]="question" [userData]="userData"

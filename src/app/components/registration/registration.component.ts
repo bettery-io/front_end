@@ -19,7 +19,7 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./registration.component.sass']
 })
 export class RegistrationComponent implements OnInit, OnDestroy {
-  @Input() navBar = false;
+  @Input() openSpinner = false;
   registerForm: FormGroup;
   submitted: boolean = false;
   faTimes = faTimes;
@@ -47,7 +47,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       nickName: ['', Validators.minLength(6)],
       email: ['', [Validators.email, Validators.required]]
     });
-    if (this.navBar === true) {
+    if (this.openSpinner === true) {
       this.loginWithTorus();
     }
   }

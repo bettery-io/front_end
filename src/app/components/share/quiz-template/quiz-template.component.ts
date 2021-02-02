@@ -16,7 +16,8 @@ import maticInit from '../../../contract/maticInit.js';
 import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
 import { Subscription } from 'rxjs';
 import { Event } from '../../../models/Event.model';
-import {Coins} from '../../../models/Coins.model';
+import { Coins } from '../../../models/Coins.model';
+import {RegistrationComponent} from '../../registration/registration.component';
 
 @Component({
   selector: 'quiz-template',
@@ -27,7 +28,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   faCheck = faCheck;
   allUserData: User = undefined;
   amount: number;
-  torusSub: Subscription;
   answerSub: Subscription;
   validSub: Subscription;
   updateSub: Subscription;
@@ -224,79 +224,9 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     } else {
-      try {
-        await web3Obj.initialize();
-        this.setTorusInfoToDB();
-      } catch (error) {
-        await web3Obj.torus.cleanUp();
-        console.error(error);
-      }
+      const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+      modalRef.componentInstance.openSpinner = true;
     }
-  }
-
-  async setTorusInfoToDB() {
-    const userInfo = await web3Obj.torus.getUserInfo('');
-    const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
-    const data: object = {
-      _id: null,
-      wallet: userWallet,
-      nickName: userInfo.name,
-      email: userInfo.email,
-      avatar: userInfo.profileImage,
-      verifier: userInfo.verifier,
-      verifierId: userInfo.verifierId,
-    };
-    this.torusSub = this.postService.post('user/torus_regist', data)
-      .subscribe(
-        (x: any) => {
-          this.addUser(
-            x.email,
-            x.nickName,
-            x.wallet,
-            x.listHostEvents,
-            x.listParticipantEvents,
-            x.listValidatorEvents,
-            x.historyTransaction,
-            x.avatar,
-            x._id,
-            x.verifier
-          );
-        }, (err) => {
-          console.log(err);
-          let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
-          modalRef.componentInstance.errType = 'error';
-          modalRef.componentInstance.title = "Unknown Error";
-          modalRef.componentInstance.customMessage = String(err);
-          modalRef.componentInstance.description = "Report this unknown error to get 1 BET token!"
-          modalRef.componentInstance.nameButton = "report error";
-        });
-  }
-
-  addUser(
-    email: string,
-    nickName: string,
-    wallet: string,
-    listHostEvents: object,
-    listParticipantEvents: object,
-    listValidatorEvents: object,
-    historyTransaction: object,
-    color: string,
-    _id: number,
-    verifier: string
-  ) {
-
-    this.store.dispatch(new UserActions.AddUser({
-      _id: _id,
-      email: email,
-      nickName: nickName,
-      wallet: wallet,
-      listHostEvents: listHostEvents,
-      listParticipantEvents: listParticipantEvents,
-      listValidatorEvents: listValidatorEvents,
-      historyTransaction: historyTransaction,
-      avatar: color,
-      verifier: verifier
-    }));
   }
 
   async setToNetwork(answer, dataAnswer) {
@@ -562,9 +492,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.torusSub) {
-      this.torusSub.unsubscribe();
-    }
     if (this.answerSub) {
       this.answerSub.unsubscribe();
     }

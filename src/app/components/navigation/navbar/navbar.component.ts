@@ -508,6 +508,6 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
 
   openRegistration() {
     const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
-    modalRef.componentInstance.navBar = true;
+    modalRef.componentInstance.openSpinner = true;
   }
 }

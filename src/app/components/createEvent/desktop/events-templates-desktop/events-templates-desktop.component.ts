@@ -43,8 +43,7 @@ export class EventsTemplatesDesktopComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    public activeModal: NgbActiveModal,
-    config: NgbModalConfig
+    public activeModal: NgbActiveModal
   ) {
     this.userSub = this.store.select("user").subscribe((x: User[]) => {
       if (x.length == 0) {
@@ -74,8 +73,6 @@ export class EventsTemplatesDesktopComponent implements OnInit, OnDestroy {
         this.whichEvent = "setQuestion"
       }
     });
-    config.backdrop = 'static';
-    config.keyboard = false;
   }
 
   ngOnInit(): void {

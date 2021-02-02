@@ -17,6 +17,7 @@ import web3Obj from '../../../helpers/torus'
 import { Subscription } from 'rxjs';
 import { WelcomePageComponent } from "../../share/welcome-page/welcome-page.component";
 import {User} from "../../../models/User.model";
+import {RegistrationComponent} from '../../registration/registration.component';
 
 
 @Component({
@@ -503,5 +504,10 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
 
   toggleLogout() {
     this.logoutBox = !this.logoutBox;
+  }
+
+  openRegistration() {
+    const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
+    modalRef.componentInstance.openSpinner = true;
   }
 }

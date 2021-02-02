@@ -13,12 +13,12 @@ import { QuizTemplateComponent } from './quiz-template/quiz-template.component';
 import { TimeComponent } from './quiz-template/time/time.component';
 import { QuizErrorsComponent } from './quiz-template/quiz-errors/quiz-errors.component';
 import { PreRegistrationModalComponent } from './pre-registration-modal/pre-registration-modal.component';
-import {RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { QuizInfoComponent } from './quiz-template/quiz-info/quiz-info.component';
 import { QuizChooseRoleComponent } from './quiz-template/quiz-choose-role/quiz-choose-role.component';
 import { QuizActionComponent } from './quiz-template/quiz-action/quiz-action.component';
 import { QuizEventFinishComponent } from './quiz-template/quiz-event-finish/quiz-event-finish.component';
-
+import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 
 
 @NgModule({
@@ -37,21 +37,30 @@ import { QuizEventFinishComponent } from './quiz-template/quiz-event-finish/quiz
     QuizInfoComponent,
     QuizChooseRoleComponent,
     QuizActionComponent,
-    QuizEventFinishComponent
+    QuizEventFinishComponent,
+    ComingSoonComponent
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        NgxPageScrollModule,
-        RouterModule,
-    ],
-    exports: [
-        SpinnerLoadingComponent,
-        CommentComponent,
-        QuizTemplateComponent,
-        TimeComponent,
-        PreRegistrationModalComponent
-    ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgxPageScrollModule,
+    RouterModule,
+    RouterModule.forChild([
+      { path: 'host', component: ComingSoonComponent },
+      { path: 'my-events', component: ComingSoonComponent },
+      { path: 'achievements', component: ComingSoonComponent },
+      { path: 'friends', component: ComingSoonComponent },
+      { path: 'help', component: ComingSoonComponent },
+    ]),
+  ],
+  exports: [
+    SpinnerLoadingComponent,
+    CommentComponent,
+    QuizTemplateComponent,
+    TimeComponent,
+    PreRegistrationModalComponent
+  ]
 })
 
-export class ShareModule { }
+export class ShareModule {
+}

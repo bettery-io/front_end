@@ -1,5 +1,5 @@
 import {Component, DoCheck, HostListener, OnInit} from '@angular/core';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import {EventsTemplatesDesktopComponent} from "../../createEvent/desktop/events-templates-desktop/events-templates-desktop.component";
 
 @Component({
@@ -12,7 +12,11 @@ export class SidebarComponent implements OnInit, DoCheck {
   scrollTop: number;
   currentPath: string;
 
-  constructor(private modalService: NgbModal) {
+  constructor(
+    private modalService: NgbModal,
+    config: NgbModalConfig) {
+    config.keyboard = false;
+    config.backdrop = 'static';
   }
 
   ngOnInit(): void {

@@ -1,0 +1,39 @@
+<div class="main-bg">
+  <div class="container second-bg">
+    <div *ngIf="currentPath === '/host'" class="host_img"></div>
+    <div *ngIf="currentPath === '/my-events'" class="myEvent_img"></div>
+    <div *ngIf="currentPath === '/achievements'" class="achievements_img"></div>
+    <div *ngIf="currentPath === '/friends'" class="friends_img"></div>
+    <div *ngIf="currentPath === '/help'" class="help_img"></div>
+    <div>
+      <h1 class="title">coming soon</h1>
+    </div>
+    <div>
+      <p *ngIf="currentPath === '/host'" class="text">Need an awesome topic for your Event? We'll have plenty for you
+        soon!
+        Get mind-blowing topics from Advisors and suggestions based on occasions you’re in.
+      </p>
+
+      <p *ngIf="currentPath === '/my-events'" class="text">
+        All the fun you had with friends and social media - pizza and token wins, or losses that make you come back even
+        stronger. The blockchain remembers everything - and we'll show it to you soon.
+      </p>
+
+      <p *ngIf="currentPath === '/achievements'" class="text">
+        Everything you’ve accomplished on Bettery will be here soon: Reputation as Host/Player/Expert/Advisor, subjects
+        of expertise, best win streak record, and more.
+      </p>
+
+      <p *ngIf="currentPath === '/friends'" class="text">
+        It’s “social” betting after all, so grow your social network on Bettery soon by inviting friends from other
+        social media like Facebook over, or make new online friends through Events.
+      </p>
+
+      <p *ngIf="currentPath === '/help'" class="text">
+        No excuses for us to have all of your questions answered, right here and right now. While waiting for Help tab,
+        check our FAQ, blog articles, or ask us on Telegram to get your answers.
+      </p>
+
+    </div>
+  </div>
+</div>

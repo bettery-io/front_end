@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-coming-soon',
@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComingSoonComponent implements OnInit {
 
-  constructor() { }
+  currentPath: string;
+
+  constructor() {
+    this.currentPath = window.location.pathname;
+  }
 
   ngOnInit(): void {
   }
-
 }

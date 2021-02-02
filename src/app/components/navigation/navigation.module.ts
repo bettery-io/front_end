@@ -8,13 +8,15 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ShareModule} from '../share/share.module';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { ReferalsComponent } from './referals/referals.component';
 
 
 @NgModule({
   declarations: [
     NavbarComponent,
     SidebarComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    ReferalsComponent
   ],
     exports: [
         NavbarComponent,
@@ -22,12 +24,15 @@ import { NotificationsComponent } from './notifications/notifications.component'
     ],
   imports: [
     CommonModule,
-    RouterModule,
     NgbModule,
     FormsModule,
     FontAwesomeModule,
     ShareModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forChild([
+      { path: 'ref/:id', component: ReferalsComponent },
+      
+    ]),
   ]
 })
 export class NavigationModule { }

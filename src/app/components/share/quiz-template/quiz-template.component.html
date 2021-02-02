@@ -41,7 +41,7 @@
                       </div>
                     </div>
                     <div class="d-flex align-items-center"
-                      *ngIf="this.myAnswers?.answer !== undefined && question.finalAnswer == null">
+                      *ngIf="this.myAnswers?.answer !== undefined && question.finalAnswer == null && question.status != 'reverted'">
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <div class="cycle">
                           <div *ngIf="this.myAnswers?.answer == i"
@@ -87,7 +87,7 @@
               <p class="amountText">{{this.myAnswers?.betAmount}} BET</p>
             </div>
             <div
-              *ngIf="this.myAnswers?.answered && this.myAnswers?.from == 'validator' && question.finalAnswer === null">
+              *ngIf="this.myAnswers?.answered && this.myAnswers?.from == 'validator' && question.finalAnswer === null && question.status != 'reverted'">
               <div class="validated"></div>
               <p class="validated_text">VALIDATED</p>
             </div>

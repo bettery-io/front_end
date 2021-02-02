@@ -43,7 +43,7 @@
         <div *ngIf="logoutBox" class="logoutBox">
           <ul>
             <li class="profile disabledItem">My profile</li>
-            <li class="refLink refImg">Referral Link</li>
+            <li class="refLink refImg" (click)="copyRefLink()">Referral Link</li>
             <li class="Logout" (click)="logOut()">Logout</li>
           </ul>
         </div>

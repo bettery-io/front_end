@@ -1,10 +1,11 @@
-import {Component, OnInit, OnDestroy, HostListener, ViewChild, DoCheck, ElementRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, DoCheck, ElementRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
 import { Coins } from '../../../models/Coins.model';
 import * as CoinsActios from '../../../actions/coins.actions';
 import * as UserActions from '../../../actions/user.actions';
-import maticInit from '../../../contract/maticInit.js'
+import maticInit from '../../../contract/maticInit.js';
+import { ClipboardService } from 'ngx-clipboard';
 
 import Web3 from 'web3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,8 +16,8 @@ import _ from "lodash";
 import Contract from '../../../contract/contract';
 import web3Obj from '../../../helpers/torus'
 import { Subscription } from 'rxjs';
-import {User} from "../../../models/User.model";
-import {RegistrationComponent} from '../../registration/registration.component';
+import { User } from "../../../models/User.model";
+import { RegistrationComponent } from '../../registration/registration.component';
 
 
 @Component({
@@ -65,7 +66,8 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     private modalService: NgbModal,
     private postService: PostService,
     private getService: GetService,
-    private eRef: ElementRef
+    private eRef: ElementRef,
+    private _clipboardService: ClipboardService,
   ) {
 
     this.detectPath()
@@ -87,7 +89,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     this.coinsSub = this.store.select("coins").subscribe((x) => {
       if (x.length !== 0) {
         this.coinInfo = x[0];
-      //  this.getMoneyHolder();
+        //  this.getMoneyHolder();
       }
     })
   }
@@ -372,7 +374,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   async loginWithTorus() {
-    const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
+    const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
     modalRef.componentInstance.openSpinner = true;
   }
 
@@ -393,6 +395,13 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
 
   openWallet() {
     web3Obj.torus.showWallet("home");
+  }
+
+  copyRefLink() {
+    let href = window.location.hostname
+    let path = href == "localhost" ? 'http://localhost:4200' : href;
+    this._clipboardService.copy(`${path}/ref/${this.userId}`);
+    this.logoutBox = false;
   }
 
   ngOnDestroy() {

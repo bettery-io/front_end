@@ -44,7 +44,6 @@ import { ComingSoonComponent } from './coming-soon/coming-soon.component';
     CommonModule,
     FormsModule,
     NgxPageScrollModule,
-    RouterModule,
     RouterModule.forChild([
       { path: 'host', component: ComingSoonComponent },
       { path: 'my-events', component: ComingSoonComponent },

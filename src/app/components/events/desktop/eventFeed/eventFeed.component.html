@@ -13,9 +13,6 @@
     <div *ngIf="spinner">
       <app-spinner-loading class="lds-ripple" [desktop]="true"></app-spinner-loading>
     </div>
-    <div class="z-ind" *ngIf="spinnerForComment">
-      <app-spinner-loading></app-spinner-loading>
-    </div>
 
     <div class="small-bg" *ngIf="!spinner">
       <div class="container-fluid">
@@ -98,7 +95,7 @@
                   <span>{{commentList?.question}}</span>
                 </div>
               </div>
-              <app-comment (spinnerEmmit)="commentsSpinner($event)" [mobile]="false"
+              <app-comment [mobile]="false"
                            [showAuthButton]="userData === undefined" class="deep-comment" *ngIf="commentList"
                            [theme]="'white'" [userData]="userData"
                            [id]="commentList.id"></app-comment>

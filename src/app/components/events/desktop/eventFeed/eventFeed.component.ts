@@ -19,7 +19,6 @@ import {EventModel} from '../../../../models/Event.model';
 })
 export class EventFeedComponent implements OnDestroy {
   public spinner: boolean = true;
-  spinnerForComment: boolean;
   myAnswers: Answer[] = [];
   userId: number = null;
   coinInfo: Coins = null;
@@ -236,10 +235,6 @@ export class EventFeedComponent implements OnDestroy {
       this.getData(this.queryPath, this.scrollDistanceFrom, this.scrollDistanceTo, '', this.activeBtn);
       this.commentResetFlag = true;
     }
-  }
-
-  commentsSpinner($event: boolean) {
-    this.spinnerForComment = $event;
   }
 
   activeBtnFromSearchBar(activeBtn) {

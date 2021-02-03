@@ -75,6 +75,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     this.localStoreUser(userInfo);
 
+    let refId = sessionStorage.getItem('bettery_ref')
+
     let data: Object = {
       _id: null,
       wallet: userWallet,
@@ -83,6 +85,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       avatar: userInfo.profileImage,
       verifier: userInfo.verifier,
       verifierId: userInfo.verifierId,
+      refId: refId == null ? 'undefined' : refId
     };
     this.torusRegistSub = this.http.post('user/torus_regist', data)
       .subscribe(

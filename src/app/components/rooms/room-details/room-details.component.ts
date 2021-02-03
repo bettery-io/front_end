@@ -45,7 +45,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   scrollTop = 0;
   searchWord = '';
   timeout: any;
-  spinnerForComment: boolean;
   commentResetFlag: boolean;
   roomData: any;
   disabledButton: boolean = false;
@@ -310,9 +309,5 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.commentResetFlag = true;
       }
     }, 300);
-  }
-
-  commentsSpinner($event: boolean) {
-    this.spinnerForComment = $event;
   }
 }

@@ -6,9 +6,6 @@
         <div class="lds-ripple" *ngIf="spinner">
           <app-spinner-loading class="spinner-pos" [desktop]="true"></app-spinner-loading>
         </div>
-        <div class="z-ind" *ngIf="spinnerForComment">
-          <app-spinner-loading></app-spinner-loading>
-        </div>
 
         <div *ngIf="!spinner" class="room_details" [ngStyle]="infoRoomColor(roomDetails?.color)">
           <div style="position: relative">
@@ -55,8 +52,7 @@
               [ngClass]="(roomEvents.length === 0) && 'w-100'">
               <div *ngFor="let question of roomEvents; let index = index">
                 <quiz-template [joinRoom]="true" (commentIdEmmit)="commentById($event)" [coinInfo]="coinInfo"
-                  [index]="index"
-                  [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
+                  [index]="index" [myAnswers]="myAnswers[index]" [userData]="userData" [question]="question"
                   [fromComponent]="fromComponent" (callGetData)="getRoomEvent(0, scrollDistanceTo, searchWord)">
                 </quiz-template>
               </div>
@@ -88,9 +84,8 @@
                     <span>{{commentList?.question}}</span>
                   </div>
                 </div>
-                <app-comment (spinnerEmmit)="commentsSpinner($event)" [mobile]="false"
-                  [showAuthButton]="userData === undefined" class="deep-comment" [theme]="'white'" [userData]=userData
-                  [id]="commentList?.id"></app-comment>
+                <app-comment [mobile]="false" [showAuthButton]="userData === undefined" class="deep-comment"
+                  [theme]="'white'" [userData]=userData [id]="commentList?.id"></app-comment>
               </div>
             </div>
           </div>

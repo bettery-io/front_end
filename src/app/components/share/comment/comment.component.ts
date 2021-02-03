@@ -1,19 +1,16 @@
-import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {CommentSocketService} from './comment-service/comment-socket.service';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { CommentSocketService } from './comment-service/comment-socket.service';
 import * as _ from 'lodash';
-import {Subscription} from 'rxjs';
-import web3Obj from '../../../helpers/torus';
-import * as UserActions from '../../../actions/user.actions';
-import {PostService} from '../../../services/post.service';
-import {Store} from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { CommentModel } from './model/сomment.model';
+import { User } from '../../../models/User.model';
+import { Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { PageScrollService } from 'ngx-page-scroll-core';
+import { EventEmitter } from '@angular/core';
+import { RegistrationComponent } from '../../registration/registration.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {CommentModel} from './model/сomment.model';
-import {User} from '../../../models/User.model';
-
-import {Inject} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {PageScrollService} from 'ngx-page-scroll-core';
-import {EventEmitter} from '@angular/core';
 
 
 @Component({
@@ -28,10 +25,8 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input() userData: User;
   @Input() mobile: boolean;
   @Input() showAuthButton = false;
-  @Output() spinnerEmmit = new EventEmitter<boolean>();
   newCommentSub: Subscription;
   getTypingSub: Subscription;
-  postSub: Subscription;
   eventCommentSub: Subscription;
   newComment = '';
   sortComment = 'newest';
@@ -53,15 +48,13 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   showOnScreen: CommentModel[];
 
   comingSoon: boolean;
-  spinnerLoading: boolean;
   @ViewChild('container')
   private container: ElementRef;
 
   constructor(
     private socketService: CommentSocketService,
-    private postService: PostService,
-    private store: Store<any>,
     private pageScrollService: PageScrollService,
+    private modalService: NgbModal,
     @Inject(DOCUMENT) private document: any
   ) {
     this.showLength = this.allComments?.length < 10 ? this.allComments?.length : 10;
@@ -310,86 +303,8 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async loginWithTorus() {
-    if (!this.userData) {
-      try {
-        if (this.mobile) {
-          this.spinnerLoading = true;
-        }
-        this.spinnerEmmit.emit(true);
-        await web3Obj.initialize();
-        await this.setTorusInfoToDB();
-        return true;
-      } catch (error) {
-        this.spinnerLoading = false;
-        this.spinnerEmmit.emit(false);
-        await web3Obj.torus.cleanUp();
-        console.error(error);
-        return false;
-      }
-    } else {
-      return true;
-    }
-  }
-
-  async setTorusInfoToDB() {
-    const userInfo = await web3Obj.torus.getUserInfo('');
-    const userWallet = (await web3Obj.web3.eth.getAccounts())[0];
-    const data: object = {
-      _id: null,
-      wallet: userWallet,
-      nickName: userInfo.name,
-      email: userInfo.email,
-      avatar: userInfo.profileImage,
-      verifier: userInfo.verifier,
-      verifierId: userInfo.verifierId,
-    };
-    this.postSub = this.postService.post('user/torus_regist', data)
-      .subscribe(
-        (x: any) => {
-          this.spinnerLoading = false;
-          this.spinnerEmmit.emit(false);
-          this.addUser(
-            x.email,
-            x.nickName,
-            x.wallet,
-            x.listHostEvents,
-            x.listParticipantEvents,
-            x.listValidatorEvents,
-            x.historyTransaction,
-            x.avatar,
-            x._id,
-            x.verifier
-          );
-        }, (err) => {
-          console.log(err);
-        });
-  }
-
-  addUser(
-    email: string,
-    nickName: string,
-    wallet: string,
-    listHostEvents: object,
-    listParticipantEvents: object,
-    listValidatorEvents: object,
-    historyTransaction: object,
-    color: string,
-    _id: number,
-    verifier: string
-  ) {
-
-    this.store.dispatch(new UserActions.AddUser({
-      _id: _id,
-      email: email,
-      nickName: nickName,
-      wallet: wallet,
-      listHostEvents: listHostEvents,
-      listParticipantEvents: listParticipantEvents,
-      listValidatorEvents: listValidatorEvents,
-      historyTransaction: historyTransaction,
-      avatar: color,
-      verifier: verifier
-    }));
+    const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+    modalRef.componentInstance.openSpinner = true;
   }
 
   ngOnDestroy() {
@@ -398,9 +313,6 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
     }
     if (this.getTypingSub) {
       this.getTypingSub.unsubscribe();
-    }
-    if (this.postSub) {
-      this.postSub.unsubscribe();
     }
     if (this.eventCommentSub) {
       this.eventCommentSub.unsubscribe();

@@ -39,11 +39,12 @@
             </li>
           </ul>
         </div>
-        <div class="d-flex align-items-center pb-3 col-lg-1 lang-1 mt-4">
+        <!--  DO NOT HAVE TRANSLATE FOR VETNAMESE LANGUAGE -->
+        <!-- <div class="d-flex align-items-center pb-3 col-lg-1 lang-1 mt-4">
           <select id="language1" (change)="changeLocale()" [(ngModel)]="selectedLanguage">
             <option *ngFor="let language of languages" [value]="language.id">{{ language.title }}</option>
           </select>
-        </div>
+        </div> -->
       </nav>
 
       <div [class]="scrollHideMenu ? 'nav-hide': 'nav-show' "

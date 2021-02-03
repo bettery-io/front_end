@@ -17,7 +17,7 @@ import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
 import { Subscription } from 'rxjs';
 import { Event } from '../../../models/Event.model';
 import { Coins } from '../../../models/Coins.model';
-import {RegistrationComponent} from '../../registration/registration.component';
+import { RegistrationComponent } from '../../registration/registration.component';
 
 @Component({
   selector: 'quiz-template',
@@ -65,8 +65,10 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes) {
     if (changes['userData'] !== undefined) {
       let currentValue = changes['userData'].currentValue;
-      if (this.allUserData === undefined || currentValue._id !== this.allUserData._id) {
-        this.allUserData = this.userData;
+      if (currentValue != undefined) {
+        if (this.allUserData === undefined || currentValue._id !== this.allUserData._id) {
+          this.allUserData = this.userData;
+        }
       }
     }
   }

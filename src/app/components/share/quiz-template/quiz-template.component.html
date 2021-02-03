@@ -14,7 +14,7 @@
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <input class="checkbox_answer" id="{{question.id}}{{i}}" (click)="this.makeAnswer(i)"
                           value="{{i}}" type="radio" name="{{question.id}}">
-                        <div class="label answer-checkbox">{{answer}}</div>
+                        <label for="{{question.id}}{{i}}" class="label answer-checkbox">{{answer}}</label>
                       </div>
                     </div>
                   </div>
@@ -56,7 +56,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div style="min-width: 126px">
             <div class="timer-span" *ngIf="question.finalAnswer === null && question.status != 'reverted' ">
               <div style="display: flex; width: 100%">
                 <time class="w-100" [timer]="question?.endTime"></time>

@@ -41,9 +41,6 @@ export class PublicMainComponent implements OnInit, OnDestroy {
           this.eventFinish = true;
         }
         this.eventData = x;
-        console.log('======================')
-        console.log(this.eventData)
-        console.log('======')
         this.errorPage = false;
       }, (err) => {
         console.log(err)

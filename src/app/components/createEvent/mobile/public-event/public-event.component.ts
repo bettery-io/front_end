@@ -111,7 +111,7 @@ export class PublicEventComponent implements OnDestroy {
 
   getEndTime() {
     if (!this.formData.exactTimeBool) {
-      return Number((this.formData.publicEndTime.date / 1000).toFixed(0));
+      return Number(((Date.now() + this.formData.publicEndTime.date) / 1000).toFixed(0));
     } else {
       let day = this.formData.exactDay;
       let month = this.formData.exactMonth;

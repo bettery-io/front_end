@@ -36,7 +36,6 @@ export class PrivateEventDesktopComponent implements OnInit, OnDestroy {
   createSub: Subscription;
   spinnerLoading: boolean = false;
 
-
   constructor(
     private getSevice: GetService,
     private postService: PostService,
@@ -72,7 +71,8 @@ export class PrivateEventDesktopComponent implements OnInit, OnDestroy {
   }
 
   getEndTime() {
-    return Number((this.formData.privateEndTime.date / 1000).toFixed(0));
+    // return Number((this.formData.privateEndTime.date / 1000).toFixed(0));
+    return Number(((Date.now() + this.formData.privateEndTime.date) / 1000).toFixed(0));
   }
 
   createEvent() {

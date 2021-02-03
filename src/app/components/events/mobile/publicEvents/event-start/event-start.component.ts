@@ -12,6 +12,7 @@ import { WelcomePageComponent } from '../../../../share/welcome-page/welcome-pag
 import { InfoModalComponent } from '../../../../share/info-modal/info-modal.component';
 import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
 import {User} from '../../../../../models/User.model';
+import {JustANoteModalComponent} from '../../../../share/just-note-modal/just-anote-modal.component';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
     private _clipboardService: ClipboardService,
     private modalService: NgbModal
   ) {
+    this.mobileCheck()
   }
 
   ngOnInit(): void {
@@ -394,6 +396,20 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
 
   validatorsNeeded() {
     return this.eventData.validatorsAmount > 0 ? this.eventData.validatorsAmount : "TBD after betting ends"
+  }
+
+  mobileCheck() {
+    if (navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i)) {
+      console.log('isMobile');
+    } else {
+      this.modalService.open(JustANoteModalComponent, { centered: true});
+    }
   }
 
 }

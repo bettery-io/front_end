@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PostService } from '../../../../../services/post.service';
-import { Subscription } from 'rxjs';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {PostService} from '../../../../../services/post.service';
+import {Subscription} from 'rxjs';
 import {PubEventMobile} from '../../../../../models/PubEventMobile.model';
 
 @Component({
@@ -17,6 +17,7 @@ export class PublicMainComponent implements OnInit, OnDestroy {
   postSub: Subscription;
   // TODO
   eventFinish: boolean = false;
+  isReverted: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,30 +29,35 @@ export class PublicMainComponent implements OnInit, OnDestroy {
       .subscribe((question) => {
         let data = {
           id: Number(question.id)
-        }
+        };
         this.eventId = Number(question.id);
         this.getDataFromServer(data);
-      })
+      });
   }
 
   getDataFromServer(data) {
-    this.postSub = this.postService.post("publicEvents/get_by_id", data)
+    this.postSub = this.postService.post('publicEvents/get_by_id', data)
       .subscribe((x: PubEventMobile) => {
         if (x.finalAnswer !== null) {
           this.eventFinish = true;
         }
+
+        if (x.status === 'reverted') {
+          this.isReverted = true;
+        }
+
         this.eventData = x;
         this.errorPage = false;
       }, (err) => {
-        console.log(err)
+        console.log(err);
         this.errorPage = true;
-      })
+      });
   }
 
   interacDone(data) {
     let x = {
       id: Number(data)
-    }
+    };
     this.getDataFromServer(x);
   }
 

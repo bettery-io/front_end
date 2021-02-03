@@ -28,6 +28,7 @@ export class CommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input() userData: User;
   @Input() mobile: boolean;
   @Input() showAuthButton = false;
+  @Input() hideInput = false;
   @Output() spinnerEmmit = new EventEmitter<boolean>();
   newCommentSub: Subscription;
   getTypingSub: Subscription;

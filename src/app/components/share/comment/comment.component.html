@@ -1,6 +1,6 @@
 <div [className]="checkTheme() ? 'bgWhite' : 'bgDark'" [ngClass]="theme && 'whiteClass'">
 
-  <div class="sortHeadDark" id="up">
+  <div *ngIf="!hideInput" class="sortHeadDark" id="up">
     <div class="sortHead-item-dark" [ngClass]="forSortHead('newest')" (click)="clickSortComment('newest')">Newest
     </div>
     <div class="sortHead-item-dark" [ngClass]="forSortHead('hottest')" (click)="clickSortComment('hottest')">Hottest
@@ -15,7 +15,7 @@
       <p [ngClass]="!checkTheme() && 'colorWhite'"> Leave a comment, get likes, and earn big!</p>
     </div>
     <div id="{{comment?.id}}" class="commentBox" [ngClass]="allComments?.length <= showLength && 'commentBoxChange'"
-      *ngFor="let comment of showOnScreen">
+         *ngFor="let comment of showOnScreen">
       <div class="commentHeader">
         <div class="senderBox">
           <div><img class="commentImg" src="{{comment?.user.avatar}}" alt="ava" referrerpolicy="no-referrer"></div>
@@ -26,7 +26,7 @@
       <div>
         <p class="comment">
           <a (mousedown)="additionToAnchorLink(comment.replies[0].id)" class="mr-1"
-            (click)="scrollTo(comment.replies[0].id)" *ngIf="comment?.replies.length > 0">
+             (click)="scrollTo(comment.replies[0].id)" *ngIf="comment?.replies.length > 0">
             {{comment?.replies[0].user.nickName}}</a>
           {{comment?.comment}}
         </p>
@@ -39,7 +39,7 @@
             <div class="d-flex">
               <div class="angryIcon darkSize"></div>
               <span class="countIcon darkSize"
-                [ngClass]="!checkTheme() && 'colorWhite'">{{comment?.angry.length}}</span>
+                    [ngClass]="!checkTheme() && 'colorWhite'">{{comment?.angry.length}}</span>
             </div>
             <div *ngIf="findUserActivites(comment?.angry)" class="angryBorder"></div>
           </div>
@@ -56,7 +56,7 @@
             <div class="d-flex">
               <div class="smileIcon darkSize"></div>
               <span class="countIcon darkSize"
-                [ngClass]="!checkTheme() && 'colorWhite'">{{comment?.smile.length}}</span>
+                    [ngClass]="!checkTheme() && 'colorWhite'">{{comment?.smile.length}}</span>
             </div>
             <div *ngIf="findUserActivites(comment?.smile)" class="smileBorder"></div>
           </div>
@@ -71,7 +71,7 @@
         </div>
 
         <div class="replyDark col-5">
-          <a href="{{mobile && '#sendBox'}}" pageScroll  (click)="replySend(comment?.id, comment?.user)">Reply</a>
+          <a href="{{mobile && '#sendBox'}}" pageScroll (click)="replySend(comment?.id, comment?.user)">Reply</a>
         </div>
 
       </div>
@@ -90,24 +90,27 @@
 
   <div class="forWhite">
 
-    <div id="sendBox" class="sendCommentBox" *ngIf="!showAuthButton">
+    <div *ngIf="!hideInput">
+      <div id="sendBox" class="sendCommentBox" *ngIf="!showAuthButton">
       <textarea id="textarea" (keyup)="typingEffect()" [(ngModel)]="newComment" class="addCommentBox"
-        [ngClass]="checkTheme() && 'addCommentBoxWhite'" type="text" name="newComment"
-        placeholder="Add a comment..."></textarea>
-      <div (click)="sendComment()" class="sendImg" [ngClass]="checkTheme() && 'sendImg-blue'"></div>
+                [ngClass]="checkTheme() && 'addCommentBoxWhite'" type="text" name="newComment"
+                placeholder="Add a comment..."></textarea>
+        <div (click)="sendComment()" class="sendImg" [ngClass]="checkTheme() && 'sendImg-blue'"></div>
+      </div>
     </div>
 
     <div *ngIf="showAuthButton" class="sendCommentBox">
       <button (click)="sendComment()">Register to comment</button>
     </div>
     <div class="wrapCommentDown">
-      <div class="arrowUp d-flex">
+      <div *ngIf="!hideInput" class="arrowUp d-flex">
         <div class="arrowImg"></div>
         <div><a style="color: #fff" pageScroll href="#up">Go to top</a></div>
       </div>
       <div class="closeWhite" [ngClass]="checkTheme() && 'd-block'">
         <div class="plusClose" style="visibility: hidden">
-          <div class="plusWhite-img"></div> <div class="pt-1">Close</div>
+          <div class="plusWhite-img"></div>
+          <div class="pt-1">Close</div>
         </div>
       </div>
       <div *ngIf="typingSpynner" class="someoneTyping">

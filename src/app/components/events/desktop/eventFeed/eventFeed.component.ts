@@ -75,6 +75,10 @@ export class EventFeedComponent implements OnDestroy {
         this.coinInfo = x[0];
       }
     });
+
+    setTimeout(()=>{
+      console.log(this.newQuestions);
+    },5000)
   }
 
   getData(path, from, to, search, sort) {

@@ -79,7 +79,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
     this.answerForm = formBuilder.group({
       answer: ['', Validators.required]
     });
-    this.mobileCheck();
   }
 
   ngOnInit(): void {
@@ -325,20 +324,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
 
   openSoonModal(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', centered: true});
-  }
-
-  mobileCheck() {
-    if (navigator.userAgent.match(/Android/i)
-      || navigator.userAgent.match(/webOS/i)
-      || navigator.userAgent.match(/iPhone/i)
-      || navigator.userAgent.match(/iPad/i)
-      || navigator.userAgent.match(/iPod/i)
-      || navigator.userAgent.match(/BlackBerry/i)
-      || navigator.userAgent.match(/Windows Phone/i)) {
-      console.log('isMobile');
-    } else {
-      this.modalService.open(JustANoteModalComponent, { centered: true});
-    }
   }
 
   ngOnDestroy() {

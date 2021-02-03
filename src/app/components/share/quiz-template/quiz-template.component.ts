@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
 import { User } from '../../../models/User.model';
-import _ from 'lodash';
 import { Answer } from '../../../models/Answer.model';
 import Web3 from 'web3';
 import Contract from '../../../contract/contract';
@@ -17,6 +16,7 @@ import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
 import { Subscription } from 'rxjs';
 import { Event } from '../../../models/Event.model';
 import { Coins } from '../../../models/Coins.model';
+import {ClipboardService} from 'ngx-clipboard';
 
 @Component({
   selector: 'quiz-template',
@@ -45,7 +45,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private postService: PostService,
     private store: Store<AppState>,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private _clipboardService: ClipboardService
   ) {
   }
 
@@ -641,6 +642,12 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
         "border-bottom-right-radius": "20px",
       }
     }
+  }
+
+  copyToClickBoard(eventId) {
+    const href = window.location.hostname;
+    const path = href === 'localhost' ? 'http://localhost:4200' : href;
+    this._clipboardService.copy(`${path}/public_event/${eventId}`);
   }
 
   ngOnDestroy() {

@@ -148,8 +148,6 @@ export class ParticipateComponent implements OnInit, OnDestroy {
     let mainEther = web3.utils.fromWei(mainBalance, "ether")
     let tokBal = web3.utils.fromWei(TokenBalance, "ether")
 
-    console.log(maticTokenBalanceToEth, mainEther, tokBal)
-
     this.store.dispatch(new CoinsActios.UpdateCoins({
       loomBalance: maticTokenBalanceToEth,
       mainNetBalance: mainEther,

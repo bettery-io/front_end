@@ -574,6 +574,19 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  getValidatorsAmountLeft(eventData) {
+    return eventData.validatorsAmount == 0 ? this.expertAmount(eventData) : eventData.validatorsAmount
+  }
+
+  expertAmount(eventData) {
+    let part = eventData.parcipiantAnswers == undefined ? 0 : eventData.parcipiantAnswers.length;
+    if (part == 0) {
+      return 3;
+    } else {
+      return (part * 10) / 100 <= 3 ? 3 : Number(((part * 10) / 100).toFixed(0));
+    }
+  }
+
   ngOnDestroy() {
     if (this.answerSub) {
       this.answerSub.unsubscribe();

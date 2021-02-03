@@ -61,7 +61,7 @@
               <div style="display: flex;">
                 <time [timer]="question?.endTime"></time>
                 <div *ngIf="!timeValidating(question)">
-                  ({{this.getValidatorsAmount(question)}}/{{question?.validatorsAmount}} left)</div>
+                  ({{this.getValidatorsAmount(question)}}/{{getValidatorsAmountLeft(question)}} left)</div>
               </div>
             </div>
             <div *ngIf="question.finalAnswer !== null">
@@ -78,8 +78,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="question.status == 'reverted'">
-              <p class="notExperts">Not enought Experts</p>
+            <div *ngIf="question.status == 'reverted'" class="clear">
+              <p class="notExperts">NOT ENOUGH EXPERTS / PLAYERS ATTENDED</p>
             </div>
             <div class="amount_box"
               *ngIf="this.myAnswers?.answered && this.myAnswers?.betAmount > 0 && question.finalAnswer === null">

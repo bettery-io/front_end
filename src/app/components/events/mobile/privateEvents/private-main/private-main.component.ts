@@ -94,7 +94,6 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
         this.finised = true;
       }
       this.data = value;
-      console.log(this.data);
       if (this.userData) {
         this.letsFindActivites(this.userData._id);
       }

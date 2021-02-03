@@ -113,7 +113,6 @@ export class EventStartComponent implements OnInit, OnChanges, OnDestroy {
         return o.userId == userData._id;
       });
       if (findParts) {
-        console.log(findParts);
         this.participatedAnswer[0] = findParts;
         this.created = true;
       }

@@ -67,7 +67,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.roomsSub = this.getService.get(path).subscribe((rooms: RoomModel[]) => {
       this.allRooms = rooms;
       this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
-      console.log(this.roomsSort);
       this.spinner = true;
     });
   }
@@ -157,7 +156,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   activeCard(index) {
-    console.log(this.roomsSort);
     if (this.activeRoom === index) {
       this.activeRoom = null;
       return;
@@ -285,7 +283,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.forLetsFindRoom(arr);
       if (this.searchWord && this.searchWord?.length <= 3 && arr.length > 0) {
         this.letsFindRoomsLength();
-        console.log(this.btnMiddleActive);
       }
     }
   }

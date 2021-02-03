@@ -45,7 +45,6 @@ export class LandingFormComponent implements OnInit, OnDestroy {
     e.preventDefault();
     emailjs.sendForm(this.serviceID, this.templateID, e.target as HTMLFormElement, this.userID)
       .then((result: EmailJSResponseStatus) => {
-        console.log(result.text);
         if (result.text === 'OK') {
           this.submitted = false;
           this.form.controls.firstName.setValue('');

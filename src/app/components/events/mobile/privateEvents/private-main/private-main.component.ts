@@ -13,7 +13,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {InfoModalComponent} from '../../../../share/info-modal/info-modal.component';
 import {User} from '../../../../../models/User.model';
 import {PrivEventMobile} from '../../../../../models/PrivEventMobile.model';
-import {JustANoteModalComponent} from '../../../../share/just-note-modal/just-anote-modal.component';
 
 @Component({
   selector: 'app-private-main',

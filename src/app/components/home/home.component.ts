@@ -12,7 +12,6 @@ import * as VN from '../../../assets/locale/vn.json';
 import {PostService} from '../../services/post.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EventsTemplatesDesktopComponent} from '../createEvent/desktop/events-templates-desktop/events-templates-desktop.component';
-import {EventModel} from '../../models/Event.model';
 
 @Component({
   selector: 'home',
@@ -289,6 +288,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       this.isMobile = true;
     }
+  }
+
+  getSaveId(id) {
+    sessionStorage.setItem('eventId', id );
   }
 }
 

@@ -19,7 +19,7 @@
                             </p>
                         </div>
                         <div class="unreadBox">
-                            <div (click)="this.sendRead(notif.id)" *ngIf="!notif.read" class="letterUnread"></div>
+                            <div (click)="this.sendRead(notif.id, notif.eventId )" *ngIf="!notif.read" class="letterUnread"></div>
                         </div>
                     </div>
                 </div>

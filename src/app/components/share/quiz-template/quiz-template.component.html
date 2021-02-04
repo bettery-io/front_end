@@ -18,7 +18,7 @@
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <input class="checkbox_answer" id="{{question.id}}{{i}}" (click)="this.makeAnswer(i)"
                           value="{{i}}" type="radio" name="{{question.id}}">
-                        <label for="{{question.id}}{{i}}" class="label answer-checkbox">{{answer}}</label>
+                        <label for="{{question.id}}{{i}}" class="label answer-checkbox" style="cursor: pointer">{{answer}}</label>
                       </div>
                     </div>
                   </div>

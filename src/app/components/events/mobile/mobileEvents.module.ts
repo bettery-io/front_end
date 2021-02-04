@@ -17,6 +17,7 @@ import {ParticipateComponent} from './publicEvents/participate/participate.compo
 import {ValidateComponent} from './publicEvents/validate/validate.component';
 import {EventFinishComponent} from './publicEvents/event-finish/event-finish.component';
 import {ShareModule} from "../../share/share.module";
+import { RevertedPublicComponent } from './publicEvents/reverted-public/reverted-public.component';
 
 
 
@@ -47,7 +48,8 @@ import {ShareModule} from "../../share/share.module";
     PrivateFormComponent,
     PrivateExpertComponent,
     BadRequestComponent,
-    PrivateEndEventComponent
+    PrivateEndEventComponent,
+    RevertedPublicComponent
 ]
 })
 export class MobileEventsModule { }

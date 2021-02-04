@@ -163,8 +163,11 @@
                      placeholder="{{'HEADER.TOP_PLACEHOLDER' | translate}}">
               <div class="btn_title row">
                 <div class="col-lg-3 col-12 pr-0">
-                  <button class="btn btn-success" routerLink="/create-event"
+                  <button *ngIf="isMobile" class="btn btn-success" routerLink="/create-event"
                           (click)="sendEvent()">{{'HEADER.BUTTON_TEXT' | translate}}
+                  </button>
+                  <button *ngIf="!isMobile" class="btn btn-success"
+                          (click)="sendEventDesktop()" routerLink="/join">{{'HEADER.BUTTON_TEXT' | translate}}
                   </button>
                 </div>
                 <div class="dropText col-lg-5 col-12 px-0">
@@ -178,7 +181,8 @@
                 <ul class="dropdown_list ">
                   <li *ngFor="let event of eventData">
                     <p>{{event['publicEvents/question']}}</p>
-                    <button class="btn" routerLink="public_event/{{event?._id}}">{{'HEADER.JOIN' | translate}}</button>
+                    <button *ngIf="isMobile" class="btn" routerLink="public_event/{{event?._id}}">{{'HEADER.JOIN' | translate}}</button>
+                    <button *ngIf="!isMobile" class="btn"(click)="getSaveId(event?._id)" routerLink="room/{{event?.room[0]._id}}">{{'HEADER.JOIN' | translate}}</button>
                   </li>
                 </ul>
               </div>
@@ -688,7 +692,6 @@
             <div>
               <p>{{'FOOTER.TEXT_2' | translate}}</p>
             </div>
-
             <form [formGroup]="form" (ngSubmit)="subscribe()">
               <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="{{'FOOTER.PLACE_HOLDER'  | translate}}"

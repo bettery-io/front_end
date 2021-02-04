@@ -1,4 +1,8 @@
-<div class="card_box room-card">
+<div class="card_box room-card" id = "{{question?.id}}">
+  <div class="clickCopy" (click)="copyToClickBoard(question?.id)">
+    <div class="copyLink-img"></div>
+  </div>
+  <div class="copied" [ngClass]="copyLinkFlag && 'showLink'">Link copied!</div>
   <div class="row">
     <div class="col-3 imageBox" [ngStyle]="colorForRoom()"></div>
     <div class="body_card" [ngStyle]="roomCardBottom()" id={{question.id}}>
@@ -14,7 +18,7 @@
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <input class="checkbox_answer" id="{{question.id}}{{i}}" (click)="this.makeAnswer(i)"
                           value="{{i}}" type="radio" name="{{question.id}}">
-                        <div class="label answer-checkbox">{{answer}}</div>
+                        <label for="{{question.id}}{{i}}" class="label answer-checkbox" style="cursor: pointer">{{answer}}</label>
                       </div>
                     </div>
                   </div>
@@ -56,10 +60,10 @@
               </div>
             </div>
           </div>
-          <div>
+          <div style="min-width: 126px">
             <div class="timer-span" *ngIf="question.finalAnswer === null && question.status != 'reverted' ">
-              <div style="display: flex;">
-                <time [timer]="question?.endTime"></time>
+              <div style="display: flex; width: 100%; white-space: pre">
+                <time class="w-100" [timer]="question?.endTime"></time>
                 <div *ngIf="!timeValidating(question)">
                   ({{this.getValidatorsAmount(question)}}/{{getValidatorsAmountLeft(question)}} left)</div>
               </div>

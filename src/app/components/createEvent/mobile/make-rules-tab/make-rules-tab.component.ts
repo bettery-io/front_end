@@ -10,21 +10,21 @@ import {InfoModalComponent} from '../../../share/info-modal/info-modal.component
 type Time = { name: string, date: any, value: number };
 
 const times: Time[] = [
-  {name: '5 minutes', date: new Date().setMinutes(new Date().getMinutes() + 5), value: 0.083},
-  {name: '15 minutes', date: new Date().setMinutes(new Date().getMinutes() + 15), value: 0.25},
-  {name: '30 minutes', date: new Date().setMinutes(new Date().getMinutes() + 30), value: 0.5},
-  {name: '45 minutes', date: new Date().setMinutes(new Date().getMinutes() + 45), value: 0.75},
-  {name: '1 hour', date: new Date().setHours(new Date().getHours() + 1), value: 1},
-  {name: '2 hours', date: new Date().setHours(new Date().getHours() + 2), value: 2},
-  {name: '3 hours', date: new Date().setHours(new Date().getHours() + 3), value: 3},
-  {name: '4 hours', date: new Date().setHours(new Date().getHours() + 4), value: 4},
-  {name: '6 hours', date: new Date().setHours(new Date().getHours() + 6), value: 6},
-  {name: '8 hours', date: new Date().setHours(new Date().getHours() + 8), value: 8},
-  {name: '12 hours', date: new Date().setHours(new Date().getHours() + 12), value: 12},
-  {name: '18 hours', date: new Date().setHours(new Date().getHours() + 18), value: 18},
-  {name: '24 hours', date: new Date().setHours(new Date().getHours() + 24), value: 24},
-  {name: '36 hours', date: new Date().setHours(new Date().getHours() + 36), value: 36},
-  {name: '48 hours', date: new Date().setHours(new Date().getHours() + 48), value: 48}
+  {name: '5 minutes', date: new Date().setMinutes(new Date().getMinutes() + 5) - Date.now(), value: 0.083},
+  {name: '15 minutes', date: new Date().setMinutes(new Date().getMinutes() + 15) - Date.now(), value: 0.25},
+  {name: '30 minutes', date: new Date().setMinutes(new Date().getMinutes() + 30) - Date.now(), value: 0.5},
+  {name: '45 minutes', date: new Date().setMinutes(new Date().getMinutes() + 45) - Date.now(), value: 0.75},
+  {name: '1 hour', date: new Date().setHours(new Date().getHours() + 1) - Date.now(), value: 1},
+  {name: '2 hours', date: new Date().setHours(new Date().getHours() + 2) - Date.now(), value: 2},
+  {name: '3 hours', date: new Date().setHours(new Date().getHours() + 3) - Date.now(), value: 3},
+  {name: '4 hours', date: new Date().setHours(new Date().getHours() + 4) - Date.now(), value: 4},
+  {name: '6 hours', date: new Date().setHours(new Date().getHours() + 6) - Date.now(), value: 6},
+  {name: '8 hours', date: new Date().setHours(new Date().getHours() + 8) - Date.now(), value: 8},
+  {name: '12 hours', date: new Date().setHours(new Date().getHours() + 12) - Date.now(), value: 12},
+  {name: '18 hours', date: new Date().setHours(new Date().getHours() + 18) - Date.now(), value: 18},
+  {name: '24 hours', date: new Date().setHours(new Date().getHours() + 24) - Date.now(), value: 24},
+  {name: '36 hours', date: new Date().setHours(new Date().getHours() + 36) - Date.now(), value: 36},
+  {name: '48 hours', date: new Date().setHours(new Date().getHours() + 48) - Date.now(), value: 48}
 ];
 
 @Component({
@@ -134,11 +134,9 @@ export class MakeRulesTabComponent implements OnInit {
   chosePrivateEndTime() {
     let name = this.privateForm.controls.privateEndTime.value.replace(/minutes|hours|hour/gi, '');
     this.endPrivateTime = name;
-
     let findEl = _.find(this.times, (x) => {
       return x.name.replace(/minutes|hours|hour/gi, '') == name;
     });
-
     this.privateForm.controls.privateEndTime.setValue(findEl);
   }
 

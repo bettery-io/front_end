@@ -11,7 +11,7 @@ import * as EN from '../../../assets/locale/en.json';
 import * as VN from '../../../assets/locale/vn.json';
 import {PostService} from '../../services/post.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-
+import {EventsTemplatesDesktopComponent} from '../createEvent/desktop/events-templates-desktop/events-templates-desktop.component';
 
 @Component({
   selector: 'home',
@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscribed: boolean = false;
   subscribedPost: Subscription;
   slideIndex = 0;
+  isMobile: boolean;
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
@@ -58,6 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]]
     });
     this.setClock(1609227850);
+    this.mobileCheck();
   }
 
   ngOnInit() {
@@ -167,7 +169,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
     this.eventSub = this.postService.post('bettery_event', email)
       .subscribe((x: any) => {
-        console.log(x)
+        console.log(x);
         this.shuffleArray(x);
         this.eventData = x.slice(0, 3);
       }, (err) => {
@@ -268,6 +270,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.subscribedPost) {
       this.subscribedPost.unsubscribe();
     }
+  }
+
+  sendEventDesktop() {
+    this.sendEvent();
+    this.modalService.open(EventsTemplatesDesktopComponent, {centered: true});
+  }
+
+  mobileCheck() {
+    if (navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i)) {
+
+      this.isMobile = true;
+    }
+  }
+
+  getSaveId(id) {
+    sessionStorage.setItem('eventId', id );
   }
 }
 

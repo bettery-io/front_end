@@ -78,7 +78,8 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
   }
 
   getEndTime() {
-    return Number((this.formData.privateEndTime.date / 1000).toFixed(0));
+    // return Number((this.formData.privateEndTime.date / 1000).toFixed(0));
+    return Number(((Date.now() + this.formData.privateEndTime.date) / 1000).toFixed(0));
   }
 
   createEvent() {

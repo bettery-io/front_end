@@ -1,6 +1,6 @@
 <p *ngIf="statusTime === 'end'" class="time_style endTime">{{future}}</p>
 
-<p [ngStyle]="correctMarginLeft()" style="margin-left: 63px" *ngIf="statusTime === 'green'" class="time_style">{{future}}
+<p *ngIf="statusTime === 'green'" class="time_style">{{future}}
   <span class="timeStyle" [ngStyle]="styleTime('green')">{{day}} days</span>
 </p>
 

@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <div class="boxImg">
+    <div class="img"></div>
+  </div>
+  <button type="button" class="close border-hover" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="title">
+    Just a note
+  </div>
+  <div>
+    <p class="text">
+      <span>Bettery is currently an early prototype.</span> <br>
+      Bettery is currently an early prototype. The experience of joining via invite links is better on mobile than desktop right now.
+      <span>You can still proceed if you want, of course! </span>
+    </p>
+    <p class="text">
+      Alternatively, you can browse Bettery timeline and find awesome events to join now.
+    </p>
+  </div>
+
+  <div class="btn-box">
+    <button class="btn-join" (click)="activeModal.dismiss('Cross click')">Proceed to Join</button>
+    <button class="btn-browse" routerLink="/join" (click)="activeModal.dismiss('Cross click')">Browse Events</button>
+  </div>
+
+</div>

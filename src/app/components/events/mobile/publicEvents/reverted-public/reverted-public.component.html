@@ -1,0 +1,46 @@
+<div class="box">
+  <div class="titleBox">
+    <p class="title">EVENT CANCEllED</p>
+  </div>
+  <div class="pb-2">
+    <p class="underTitle">Reason: No Experts</p>
+  </div>
+
+  <div class="question_box mt-4">
+    <p class="question">{{eventData?.question}}</p>
+  </div>
+
+  <div>
+    <div class="question_box mt-2" *ngFor="let answer of eventData?.answers">
+      <p class="answer">{{answer}}</p>
+    </div>
+  </div>
+
+  <div class="info_box">
+   <div class="question_box in-info_box">
+     <div class="people-img mb-2"></div>
+     <div class="info_text">
+       <p> <span>{{eventData?.parcipiantAnswers ? eventData?.parcipiantAnswers.length :  0}}</span> Subscribed</p>
+     </div>
+   </div>
+   <div class="question_box in-info_box">
+     <div class="hand-img mb-2"></div>
+     <div class="info_text">
+       <p>Refunded</p>
+     </div>
+   </div>
+  </div>
+  <div class="creatBy">
+    <div class="creatBy-text">
+      <p>CREATED BY:</p>
+    </div>
+    <div class="hostBox">
+      <p class="nameInfo">{{eventData?.host.nickName}}</p>
+      <img class="avatarHost" src={{eventData?.host.avatat}} referrerpolicy="no-referrer">
+    </div>
+  </div>
+
+  <div class="hr"></div>
+
+  <app-comment [mobile]="true" [id]=eventData?.id [userData]=userData [hideInput]="true"></app-comment>
+</div>

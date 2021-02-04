@@ -12,13 +12,14 @@ import { ErrorLimitModalComponent } from './error-limit-modal/error-limit-modal.
 import { QuizTemplateComponent } from './quiz-template/quiz-template.component';
 import { TimeComponent } from './quiz-template/time/time.component';
 import { QuizErrorsComponent } from './quiz-template/quiz-errors/quiz-errors.component';
-import { PreRegistrationModalComponent } from './pre-registration-modal/pre-registration-modal.component';
 import { RouterModule } from '@angular/router';
 import { QuizInfoComponent } from './quiz-template/quiz-info/quiz-info.component';
 import { QuizChooseRoleComponent } from './quiz-template/quiz-choose-role/quiz-choose-role.component';
 import { QuizActionComponent } from './quiz-template/quiz-action/quiz-action.component';
 import { QuizEventFinishComponent } from './quiz-template/quiz-event-finish/quiz-event-finish.component';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
+import { JustANoteModalComponent } from './just-note-modal/just-anote-modal.component';
+
 
 
 @NgModule({
@@ -33,7 +34,6 @@ import { ComingSoonComponent } from './coming-soon/coming-soon.component';
     QuizTemplateComponent,
     TimeComponent,
     QuizErrorsComponent,
-    PreRegistrationModalComponent,
     QuizInfoComponent,
     QuizChooseRoleComponent,
     QuizActionComponent,
@@ -57,8 +57,8 @@ import { ComingSoonComponent } from './coming-soon/coming-soon.component';
     CommentComponent,
     QuizTemplateComponent,
     TimeComponent,
-    PreRegistrationModalComponent
-  ]
+    JustANoteModalComponent
+  ],
 })
 
 export class ShareModule {

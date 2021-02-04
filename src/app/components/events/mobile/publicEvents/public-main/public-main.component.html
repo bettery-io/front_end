@@ -1,5 +1,6 @@
-<event-start *ngIf="!errorPage && !eventFinish" [eventData]="eventData" (interacDone)="interacDone($event)"></event-start>
-<event-finish *ngIf="eventFinish" [eventData]="eventData" ></event-finish>
+<event-start *ngIf="!errorPage && !eventFinish && !isReverted" [eventData]="eventData" (interacDone)="interacDone($event)"></event-start>
+<event-finish *ngIf="eventFinish && !isReverted" [eventData]="eventData" ></event-finish>
+<app-reverted-public *ngIf="isReverted" [eventData]="eventData"></app-reverted-public>
 <div *ngIf="errorPage" class="box">
     <div class="errorImg"></div>
     <p class="eventNotFound">Event not found!</p>

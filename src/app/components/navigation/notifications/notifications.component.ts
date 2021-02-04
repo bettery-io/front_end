@@ -48,7 +48,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     })
   }
 
-  sendRead(id) {
+  sendRead(id, eventId) {
+    sessionStorage.setItem('eventId', eventId);
     this.sendReadToDb([id]);
   }
 

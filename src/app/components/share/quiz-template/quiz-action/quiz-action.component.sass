@@ -10,16 +10,53 @@
     font-style: normal
     font-weight: 800
     font-size: 12px
-    line-height: 16px
+    line-height: 22px
     color: #0B1511
-    margin-top: 11px
-    margin-bottom: 11px
-    margin-left: 8px
+    padding-top: 11px
+    padding-bottom: 11px
+    padding-left: 8px
+    width: 100%
+    cursor: pointer
+    margin-bottom: 0
 
 .checkbox_answer
     margin-top: 11px
     margin-bottom: 11px
     margin-left: 11px
+    position: relative
+    height: 22px
+    width: 22px
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+    outline: none
+
+.checkbox_answer::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 50%
+  width: 14px
+  height: 14px
+  border-radius: 100%
+  background-color: #ffffff
+  transform: translate(-50%, -50%)
+
+.checkbox_answer:checked::after
+  content: ''
+  position: absolute
+  top: 50%
+  left: 50%
+  width: 9px
+  height: 9px
+  border-radius: 50%
+  background-color: #34DDDD
+  transform: translate(-50%, -50%)
+  visibility: visible
+
+.checkbox_answerValidate:checked::after
+  content: ''
+  background-color: #BF94E4
 
 .buttonBox
     display: flex
@@ -83,3 +120,6 @@
     box-sizing: border-box
     border-radius: 8px
     width: 100%
+
+#after:after
+  left: 50px

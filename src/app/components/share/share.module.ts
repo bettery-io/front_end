@@ -38,7 +38,8 @@ import { JustANoteModalComponent } from './just-note-modal/just-anote-modal.comp
     QuizChooseRoleComponent,
     QuizActionComponent,
     QuizEventFinishComponent,
-    ComingSoonComponent
+    ComingSoonComponent,
+    JustANoteModalComponent
   ],
   imports: [
     CommonModule,
@@ -58,7 +59,7 @@ import { JustANoteModalComponent } from './just-note-modal/just-anote-modal.comp
     QuizTemplateComponent,
     TimeComponent,
     JustANoteModalComponent
-  ],
+  ]
 })
 
 export class ShareModule {

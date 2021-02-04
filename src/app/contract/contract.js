@@ -5,7 +5,6 @@ import TokenJSON from '../../../build/contracts/EthERC20Coin.json';
 import networkConfiguration from '../config/network.json'
 import configFile from '../config/config.json';
 import MaticWETH from '../config/abi/MaticWETH.json'
-import biconomyInit from "./biconomy";
 import PublicEventJSON from '../../../build/contracts/PublicEvent.json';
 import PrivateEventJSON from '../../../build/contracts/PrivateEvent.json';
 var sigUtil = require('eth-sig-util')
@@ -43,22 +42,19 @@ export default class Contract {
     }
 
     async getWETHContract() {
-        let biconomy = await biconomyInit();
-        let web3 = new Web3(biconomy);
+        let web3 = new Web3(window.biconomy);
         return new web3.eth.Contract(MaticWETH.abi, configFile.child.MaticWETH);
     }
 
     async getERC20ContractOnMaticChain() {
-        let biconomy = await biconomyInit();
-        let web3 = new Web3(biconomy);
+        let web3 = new Web3(window.biconomy);
         return new web3.eth.Contract(BetteryToken.abi, BetteryToken.networks[networkConfiguration.maticMumbai].address);
     }
 
     // PrivateEvent
 
     async privateEventContract() {
-        let biconomy = await biconomyInit();
-        let web3 = new Web3(biconomy);
+        let web3 = new Web3(window.biconomy);
         return new web3.eth.Contract(PrivateEventJSON.abi,
             this.privateEventAddress());
     }
@@ -104,8 +100,7 @@ export default class Contract {
 
 
     async publicEventContract() {
-        let biconomy = await biconomyInit();
-        let web3 = new Web3(biconomy);
+        let web3 = new Web3(window.biconomy);
         return new web3.eth.Contract(PublicEventJSON.abi,
             this.publicEventAddress())
     }

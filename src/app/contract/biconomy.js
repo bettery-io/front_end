@@ -3,12 +3,10 @@ import Biconomy from "@biconomy/mexa";
 const biconomyInit = async () => {
     let biconomy = new Biconomy("https://rpc-mumbai.matic.today",
         {
-            apiKey: "iwIgyW3sM.12ac582c-bd06-4289-8d48-47ef552af03f",
-            debug: false,
-            strictMode: true
+            apiKey: "iwIgyW3sM.12ac582c-bd06-4289-8d48-47ef552af03f"
         });
     await BiconomyReady(biconomy);
-    return biconomy;
+    window.biconomy = biconomy;
 }
 
 async function BiconomyReady(biconomy) {

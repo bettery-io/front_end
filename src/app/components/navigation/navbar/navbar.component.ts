@@ -18,6 +18,7 @@ import web3Obj from '../../../helpers/torus'
 import { Subscription } from 'rxjs';
 import { User } from "../../../models/User.model";
 import { RegistrationComponent } from '../../registration/registration.component';
+import biconomyInit from "../../../../app/contract/biconomy";
 
 
 @Component({
@@ -132,7 +133,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // OLD CODE
     // let interval = setInterval(async () => {
     //   if (this.userWallet !== undefined && this.verifier === "metamask") {
@@ -145,10 +146,10 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
     //     }
     //   }
     // }, 500)
-
+    
     this.onDocumentClick = this.onDocumentClick.bind(this);
     document.addEventListener('click', this.onDocumentClick);
-
+    await biconomyInit();
   }
 
   depositGuard() {

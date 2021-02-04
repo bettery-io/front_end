@@ -3,15 +3,12 @@ import { User } from '../../../models/User.model';
 import { Answer } from '../../../models/Answer.model';
 import Web3 from 'web3';
 import Contract from '../../../contract/contract';
-import * as CoinsActios from '../../../actions/coins.actions';
 import * as UserActions from '../../../actions/user.actions';
 import { PostService } from '../../../services/post.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import web3Obj from '../../../helpers/torus';
-import maticInit from '../../../contract/maticInit.js';
 import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
 import { Subscription } from 'rxjs';
 import { Event } from '../../../models/Event.model';
@@ -334,7 +331,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
       this.myAnswers.answered = true;
       this.updateUser();
       this.callGetData.next();
-      this.updateBalance();
     },
       (err) => {
         console.log(err);
@@ -394,8 +390,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
     };
     this.validSub = this.postService.post('publicEvents/validate', data).subscribe(async () => {
       this.myAnswers.answered = true;
+      this.updateUser();
       this.callGetData.next();
-      this.updateBalance();
     },
       (err) => {
         console.log(err);
@@ -408,45 +404,24 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
       });
   }
 
-  async updateBalance() {
-    let web3 = new Web3(this.allUserData.verifier === 'metamask' ? window.web3.currentProvider : web3Obj.torus.provider);
-    let mainBalance = await web3.eth.getBalance(this.userData.wallet);
-
-    let matic = new maticInit(this.allUserData.verifier);
-    let MTXToken = await matic.getMTXBalance();
-    let TokenBalance = await matic.getERC20Balance();
-
-    let maticTokenBalanceToEth = web3.utils.fromWei(MTXToken, 'ether');
-    let mainEther = web3.utils.fromWei(mainBalance, 'ether');
-    let tokBal = web3.utils.fromWei(TokenBalance, 'ether');
-
-    this.store.dispatch(new CoinsActios.UpdateCoins({
-      loomBalance: maticTokenBalanceToEth,
-      mainNetBalance: mainEther,
-      tokenBalance: tokBal
-    }));
-    this.coinInfo.loomBalance = maticTokenBalanceToEth;
-    this.coinInfo.tokenBalance = tokBal;
-  }
-
   updateUser() {
     let data = {
       id: this.allUserData._id
     };
     this.updateSub = this.postService.post('user/getUserById', data)
       .subscribe(
-        (currentUser: User) => {
+        (currentUser: User[]) => {
           this.store.dispatch(new UserActions.UpdateUser({
-            _id: currentUser._id,
-            email: currentUser.email,
-            nickName: currentUser.nickName,
-            wallet: currentUser.wallet,
-            listHostEvents: currentUser.listHostEvents,
-            listParticipantEvents: currentUser.listParticipantEvents,
-            listValidatorEvents: currentUser.listValidatorEvents,
-            historyTransaction: currentUser.historyTransaction,
-            avatar: currentUser.avatar,
-            verifier: currentUser.verifier
+            _id: currentUser[0]._id,
+            email: currentUser[0].email,
+            nickName: currentUser[0].nickName,
+            wallet: currentUser[0].wallet,
+            listHostEvents: currentUser[0].listHostEvents,
+            listParticipantEvents: currentUser[0].listParticipantEvents,
+            listValidatorEvents: currentUser[0].listValidatorEvents,
+            historyTransaction: currentUser[0].historyTransaction,
+            avatar: currentUser[0].avatar,
+            verifier: currentUser[0].verifier
           }));
         });
   }

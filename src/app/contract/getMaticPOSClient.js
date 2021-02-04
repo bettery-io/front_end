@@ -2,11 +2,8 @@ import matic from '@maticnetwork/maticjs';
 import config from '../config/config.json';
 import Web3 from "web3";
 import web3Obj from '../helpers/torus';
-import biconomyInit from "./biconomy";
-
 
 const getMaticPOSClient = async (whichProvider) => {
-    let biconomy = await biconomyInit();
 
     let goerli = new Web3(whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider)
     let accounts = await goerli.eth.getAccounts();
@@ -15,7 +12,7 @@ const getMaticPOSClient = async (whichProvider) => {
         network: 'testnet', // optional, default is testnet
         version: 'mumbai', // optional, default is mumbai
         parentProvider: new Web3(whichProvider === "metamask" ? window.web3.currentProvider : web3Obj.torus.provider),
-        maticProvider: new Web3(biconomy),
+        maticProvider: new Web3(window.biconomy),
         posRootChainManager: config.root.RootChainManagerProxy,
         posERC20Predicate: config.root.ERC20PredicateProxy,
         parentDefaultOptions: { from: accounts[0] }, // optional, can also be sent as last param while sending tx

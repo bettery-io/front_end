@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
-    this.setClock(1609227850);
+    this.setClock(1617235200);
     this.mobileCheck();
   }
 

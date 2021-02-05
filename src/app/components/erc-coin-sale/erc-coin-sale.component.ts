@@ -47,7 +47,7 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     console.log(environment.production);
     this.getDataFromDb();
-    this.setClock(1609227850);
+    this.setClock(1617235200);
   }
 
   getDataFromDb() {

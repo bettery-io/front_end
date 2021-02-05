@@ -1,21 +1,21 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, Inject, AfterViewInit } from '@angular/core';
-import { User } from '../../../models/User.model';
-import { Answer } from '../../../models/Answer.model';
+import {Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, Inject, AfterViewInit} from '@angular/core';
+import {User} from '../../../models/User.model';
+import {Answer} from '../../../models/Answer.model';
 import Web3 from 'web3';
 import Contract from '../../../contract/contract';
 import * as UserActions from '../../../actions/user.actions';
-import { PostService } from '../../../services/post.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.state';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { QuizErrorsComponent } from './quiz-errors/quiz-errors.component';
-import { Subscription } from 'rxjs';
-import { Event } from '../../../models/Event.model';
-import { Coins } from '../../../models/Coins.model';
-import { RegistrationComponent } from '../../registration/registration.component';
-import { ClipboardService } from 'ngx-clipboard';
-import { PageScrollService } from 'ngx-page-scroll-core';
+import {PostService} from '../../../services/post.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../app.state';
+import {faCheck} from '@fortawesome/free-solid-svg-icons';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {QuizErrorsComponent} from './quiz-errors/quiz-errors.component';
+import {Subscription} from 'rxjs';
+import {Event} from '../../../models/Event.model';
+import {Coins} from '../../../models/Coins.model';
+import {RegistrationComponent} from '../../registration/registration.component';
+import {ClipboardService} from 'ngx-clipboard';
+import {PageScrollService} from 'ngx-page-scroll-core';
 
 @Component({
   selector: 'quiz-template',
@@ -26,9 +26,9 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
   faCheck = faCheck;
   allUserData: User = undefined;
   amount: number;
-  answerSub: Subscription
-  validSub: Subscription
-  updateSub: Subscription
+  answerSub: Subscription;
+  validSub: Subscription;
+  updateSub: Subscription;
   openIndex: number = null;
   joinPlayer: boolean = false;
   becomeExpert: boolean = false;
@@ -197,11 +197,11 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
   getWinnerColor(data) {
     if (this.userData != undefined) {
       if (data.host.id === this.userData._id) {
-        return { 'color': '#F7971E' };
+        return {'color': '#F7971E'};
       } else if (this.myAnswers.from == 'validator') {
-        return { 'color': '#A134FF' };
+        return {'color': '#A134FF'};
       } else {
-        return { 'color': '#10C9C9' };
+        return {'color': '#10C9C9'};
       }
     } else {
       return;
@@ -239,7 +239,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
     let answer = this.myAnswers;
     if (this.allUserData != undefined) {
       if (answer.answer === undefined) {
-        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
         modalRef.componentInstance.errType = 'error';
         modalRef.componentInstance.title = 'Choose anwer';
         modalRef.componentInstance.description = 'Choose at leas one answer';
@@ -249,7 +249,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
           this.setToNetworkValidation(answer, dataAnswer);
         } else {
           if (Number(answer.amount) <= 0) {
-            const modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+            const modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
             modalRef.componentInstance.errType = 'error';
             modalRef.componentInstance.title = 'Low amount';
             modalRef.componentInstance.description = 'Amount must be bigger than 0';
@@ -260,7 +260,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
         }
       }
     } else {
-      const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+      const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
       modalRef.componentInstance.openSpinner = true;
     }
   }
@@ -275,7 +275,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
     }
 
     if (Number(balance) < Number(answer.amount)) {
-      let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+      let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
       modalRef.componentInstance.errType = 'error';
       modalRef.componentInstance.title = 'Insufficient BET';
       modalRef.componentInstance.description = 'You don\'t have enough BET tokens to make this bet. Please lower your bet or get more BET tokens by:';
@@ -300,14 +300,14 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
           this.setToDB(answer, sendToContract.transactionHash, dataAnswer.currencyType);
         }
       } else if (Number(validator) === 1) {
-        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
         modalRef.componentInstance.errType = 'time';
         modalRef.componentInstance.title = 'Event not start';
         modalRef.componentInstance.customMessage = 'Betting time for this event is not start.';
         modalRef.componentInstance.description = 'Player can join when event is start.';
         modalRef.componentInstance.nameButton = 'fine';
       } else if (Number(validator) === 2) {
-        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
         modalRef.componentInstance.errType = 'time';
         modalRef.componentInstance.title = 'Betting time’s over';
         modalRef.componentInstance.customMessage = 'Betting time for this event is over.';
@@ -328,13 +328,13 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
       amount: Number(answer.amount)
     };
     this.answerSub = this.postService.post('publicEvents/participate', data).subscribe(async () => {
-      this.myAnswers.answered = true;
-      this.updateUser();
-      this.callGetData.next();
-    },
+        this.myAnswers.answered = true;
+        this.updateUser();
+        this.callGetData.next();
+      },
       (err) => {
         console.log(err);
-        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
         modalRef.componentInstance.errType = 'error';
         modalRef.componentInstance.title = 'Unknown Error';
         modalRef.componentInstance.customMessage = String(err);
@@ -355,21 +355,21 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
       let sendToContract = await contract.validateOnPublicEvent(_question_id, _whichAnswer, this.allUserData.wallet, this.allUserData.verifier);
       this.setToDBValidation(answer, dataAnswer, sendToContract.transactionHash);
     } else if (Number(validator) == 1) {
-      let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+      let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
       modalRef.componentInstance.errType = 'time';
       modalRef.componentInstance.title = 'Validation time’s not start';
       modalRef.componentInstance.customMessage = 'Validation time for this event not start';
       modalRef.componentInstance.description = 'Expert can join when validating time is start';
       modalRef.componentInstance.nameButton = 'fine';
     } else if (Number(validator) == 2) {
-      let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+      let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
       modalRef.componentInstance.errType = 'time';
       modalRef.componentInstance.title = 'Validation time’s over';
       modalRef.componentInstance.customMessage = 'Validation time for this event is over, ';
       modalRef.componentInstance.description = 'No more Experts can join now.';
       modalRef.componentInstance.nameButton = 'fine';
     } else if (Number(validator) == 3) {
-      let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+      let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
       modalRef.componentInstance.errType = 'error';
       modalRef.componentInstance.title = 'You participated in this event.';
       modalRef.componentInstance.customMessage = 'You have been like the participant in this event. ';
@@ -389,13 +389,13 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
       validated: dataAnswer.validated + 1
     };
     this.validSub = this.postService.post('publicEvents/validate', data).subscribe(async () => {
-      this.myAnswers.answered = true;
-      this.updateUser();
-      this.callGetData.next();
-    },
+        this.myAnswers.answered = true;
+        this.updateUser();
+        this.callGetData.next();
+      },
       (err) => {
         console.log(err);
-        let modalRef = this.modalService.open(QuizErrorsComponent, { centered: true });
+        let modalRef = this.modalService.open(QuizErrorsComponent, {centered: true});
         modalRef.componentInstance.errType = 'error';
         modalRef.componentInstance.title = 'Unknown Error';
         modalRef.componentInstance.customMessage = String(err);
@@ -445,7 +445,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
     if (data.finalAnswer !== null) {
       if (this.userData != undefined) {
         if (data.host.id === this.userData._id) {
-          return { 'background': 'rgb(255, 248, 206)' };
+          return {'background': 'rgb(255, 248, 206)'};
         } else {
           return this.backgroundColorEventFinish(data);
         }
@@ -453,17 +453,17 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
         return this.backgroundColorEventFinish(data);
       }
     } else if (data.status == 'reverted') {
-      return { 'background': '#F4F4F4' };
+      return {'background': '#F4F4F4'};
     } else {
-      return { 'background': '#E6FFF2' };
+      return {'background': '#E6FFF2'};
     }
   }
 
   backgroundColorEventFinish(data) {
     if (data.finalAnswer != this.myAnswers.answer && this.myAnswers.answer != undefined) {
-      return { 'background': '#FFEDED' };
+      return {'background': '#FFEDED'};
     } else {
-      return { 'background': '#F4F4F4' };
+      return {'background': '#F4F4F4'};
     }
   }
 
@@ -526,11 +526,15 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   joinAsPlayer() {
+    this.letsRegistration();
+
     this.joinPlayer = true;
     this.details = true;
   }
 
   becomeValidator() {
+    this.letsRegistration();
+
     this.becomeExpert = true;
     this.details = true;
   }
@@ -571,7 +575,7 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   getValidatorsAmountLeft(eventData) {
-    return eventData.validatorsAmount == 0 ? this.expertAmount(eventData) : eventData.validatorsAmount
+    return eventData.validatorsAmount == 0 ? this.expertAmount(eventData) : eventData.validatorsAmount;
   }
 
   expertAmount(eventData) {
@@ -602,6 +606,13 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
     }
     if (this.updateSub) {
       this.updateSub.unsubscribe();
+    }
+  }
+
+  letsRegistration() {
+    if (this.allUserData === undefined) {
+     const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
+     modalRef.componentInstance.openSpinner = true;
     }
   }
 }

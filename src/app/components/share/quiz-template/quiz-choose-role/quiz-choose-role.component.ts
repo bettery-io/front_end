@@ -103,4 +103,11 @@ export class QuizChooseRoleComponent implements OnInit {
     }
   }
 
+  // letsRegistration() {
+  //   if (this.userData === undefined) {
+  //     const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
+  //     modalRef.componentInstance.openSpinner = true;
+  //   }
+  // }
+
 }

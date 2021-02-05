@@ -159,35 +159,8 @@
     </div>
 
     <a routerLink="/create-event" class="becomeHost">{{createEventText()}}</a>
-    <div>
-        <div class="commentBox">
-            <div class="commentHeader">
-                <div class="senderBox">
-                    <div class="commentImg face1"></div>
-                    <p class="commentName">Jenna Logan</p>
-                </div>
-                <div class="timeBox">1 day ago</div>
-            </div>
-            <div>
-                <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt
-                    ut labore et dolore magna aliqua.</p>
-            </div>
-        </div>
 
-        <div class="commentBox">
-            <div class="commentHeader">
-                <div class="senderBox">
-                    <div class="commentImg face2"></div>
-                    <p class="commentName">Terry Crews</p>
-                </div>
-                <div class="timeBox">1 day ago</div>
-            </div>
-            <div>
-                <p class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt
-                    ut labore et dolore magna aliqua.</p>
-            </div>
-        </div>
-    </div>
+  <div class="mt-4">
+    <app-comment [mobile]="true" [id]=eventData?.id [userData]=userData [hideInput]="true"></app-comment>
+  </div>
 </div>

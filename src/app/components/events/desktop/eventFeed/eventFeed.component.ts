@@ -182,8 +182,8 @@ export class EventFeedComponent implements OnDestroy {
   }
 
   commentTopPosition() {
-    if (document.documentElement.scrollTop < 300) {
-      return {'top': (300 - this.scrollTop) + 'px'};
+    if (document.documentElement.scrollTop < 278) {
+      return {'top': (278 - this.scrollTop) + 'px'};
     } else {
       return {'top': 0};
     }

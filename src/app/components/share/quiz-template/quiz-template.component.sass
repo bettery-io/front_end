@@ -157,6 +157,8 @@
 .room-card
   margin-right: 20px
   position: relative
+  box-sizing: content-box
+  box-shadow: 0 0 17px 2px rgba(0, 0, 0, 0)
 
 .room-card-top
   font-weight: normal
@@ -527,6 +529,7 @@
   text-transform: uppercase
   margin-bottom: 0px
   left: 130px
+  white-space: nowrap
 
 .moreThan3
   flex-direction: column
@@ -627,7 +630,7 @@
   justify-content: center
   position: absolute
   top: 5px
-  left: -10px
+  left: 5px
   z-index: 1
   cursor: pointer
 
@@ -643,9 +646,9 @@
   color: rgba(0, 0, 0, 0.8)
   white-space: nowrap
   position: absolute
-  top: 25px
+  top: 30px
   z-index: 1
-  left: 30px
+  left: 38px
   opacity: 0
   display: none
   transition: all 0.5s
@@ -653,3 +656,7 @@
 .showLink
   opacity: 1
   display: block
+
+.amount_box
+  display: flex
+  justify-content: flex-end

@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import {Component, OnInit, OnDestroy, HostListener, EventEmitter, AfterViewChecked} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {PostService} from '../../../services/post.service';
@@ -12,6 +12,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Coins} from '../../../models/Coins.model';
 import {RoomDetails} from '../../../models/RoomDetails.model';
 import {EventModel, Event} from '../../../models/Event.model';
+import {PageScrollService} from 'ngx-page-scroll-core';
 
 
 @Component({
@@ -19,7 +20,7 @@ import {EventModel, Event} from '../../../models/Event.model';
   templateUrl: './room-details.component.html',
   styleUrls: ['./room-details.component.sass']
 })
-export class RoomDetailsComponent implements OnInit, OnDestroy {
+export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked {
   routeSub: Subscription;
   infoSub: Subscription;
   eventSub: Subscription;
@@ -48,12 +49,14 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   commentResetFlag: boolean;
   roomData: any;
   disabledButton: boolean = false;
+  flagForAnchor: number;
 
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,
     private store: Store<AppState>,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private pageScrollService: PageScrollService,
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
@@ -78,13 +81,62 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     this.getAllData();
   }
 
+
+  scrollTo() {
+    const idAnchor = sessionStorage.getItem('eventId');
+    const event = new EventEmitter<boolean>();
+    if (idAnchor) {
+      this.pageScrollService.scroll({
+        document,
+        scrollTarget: '#' + idAnchor,
+        scrollOffset: 50,
+        duration: 300,
+        scrollFinishListener: event
+      });
+      event.subscribe((targetReached) => this.finishScrollAnimation(targetReached, idAnchor));
+      this.flagForAnchor = 1;
+    }
+  }
+
+  finishScrollAnimation(event: boolean, id) {
+    const el = document.getElementById('id-' + id);
+
+    const styleStart = 'box-shadow: 0px 0px 20px 2px #26A1D3; border-radius: 20px; box-sizing: content-box';
+    const styleFinish = '';
+
+    if (event) {
+      el.style.cssText = styleStart;
+    }
+
+    if (el) {
+      setTimeout(() => {
+        el.style.cssText = styleFinish;
+        setTimeout(() => {
+          el.style.cssText = styleStart;
+          setTimeout(() => {
+            el.style.cssText = styleFinish;
+          }, 150);
+        }, 150);
+      }, 300);
+    }
+    sessionStorage.removeItem('eventId');
+  }
+
+  ngAfterViewChecked(): void {
+    if (!this.spinner && this.roomEvents && this.pureData && this.flagForAnchor == 2) {
+      this.scrollTo();
+    }
+  }
+
+
   getAllData() {
+    this.flagForAnchor = 1;
     this.routeSub = this.route.params.subscribe(params => {
       this.roomData = {
         roomId: Number(params.id),
         userId: this.userId,
       };
-      this.getRoomInfo(this.roomData)
+      this.getRoomInfo(this.roomData);
       this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
     });
   }
@@ -131,6 +183,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.commentResetFlag = false;
       }
       this.spinner = false;
+      this.flagForAnchor = 2;
     }, (err) => {
       console.log(err);
     });
@@ -209,12 +262,12 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       let data = {
         userId: this.userId,
         roomId: Number(this.roomData?.roomId)
-      }
+      };
       this.joinRoomSub = this.postService.post('room/join', data).subscribe((x) => {
-        this.getRoomInfo(data)
+        this.getRoomInfo(data);
       }, (err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
     }
   }
 
@@ -222,16 +275,16 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     this.disabledButton = true;
     let data = {
       joinedId: this.roomDetails.joinedId,
-    }
+    };
     this.leaveRoomSub = this.postService.post('room/leave', data).subscribe(() => {
       let dataRoomInfo = {
         userId: this.userId,
         roomId: Number(this.roomData?.roomId)
-      }
-      this.getRoomInfo(dataRoomInfo)
+      };
+      this.getRoomInfo(dataRoomInfo);
     }, (err) => {
-      console.log(err)
-    })
+      console.log(err);
+    });
   }
 
   notification(x) {
@@ -239,17 +292,17 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       let data = {
         joinedId: this.roomDetails.joinedId,
         subscribe: x
-      }
+      };
       this.disabledButton = true;
       this.notificationRoomSub = this.postService.post('room/notification', data).subscribe(() => {
         let dataRoomInfo = {
           userId: this.userId,
           roomId: Number(this.roomData?.roomId)
-        }
-        this.getRoomInfo(dataRoomInfo)
+        };
+        this.getRoomInfo(dataRoomInfo);
       }, (err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
     }
 
   }
@@ -287,8 +340,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   commentTopPosition() {
-    if (document.documentElement.scrollTop < 428) {
-      return {'top': (428 - this.scrollTop) + 'px'};
+    if (document.documentElement.scrollTop < 422) {
+      return {'top': (422 - this.scrollTop) + 'px'};
     } else {
       return {'top': 0};
     }

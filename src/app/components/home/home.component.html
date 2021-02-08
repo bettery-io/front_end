@@ -62,7 +62,7 @@
               <div class="mobile_img_path mr-3"><a href="https://web.telegram.org" target="_blank"><img
                 src="../../../assets/landingPage/Path-yellowe2.png" alt="tel"></a></div>
               <div class="mr-2">
-                <select id="language" (change)="changeLocale()" [(ngModel)]="selectedLanguage">
+                <select style="display: none" id="language" (change)="changeLocale()" [(ngModel)]="selectedLanguage">
                   <option *ngFor="let language of languages" [value]="language.id">{{ language.id }}</option>
                 </select>
               </div>

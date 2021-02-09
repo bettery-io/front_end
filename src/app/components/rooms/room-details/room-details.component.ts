@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, HostListener, EventEmitter, AfterViewChecked} from '@angular/core';
+import {Component, OnInit, OnDestroy, HostListener, EventEmitter} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {PostService} from '../../../services/post.service';
@@ -13,6 +13,7 @@ import {Coins} from '../../../models/Coins.model';
 import {RoomDetails} from '../../../models/RoomDetails.model';
 import {EventModel, Event} from '../../../models/Event.model';
 import {PageScrollService} from 'ngx-page-scroll-core';
+import {SessionStorageService} from '../sessionStorage-service/session-storage.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ import {PageScrollService} from 'ngx-page-scroll-core';
   templateUrl: './room-details.component.html',
   styleUrls: ['./room-details.component.sass']
 })
-export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class RoomDetailsComponent implements OnInit, OnDestroy {
   routeSub: Subscription;
   infoSub: Subscription;
   eventSub: Subscription;
@@ -29,6 +30,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked
   joinRoomSub: Subscription;
   leaveRoomSub: Subscription;
   notificationRoomSub: Subscription;
+  sessionStorageSub: Subscription;
   roomDetails: RoomDetails;
   roomEvents: Event[] = [];
   coinInfo: Coins = null;
@@ -49,7 +51,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked
   commentResetFlag: boolean;
   roomData: any;
   disabledButton: boolean = false;
-  flagForAnchor: number;
+  sessionStorageValue: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +59,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked
     private store: Store<AppState>,
     private modalService: NgbModal,
     private pageScrollService: PageScrollService,
+    private sessionStorageService: SessionStorageService
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
@@ -79,22 +82,25 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked
 
   ngOnInit(): void {
     this.getAllData();
+    this.sessionStorageSub = this.sessionStorageService.eventIdValue.subscribe(e => {
+      this.sessionStorageValue = e;
+      if (this.sessionStorageValue) {
+        this.scrollTo();
+      }
+    });
   }
 
-
   scrollTo() {
-    const idAnchor = sessionStorage.getItem('eventId');
     const event = new EventEmitter<boolean>();
-    if (idAnchor) {
+    if (this.sessionStorageValue) {
       this.pageScrollService.scroll({
         document,
-        scrollTarget: '#' + idAnchor,
+        scrollTarget: '#' + this.sessionStorageValue,
         scrollOffset: 50,
         duration: 300,
         scrollFinishListener: event
       });
-      event.subscribe((targetReached) => this.finishScrollAnimation(targetReached, idAnchor));
-      this.flagForAnchor = 1;
+      event.subscribe((targetReached) => this.finishScrollAnimation(targetReached, this.sessionStorageValue));
     }
   }
 
@@ -104,33 +110,26 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked
     const styleStart = 'box-shadow: 0px 0px 20px 2px #26A1D3; border-radius: 20px; box-sizing: content-box';
     const styleFinish = '';
 
-    if (event) {
+    if (event && el) {
       el.style.cssText = styleStart;
     }
 
-    if (el) {
+    if (event && el) {
       setTimeout(() => {
         el.style.cssText = styleFinish;
         setTimeout(() => {
           el.style.cssText = styleStart;
           setTimeout(() => {
             el.style.cssText = styleFinish;
-          }, 150);
+          }, 100);
         }, 150);
+        sessionStorage.removeItem('eventId');
+        this.sessionStorageValue = undefined;
       }, 300);
     }
-    sessionStorage.removeItem('eventId');
   }
-
-  ngAfterViewChecked(): void {
-    if (!this.spinner && this.roomEvents && this.pureData && this.flagForAnchor == 2) {
-      this.scrollTo();
-    }
-  }
-
 
   getAllData() {
-    this.flagForAnchor = 1;
     this.routeSub = this.route.params.subscribe(params => {
       this.roomData = {
         roomId: Number(params.id),
@@ -183,7 +182,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked
         this.commentResetFlag = false;
       }
       this.spinner = false;
-      this.flagForAnchor = 2;
+      if (this.sessionStorageValue) {
+        this.scrollTo();
+      }
     }, (err) => {
       console.log(err);
     });
@@ -331,6 +332,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, AfterViewChecked
     }
     if (this.notificationRoomSub) {
       this.notificationRoomSub.unsubscribe();
+    }
+    if (this.sessionStorageSub) {
+      this.sessionStorageSub.unsubscribe();
     }
   }
 

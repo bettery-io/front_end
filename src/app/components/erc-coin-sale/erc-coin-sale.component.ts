@@ -144,11 +144,13 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   }
 
   showPercentSlid() {
-    return { 'left': this.percent + '%' };
+    // return { 'left': this.percent + '%' };
+    return { 'left': 0 + '%' };
   }
 
   yellowLineW() {
-    return { 'width': this.percent + '%' };
+    // return { 'width': this.percent + '%' };
+    return  { 'width': 0 + '%' };
   }
 
   openMetamaskModal(message, title) {

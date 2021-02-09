@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { PostService } from '../../../services/post.service';
 import _ from 'lodash';
 import {NotificationModel} from "../../../models/Notification.model";
+import {SessionStorageService} from '../../rooms/sessionStorage-service/session-storage.service';
 
 @Component({
   selector: 'notifications',
@@ -21,7 +22,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private postService: PostService,
-    private eRef: ElementRef
+    private eRef: ElementRef,
+    private sessionStorageService: SessionStorageService
   ) { }
 
   @HostListener('document:click', ['$event'])
@@ -49,7 +51,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   sendRead(id, eventId) {
-    sessionStorage.setItem('eventId', eventId);
+    this.sessionStorageService.eventId = eventId;
     this.sendReadToDb([id]);
   }
 

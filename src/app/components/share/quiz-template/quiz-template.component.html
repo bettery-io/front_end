@@ -86,7 +86,7 @@
               <p class="notExperts">NOT ENOUGH EXPERTS / PLAYERS ATTENDED</p>
             </div>
             <div class="amount_box" style="padding-right: 40px"
-              *ngIf="this.myAnswers?.answered && this.myAnswers?.betAmount > 0 && question.finalAnswer === null">
+              *ngIf="this.myAnswers?.answered && this.myAnswers?.betAmount > 0 && question.finalAnswer === null && question.status != 'reverted'">
               <div style="display: flex; flex-direction: column; justify-content: center">
                 <div class="amount_img"></div>
                 <p class="amountText">{{this.myAnswers?.betAmount}} BET</p>

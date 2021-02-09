@@ -92,18 +92,26 @@
                           <div class="line-circle" [ngStyle]="showPercentSlid()"></div>
                         </div>
 
+<!--                        <div class="font-s">-->
+<!--                          <span>{{tokensaleInfo?.tokenSold}} BTY</span> / {{tokensaleInfo?.balance}} BTY-->
+<!--                          ({{calculatePercenta(tokensaleInfo?.tokenSold, tokensaleInfo?.balance)}}%)-->
+<!--                        </div>-->
+
                         <div class="font-s">
-                          <span>{{tokensaleInfo?.tokenSold}} BTY</span> / {{tokensaleInfo?.balance}} BTY
-                          ({{calculatePercenta(tokensaleInfo?.tokenSold, tokensaleInfo?.balance)}}%)
+                          <span>0 BTY</span> / 70,000,000 BTY
+                          (0%)
                         </div>
+
                       </div>
                     </div>
                     <div class=" col-12 col-sm-10 col-xl-8 token-left">
                       <h4 class="mb-4">BTY Token left</h4>
-                      <div class="tk-left">{{tokensaleInfo?.balance}} BTY</div>
+<!--                      <div class="tk-left">{{tokensaleInfo?.balance}} BTY</div>-->
+                      <div class="tk-left">70,000,000 BTY</div>
                     </div>
                     <div class=" col-10 col-xl-8 main-button">
-                      <button>BUY BTY NOW</button>
+<!--                      <button>BUY BTY NOW</button>-->
+                      <button class="disabled">TOKEN SALE IS COMING SOON</button>
                     </div>
                   </div>
                 </div>
@@ -185,7 +193,7 @@
                       </li>
                       <li>
                         <span style="color: #54DD96">BTY demand</span><br>
-                        Businesses, advertisers, and influencers buy BTY to access Bettery community through Premium
+                        Businesses, advertisers, and influencers buy BTY to access Bettery community through paid
                         events.
                       </li>
                     </ul>
@@ -259,9 +267,9 @@
                   </div>
                   <div class="input-xl input-group">
                     <input onkeydown="return event.keyCode !== 69" id="buyInput" class="form-control" type="number"
-                           pattern="[0-9]*" placeholder="Enter BTY Amount"
+                           pattern="[0-9]*" placeholder="BTY Sale is Coming Soon"
                            [(ngModel)]="numberOfTokens">
-                    <button [ngStyle]="spinner && {'background': '#a4a4a4'}" [disabled]="checkValidBtn()"
+                    <button class="disabled" [ngStyle]="spinner && {'background': '#a4a4a4'}" [disabled]="checkValidBtn()"
                             [ngClass]="checkValidBtn() && 'disabled'"
                             (click)="connectToMetamask()">
                       <span *ngIf="!spinner" style=" color: #1E1E1E; font-size: 20px">BUY WITH METAMASK</span>
@@ -284,17 +292,17 @@
                       <li><span>Left for Sale: <br class="br"> </span>
                         <b>{{tokensaleInfo?.balance - tokensaleInfo?.tokenSold}} BTY</b></li>
                       <li><span>Purchase method: <br class="br"> </span> Directly with <b>Ethereum</b></li>
-                      <li><span>Token Price: <br class="br"> </span> <b>50,000 BTY</b> for <b>1 ETH.</b></li>
+                      <li><span>Token Price: <br class="br"> </span> <b>0.1 USD</b> for <b>1 BTY</b></li>
                     </ul>
                     <div class="input-sm">
                       <input onkeydown="return event.keyCode !== 69" [(ngModel)]="numberOfTokens" type="number"
-                             pattern="[0-9]*" placeholder="Enter BTY Amount">
+                             pattern="[0-9]*" placeholder="BTY Sale is Coming Soon">
                       <button style="padding : 14px 50px 15px 18px"
                               [ngStyle]="spinner && {'background': '#a4a4a4', 'padding' : '19px 50px 18px 18px'}"
                               [disabled]="checkValidBtn()"
                               [ngClass]="checkValidBtn() && 'disabled'"
                               (click)="connectToMetamask()"
-                              class="btn-2"
+                              class="btn-2 disabled"
                       >
                      <span class="d-flex justify-content-center">
                           <span *ngIf="!spinner" style=" color: #1E1E1E; font-size: 20px" class="fs-input2">BUY WITH METAMASK</span>
@@ -328,28 +336,28 @@
               <div class="road-map-warp row">
                 <div class="col-12 col-lg-6 col-xl-3 road-item-active">
                   <div class="road-map-item">
-                    <span id="active2" class="mb-2">NOV - 2020</span>
+                    <span id="active2" class="mb-2">FEB - 2021</span>
                     <p>Public prototype: Hosts, Players, and Experts in Public + Private Events.</p>
                   </div>
                 </div>
 
                 <div class="col-12 col-lg-6 col-xl-3">
                   <div class="road-map-item">
-                    <span class="mb-2">Q1 - 2021</span>
+                    <span class="mb-2">Q2 - 2021</span>
                     <p>User Reputation system. Tokenomy. Premium Events.</p>
                   </div>
                 </div>
 
                 <div class="col-12 col-lg-6 col-xl-3">
                   <div class="road-map-item">
-                    <span class="mb-2">Q2 - 2021</span>
-                    <p>Desktop version. Advisor & Moderator roles. Media in Events.</p>
+                    <span class="mb-2">Q3 - 2021</span>
+                    <p>Mobile Web App. Advisor & Moderator roles. Pro Events.</p>
                   </div>
                 </div>
 
                 <div class="col-12 col-lg-6 col-xl-3">
                   <div class="road-map-item">
-                    <span class="mb-2">Q3 - 2021</span>
+                    <span class="mb-2">Q4 - 2021</span>
                     <p>Mobile application. Integration to Social Media. Live Events.</p>
                   </div>
                 </div>
@@ -360,7 +368,7 @@
                 <ng-template swiperSlide>
                   <div class="col-12 col-lg-6 col-xl-3 road-item-active">
                     <div class="road-map-item">
-                      <span id="active" class="mb-2">NOV - 2020</span>
+                      <span id="active" class="mb-2">FEB - 2021</span>
                       <p>Public prototype: Hosts, Players, and Experts in Public + Private Events.</p>
                     </div>
                   </div>
@@ -369,7 +377,7 @@
                 <ng-template swiperSlide>
                   <div class="col-12">
                     <div class="road-map-item">
-                      <span class="mb-2">Q1 - 2021</span>
+                      <span class="mb-2">Q2 - 2021</span>
                       <p>User Reputation system. Tokenomy. Premium Events.</p>
                     </div>
                   </div>
@@ -378,8 +386,8 @@
                 <ng-template swiperSlide>
                   <div class="col-12">
                     <div class="road-map-item">
-                      <span class="mb-2">Q2 - 2021</span>
-                      <p>Desktop version. Advisor & Moderator roles. Media in Events.</p>
+                      <span class="mb-2">Q3 - 2021</span>
+                      <p>Mobile Web App. Advisor & Moderator roles. Pro Events.</p>
                     </div>
                   </div>
                 </ng-template>
@@ -387,7 +395,7 @@
                 <ng-template swiperSlide>
                   <div class="col-12">
                     <div class="road-map-item">
-                      <span class="mb-2">Q3 - 2021</span>
+                      <span class="mb-2">Q4 - 2021</span>
                       <p>Mobile application. Integration to Social Media. Live Events.</p>
                     </div>
                   </div>

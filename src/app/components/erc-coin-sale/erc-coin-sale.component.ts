@@ -47,7 +47,7 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     console.log(environment.production);
     this.getDataFromDb();
-    this.setClock(1609227850);
+    this.setClock(1617235200);
   }
 
   getDataFromDb() {
@@ -144,11 +144,13 @@ export class ErcCoinSaleComponent implements OnInit, OnDestroy {
   }
 
   showPercentSlid() {
-    return { 'left': this.percent + '%' };
+    // return { 'left': this.percent + '%' };
+    return { 'left': 0 + '%' };
   }
 
   yellowLineW() {
-    return { 'width': this.percent + '%' };
+    // return { 'width': this.percent + '%' };
+    return  { 'width': 0 + '%' };
   }
 
   openMetamaskModal(message, title) {

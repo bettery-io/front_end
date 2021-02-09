@@ -1,11 +1,11 @@
-<div class="card_box room-card" id = "{{question?.id}}">
+<div class="card_box room-card" id="{{'id-'+question.id}}">
   <div class="clickCopy" (click)="copyToClickBoard(question?.id)">
     <div class="copyLink-img"></div>
   </div>
   <div class="copied" [ngClass]="copyLinkFlag && 'showLink'">Link copied!</div>
-  <div class="row">
+  <div class="row ml-0" style="margin-right: -30px">
     <div class="col-3 imageBox" [ngStyle]="colorForRoom()"></div>
-    <div class="body_card" [ngStyle]="roomCardBottom()" id={{question.id}}>
+    <div class="body_card" [ngStyle]="roomCardBottom()" id="{{question.id}}">
       <div>
         <div class="room-card-top" [ngStyle]="cardColorBackGround(question)">
           <div>
@@ -85,30 +85,40 @@
             <div *ngIf="question.status == 'reverted'" class="clear">
               <p class="notExperts">NOT ENOUGH EXPERTS / PLAYERS ATTENDED</p>
             </div>
-            <div class="amount_box"
-              *ngIf="this.myAnswers?.answered && this.myAnswers?.betAmount > 0 && question.finalAnswer === null">
-              <div class="amount_img"></div>
-              <p class="amountText">{{this.myAnswers?.betAmount}} BET</p>
+            <div class="amount_box" style="padding-right: 40px"
+              *ngIf="this.myAnswers?.answered && this.myAnswers?.betAmount > 0 && question.finalAnswer === null && question.status != 'reverted'">
+              <div style="display: flex; flex-direction: column; justify-content: center">
+                <div class="amount_img"></div>
+                <p class="amountText">{{this.myAnswers?.betAmount}} BET</p>
+              </div>
             </div>
-            <div
+            <div class="amount_box" style="padding-right: 24px"
               *ngIf="this.myAnswers?.answered && this.myAnswers?.from == 'validator' && question.finalAnswer === null && question.status != 'reverted'">
-              <div class="validated"></div>
-              <p class="validated_text">VALIDATED</p>
+              <div style="display: flex; flex-direction: column; justify-content: center">
+                <div class="validated"></div>
+                <p class="validated_text">VALIDATED</p>
+              </div>
             </div>
-            <div
+            <div class="amount_box" style="padding-right: 31px"
               *ngIf="question.finalAnswer !== null && this.myAnswers?.answer != question.finalAnswer && this.myAnswers?.answer != undefined && this.myAnswers?.betAmount > 0">
-              <p class="lost_text2">You lost</p>
-              <p class="lost_amount">{{this.myAnswers?.betAmount}} BET</p>
+              <div style="display: flex; flex-direction: column; justify-content: center">
+                <p class="lost_text2">You lost</p>
+                <p class="lost_amount">{{this.myAnswers?.betAmount}} BET</p>
+              </div>
             </div>
-            <div
+            <div class="amount_box" style="padding-right: 18px"
               *ngIf="question.finalAnswer !== null && this.myAnswers?.answer != question.finalAnswer && this.myAnswers?.answer != undefined && this.myAnswers?.from == 'validator' && this.myAnswers?.answered">
-              <p class="lost_text2">You were</p>
-              <p class="lost_amount">WRONG</p>
+             <div style="display: flex; flex-direction: column; justify-content: center">
+               <p class="lost_text2">You were</p>
+               <p class="lost_amount">WRONG</p>
+             </div>
             </div>
-            <div
+            <div class="amount_box" style="width: 100%"
               *ngIf="question.finalAnswer !== null && this.myAnswers?.answer == question.finalAnswer && this.myAnswers?.answer != undefined && this.myAnswers?.answered">
-              <p class="winner_text">{{actionDetected(question)}}</p>
-              <p class="winner_amount" [ngStyle]="getWinnerColor(question)">{{playerAward(question)}}</p>
+              <div style="display: flex; flex-direction: column; justify-content: center">
+                <p class="winner_text">{{actionDetected(question)}}</p>
+                <p class="winner_amount" [ngStyle]="getWinnerColor(question)">{{playerAward(question)}}</p>
+              </div>
             </div>
           </div>
 

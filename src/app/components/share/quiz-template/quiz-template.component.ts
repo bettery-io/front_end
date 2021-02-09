@@ -1,4 +1,12 @@
-import {Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, Inject, AfterViewInit} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  EventEmitter,
+  Output,
+  OnChanges,
+  OnDestroy
+} from '@angular/core';
 import {User} from '../../../models/User.model';
 import {Answer} from '../../../models/Answer.model';
 import Web3 from 'web3';
@@ -22,7 +30,7 @@ import {PageScrollService} from 'ngx-page-scroll-core';
   templateUrl: './quiz-template.component.html',
   styleUrls: ['./quiz-template.component.sass']
 })
-export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   faCheck = faCheck;
   allUserData: User = undefined;
   amount: number;
@@ -39,17 +47,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
 
   @Input() joinRoom: boolean;
   @Input() index: number;
-
-  constructor(
-    private postService: PostService,
-    private store: Store<AppState>,
-    private modalService: NgbModal,
-    private _clipboardService: ClipboardService,
-    private pageScrollService: PageScrollService,
-  ) {
-  }
-
-
   @Input() question: Event;
   @Input('userData') userData: User;
   @Input() myAnswers: Answer;
@@ -59,25 +56,16 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
   @Output() callGetData = new EventEmitter();
   @Output() commentIdEmmit = new EventEmitter<number>();
 
+  constructor(
+    private postService: PostService,
+    private store: Store<AppState>,
+    private modalService: NgbModal,
+    private _clipboardService: ClipboardService,
+  ) {
+  }
+
   ngOnInit() {
     this.allUserData = this.userData;
-  }
-
-  scrollTo() {
-    const idAnchor = sessionStorage.getItem('eventId');
-    if (idAnchor) {
-      console.log('scroll work');
-      this.pageScrollService.scroll({
-        document,
-        scrollTarget: '#' + idAnchor,
-        scrollOffset: 110
-      });
-    }
-    sessionStorage.removeItem('eventId');
-  }
-
-  ngAfterViewInit(): void {
-    this.scrollTo();
   }
 
   ngOnChanges(changes) {
@@ -144,7 +132,6 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
       this.question.parcipiantAnswers.forEach(x => {
 
         pool = pool + Number(x.amount);
-
         if (x.answer != this.question.finalAnswer) {
           loserPool = loserPool + Number(x.amount);
         }
@@ -611,8 +598,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, Afte
 
   letsRegistration() {
     if (this.allUserData === undefined) {
-     const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
-     modalRef.componentInstance.openSpinner = true;
+      const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
+      modalRef.componentInstance.openSpinner = true;
     }
   }
 }

@@ -12,6 +12,7 @@ import * as VN from '../../../assets/locale/vn.json';
 import {PostService} from '../../services/post.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EventsTemplatesDesktopComponent} from '../createEvent/desktop/events-templates-desktop/events-templates-desktop.component';
+import {SessionStorageService} from '../rooms/sessionStorage-service/session-storage.service';
 
 @Component({
   selector: 'home',
@@ -53,12 +54,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private store: Store<any>,
     private postService: PostService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private sessionStorage: SessionStorageService
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
-    this.setClock(1609227850);
+    this.setClock(1617235200);
     this.mobileCheck();
   }
 
@@ -291,7 +293,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getSaveId(id) {
-    sessionStorage.setItem('eventId', id );
+    this.sessionStorage.eventId = id;
   }
 }
 

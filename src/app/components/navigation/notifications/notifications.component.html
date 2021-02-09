@@ -3,7 +3,7 @@
     <div (click)="this.toggleNavbar()" *ngIf="!this.colocol" class="colocol"></div>
     <div *ngIf="this.navbar" class="notif_box">
         <div>
-            <div *ngIf="this.notifData.length != 0">
+            <div *ngIf="this.notifData?.length != 0">
                 <div class="info_box">
                     <p class="info">{{unreadNotif()}} Unread Notifications</p>
                     <div *ngIf="unreadNotif() != 0" (click)="this.sendReadAll()" class="letter"></div>
@@ -27,7 +27,7 @@
                     <p class="clear" (click)="this.clearAll()">Clear all</p>
                 </div>
             </div>
-            <div *ngIf="this.notifData.length == 0">
+            <div *ngIf="this.notifData?.length == 0">
                 <p class="info">No Unread Notifications</p>
                 <p class="info_text">Join more Rooms or Events to stay notified.</p>
             </div>

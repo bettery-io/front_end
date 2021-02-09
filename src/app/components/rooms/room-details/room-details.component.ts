@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import {Component, OnInit, OnDestroy, HostListener, EventEmitter} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {PostService} from '../../../services/post.service';
@@ -12,6 +12,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Coins} from '../../../models/Coins.model';
 import {RoomDetails} from '../../../models/RoomDetails.model';
 import {EventModel, Event} from '../../../models/Event.model';
+import {PageScrollService} from 'ngx-page-scroll-core';
+import {SessionStorageService} from '../sessionStorage-service/session-storage.service';
 
 
 @Component({
@@ -28,6 +30,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   joinRoomSub: Subscription;
   leaveRoomSub: Subscription;
   notificationRoomSub: Subscription;
+  sessionStorageSub: Subscription;
   roomDetails: RoomDetails;
   roomEvents: Event[] = [];
   coinInfo: Coins = null;
@@ -48,12 +51,15 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   commentResetFlag: boolean;
   roomData: any;
   disabledButton: boolean = false;
+  sessionStorageValue: string;
 
   constructor(
     private route: ActivatedRoute,
     private postService: PostService,
     private store: Store<AppState>,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private pageScrollService: PageScrollService,
+    private sessionStorageService: SessionStorageService
   ) {
     this.storeUserSubscribe = this.store.select('user').subscribe((x: User[]) => {
       if (x.length === 0) {
@@ -76,6 +82,51 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllData();
+    this.sessionStorageSub = this.sessionStorageService.eventIdValue.subscribe(e => {
+      this.sessionStorageValue = e;
+      if (this.sessionStorageValue) {
+        this.scrollTo();
+      }
+    });
+  }
+
+  scrollTo() {
+    const event = new EventEmitter<boolean>();
+    if (this.sessionStorageValue) {
+      this.pageScrollService.scroll({
+        document,
+        scrollTarget: '#' + this.sessionStorageValue,
+        scrollOffset: 50,
+        duration: 300,
+        scrollFinishListener: event
+      });
+      event.subscribe((targetReached) => this.finishScrollAnimation(targetReached, this.sessionStorageValue));
+    }
+  }
+
+  finishScrollAnimation(event: boolean, id) {
+    const el = document.getElementById('id-' + id);
+
+    const styleStart = 'box-shadow: 0px 0px 20px 2px #26A1D3; border-radius: 20px; box-sizing: content-box';
+    const styleFinish = '';
+
+    if (event && el) {
+      el.style.cssText = styleStart;
+    }
+
+    if (event && el) {
+      setTimeout(() => {
+        el.style.cssText = styleFinish;
+        setTimeout(() => {
+          el.style.cssText = styleStart;
+          setTimeout(() => {
+            el.style.cssText = styleFinish;
+          }, 100);
+        }, 150);
+        sessionStorage.removeItem('eventId');
+        this.sessionStorageValue = undefined;
+      }, 300);
+    }
   }
 
   getAllData() {
@@ -84,7 +135,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         roomId: Number(params.id),
         userId: this.userId,
       };
-      this.getRoomInfo(this.roomData)
+      this.getRoomInfo(this.roomData);
       this.getRoomEvent(this.scrollDistanceFrom, this.scrollDistanceTo, this.searchWord);
     });
   }
@@ -131,6 +182,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.commentResetFlag = false;
       }
       this.spinner = false;
+      if (this.sessionStorageValue) {
+        this.scrollTo();
+      }
     }, (err) => {
       console.log(err);
     });
@@ -209,12 +263,12 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       let data = {
         userId: this.userId,
         roomId: Number(this.roomData?.roomId)
-      }
+      };
       this.joinRoomSub = this.postService.post('room/join', data).subscribe((x) => {
-        this.getRoomInfo(data)
+        this.getRoomInfo(data);
       }, (err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
     }
   }
 
@@ -222,16 +276,16 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     this.disabledButton = true;
     let data = {
       joinedId: this.roomDetails.joinedId,
-    }
+    };
     this.leaveRoomSub = this.postService.post('room/leave', data).subscribe(() => {
       let dataRoomInfo = {
         userId: this.userId,
         roomId: Number(this.roomData?.roomId)
-      }
-      this.getRoomInfo(dataRoomInfo)
+      };
+      this.getRoomInfo(dataRoomInfo);
     }, (err) => {
-      console.log(err)
-    })
+      console.log(err);
+    });
   }
 
   notification(x) {
@@ -239,17 +293,17 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       let data = {
         joinedId: this.roomDetails.joinedId,
         subscribe: x
-      }
+      };
       this.disabledButton = true;
       this.notificationRoomSub = this.postService.post('room/notification', data).subscribe(() => {
         let dataRoomInfo = {
           userId: this.userId,
           roomId: Number(this.roomData?.roomId)
-        }
-        this.getRoomInfo(dataRoomInfo)
+        };
+        this.getRoomInfo(dataRoomInfo);
       }, (err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
     }
 
   }
@@ -279,6 +333,9 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
     if (this.notificationRoomSub) {
       this.notificationRoomSub.unsubscribe();
     }
+    if (this.sessionStorageSub) {
+      this.sessionStorageSub.unsubscribe();
+    }
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -287,8 +344,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   commentTopPosition() {
-    if (document.documentElement.scrollTop < 428) {
-      return {'top': (428 - this.scrollTop) + 'px'};
+    if (document.documentElement.scrollTop < 422) {
+      return {'top': (422 - this.scrollTop) + 'px'};
     } else {
       return {'top': 0};
     }

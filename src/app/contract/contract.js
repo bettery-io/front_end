@@ -68,7 +68,7 @@ export default class Contract {
         let privateEvent = await this.privateEventContract();
         let functionSignature = await privateEvent.methods.createEvent(id, startTime, endTime, winner, looser, questionQuantity, correctAnswerSetter).encodeABI();
         let nonce = await privateEvent.methods.getNonce(userWallet).call();
-        let tokenName = "PrivateEvent";
+        let tokenName = "Private_contract";
         let betteryAddress = this.privateEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, privateEvent, functionSignature)
@@ -79,7 +79,7 @@ export default class Contract {
         let privateEvent = await this.privateEventContract()
         let functionSignature = await privateEvent.methods.setAnswer(id, answer).encodeABI();
         let nonce = await privateEvent.methods.getNonce(userWallet).call();
-        let tokenName = "PrivateEvent";
+        let tokenName = "Private_contract";
         let betteryAddress = this.privateEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, privateEvent, functionSignature)
@@ -90,7 +90,7 @@ export default class Contract {
         let privateEvent = await this.privateEventContract()
         let functionSignature = await privateEvent.methods.setCorrectAnswer(id, answer).encodeABI();
         let nonce = await privateEvent.methods.getNonce(userWallet).call();
-        let tokenName = "PrivateEvent";
+        let tokenName = "Private_contract";
         let betteryAddress = this.privateEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, privateEvent, functionSignature)
@@ -125,7 +125,7 @@ export default class Contract {
             validatorsQuantityWay
         ).encodeABI();
         let nonce = await bettery.methods.getNonce(userWallet).call();
-        let tokenName = "Bettery";
+        let tokenName = "Public_contract";
         let betteryAddress = this.publicEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
@@ -136,7 +136,7 @@ export default class Contract {
         let bettery = await this.publicEventContract()
         let functionSignature = await bettery.methods.setAnswer(id, answer, amount).encodeABI();
         let nonce = await bettery.methods.getNonce(userWallet).call();
-        let tokenName = "Bettery";
+        let tokenName = "Public_contract";
         let betteryAddress = this.publicEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)
@@ -147,7 +147,7 @@ export default class Contract {
         let bettery = await this.publicEventContract()
         let functionSignature = await bettery.methods.setValidator(id, answer).encodeABI();
         let nonce = await bettery.methods.getNonce(userWallet).call();
-        let tokenName = "Bettery";
+        let tokenName = "Public_contract";
         let betteryAddress = this.publicEventAddress()
         let dataToSign = this.dataToSignFunc(tokenName, betteryAddress, nonce, userWallet, functionSignature)
         return await this.setSignPromise(userWallet, dataToSign, web3, bettery, functionSignature)

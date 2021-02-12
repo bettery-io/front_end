@@ -44,7 +44,7 @@ export class QuizChooseRoleComponent implements OnInit {
         'cursor': 'default',
         'padding-top': '6px',
         'padding-bottom': '6px',
-        'line-height': '14px'
+        'line-height': '14px',
       }
     } else {
       return {

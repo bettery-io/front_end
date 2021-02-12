@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Output,
   OnChanges,
-  OnDestroy
+  OnDestroy, ViewChild, ElementRef, AfterViewInit
 } from '@angular/core';
 import {User} from '../../../models/User.model';
 import {Answer} from '../../../models/Answer.model';
@@ -23,14 +23,13 @@ import {Event} from '../../../models/Event.model';
 import {Coins} from '../../../models/Coins.model';
 import {RegistrationComponent} from '../../registration/registration.component';
 import {ClipboardService} from 'ngx-clipboard';
-import {PageScrollService} from 'ngx-page-scroll-core';
 
 @Component({
   selector: 'quiz-template',
   templateUrl: './quiz-template.component.html',
   styleUrls: ['./quiz-template.component.sass']
 })
-export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
+export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   faCheck = faCheck;
   allUserData: User = undefined;
   amount: number;
@@ -55,6 +54,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() callGetData = new EventEmitter();
   @Output() commentIdEmmit = new EventEmitter<number>();
+  @ViewChild('div') div: ElementRef;
+  heightBlock: number;
 
   constructor(
     private postService: PostService,
@@ -62,6 +63,12 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
     private modalService: NgbModal,
     private _clipboardService: ClipboardService,
   ) {
+  }
+
+  ngAfterViewInit() {
+    if (this.question) {
+      this.heightBlock = this.div.nativeElement.clientHeight;
+    }
   }
 
   ngOnInit() {
@@ -462,7 +469,8 @@ export class QuizTemplateComponent implements OnInit, OnChanges, OnDestroy {
   colorForRoom() {
     if (this.question) {
       return {
-        'background': this.question.room.color
+        'background': this.question.room.color,
+        'max-height' : this.heightBlock + 'px'
       };
     } else {
       return;

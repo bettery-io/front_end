@@ -1,9 +1,9 @@
-<div class="card_box room-card" id="{{'id-'+question.id}}">
+<div #div class="card_box room-card" id="{{'id-'+question.id}}">
   <div class="clickCopy" (click)="copyToClickBoard(question?.id)">
     <div class="copyLink-img"></div>
   </div>
   <div class="copied" [ngClass]="copyLinkFlag && 'showLink'">Link copied!</div>
-  <div class="row ml-0" style="margin-right: -30px">
+  <div class="row ml-0" style="margin-right: -30px; min-height: 212px">
     <div class="col-3 imageBox" [ngStyle]="colorForRoom()"></div>
     <div class="body_card" [ngStyle]="roomCardBottom()" id="{{question.id}}">
       <div>
@@ -15,6 +15,7 @@
                 <div class="answers">
                   <div *ngIf="!finalAnswerGuard(question)">
                     <div class="d-flex align-items-center" [ngClass]="question.answers.length >= 4 && 'moreThan3'">
+<!--                    <div class="d-flex align-items-center">-->
                       <div (click)="letsRegistration()" class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <input class="checkbox_answer" id="{{question.id}}{{i}}" (click)="this.makeAnswer(i)"
                           value="{{i}}" type="radio" name="{{question.id}}">
@@ -23,13 +24,13 @@
                     </div>
                   </div>
                   <div *ngIf="finalAnswerGuard(question)">
-                    <div class="d-flex align-items-center" *ngIf="question.status == 'reverted'">
+                    <div class="d-flex align-items-center" *ngIf="question.status == 'reverted'" [ngClass]="question.answers.length >= 4 && 'moreThan3'">
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <div class="cycle"></div>
                         <div class="label answer-checkbox">{{answer}}</div>
                       </div>
                     </div>
-                    <div class="d-flex" *ngIf="question.finalAnswer !== null">
+                    <div class="d-flex" *ngIf="question.finalAnswer !== null" [ngClass]="question.answers.length >= 4 && 'moreThan3'">
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <div>
                           <div [ngClass]="{'win_img': question.finalAnswer == i}"></div>
@@ -44,8 +45,8 @@
                           {{answer}}</div>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center"
-                      *ngIf="this.myAnswers?.answer !== undefined && question.finalAnswer == null && question.status != 'reverted'">
+                    <div class="d-flex align-items-center "
+                      *ngIf="this.myAnswers?.answer !== undefined && question.finalAnswer == null && question.status != 'reverted'" [ngClass]="question.answers.length >= 4 && 'moreThan3'">
                       <div class="each_answer" *ngFor="let answer of question.answers; let i = index">
                         <div class="cycle">
                           <div *ngIf="this.myAnswers?.answer == i"

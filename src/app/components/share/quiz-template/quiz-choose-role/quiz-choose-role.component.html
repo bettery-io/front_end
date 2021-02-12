@@ -30,8 +30,8 @@
       </div>
       <div>
         <div (click)="this.becomeValidator()"
-          [ngStyle]="getValidatorStyle(timeValidating(question))" style="background: #BF94E4; max-width: 235px;"
-          class="joinAsPlayer">BECOME AN EXPERT <span class="when_betting_ends" *ngIf="timeValidating(question)">(When betting ends)</span></div>
+          [ngStyle]="getValidatorStyle(timeValidating(question))" style="background: #BF94E4; padding-right: 30px; padding-left: 30px"
+          class="joinAsPlayer">BECOME AN EXPERT <br> <span class="when_betting_ends" *ngIf="timeValidating(question)">(When betting ends)</span></div>
         <p class="infoButtonText" style="color: #BF94E4; opacity: 1;" (click)="this.modalAboutExpert()">What is an
           Expert?</p>
       </div>

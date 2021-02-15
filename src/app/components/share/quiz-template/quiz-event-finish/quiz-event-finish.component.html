@@ -8,7 +8,7 @@
                     </div>
                 </div>
             </div>
-            <p class="playersNumber"><span
+            <p class="playersNumber" [ngStyle]="getPartPosText(question.parcipiantAnswers?.length)"><span
                     style="color: #34DDDD; font-weight: bold;">{{joined(question.parcipiantAnswers)}}
                     Players</span> bet</p>
         </div>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <p class="playersNumber"><span
+            <p class="playersNumber" [ngStyle]="getPartPosText(question.validatorsAnswers?.length)"><span
                     style="color: #BF94E4; font-weight: bold;">{{joined(question.validatorsAnswers)}}
                     Experts</span> validated</p>
         </div>

@@ -37,6 +37,27 @@ export class QuizChooseRoleComponent implements OnInit {
     }
   }
 
+  getPartPosText(length) {
+    if (length === 2) {
+      return {
+        'position': 'relative',
+        'right': '7px'
+      };
+    }
+    if (length === 3) {
+      return {
+        'position': 'relative',
+        'right': '13px'
+      };
+    }
+    if ( length >= 4) {
+      return {
+        'position': 'relative',
+        'right': '23px'
+      };
+    }
+  }
+
   getValidatorStyle(data) {
     if (data) {
       return {

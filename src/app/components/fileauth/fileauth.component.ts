@@ -7,11 +7,11 @@ import { Component } from '@angular/core';
 })
 export class FileauthComponent {
 
-  constructor() {
-    let link = document.createElement("a");
-    link.download = "fileauth.txt";
-    link.href = "assets/fileauth.txt";
-    link.click();
-  }
+  // constructor() {
+  //   let link = document.createElement("a");
+  //   link.download = "fileauth.txt";
+  //   link.href = "assets/fileauth.txt";
+  //   link.click();
+  // }
 
 }

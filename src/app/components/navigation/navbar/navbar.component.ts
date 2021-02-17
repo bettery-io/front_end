@@ -102,7 +102,7 @@ export class NavbarComponent implements OnInit, OnDestroy, DoCheck {
 
   detectPath() {
     let href = window.location.pathname;
-    if (href == '/' || href == '/tokensale') {
+    if (href == '/' || href == '/tokensale' || href == "/.well-known/pki-validation/fileauth.txt") {
       this.display = false;
     } else {
       this.display = true;

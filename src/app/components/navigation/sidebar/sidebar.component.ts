@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit, DoCheck {
   detectPath() {
     this.currentPath = window.location.pathname;
     if (this.currentPath === '/' || this.currentPath === '/tokensale' || this.currentPath.includes('create-event') || this.currentPath.includes('public_event') ||
-      this.currentPath.includes('private_event')) {
+      this.currentPath.includes('private_event') || this.currentPath == "/.well-known/pki-validation/fileauth.txt") {
       this.display = false;
     } else {
       this.display = true;

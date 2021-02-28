@@ -47,7 +47,7 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
     private modalService: NgbModal
   ) {
     this.userSub = this.store.select("user").subscribe((x: User[]) => {
-      if (x.length != 0) {
+      if (x?.length != 0) {
         this.host = x;
       }
     });

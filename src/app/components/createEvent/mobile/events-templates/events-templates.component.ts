@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../../app.state';
@@ -33,7 +33,7 @@ const init = {
   templateUrl: './events-templates.component.html',
   styleUrls: ['./events-templates.component.sass']
 })
-export class EventsTemplatesComponent implements OnInit {
+export class EventsTemplatesComponent implements OnInit, OnDestroy {
   whichEvent = 'setQuestion';
   eventFromLandingSubscr: Subscription;
   userSub: Subscription;
@@ -42,7 +42,7 @@ export class EventsTemplatesComponent implements OnInit {
 
   constructor(private store: Store<AppState>) {
     this.userSub = this.store.select('user').subscribe((x: User[]) => {
-      if (x.length == 0) {
+      if (x?.length == 0) {
         this.formData = {
           question: '',
           answers: [],
@@ -73,7 +73,7 @@ export class EventsTemplatesComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventFromLandingSubscr = this.store.select('createEvent').subscribe(a => {
-      if (a.newEvent.trim().length > 0) {
+      if (a?.newEvent.trim().length > 0) {
         this.formData.question = a.newEvent.trim();
       }
     });

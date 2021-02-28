@@ -60,43 +60,43 @@ export class MakeRulesTabComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.formData.privateEndTime !== '') {
+    if (this.formData && this.formData.privateEndTime !== '') {
       let findTime = _.find(this.times, (x) => {
         return x.value === this.formData.privateEndTime.value;
       });
       let name = findTime.name.replace(/minutes|hours|hour/gi, '');
       this.endPrivateTime = name;
     }
-    if (this.formData.exactTimeBool) {
+    if (this.formData && this.formData.exactTimeBool) {
       this.endPublicTime = `Until ${this.formData.exactDay} ${this.formData.exactMonth} ${this.formData.exactYear}, ${this.formData.exactHour} : ${this.formData.exactMinutes}`;
-    } else if (this.formData.publicEndTime !== '') {
+    } else if (this.formData && this.formData.publicEndTime !== '') {
       let findTime = _.find(this.times, (x) => {
         return x.value === this.formData.publicEndTime.value;
       });
       this.endPublicTime = findTime.name;
     }
     this.publicForm = this.formBuilder.group({
-      tokenType: [this.formData.tokenType],
-      publicEndTime: [this.formData.publicEndTime, Validators.required],
-      expertsCountType: [this.formData.expertsCountType],
-      expertsCount: [this.formData.expertsCount, this.formData.expertsCountType == 'custom' ? Validators.required : '']
+      tokenType: [this.formData?.tokenType],
+      publicEndTime: [this.formData?.publicEndTime, Validators.required],
+      expertsCountType: [this.formData?.expertsCountType],
+      expertsCount: [this.formData?.expertsCount, this.formData?.expertsCountType == 'custom' ? Validators.required : '']
     });
     this.privateForm = this.formBuilder.group({
-      winner: [this.formData.winner, Validators.required],
-      losers: [this.formData.losers, Validators.required],
-      privateEndTime: [this.formData.privateEndTime, Validators.required]
+      winner: [this.formData?.winner, Validators.required],
+      losers: [this.formData?.losers, Validators.required],
+      privateEndTime: [this.formData?.privateEndTime, Validators.required]
     });
     var monthtext = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
     this.exactTime = this.formBuilder.group({
-      day: [this.formData.exactDay],
-      month: [typeof this.formData.exactMonth === 'string' ? this.formData.exactMonth : monthtext[this.formData.exactMonth]],
-      year: [this.formData.exactYear]
+      day: [this.formData?.exactDay],
+      month: [typeof this.formData?.exactMonth === 'string' ? this.formData?.exactMonth : monthtext[this.formData?.exactMonth]],
+      year: [this.formData?.exactYear]
     });
 
-    this.timeData.hour = this.formData.exactHour;
-    this.timeData.minute = this.formData.exactMinutes;
-    this.exactTimeBool = this.formData.exactTimeBool;
+    this.timeData.hour = this.formData?.exactHour;
+    this.timeData.minute = this.formData?.exactMinutes;
+    this.exactTimeBool = this.formData?.exactTimeBool;
 
   }
 

@@ -69,7 +69,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.selectedLanguage = environment.defaultLocale;
     this.translate();
     this.scrollMenuSetting();
-
     this.getEventFromServer();
   }
 

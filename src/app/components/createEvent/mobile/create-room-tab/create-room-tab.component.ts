@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import GradientJSON from '../../../../../assets/gradients.json';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InfoModalComponent } from '../../../share/info-modal/info-modal.component'
-import { PostService } from '../../../../services/post.service';
-import { Subscription } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.state';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {InfoModalComponent} from '../../../share/info-modal/info-modal.component'
+import {PostService} from '../../../../services/post.service';
+import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../app.state';
 import _ from 'lodash';
 import {RoomModel} from '../../../../models/Room.model';
 import {User} from '../../../../models/User.model';
@@ -55,7 +55,7 @@ export class CreateRoomTabComponent implements OnInit, OnDestroy {
     })
 
     this.userSub = this.store.select("user").subscribe((x: User[]) => {
-      if (x.length != 0) {
+      if (x && x?.length != 0) {
         this.userId = x[0]._id;
         this.getUserRooms(this.userId)
       }
@@ -67,7 +67,7 @@ export class CreateRoomTabComponent implements OnInit, OnDestroy {
       id: id
     };
     this.postSubscribe = this.postService.post('room/get_by_user_id', data).subscribe((x: RoomModel[]) => {
-      if (x.length !== 0 && this.formData.roomName == '') {
+      if (x?.length !== 0 && this.formData.roomName == '') {
         this.createRoomForm.controls.createNewRoom.setValue("exist");
       }
       this.allRooms = x;

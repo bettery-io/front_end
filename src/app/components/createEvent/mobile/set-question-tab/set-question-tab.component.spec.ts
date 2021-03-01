@@ -16,7 +16,7 @@ export class MockNgbModalRef {
   result: Promise<any> = new Promise((resolve, reject) => resolve(true));
 }
 
-fdescribe('SetQuestionTabComponent', () => {
+describe('SetQuestionTabComponent', () => {
   let component: SetQuestionTabComponent;
   let fixture: ComponentFixture<SetQuestionTabComponent>;
   let spy: jasmine.Spy;
@@ -34,7 +34,6 @@ fdescribe('SetQuestionTabComponent', () => {
       providers: [
         {provide: Store},
         {provide: PostService},
-        {provide: Store},
         {provide: FormBuilder},
       ]
     })
@@ -135,7 +134,7 @@ fdescribe('SetQuestionTabComponent', () => {
       expect(ngbModal.open).toHaveBeenCalledWith(RegistrationComponent, {centered: true});
       expect(mockModalRef.componentInstance.openSpinner).toBe(true);
     });
-  })
+  });
 
 
 });

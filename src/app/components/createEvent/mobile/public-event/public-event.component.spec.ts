@@ -7,11 +7,24 @@ import {PostService} from "../../../../services/post.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {By} from "@angular/platform-browser";
 import {EMPTY, of} from "rxjs";
+import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
 
-fdescribe('PublicEventComponent', () => {
+export class MockNgbModalRef {
+  componentInstance = {
+    name: undefined,
+    boldName: undefined,
+    link: undefined,
+  };
+  result: Promise<any> = new Promise((resolve, reject) => resolve(true));
+}
+
+describe('PublicEventComponent', () => {
   let component: PublicEventComponent;
   let fixture: ComponentFixture<PublicEventComponent>;
   let service: PostService;
+  let ngbModal: NgbModal;
+  let mockModalRef: MockNgbModalRef = new MockNgbModalRef();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -19,6 +32,7 @@ fdescribe('PublicEventComponent', () => {
       imports: [
         StoreModule.forRoot({}),
         HttpClientTestingModule,
+        NgbModule
       ],
       providers: [
         {provide: Store},
@@ -33,6 +47,7 @@ fdescribe('PublicEventComponent', () => {
     fixture = TestBed.createComponent(PublicEventComponent);
     component = fixture.componentInstance;
     service = fixture.debugElement.injector.get(PostService);
+    ngbModal = TestBed.get(NgbModal);
     component.host = [
       {
         _id: 1,
@@ -104,6 +119,19 @@ fdescribe('PublicEventComponent', () => {
     component.setToDb(1, 1);
     expect(spy).toHaveBeenCalled();
     expect(component.created).toBeTruthy();
+  });
+
+  it('should InfoModalComponent be called with all componentInstance fields', () => {
+    component.created = true;
+    spyOn(ngbModal, 'open').and.returnValue(mockModalRef as any);
+    fixture.detectChanges();
+    const btnModalOpen = fixture.debugElement.query(By.css('.linkYellow'));
+    btnModalOpen.triggerEventHandler('click', null);
+
+    expect(ngbModal.open).toHaveBeenCalledWith(InfoModalComponent, {centered: true});
+    expect(mockModalRef.componentInstance.name).toBeTruthy();
+    expect(mockModalRef.componentInstance.boldName).toBeTruthy();
+    expect(mockModalRef.componentInstance.link).toBeTruthy();
   });
 
 

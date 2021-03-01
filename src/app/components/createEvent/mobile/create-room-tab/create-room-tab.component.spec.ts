@@ -8,13 +8,27 @@ import {Store, StoreModule} from "@ngrx/store";
 import {of} from "rxjs";
 import {RoomModel} from "../../../../models/Room.model";
 import {By} from "@angular/platform-browser";
+import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
 
-fdescribe('CreateRoomTabComponent', () => {
+export class MockNgbModalRef {
+  componentInstance = {
+    name: undefined,
+    name1: undefined,
+    boldName: undefined,
+    link: undefined,
+  };
+  result: Promise<any> = new Promise((resolve, reject) => resolve(true));
+}
+
+describe('CreateRoomTabComponent', () => {
   let component: CreateRoomTabComponent;
   let fixture: ComponentFixture<CreateRoomTabComponent>;
   let postService: PostService;
   let spy: jasmine.Spy;
   let mockAllRooms: RoomModel[];
+  let ngbModal: NgbModal;
+  let mockModalRef: MockNgbModalRef = new MockNgbModalRef();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -23,7 +37,8 @@ fdescribe('CreateRoomTabComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         HttpClientTestingModule,
-        StoreModule.forRoot({})
+        StoreModule.forRoot({}),
+        NgbModule
       ],
       providers: [
         {provide: PostService},
@@ -38,6 +53,7 @@ fdescribe('CreateRoomTabComponent', () => {
     component = fixture.componentInstance;
     postService = fixture.debugElement.injector.get(PostService);
     spy = spyOn(postService, 'post').and.returnValue(of(mockAllRooms));
+    ngbModal = TestBed.get(NgbModal);
     component.formData = {
       answers: [{name: 'dfvdfv'}, {name: 'dfvdcddfv'}],
       eventType: 'public',
@@ -108,8 +124,8 @@ fdescribe('CreateRoomTabComponent', () => {
 
   it('Cancel() should  be launched when you click on the "Back" button(ngIf=`exist`)', () => {
     let result = null;
-    let a = component.createRoomForm.get('createNewRoom')
-    a.setValue('exist');
+    const control = component.createRoomForm.get('createNewRoom');
+    control.setValue('exist');
     fixture.detectChanges();
     component.goBack.subscribe(v => result = v);
     const btn = fixture.debugElement.query(By.css('.cancel'));
@@ -150,7 +166,6 @@ fdescribe('CreateRoomTabComponent', () => {
       ...component.createRoomForm.value,
       ...component.existRoom.value
     };
-    component.goNext.subscribe(v => result = v);
     const btnNext = fixture.debugElement.query(By.css('.next'));
     btnNext.triggerEventHandler('click', null);
     expect(result).toEqual(data);
@@ -191,5 +206,18 @@ fdescribe('CreateRoomTabComponent', () => {
     btnNext.triggerEventHandler('click', null);
 
     expect(result).toEqual(data);
+  });
+
+  it('InfoModalComponent should be called with all componentInstance fields', () => {
+    spyOn(ngbModal, 'open').and.returnValue(mockModalRef as any);
+
+    const learnMoreBtn = fixture.debugElement.query(By.css('.learMore'));
+    learnMoreBtn.triggerEventHandler('click', null);
+
+    expect(ngbModal.open).toHaveBeenCalledWith(InfoModalComponent, {centered: true});
+    expect(mockModalRef.componentInstance.name).toBeTruthy();
+    expect(mockModalRef.componentInstance.name1).toBeTruthy();
+    expect(mockModalRef.componentInstance.boldName).toBeTruthy();
+    expect(mockModalRef.componentInstance.link).toBeTruthy();
   });
 });

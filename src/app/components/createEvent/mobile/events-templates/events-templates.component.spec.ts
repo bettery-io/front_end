@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {EventsTemplatesComponent} from './events-templates.component';
 import {Store, StoreModule} from "@ngrx/store";
 
-fdescribe('EventsTemplatesComponent', () => {
+describe('EventsTemplatesComponent', () => {
   let component: EventsTemplatesComponent;
   let fixture: ComponentFixture<EventsTemplatesComponent>;
   let mockFormData;

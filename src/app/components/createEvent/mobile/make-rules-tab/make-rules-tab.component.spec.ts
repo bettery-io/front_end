@@ -14,7 +14,7 @@ export class MockNgbModalRef {
   result: Promise<any> = new Promise((resolve, reject) => resolve(true));
 }
 
-fdescribe('MakeRulesTabComponent', () => {
+describe('MakeRulesTabComponent', () => {
   let component: MakeRulesTabComponent;
   let fixture: ComponentFixture<MakeRulesTabComponent>;
   let spy: jasmine.Spy;

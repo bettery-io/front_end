@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.state';
-import { PostService } from '../../../../services/post.service';
-import { Subscription } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { User } from '../../../../models/User.model';
-import { RegistrationComponent } from '../../../registration/registration.component';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../app.state';
+import {PostService} from '../../../../services/post.service';
+import {Subscription} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {User} from '../../../../models/User.model';
+import {RegistrationComponent} from '../../../registration/registration.component';
 
 @Component({
   selector: 'set-question-tab',
@@ -40,7 +40,7 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userSub = this.store.select('user').subscribe((x: User[]) => {
-      if (x.length != 0) {
+      if (x && x.length != 0) {
         this.registered = true;
         if (this.clicked) {
           this.onSubmit();
@@ -112,7 +112,7 @@ export class SetQuestionTabComponent implements OnInit, OnDestroy {
 
   async loginWithTorus() {
     this.clicked = true;
-    const modalRef = this.modalService.open(RegistrationComponent, { centered: true });
+    const modalRef = this.modalService.open(RegistrationComponent, {centered: true});
     modalRef.componentInstance.openSpinner = true;
   }
 

@@ -14,7 +14,7 @@ export class MockNgbModalRef {
   result: Promise<any> = new Promise((resolve, reject) => resolve(true));
 }
 
-describe('MakeRulesTabComponent', () => {
+fdescribe('MakeRulesTabComponent', () => {
   let component: MakeRulesTabComponent;
   let fixture: ComponentFixture<MakeRulesTabComponent>;
   let spy: jasmine.Spy;
@@ -199,7 +199,7 @@ describe('MakeRulesTabComponent', () => {
       expect(result).toEqual(data);
     });
   });
-
+  //
   // it('testing modal windows bootstrap TO DO', () => {
   //   component.formData.eventType = 'public';
   //   fixture.detectChanges();

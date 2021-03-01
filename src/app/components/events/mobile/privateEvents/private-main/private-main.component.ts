@@ -169,7 +169,7 @@ export class PrivateMainComponent implements OnInit, OnDestroy {
   calculateDate() {
     const timeNow = Number((Date.now() / 1000).toFixed(0));
 
-    if (this.data.endTime - timeNow > 0) {
+    if (this.data?.endTime - timeNow > 0) {
       this.expert = true;
       this.condition = true;
     } else {

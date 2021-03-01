@@ -44,7 +44,7 @@ export class PublicEventComponent implements OnDestroy {
     private modalService: NgbModal
   ) {
     this.userSub = this.store.select("user").subscribe((x: User[]) => {
-      if (x.length !== 0) {
+      if (x && x.length !== 0) {
         this.nickName = x[0].nickName;
         this.host = x;
       }

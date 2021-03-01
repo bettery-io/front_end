@@ -9,7 +9,7 @@ import {of} from "rxjs";
 import {RoomModel} from "../../../../models/Room.model";
 import {By} from "@angular/platform-browser";
 
-describe('CreateRoomTabComponent', () => {
+fdescribe('CreateRoomTabComponent', () => {
   let component: CreateRoomTabComponent;
   let fixture: ComponentFixture<CreateRoomTabComponent>;
   let postService: PostService;
@@ -74,19 +74,6 @@ describe('CreateRoomTabComponent', () => {
     expect(spy.calls.any()).toBeTruthy(mockAllRooms);
   });
 
-  // it('cancel() should send correct value by event emitter', () => {
-  //   let result = null;
-  //   component.goBack.subscribe(v => result = v);
-  //   component.cancel();
-  //
-  //   let data = {
-  //     ...component.roomForm.value,
-  //     ...component.createRoomForm.value,
-  //     ...component.existRoom.value
-  //   };
-  //
-  //   expect(result).toEqual(data);
-  // });
   describe('forms in CreateRoomTabComponent', () => {
     it('should create "createRoomForm" form', () => {
       expect(component.createRoomForm.contains('createNewRoom')).toBeTruthy();

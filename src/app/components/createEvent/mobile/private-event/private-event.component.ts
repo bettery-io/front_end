@@ -172,7 +172,7 @@ export class PrivateEventComponent implements OnInit, OnDestroy {
 
   calculateDate() {
     let startDate = new Date();
-    let endTime = new Date(this.eventData.endTime * 1000);
+    let endTime = new Date(this.eventData?.endTime * 1000);
     var diffMs = (endTime.getTime() - startDate.getTime());
     this.day = Math.floor(Math.abs(diffMs / 86400000));
     let hour = Math.floor(Math.abs((diffMs % 86400000) / 3600000));

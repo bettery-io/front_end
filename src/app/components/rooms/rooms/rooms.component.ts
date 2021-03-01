@@ -202,6 +202,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showUsersRoom() {
+    this.activeRoom = undefined;
     this.spinner = false;
     this.pageRoom = 1;
     this.startLength = 0;
@@ -218,6 +219,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showAllRooms() {
+    this.activeRoom = undefined;
     this.btnMiddleActive = 'showAllRoom';
     this.usersRoom = null;
     this.roomsSort = this.allRooms.slice(this.startLength, this.showLength);
@@ -235,6 +237,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   showJoinedRoom() {
+    this.activeRoom = undefined;
     this.spinner = false;
     this.pageRoom = 1;
     this.startLength = 0;

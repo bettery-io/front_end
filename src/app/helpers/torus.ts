@@ -10,7 +10,6 @@ const web3Obj = {
   },
   async initialize() {
     await web3Obj.torus.init({
-      enableLogging: false,
       showTorusButton: true,
       buildEnv: 'production',
       network: {

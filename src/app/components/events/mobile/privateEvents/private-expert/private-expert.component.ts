@@ -34,6 +34,7 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
   year: string | number;
   hour: string | number;
   minutes: string | number;
+  answerIndex: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,6 +73,7 @@ export class PrivateExpertComponent implements OnInit, OnDestroy {
     const index = _.findIndex(this.data.answers, (el => {
       return el === answerForm.value.answer;
     }));
+    this.answerIndex = index;
     this.sendToBlockchain(index);
   }
 

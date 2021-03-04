@@ -4,12 +4,12 @@ import {PrivateEventComponent} from './private-event.component';
 import {GetService} from "../../../../services/get.service";
 import {PostService} from "../../../../services/post.service";
 import {Store, StoreModule} from "@ngrx/store";
-import {RouterTestingModule} from "@angular/router/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {By} from "@angular/platform-browser";
 import {EMPTY, of} from "rxjs";
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
+import {Router} from "@angular/router";
 
 export class MockNgbModalRef {
   componentInstance = {
@@ -18,6 +18,11 @@ export class MockNgbModalRef {
     link: undefined,
   };
   result: Promise<any> = new Promise((resolve, reject) => resolve(true));
+}
+
+class RouterStub {
+  navigate(path: string[]) {
+  }
 }
 
 describe('PrivateEventComponent', () => {
@@ -33,14 +38,14 @@ describe('PrivateEventComponent', () => {
       imports: [
         HttpClientTestingModule,
         StoreModule.forRoot({}),
-        RouterTestingModule,
         NgbModule
       ],
       providers: [
         {provide: GetService},
         {provide: PostService},
         {provide: Store},
-      ]
+        {provide: Router, useClass: RouterStub}
+      ],
     })
       .compileComponents();
   }));
@@ -71,13 +76,12 @@ describe('PrivateEventComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('cancel() emitter should be triggered after click the BACK button', () => {
-    let result = null;
-    component.goBack.subscribe(value => result = value);
-
+  it('cancel() should navigate to "/makeRules"  after click the BACK button', () => {
+    let router = TestBed.get(Router);
+    let spy = spyOn(router, 'navigate');
     const btnCancel = fixture.debugElement.query(By.css('.cancel'));
     btnCancel.triggerEventHandler('click', null);
-    expect(result).toBe(undefined);
+    expect(spy).toHaveBeenCalledWith(['/makeRules']);
   });
 
   it('createEvent() the PostService should be called', () => {

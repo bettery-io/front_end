@@ -1,11 +1,13 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import _ from 'lodash';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NgbTimepickerConfig} from '@ng-bootstrap/ng-bootstrap';
-import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbTimepickerConfig, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {InfoModalComponent} from '../../../share/info-modal/info-modal.component';
-
+import {Store} from "@ngrx/store";
+import {AppState} from "../../../../app.state";
+import {formDataAction} from "../../../../actions/newEvent.actions";
+import {Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 type Time = { name: string, date: any, value: number };
 
@@ -33,12 +35,9 @@ const times: Time[] = [
   styleUrls: ['./make-rules-tab.component.sass'],
   providers: [NgbTimepickerConfig]
 })
-export class MakeRulesTabComponent implements OnInit {
-  @Input() formData;
-  @Output() goBack = new EventEmitter<Object[]>();
-  @Output() goPublicEvent = new EventEmitter<Object[]>();
-  @Output() goPrivateEvent = new EventEmitter<Object[]>();
-
+export class MakeRulesTabComponent implements OnInit, OnDestroy {
+  formData;
+  formDataSubscribe: Subscription;
   submitted = false;
   publicForm: FormGroup;
   privateForm: FormGroup;
@@ -53,10 +52,16 @@ export class MakeRulesTabComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
+    private store: Store<AppState>,
+    private router: Router,
     config: NgbTimepickerConfig
   ) {
     config.seconds = false;
     config.spinners = false;
+
+    this.formDataSubscribe = this.store.select('createEvent').subscribe(x => {
+      this.formData = x?.formData;
+    });
   }
 
   ngOnInit(): void {
@@ -160,7 +165,20 @@ export class MakeRulesTabComponent implements OnInit {
       ...this.timeData,
       'exactTimeBool': this.exactTimeBool
     };
-    this.goPublicEvent.next(data);
+
+    this.formData.tokenType = data.tokenType;
+    this.formData.publicEndTime = data.publicEndTime;
+    this.formData.expertsCountType = data.expertsCountType;
+    this.formData.expertsCount = data.expertsCount;
+    this.formData.exactDay = data.day;
+    this.formData.exactTimeBool = data.exactTimeBool;
+    this.formData.exactHour = data.hour;
+    this.formData.exactMinutes = data.minute;
+    this.formData.exactMonth = data.month;
+    this.formData.exactYear = data.year;
+
+    this.store.dispatch(formDataAction({formData: this.formData}));
+    this.router.navigate(['/create-public-event']);
   }
 
   createPrivateEvent() {
@@ -168,7 +186,13 @@ export class MakeRulesTabComponent implements OnInit {
     if (this.privateForm.invalid) {
       return;
     }
-    this.goPrivateEvent.next(this.privateForm.value);
+    this.formData.winner = this.privateForm.value.winner;
+    this.formData.losers = this.privateForm.value.losers;
+    this.formData.privateEndTime = this.privateForm.value.privateEndTime;
+    this.store.dispatch(formDataAction({formData: this.formData}));
+    this.router.navigate(['/create-private-event']);
+
+    // this.goPrivateEvent.next(this.privateForm.value);
   }
 
   saveExactTime() {
@@ -186,7 +210,24 @@ export class MakeRulesTabComponent implements OnInit {
       ...this.timeData,
       'exactTimeBool': this.exactTimeBool
     };
-    this.goBack.next(data);
+
+    this.formData.exactDay = data.day;
+    this.formData.exactTimeBool = data.exactTimeBool;
+    this.formData.expertsCount = data.expertsCount;
+    this.formData.expertsCountType = data.expertsCountType;
+    this.formData.exactHour = data.hour;
+    this.formData.exactMinutes = data.minute;
+    this.formData.exactMonth = data.month;
+    this.formData.exactYear = data.year;
+    this.formData.publicEndTime = data.publicEndTime;
+    this.formData.tokenType = data.tokenType;
+    this.formData.winner = data.winner;
+    this.formData.losers = data.losers;
+    this.formData.privateEndTime = data.privateEndTime;
+
+    this.store.dispatch(formDataAction({formData: this.formData}));
+    this.router.navigate(['/create-room']);
+    // this.goBack.next(data);
   }
 
 
@@ -212,6 +253,12 @@ export class MakeRulesTabComponent implements OnInit {
       thisyear += 1;
     }
     yearfield.options[0] = new Option(today.getFullYear(), today.getFullYear(), true, true); //select today's year
+  }
+
+  ngOnDestroy(): void {
+    if (this.formDataSubscribe) {
+      this.formDataSubscribe.unsubscribe();
+    }
   }
 
 }

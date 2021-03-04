@@ -9,6 +9,8 @@ import {By} from "@angular/platform-browser";
 import {EMPTY, of} from "rxjs";
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
+import {RouterTestingModule} from "@angular/router/testing";
+import {Router} from "@angular/router";
 
 export class MockNgbModalRef {
   componentInstance = {
@@ -19,7 +21,12 @@ export class MockNgbModalRef {
   result: Promise<any> = new Promise((resolve, reject) => resolve(true));
 }
 
-describe('PublicEventComponent', () => {
+class RouterStub {
+  navigate(path: string[]) {
+  }
+}
+
+fdescribe('PublicEventComponent', () => {
   let component: PublicEventComponent;
   let fixture: ComponentFixture<PublicEventComponent>;
   let service: PostService;
@@ -32,12 +39,13 @@ describe('PublicEventComponent', () => {
       imports: [
         StoreModule.forRoot({}),
         HttpClientTestingModule,
-        NgbModule
+        NgbModule,
       ],
       providers: [
         {provide: Store},
         {provide: GetService},
         {provide: PostService},
+        {provide: Router, useClass: RouterStub},
       ]
     })
     .compileComponents();
@@ -92,13 +100,12 @@ describe('PublicEventComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('cancel() emitter should be triggered after click the BACK button', () => {
-    let result = null;
-    component.goBack.subscribe(value => result = value);
-
+  it('cancel() should navigate to "/makeRules"  after click the BACK button', () => {
+    let router = TestBed.get(Router);
+    let spy = spyOn(router, 'navigate');
     const btnCancel = fixture.debugElement.query(By.css('.cancel'));
     btnCancel.triggerEventHandler('click', null);
-    expect(result).toBe(undefined);
+    expect(spy).toHaveBeenCalledWith(['/makeRules']);
   });
 
   it('createEvent() the PostService should be called', () => {

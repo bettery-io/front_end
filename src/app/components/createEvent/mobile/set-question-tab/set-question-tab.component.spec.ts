@@ -8,12 +8,19 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {By} from "@angular/platform-browser";
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {RegistrationComponent} from "../../../registration/registration.component";
+import {RouterTestingModule} from "@angular/router/testing";
+import {Router} from "@angular/router";
 
 export class MockNgbModalRef {
   componentInstance = {
     openSpinner: undefined,
   };
   result: Promise<any> = new Promise((resolve, reject) => resolve(true));
+}
+
+class RouterStub {
+  navigate(path: string[]) {
+  }
 }
 
 describe('SetQuestionTabComponent', () => {
@@ -30,11 +37,13 @@ describe('SetQuestionTabComponent', () => {
         StoreModule.forRoot({}),
         HttpClientTestingModule,
         NgbModule,
+        RouterTestingModule
       ],
       providers: [
         {provide: Store},
         {provide: PostService},
         {provide: FormBuilder},
+        {provide: Router, useClass: RouterStub},
       ]
     })
       .compileComponents();
@@ -113,15 +122,15 @@ describe('SetQuestionTabComponent', () => {
 
   describe('Test onSubmit() after clicked NEXT button', () => {
     it('should send correct data to the top, trigger the emitter. if the user is registered', () => {
-      let result = null;
-      component.getData.subscribe(value => result = value);
-
+      let router = TestBed.get(Router);
+      let spy = spyOn(router, 'navigate');
       component.registered = true;
       fixture.detectChanges();
 
       const btnNext = fixture.debugElement.query(By.css('.next'));
       btnNext.triggerEventHandler('click', null);
-      expect(result).toEqual(component.questionForm.value);
+
+      expect(spy).toHaveBeenCalledWith(['/create-room']);
     });
 
     it('if registered == false, should open modal registrationComponent', () => {
@@ -134,6 +143,16 @@ describe('SetQuestionTabComponent', () => {
       expect(ngbModal.open).toHaveBeenCalledWith(RegistrationComponent, {centered: true});
       expect(mockModalRef.componentInstance.openSpinner).toBe(true);
     });
+  });
+
+  it('should navigate to "/" home, after click CANCEL button', ()=>{
+    let router = TestBed.get(Router);
+    let spy = spyOn(router, 'navigate');
+
+    const btnCancel = fixture.debugElement.query(By.css('.cancel'));
+    btnCancel.triggerEventHandler('click', null);
+
+    expect(spy).toHaveBeenCalledWith(['/']);
   });
 
 

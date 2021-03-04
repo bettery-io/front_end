@@ -10,6 +10,8 @@ import {RoomModel} from "../../../../models/Room.model";
 import {By} from "@angular/platform-browser";
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
+import {RouterTestingModule} from "@angular/router/testing";
+import {Router} from "@angular/router";
 
 export class MockNgbModalRef {
   componentInstance = {
@@ -21,6 +23,11 @@ export class MockNgbModalRef {
   result: Promise<any> = new Promise((resolve, reject) => resolve(true));
 }
 
+class RouterStub {
+  navigate(path: string[]) {
+  }
+}
+
 describe('CreateRoomTabComponent', () => {
   let component: CreateRoomTabComponent;
   let fixture: ComponentFixture<CreateRoomTabComponent>;
@@ -29,6 +36,8 @@ describe('CreateRoomTabComponent', () => {
   let mockAllRooms: RoomModel[];
   let ngbModal: NgbModal;
   let mockModalRef: MockNgbModalRef = new MockNgbModalRef();
+  let spyRouter;
+  let router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -37,12 +46,14 @@ describe('CreateRoomTabComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         StoreModule.forRoot({}),
         NgbModule
       ],
       providers: [
         {provide: PostService},
-        {provide: Store}
+        {provide: Store},
+        {provide: Router, useClass: RouterStub}
       ]
     })
       .compileComponents();
@@ -77,7 +88,8 @@ describe('CreateRoomTabComponent', () => {
       whichRoom: 'new',
       winner: ''
     };
-    component.ngOnInit();
+    router = TestBed.get(Router);
+    spyRouter = spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
@@ -122,67 +134,41 @@ describe('CreateRoomTabComponent', () => {
     });
   });
 
-  it('Cancel() should  be launched when you click on the "Back" button(ngIf=`exist`)', () => {
-    let result = null;
+  it('Cancel() should  navigate to "/create-event" when you click on the "Back" button(ngIf=`exist`)', () => {
     const control = component.createRoomForm.get('createNewRoom');
     control.setValue('exist');
     fixture.detectChanges();
-    component.goBack.subscribe(v => result = v);
+
     const btn = fixture.debugElement.query(By.css('.cancel'));
     btn.triggerEventHandler('click', null);
-
-    let data = {
-      ...component.roomForm.value,
-      ...component.createRoomForm.value,
-      ...component.existRoom.value
-    };
-    expect(result).toEqual(data);
+    expect(spyRouter).toHaveBeenCalledWith(['/create-event']);
   });
 
-  it('Cancel() should  be launched when you click on the "Back" button(ngIf=`new`)', () => {
-    let result = null;
-    component.goBack.subscribe(value => result = value);
+  it('Cancel() should  navigate to "/create-event" when you click on the "Back" button(ngIf=`new`)', () => {
     const btn = fixture.debugElement.query(By.css('.cancel'));
     btn.triggerEventHandler('click', null);
-
-    let data = {
-      ...component.roomForm.value,
-      ...component.createRoomForm.value,
-      ...component.existRoom.value
-    };
-    expect(result).toEqual(data);
+    expect(spyRouter).toHaveBeenCalledWith(['/create-event']);
   });
 
-  it('createRoom() should send correct value by event emitter when you click on the "Next" button', () => {
-    let result = null;
-    component.goNext.subscribe(v => result = v);
+  it('createRoom() should navigate to "/makeRules" when you click on the "NEXT" button', () => {
+
     const control = component.roomForm.get('roomName');
     const control2 = component.roomForm.get('roomColor');
     control.setValue(1);
     control2.setValue(1);
-
-    const data = {
-      ...component.roomForm.value,
-      ...component.createRoomForm.value,
-      ...component.existRoom.value
-    };
     const btnNext = fixture.debugElement.query(By.css('.next'));
     btnNext.triggerEventHandler('click', null);
-    expect(result).toEqual(data);
+
+    expect(spyRouter).toHaveBeenCalledWith(['/makeRules']);
 
   });
 
-  it('chooseRoom() should send correct value by event emitter when you click on the "Next" button', () => {
-    let result = null;
-    component.goNext.subscribe(v => result = v);
-
+  it('chooseRoom() should should navigate to "/makeRules" when you click on the "NEXT" button', () => {
     const existRoomControl = component.existRoom.get('roomId')
     existRoomControl.setValue(1);
 
     const createRoomFormControl = component.createRoomForm.get('createNewRoom')
     createRoomFormControl.setValue('exist');
-
-
     component.allRooms = [
       {
         color: 1,
@@ -194,18 +180,12 @@ describe('CreateRoomTabComponent', () => {
         user: {},
       }
     ];
-
-    const data = {
-      ...component.roomForm.value,
-      ...component.createRoomForm.value,
-      ...component.existRoom.value
-    };
     fixture.detectChanges();
-
+    //
     const btnNext = fixture.debugElement.query(By.css('.next'));
     btnNext.triggerEventHandler('click', null);
-
-    expect(result).toEqual(data);
+    //
+    expect(spyRouter).toHaveBeenCalledWith(['/makeRules']);
   });
 
   it('InfoModalComponent should be called with all componentInstance fields', () => {

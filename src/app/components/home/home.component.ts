@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {NgxTypedJsComponent} from 'ngx-typed-js';
 import {Store} from '@ngrx/store';
 
-import {createEventAction} from '../../actions/newEvent.actions';
+import {createEventAction, formDataAction} from '../../actions/newEvent.actions';
 import {environment} from '../../../environments/environment';
 import * as EN from '../../../assets/locale/en.json';
 import * as VN from '../../../assets/locale/vn.json';
@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscribedPost: Subscription;
   slideIndex = 0;
   isMobile: boolean;
+  fromData
 
   @ViewChild(NgxTypedJsComponent, {static: true}) typed: NgxTypedJsComponent;
 
@@ -118,12 +119,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   sendEvent() {
-    let data = this.newCreateEvent;
-    if (data) {
-      this.store.dispatch(createEventAction({data}));
+    //  to do remake
+    this.store.select('createEvent').subscribe(x => {
+      this.fromData = x?.formData;
+    });
+    this.fromData.question = this.newCreateEvent;
+    if (this.fromData.question) {
+      this.store.dispatch(formDataAction({formData: this.fromData}));
     } else {
-      data = this.typedCreateEvent;
-      this.store.dispatch(createEventAction({data}));
+      this.fromData.question = this.typedCreateEvent;
+      this.store.dispatch(formDataAction({formData: this.fromData}));
     }
   }
 

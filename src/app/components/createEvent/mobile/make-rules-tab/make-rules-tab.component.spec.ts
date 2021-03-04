@@ -4,14 +4,25 @@ import {MakeRulesTabComponent} from './make-rules-tab.component';
 import {FormBuilder} from "@angular/forms";
 import {By} from '@angular/platform-browser';
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {Store, StoreModule} from "@ngrx/store";
+import {RouterTestingModule} from "@angular/router/testing";
+import {Router} from "@angular/router";
+import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
 
 
 export class MockNgbModalRef {
   componentInstance = {
-    prompt: undefined,
-    title: undefined
+    name: undefined,
+    name1: undefined,
+    boldName: undefined,
+    link: undefined,
   };
   result: Promise<any> = new Promise((resolve, reject) => resolve(true));
+}
+
+class RouterStub {
+  navigate(path: string[]) {
+  }
 }
 
 describe('MakeRulesTabComponent', () => {
@@ -24,8 +35,16 @@ describe('MakeRulesTabComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MakeRulesTabComponent],
-      imports: [NgbModule],
-      providers: [{provide: FormBuilder}]
+      imports: [
+        NgbModule,
+        StoreModule.forRoot({}),
+        RouterTestingModule
+      ],
+      providers: [
+        {provide: FormBuilder},
+        {provide: Store},
+        {provide: Router, useClass: RouterStub},
+      ]
     })
       .compileComponents();
   }));
@@ -34,7 +53,7 @@ describe('MakeRulesTabComponent', () => {
     fixture = TestBed.createComponent(MakeRulesTabComponent);
     component = fixture.componentInstance;
     ngbModal = TestBed.get(NgbModal);
-    spy = spyOn(ngbModal, 'open');
+    spy = spyOn(ngbModal, 'open').and.returnValue(mockModalRef as any);
 
 
     component.formData = {
@@ -116,7 +135,6 @@ describe('MakeRulesTabComponent', () => {
   });
 
   describe('Button Back in MakeRulesTabComponent', () => {
-    let result;
     let data;
     beforeEach(() => {
       data = {
@@ -126,32 +144,33 @@ describe('MakeRulesTabComponent', () => {
         ...component.timeData,
         'exactTimeBool': component.exactTimeBool
       };
-      result = null;
-      component.goBack.subscribe(value => result = value);
     });
 
 
-    it('should send data to the top through the eventEmitter, when eventType === "private"', () => {
+    it('should navigate to "/create-room" , when eventType === "private"', () => {
+      let router = TestBed.get(Router);
+      let spy = spyOn(router, 'navigate');
       const btnCancel = fixture.debugElement.query(By.css('.cancel'));
       btnCancel.triggerEventHandler('click', null);
-      expect(result).toEqual(data);
+      expect(spy).toHaveBeenCalledWith(['/create-room']);
     });
 
-    it('should send data to the top through the eventEmitter, when eventType === "public"', () => {
+    it('should navigate to "/create-room" , when eventType === "public"', () => {
+      let router = TestBed.get(Router);
+      let spy = spyOn(router, 'navigate');
       component.formData.eventType = 'public';
       fixture.detectChanges();
 
       const btnCancel = fixture.debugElement.query(By.css('.cancel'));
       btnCancel.triggerEventHandler('click', null);
-      expect(result).toEqual(data);
+      expect(spy).toHaveBeenCalledWith(['/create-room']);
     });
   });
 
   describe('Button Next in MakeRulesTabComponent', () => {
-    it('should send data to the top through the eventEmitter, when eventType === "private"', () => {
-      let result = null;
-      component.goPrivateEvent.subscribe(value => result = value);
-
+    it('should navigate to "/create-private-event" , when eventType === "private"', () => {
+      let router = TestBed.get(Router);
+      let spy = spyOn(router, 'navigate');
       const winnerControl = component.privateForm.get('winner');
       const loserControl = component.privateForm.get('losers');
       const endTimeControl = component.privateForm.get('privateEndTime');
@@ -163,14 +182,14 @@ describe('MakeRulesTabComponent', () => {
       const btnNext = fixture.debugElement.query(By.css('.next'));
       btnNext.triggerEventHandler('click', null);
 
-      expect(result).toEqual(component.privateForm.value)
+      expect(spy).toHaveBeenCalledWith(['/create-private-event']);
     });
 
     it('should send data to the top through the eventEmitter, when eventType === "public"', () => {
-      let result = null;
-
+      let router = TestBed.get(Router);
+      let spy = spyOn(router, 'navigate');
       component.formData.eventType = 'public';
-      component.goPublicEvent.subscribe(value => result = value);
+
 
       const tokenTypeControl = component.publicForm.get('tokenType');
       const publicEndTimeControl = component.publicForm.get('publicEndTime');
@@ -183,32 +202,50 @@ describe('MakeRulesTabComponent', () => {
       expertsCountControl.setValue(2);
       tokenTypeControl.setValue('token');
       expertsCountTypeControl.setValue('custom');
-
       fixture.detectChanges();
 
       const btnNext = fixture.debugElement.query(By.css('.next'));
       btnNext.triggerEventHandler('click', null);
 
-      const data = {
-        ...component.publicForm.value,
-        ...component.exactTime.value,
-        ...component.timeData,
-        'exactTimeBool': component.exactTimeBool
-      };
-
-      expect(result).toEqual(data);
+      expect(spy).toHaveBeenCalledWith(['/create-public-event']);
     });
   });
-  //
-  // it('testing modal windows bootstrap TO DO', () => {
-  //   component.formData.eventType = 'public';
-  //   fixture.detectChanges();
-  //
-  //   const div = fixture.debugElement.query(By.css('.howWorkModal-forTest'))
-  //   div.triggerEventHandler('click', null);
-  //   expect(ngbModal.open).toHaveBeenCalled();
-  //   expect(component.modalTrigger).toBeFalsy();
-  // });
 
+  it('should open modal windows bootstrap openHowEventsWorkFriend', () => {
+    component.openHowEventsWorkFriend('content');
+    expect(ngbModal.open).toHaveBeenCalled();
+    expect(component.modalTrigger).toBeTruthy();
+  });
 
+  it('should open modal windows bootstrap openHowEventsWorkSocial()', () => {
+    component.formData.eventType = 'public';
+    fixture.detectChanges();
+
+    component.openHowEventsWorkSocial('content2');
+    expect(ngbModal.open).toHaveBeenCalled();
+    expect(component.modalTrigger).toBeFalsy();
+  });
+
+  it('should open Calendar modal windows bootstrap openCalendar()', () => {
+    component.formData.eventType = 'public';
+    fixture.detectChanges();
+
+    const btnCalendar = fixture.debugElement.query(By.css('.calendarImg'));
+    btnCalendar.triggerEventHandler('click', null);
+    expect(ngbModal.open).toHaveBeenCalled();
+  });
+
+  it('InfoModalComponent should be called with all componentInstance', () => {
+    component.formData.eventType = 'public';
+    fixture.detectChanges();
+
+    const betWith = fixture.debugElement.query(By.css('.link'));
+    betWith.triggerEventHandler('click', null);
+
+    expect(ngbModal.open).toHaveBeenCalledWith(InfoModalComponent, {centered: true});
+    expect(mockModalRef.componentInstance.name).toBeTruthy();
+    expect(mockModalRef.componentInstance.name1).toBeTruthy();
+    expect(mockModalRef.componentInstance.boldName).toBeTruthy();
+    expect(mockModalRef.componentInstance.link).toBeTruthy();
+  });
 });

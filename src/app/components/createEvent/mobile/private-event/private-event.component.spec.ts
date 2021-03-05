@@ -10,6 +10,7 @@ import {EMPTY, of} from "rxjs";
 import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
 import {Router} from "@angular/router";
+import {AppState} from "../../../../app.state";
 
 export class MockNgbModalRef {
   componentInstance = {
@@ -25,12 +26,18 @@ class RouterStub {
   }
 }
 
+class StoreMock {
+  select = jasmine.createSpy().and.returnValue(of(null));
+  dispatch = jasmine.createSpy();
+}
+
 describe('PrivateEventComponent', () => {
   let component: PrivateEventComponent;
   let fixture: ComponentFixture<PrivateEventComponent>;
   let service: PostService;
   let ngbModal: NgbModal;
   let mockModalRef: MockNgbModalRef = new MockNgbModalRef();
+  let store: Store<AppState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,7 +50,7 @@ describe('PrivateEventComponent', () => {
       providers: [
         {provide: GetService},
         {provide: PostService},
-        {provide: Store},
+        {provide: Store, useClass: StoreMock},
         {provide: Router, useClass: RouterStub}
       ],
     })
@@ -69,6 +76,7 @@ describe('PrivateEventComponent', () => {
         verifier: 'string',
       }
     ];
+    store = TestBed.get(Store);
     fixture.detectChanges();
   });
 
@@ -140,5 +148,10 @@ describe('PrivateEventComponent', () => {
     expect(mockModalRef.componentInstance.name).toBeTruthy();
     expect(mockModalRef.componentInstance.boldName).toBeTruthy();
     expect(mockModalRef.componentInstance.link).toBeTruthy();
+  });
+
+  it('should get data from the store for all selectors ("user", "createEvent")', () => {
+    expect(store.select).toHaveBeenCalledWith('user');
+    expect(store.select).toHaveBeenCalledWith('createEvent');
   });
 });

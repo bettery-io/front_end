@@ -191,8 +191,6 @@ export class MakeRulesTabComponent implements OnInit, OnDestroy {
     this.formData.privateEndTime = this.privateForm.value.privateEndTime;
     this.store.dispatch(formDataAction({formData: this.formData}));
     this.router.navigate(['/create-private-event']);
-
-    // this.goPrivateEvent.next(this.privateForm.value);
   }
 
   saveExactTime() {
@@ -227,7 +225,6 @@ export class MakeRulesTabComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(formDataAction({formData: this.formData}));
     this.router.navigate(['/create-room']);
-    // this.goBack.next(data);
   }
 
 

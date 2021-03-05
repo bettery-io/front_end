@@ -12,6 +12,8 @@ import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
 import {RouterTestingModule} from "@angular/router/testing";
 import {Router} from "@angular/router";
+import {AppState} from "../../../../app.state";
+import {formDataAction} from "../../../../actions/newEvent.actions";
 
 export class MockNgbModalRef {
   componentInstance = {
@@ -28,6 +30,11 @@ class RouterStub {
   }
 }
 
+class StoreMock {
+  select = jasmine.createSpy().and.returnValue(of(null));
+  dispatch = jasmine.createSpy();
+}
+
 describe('CreateRoomTabComponent', () => {
   let component: CreateRoomTabComponent;
   let fixture: ComponentFixture<CreateRoomTabComponent>;
@@ -38,6 +45,7 @@ describe('CreateRoomTabComponent', () => {
   let mockModalRef: MockNgbModalRef = new MockNgbModalRef();
   let spyRouter;
   let router;
+  let store: Store<AppState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -52,7 +60,7 @@ describe('CreateRoomTabComponent', () => {
       ],
       providers: [
         {provide: PostService},
-        {provide: Store},
+        {provide: Store, useClass: StoreMock},
         {provide: Router, useClass: RouterStub}
       ]
     })
@@ -90,6 +98,7 @@ describe('CreateRoomTabComponent', () => {
     };
     router = TestBed.get(Router);
     spyRouter = spyOn(router, 'navigate');
+    store = TestBed.get(Store);
     fixture.detectChanges();
   });
 
@@ -142,6 +151,13 @@ describe('CreateRoomTabComponent', () => {
     const btn = fixture.debugElement.query(By.css('.cancel'));
     btn.triggerEventHandler('click', null);
     expect(spyRouter).toHaveBeenCalledWith(['/create-event']);
+
+  });
+
+  it('Cancel() should dispatch data to store', () => {
+    component.cancel();
+    expect(store.dispatch).toHaveBeenCalled();
+    expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
   });
 
   it('Cancel() should  navigate to "/create-event" when you click on the "Back" button(ngIf=`new`)', () => {
@@ -150,7 +166,7 @@ describe('CreateRoomTabComponent', () => {
     expect(spyRouter).toHaveBeenCalledWith(['/create-event']);
   });
 
-  it('createRoom() should navigate to "/makeRules" when you click on the "NEXT" button', () => {
+  it('createRoom() should navigate to "/makeRules" and dispatch data to store when you click on the "NEXT" button', () => {
 
     const control = component.roomForm.get('roomName');
     const control2 = component.roomForm.get('roomColor');
@@ -160,10 +176,12 @@ describe('CreateRoomTabComponent', () => {
     btnNext.triggerEventHandler('click', null);
 
     expect(spyRouter).toHaveBeenCalledWith(['/makeRules']);
+    expect(store.dispatch).toHaveBeenCalled();
+    expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
 
   });
 
-  it('chooseRoom() should should navigate to "/makeRules" when you click on the "NEXT" button', () => {
+  it('chooseRoom() should should navigate to "/makeRules" and dispatch data to store when you click on the "NEXT" button', () => {
     const existRoomControl = component.existRoom.get('roomId')
     existRoomControl.setValue(1);
 
@@ -181,11 +199,13 @@ describe('CreateRoomTabComponent', () => {
       }
     ];
     fixture.detectChanges();
-    //
+
     const btnNext = fixture.debugElement.query(By.css('.next'));
     btnNext.triggerEventHandler('click', null);
-    //
+
     expect(spyRouter).toHaveBeenCalledWith(['/makeRules']);
+    expect(store.dispatch).toHaveBeenCalled();
+    expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
   });
 
   it('InfoModalComponent should be called with all componentInstance fields', () => {
@@ -199,5 +219,10 @@ describe('CreateRoomTabComponent', () => {
     expect(mockModalRef.componentInstance.name1).toBeTruthy();
     expect(mockModalRef.componentInstance.boldName).toBeTruthy();
     expect(mockModalRef.componentInstance.link).toBeTruthy();
+  });
+
+  it('should get data from the store for all selectors ("user", "createEvent")', () => {
+    expect(store.select).toHaveBeenCalledWith('user');
+    expect(store.select).toHaveBeenCalledWith('createEvent');
   });
 });

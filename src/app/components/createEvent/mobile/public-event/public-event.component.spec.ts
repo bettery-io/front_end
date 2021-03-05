@@ -11,6 +11,7 @@ import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
 import {RouterTestingModule} from "@angular/router/testing";
 import {Router} from "@angular/router";
+import {AppState} from "../../../../app.state";
 
 export class MockNgbModalRef {
   componentInstance = {
@@ -26,12 +27,18 @@ class RouterStub {
   }
 }
 
-fdescribe('PublicEventComponent', () => {
+class StoreMock {
+  select = jasmine.createSpy().and.returnValue(of(null));
+  dispatch = jasmine.createSpy();
+}
+
+describe('PublicEventComponent', () => {
   let component: PublicEventComponent;
   let fixture: ComponentFixture<PublicEventComponent>;
   let service: PostService;
   let ngbModal: NgbModal;
   let mockModalRef: MockNgbModalRef = new MockNgbModalRef();
+  let store: Store<AppState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -42,7 +49,7 @@ fdescribe('PublicEventComponent', () => {
         NgbModule,
       ],
       providers: [
-        {provide: Store},
+        {provide: Store, useClass: StoreMock},
         {provide: GetService},
         {provide: PostService},
         {provide: Router, useClass: RouterStub},
@@ -70,6 +77,7 @@ fdescribe('PublicEventComponent', () => {
         verifier: 'string',
       }
     ];
+    store = TestBed.get(Store);
     component.formData = {
       answers: [{name: 'dfvdfv'}, {name: 'dfvdcddfv'}],
       eventType: 'private',
@@ -141,5 +149,8 @@ fdescribe('PublicEventComponent', () => {
     expect(mockModalRef.componentInstance.link).toBeTruthy();
   });
 
-
+  it('should get data from the store for all selectors ("user", "createEvent")', () => {
+    expect(store.select).toHaveBeenCalledWith('user');
+    expect(store.select).toHaveBeenCalledWith('createEvent');
+  });
 });

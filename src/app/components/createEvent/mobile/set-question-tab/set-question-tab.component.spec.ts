@@ -10,6 +10,9 @@ import {NgbModal, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {RegistrationComponent} from "../../../registration/registration.component";
 import {RouterTestingModule} from "@angular/router/testing";
 import {Router} from "@angular/router";
+import {of} from "rxjs";
+import {AppState} from "../../../../app.state";
+import {formDataAction} from "../../../../actions/newEvent.actions";
 
 export class MockNgbModalRef {
   componentInstance = {
@@ -23,12 +26,18 @@ class RouterStub {
   }
 }
 
+class StoreMock {
+  select = jasmine.createSpy().and.returnValue(of(null));
+  dispatch = jasmine.createSpy();
+}
+
 describe('SetQuestionTabComponent', () => {
   let component: SetQuestionTabComponent;
   let fixture: ComponentFixture<SetQuestionTabComponent>;
   let spy: jasmine.Spy;
   let ngbModal: NgbModal;
   let mockModalRef: MockNgbModalRef = new MockNgbModalRef();
+  let store: Store<AppState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -40,7 +49,7 @@ describe('SetQuestionTabComponent', () => {
         RouterTestingModule
       ],
       providers: [
-        {provide: Store},
+        {provide: Store, useClass: StoreMock},
         {provide: PostService},
         {provide: FormBuilder},
         {provide: Router, useClass: RouterStub},
@@ -76,6 +85,7 @@ describe('SetQuestionTabComponent', () => {
       winner: ''
     };
     ngbModal = TestBed.get(NgbModal);
+    store = TestBed.get(Store);
 
     fixture.detectChanges();
   });
@@ -121,7 +131,7 @@ describe('SetQuestionTabComponent', () => {
   });
 
   describe('Test onSubmit() after clicked NEXT button', () => {
-    it('should send correct data to the top, trigger the emitter. if the user is registered', () => {
+    it('should dispatch correct data to the store,if the user is registered and redirect to "/create-room"', () => {
       let router = TestBed.get(Router);
       let spy = spyOn(router, 'navigate');
       component.registered = true;
@@ -131,6 +141,8 @@ describe('SetQuestionTabComponent', () => {
       btnNext.triggerEventHandler('click', null);
 
       expect(spy).toHaveBeenCalledWith(['/create-room']);
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
     });
 
     it('if registered == false, should open modal registrationComponent', () => {
@@ -145,15 +157,19 @@ describe('SetQuestionTabComponent', () => {
     });
   });
 
-  it('should navigate to "/" home, after click CANCEL button', ()=>{
+  it('should navigate to "/" home, after click CANCEL button and dispatch data to store', () => {
     let router = TestBed.get(Router);
     let spy = spyOn(router, 'navigate');
 
     const btnCancel = fixture.debugElement.query(By.css('.cancel'));
     btnCancel.triggerEventHandler('click', null);
-
+    expect(store.dispatch).toHaveBeenCalled();
+    expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
     expect(spy).toHaveBeenCalledWith(['/']);
   });
 
-
+  it('should get data from the store for all selectors ("user", "createEvent")', () => {
+    expect(store.select).toHaveBeenCalledWith('user');
+    expect(store.select).toHaveBeenCalledWith('createEvent');
+  });
 });

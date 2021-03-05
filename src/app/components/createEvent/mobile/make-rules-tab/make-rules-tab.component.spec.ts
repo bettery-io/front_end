@@ -8,6 +8,9 @@ import {Store, StoreModule} from "@ngrx/store";
 import {RouterTestingModule} from "@angular/router/testing";
 import {Router} from "@angular/router";
 import {InfoModalComponent} from "../../../share/info-modal/info-modal.component";
+import {of} from "rxjs";
+import {AppState} from "../../../../app.state";
+import {formDataAction} from "../../../../actions/newEvent.actions";
 
 
 export class MockNgbModalRef {
@@ -25,12 +28,18 @@ class RouterStub {
   }
 }
 
+class StoreMock {
+  select = jasmine.createSpy().and.returnValue(of(null));
+  dispatch = jasmine.createSpy();
+}
+
 describe('MakeRulesTabComponent', () => {
   let component: MakeRulesTabComponent;
   let fixture: ComponentFixture<MakeRulesTabComponent>;
   let spy: jasmine.Spy;
   let ngbModal: NgbModal;
   let mockModalRef: MockNgbModalRef = new MockNgbModalRef();
+  let store: Store<AppState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -42,7 +51,7 @@ describe('MakeRulesTabComponent', () => {
       ],
       providers: [
         {provide: FormBuilder},
-        {provide: Store},
+        {provide: Store, useClass: StoreMock},
         {provide: Router, useClass: RouterStub},
       ]
     })
@@ -79,6 +88,7 @@ describe('MakeRulesTabComponent', () => {
       whichRoom: 'new',
       winner: ''
     };
+    store = TestBed.get(Store);
     component.ngOnInit();
     fixture.detectChanges();
   });
@@ -147,15 +157,17 @@ describe('MakeRulesTabComponent', () => {
     });
 
 
-    it('should navigate to "/create-room" , when eventType === "private"', () => {
+    it('should navigate to "/create-room"  and dispatch data to store, when eventType === "private"', () => {
       let router = TestBed.get(Router);
       let spy = spyOn(router, 'navigate');
       const btnCancel = fixture.debugElement.query(By.css('.cancel'));
       btnCancel.triggerEventHandler('click', null);
       expect(spy).toHaveBeenCalledWith(['/create-room']);
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
     });
 
-    it('should navigate to "/create-room" , when eventType === "public"', () => {
+    it('should navigate to "/create-room"  and dispatch data to store, when eventType === "public"', () => {
       let router = TestBed.get(Router);
       let spy = spyOn(router, 'navigate');
       component.formData.eventType = 'public';
@@ -164,11 +176,13 @@ describe('MakeRulesTabComponent', () => {
       const btnCancel = fixture.debugElement.query(By.css('.cancel'));
       btnCancel.triggerEventHandler('click', null);
       expect(spy).toHaveBeenCalledWith(['/create-room']);
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
     });
   });
 
   describe('Button Next in MakeRulesTabComponent', () => {
-    it('should navigate to "/create-private-event" , when eventType === "private"', () => {
+    it('should navigate to "/create-private-event" and dispatch data to store, when eventType === "private"', () => {
       let router = TestBed.get(Router);
       let spy = spyOn(router, 'navigate');
       const winnerControl = component.privateForm.get('winner');
@@ -183,9 +197,11 @@ describe('MakeRulesTabComponent', () => {
       btnNext.triggerEventHandler('click', null);
 
       expect(spy).toHaveBeenCalledWith(['/create-private-event']);
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
     });
 
-    it('should send data to the top through the eventEmitter, when eventType === "public"', () => {
+    it('should send data to store and navigate to "/create-public-event", when eventType === "public"', () => {
       let router = TestBed.get(Router);
       let spy = spyOn(router, 'navigate');
       component.formData.eventType = 'public';
@@ -208,6 +224,8 @@ describe('MakeRulesTabComponent', () => {
       btnNext.triggerEventHandler('click', null);
 
       expect(spy).toHaveBeenCalledWith(['/create-public-event']);
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(formDataAction({formData: component.formData}));
     });
   });
 
@@ -247,5 +265,9 @@ describe('MakeRulesTabComponent', () => {
     expect(mockModalRef.componentInstance.name1).toBeTruthy();
     expect(mockModalRef.componentInstance.boldName).toBeTruthy();
     expect(mockModalRef.componentInstance.link).toBeTruthy();
+  });
+
+  it('should get data from the store for all selectors ("createEvent")', () => {
+    expect(store.select).toHaveBeenCalledWith('createEvent');
   });
 });

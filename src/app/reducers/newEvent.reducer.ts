@@ -1,5 +1,5 @@
 import {createFeatureSelector, createReducer, createSelector, on} from '@ngrx/store';
-import {createEventAction, formDataAction} from '../actions/newEvent.actions';
+import {formDataAction} from '../actions/newEvent.actions';
 import {LandingStateInterface} from '../models/landingState.model';
 
 const init = {
@@ -28,24 +28,12 @@ const init = {
 
 export const landingFeatureSelector = createFeatureSelector<LandingStateInterface>('event');
 
-export const newEventSelector = createSelector(
-  landingFeatureSelector,
-  (authState: LandingStateInterface) => authState.newEvent
-);
-
-const initialState: LandingStateInterface = {
-  newEvent: '',
+export const initialState: LandingStateInterface = {
   formData: init
 };
 
 export const createEventReducer = createReducer(
   initialState,
-  on(createEventAction,
-    (state, action): LandingStateInterface => ({
-      ...state,
-      newEvent: action.data
-    })
-  ),
   on(formDataAction,
     (state, action): LandingStateInterface => ({
       ...state,

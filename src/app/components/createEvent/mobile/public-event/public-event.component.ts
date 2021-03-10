@@ -13,6 +13,7 @@ import {ErrorLimitModalComponent} from '../../../share/error-limit-modal/error-l
 import {environment} from '../../../../../environments/environment';
 import {User} from '../../../../models/User.model';
 import {Router} from "@angular/router";
+import {formDataAction} from "../../../../actions/newEvent.actions";
 
 
 @Component({
@@ -58,7 +59,7 @@ export class PublicEventComponent implements OnDestroy {
   }
 
   cancel() {
-    this.router.navigate(['/makeRules']);
+    this.router.navigate(['/make-rules']);
   }
 
   timeToBet() {
@@ -141,6 +142,16 @@ export class PublicEventComponent implements OnDestroy {
     })
   }
 
+  formDataReset() {
+    this.formData.question = '';
+    this.formData.answers = [];
+    this.formData.losers = '';
+    this.formData.winner = '';
+    this.formData.roomName = '';
+
+    this.store.dispatch(formDataAction({formData: this.formData}));
+  }
+
   async sendToContract(id) {
     let matic = new maticInit(this.host[0].verifier);
     let userWallet = await matic.getUserAccount()
@@ -213,6 +224,7 @@ export class PublicEventComponent implements OnDestroy {
           this.spinnerLoading = false;
           this.created = true;
           this.calculateDate()
+          this.formDataReset()
           console.log("set to db DONE")
         },
         (err) => {

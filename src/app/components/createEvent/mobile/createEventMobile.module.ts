@@ -29,7 +29,7 @@ import {AuthGuard} from "./guards/auth.guard";
         RouterModule.forChild([
             {path: 'create-event', component: SetQuestionTabComponent},
             {path: 'create-room', component: CreateRoomTabComponent, canActivate: [AuthGuard]},
-            {path: 'makeRules', component: MakeRulesTabComponent, canActivate: [AuthGuard]},
+            {path: 'make-rules', component: MakeRulesTabComponent, canActivate: [AuthGuard]},
             {path: 'create-private-event', component: PrivateEventComponent, canActivate: [AuthGuard]},
             {path: 'create-public-event', component: PublicEventComponent, canActivate: [AuthGuard]},
         ]),

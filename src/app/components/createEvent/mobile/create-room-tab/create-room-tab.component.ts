@@ -130,7 +130,7 @@ export class CreateRoomTabComponent implements OnInit, OnDestroy {
     this.formData.roomId = data.roomId;
 
     this.store.dispatch(formDataAction({formData: this.formData}));
-    this.router.navigate(['/makeRules']);
+    this.router.navigate(['/make-rules']);
   }
 
   createRoom() {
@@ -156,7 +156,7 @@ export class CreateRoomTabComponent implements OnInit, OnDestroy {
       this.formData.roomId = data.roomId;
 
       this.store.dispatch(formDataAction({formData: this.formData}));
-      this.router.navigate(['/makeRules']);
+      this.router.navigate(['/make-rules']);
     }, (err) => {
       console.log(err);
       this.roomError = err.message;

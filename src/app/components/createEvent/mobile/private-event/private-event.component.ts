@@ -13,6 +13,7 @@ import {InfoModalComponent} from '../../../share/info-modal/info-modal.component
 import {ErrorLimitModalComponent} from '../../../share/error-limit-modal/error-limit-modal.component';
 import {environment} from '../../../../../environments/environment';
 import {User} from '../../../../models/User.model';
+import {formDataAction} from "../../../../actions/newEvent.actions";
 
 @Component({
   selector: 'private-event-modile',
@@ -56,8 +57,9 @@ export class PrivateEventComponent implements OnDestroy {
       this.formData = x?.formData;
     });
   }
+
   cancel() {
-    this.router.navigate(['/makeRules']);
+    this.router.navigate(['/make-rules']);
   }
 
   copyToClickBoard() {
@@ -92,6 +94,16 @@ export class PrivateEventComponent implements OnDestroy {
       this.spinnerLoading = false;
       console.log(err);
     });
+  }
+
+  formDataReset() {
+    this.formData.question = '';
+    this.formData.answers = [];
+    this.formData.losers = '';
+    this.formData.winner = '';
+    this.formData.room = '';
+
+    this.store.dispatch(formDataAction({formData: this.formData}));
   }
 
   async sendToContract(id) {
@@ -163,6 +175,7 @@ export class PrivateEventComponent implements OnDestroy {
           this.calculateDate();
           this.spinner = false;
           this.created = true;
+          this.formDataReset();
         },
         (err) => {
           console.log("set qestion error");

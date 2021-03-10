@@ -1,17 +1,19 @@
-import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../app.state';
-import { ClipboardService } from 'ngx-clipboard'
-import { GetService } from '../../../../services/get.service';
-import { PostService } from '../../../../services/post.service'
+import {Component, Input, Output, EventEmitter, OnDestroy, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../../app.state';
+import {ClipboardService} from 'ngx-clipboard'
+import {GetService} from '../../../../services/get.service';
+import {PostService} from '../../../../services/post.service'
 import maticInit from '../../../../contract/maticInit.js'
 import Contract from '../../../../contract/contract';
-import { Subscription } from 'rxjs';
-import { InfoModalComponent } from '../../../share/info-modal/info-modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ErrorLimitModalComponent } from '../../../share/error-limit-modal/error-limit-modal.component';
-import { environment } from '../../../../../environments/environment';
+import {Subscription} from 'rxjs';
+import {InfoModalComponent} from '../../../share/info-modal/info-modal.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ErrorLimitModalComponent} from '../../../share/error-limit-modal/error-limit-modal.component';
+import {environment} from '../../../../../environments/environment';
 import {User} from '../../../../models/User.model';
+import {Router} from "@angular/router";
+import {formDataAction} from "../../../../actions/newEvent.actions";
 
 
 @Component({
@@ -20,7 +22,7 @@ import {User} from '../../../../models/User.model';
   styleUrls: ['./public-event.component.sass']
 })
 export class PublicEventComponent implements OnDestroy {
-  @Input() formData;
+  formData;
   @Output() goBack = new EventEmitter();
   created = false;
   day: number | string;
@@ -34,6 +36,7 @@ export class PublicEventComponent implements OnDestroy {
   idSub: Subscription;
   postSub: Subscription;
   createSub: Subscription;
+  fromDataSubscribe: Subscription;
   spinnerLoading: boolean = false;
 
   constructor(
@@ -41,18 +44,22 @@ export class PublicEventComponent implements OnDestroy {
     private _clipboardService: ClipboardService,
     private getSevice: GetService,
     private PostService: PostService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) {
     this.userSub = this.store.select("user").subscribe((x: User[]) => {
-      if (x.length !== 0) {
+      if (x && x.length !== 0) {
         this.nickName = x[0].nickName;
         this.host = x;
       }
-    })
+    });
+    this.fromDataSubscribe = this.store.select('createEvent').subscribe(x => {
+      this.formData = x?.formData;
+    });
   }
 
   cancel() {
-    this.goBack.next();
+    this.router.navigate(['/make-rules']);
   }
 
   timeToBet() {
@@ -130,9 +137,19 @@ export class PublicEventComponent implements OnDestroy {
       this.sendToContract(x._id);
     }, (err) => {
       this.spinnerLoading = false;
-      this.modalService.open(ErrorLimitModalComponent, { centered: true });
+      this.modalService.open(ErrorLimitModalComponent, {centered: true});
       console.log(err)
     })
+  }
+
+  formDataReset() {
+    this.formData.question = '';
+    this.formData.answers = [];
+    this.formData.losers = '';
+    this.formData.winner = '';
+    this.formData.roomName = '';
+
+    this.store.dispatch(formDataAction({formData: this.formData}));
   }
 
   async sendToContract(id) {
@@ -207,6 +224,7 @@ export class PublicEventComponent implements OnDestroy {
           this.spinnerLoading = false;
           this.created = true;
           this.calculateDate()
+          this.formDataReset()
           console.log("set to db DONE")
         },
         (err) => {
@@ -222,7 +240,7 @@ export class PublicEventComponent implements OnDestroy {
     }
     this.createSub = this.PostService.post("delete_event_id", data)
       .subscribe(() => {
-      },
+        },
         (err) => {
           console.log("from delete wallet")
           console.log(err)
@@ -251,7 +269,7 @@ export class PublicEventComponent implements OnDestroy {
   }
 
   modalAboutExpert() {
-    const modalRef = this.modalService.open(InfoModalComponent, { centered: true });
+    const modalRef = this.modalService.open(InfoModalComponent, {centered: true});
     modalRef.componentInstance.name = '- Actually, no need to! Bettery is smart and secure enough to take care of your event. You can join to bet as a Player or become an Expert to validate the result after Players. Enjoy!';
     modalRef.componentInstance.boldName = 'How to manage your event';
     modalRef.componentInstance.link = 'Learn more about how Bettery works';
@@ -260,16 +278,19 @@ export class PublicEventComponent implements OnDestroy {
   ngOnDestroy() {
     if (this.userSub) {
       this.userSub.unsubscribe();
-    };
+    }
     if (this.idSub) {
       this.idSub.unsubscribe();
-    };
+    }
     if (this.postSub) {
       this.postSub.unsubscribe();
-    };
+    }
     if (this.createSub) {
       this.createSub.unsubscribe();
-    };
+    }
+    if (this.fromDataSubscribe) {
+      this.fromDataSubscribe.unsubscribe();
+    }
   }
 
 

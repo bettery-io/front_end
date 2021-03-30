@@ -1,9 +1,10 @@
 import Biconomy from "@biconomy/mexa";
+import {biconomyKey} from '../config/keys'
 
 const biconomyInit = async () => {
     let biconomy = new Biconomy("https://rpc-mumbai.matic.today",
         {
-            apiKey: "iwIgyW3sM.12ac582c-bd06-4289-8d48-47ef552af03f",
+            apiKey: biconomyKey,
             strictMode: true
         });
     await BiconomyReady(biconomy);
